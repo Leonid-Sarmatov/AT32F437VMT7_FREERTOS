@@ -1,0 +1,2331 @@
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"at32f435_437_dma.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.dma_reset,"ax",%progbits
+  18              		.align	1
+  19              		.global	dma_reset
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	dma_reset:
+  25              	.LVL0:
+  26              	.LFB133:
+  27              		.file 1 "bsp/libraries/drivers/src/at32f435_437_dma.c"
+   1:bsp/libraries/drivers/src/at32f435_437_dma.c **** /**
+   2:bsp/libraries/drivers/src/at32f435_437_dma.c ****   **************************************************************************
+   3:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @file     at32f435_437_dma.c
+   4:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @brief    contains all the functions for the dma firmware library
+   5:bsp/libraries/drivers/src/at32f435_437_dma.c ****   **************************************************************************
+   6:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *                       Copyright notice & Disclaimer
+   7:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *
+   8:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * The software Board Support Package (BSP) that is made available to
+   9:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * download from Artery official website is the copyrighted work of Artery.
+  10:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * Artery authorizes customers to use, copy, and distribute the BSP
+  11:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * software and its related documentation for the purpose of design and
+  12:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * development in conjunction with Artery microcontrollers. Use of the
+  13:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * software is governed by this copyright notice and the following disclaimer.
+  14:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *
+  15:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
+  16:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * GUARANTEES OR REPRESENTATIONS OF ANY KIND. ARTERY EXPRESSLY DISCLAIMS,
+  17:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * TO THE FULLEST EXTENT PERMITTED BY LAW, ALL EXPRESS, IMPLIED OR
+  18:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * STATUTORY OR OTHER WARRANTIES, GUARANTEES OR REPRESENTATIONS,
+  19:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * INCLUDING BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+  20:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
+  21:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *
+  22:bsp/libraries/drivers/src/at32f435_437_dma.c ****   **************************************************************************
+  23:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+  24:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+  25:bsp/libraries/drivers/src/at32f435_437_dma.c **** #include "at32f435_437_conf.h"
+  26:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+  27:bsp/libraries/drivers/src/at32f435_437_dma.c **** /** @addtogroup AT32F435_437_periph_driver
+  28:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @{
+  29:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+  30:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+  31:bsp/libraries/drivers/src/at32f435_437_dma.c **** /** @defgroup DMA
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 2
+
+
+  32:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @brief DMA driver modules
+  33:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @{
+  34:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+  35:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+  36:bsp/libraries/drivers/src/at32f435_437_dma.c **** #ifdef DMA_MODULE_ENABLED
+  37:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+  38:bsp/libraries/drivers/src/at32f435_437_dma.c **** /** @defgroup DMA_private_functions
+  39:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @{
+  40:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+  41:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+  42:bsp/libraries/drivers/src/at32f435_437_dma.c **** /**
+  43:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @brief  reset dmax channely register.
+  44:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dmax_channely:
+  45:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         this parameter can be one of the following values:
+  46:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL1
+  47:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL2
+  48:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL3
+  49:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL4
+  50:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL5
+  51:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL6
+  52:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL7
+  53:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL1
+  54:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL2
+  55:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL3
+  56:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL4
+  57:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL5
+  58:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL6
+  59:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL7
+  60:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @retval none.
+  61:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+  62:bsp/libraries/drivers/src/at32f435_437_dma.c **** void dma_reset(dma_channel_type *dmax_channely)
+  63:bsp/libraries/drivers/src/at32f435_437_dma.c **** {
+  28              		.loc 1 63 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33              		.loc 1 63 1 is_stmt 0 view .LVU1
+  34 0000 10B4     		push	{r4}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 4
+  37              		.cfi_offset 4, -4
+  64:bsp/libraries/drivers/src/at32f435_437_dma.c ****   uint32_t temp = 0;
+  38              		.loc 1 64 3 is_stmt 1 view .LVU2
+  39              	.LVL1:
+  65:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmax_channely->ctrl_bit.chen = FALSE;
+  40              		.loc 1 65 3 view .LVU3
+  41              		.loc 1 65 32 is_stmt 0 view .LVU4
+  42 0002 0368     		ldr	r3, [r0]
+  43 0004 6FF30003 		bfc	r3, #0, #1
+  44 0008 0360     		str	r3, [r0]
+  66:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmax_channely->ctrl = 0;
+  45              		.loc 1 66 3 is_stmt 1 view .LVU5
+  46              		.loc 1 66 23 is_stmt 0 view .LVU6
+  47 000a 0023     		movs	r3, #0
+  48 000c 0360     		str	r3, [r0]
+  67:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmax_channely->dtcnt = 0;
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 3
+
+
+  49              		.loc 1 67 3 is_stmt 1 view .LVU7
+  50              		.loc 1 67 24 is_stmt 0 view .LVU8
+  51 000e 4360     		str	r3, [r0, #4]
+  68:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmax_channely->paddr = 0;
+  52              		.loc 1 68 3 is_stmt 1 view .LVU9
+  53              		.loc 1 68 24 is_stmt 0 view .LVU10
+  54 0010 8360     		str	r3, [r0, #8]
+  69:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmax_channely->maddr = 0;
+  55              		.loc 1 69 3 is_stmt 1 view .LVU11
+  56              		.loc 1 69 24 is_stmt 0 view .LVU12
+  57 0012 C360     		str	r3, [r0, #12]
+  70:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+  71:bsp/libraries/drivers/src/at32f435_437_dma.c ****   temp = (uint32_t)dmax_channely;
+  58              		.loc 1 71 3 is_stmt 1 view .LVU13
+  59              	.LVL2:
+  72:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+  73:bsp/libraries/drivers/src/at32f435_437_dma.c ****   if((temp & 0x6FF) < 0x608)
+  60              		.loc 1 73 3 view .LVU14
+  61              		.loc 1 73 12 is_stmt 0 view .LVU15
+  62 0014 40F2FF63 		movw	r3, #1791
+  63 0018 0340     		ands	r3, r3, r0
+  64              		.loc 1 73 5 view .LVU16
+  65 001a B3F5C16F 		cmp	r3, #1544
+  66 001e 0FD2     		bcs	.L2
+  74:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+  75:bsp/libraries/drivers/src/at32f435_437_dma.c ****     /* dma1 channel */
+  76:bsp/libraries/drivers/src/at32f435_437_dma.c ****     DMA1->clr |= (uint32_t)(0x0F << ((((temp & 0xFF) - 0x08) / 0x14) * 4));
+  67              		.loc 1 76 5 is_stmt 1 view .LVU17
+  68              		.loc 1 76 15 is_stmt 0 view .LVU18
+  69 0020 104C     		ldr	r4, .L5
+  70 0022 6268     		ldr	r2, [r4, #4]
+  71              		.loc 1 76 46 view .LVU19
+  72 0024 C3B2     		uxtb	r3, r0
+  73              		.loc 1 76 54 view .LVU20
+  74 0026 083B     		subs	r3, r3, #8
+  75              		.loc 1 76 62 view .LVU21
+  76 0028 0F48     		ldr	r0, .L5+4
+  77              	.LVL3:
+  78              		.loc 1 76 62 view .LVU22
+  79 002a A0FB0313 		umull	r1, r3, r0, r3
+  80 002e 1B09     		lsrs	r3, r3, #4
+  81              		.loc 1 76 70 view .LVU23
+  82 0030 9B00     		lsls	r3, r3, #2
+  83              		.loc 1 76 34 view .LVU24
+  84 0032 0F21     		movs	r1, #15
+  85 0034 01FA03F3 		lsl	r3, r1, r3
+  86              		.loc 1 76 15 view .LVU25
+  87 0038 1343     		orrs	r3, r3, r2
+  88 003a 6360     		str	r3, [r4, #4]
+  89              	.L1:
+  77:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+  78:bsp/libraries/drivers/src/at32f435_437_dma.c ****   else if((temp & 0x6FF) < 0x688)
+  79:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+  80:bsp/libraries/drivers/src/at32f435_437_dma.c ****     /* dma2 channel */
+  81:bsp/libraries/drivers/src/at32f435_437_dma.c ****     DMA2->clr |= (uint32_t)(0x0F << ((((temp & 0xFF) - 0x08) / 0x14) * 4));
+  82:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+  83:bsp/libraries/drivers/src/at32f435_437_dma.c **** }
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 4
+
+
+  90              		.loc 1 83 1 view .LVU26
+  91 003c 10BC     		pop	{r4}
+  92              	.LCFI1:
+  93              		.cfi_remember_state
+  94              		.cfi_restore 4
+  95              		.cfi_def_cfa_offset 0
+  96 003e 7047     		bx	lr
+  97              	.LVL4:
+  98              	.L2:
+  99              	.LCFI2:
+ 100              		.cfi_restore_state
+  78:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 101              		.loc 1 78 8 is_stmt 1 view .LVU27
+  78:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 102              		.loc 1 78 10 is_stmt 0 view .LVU28
+ 103 0040 B3F5D16F 		cmp	r3, #1672
+ 104 0044 FAD2     		bcs	.L1
+  81:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 105              		.loc 1 81 5 is_stmt 1 view .LVU29
+  81:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 106              		.loc 1 81 15 is_stmt 0 view .LVU30
+ 107 0046 094C     		ldr	r4, .L5+8
+ 108 0048 6268     		ldr	r2, [r4, #4]
+  81:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 109              		.loc 1 81 46 view .LVU31
+ 110 004a C3B2     		uxtb	r3, r0
+  81:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 111              		.loc 1 81 54 view .LVU32
+ 112 004c 083B     		subs	r3, r3, #8
+  81:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 113              		.loc 1 81 62 view .LVU33
+ 114 004e 0648     		ldr	r0, .L5+4
+ 115              	.LVL5:
+  81:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 116              		.loc 1 81 62 view .LVU34
+ 117 0050 A0FB0313 		umull	r1, r3, r0, r3
+ 118 0054 1B09     		lsrs	r3, r3, #4
+  81:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 119              		.loc 1 81 70 view .LVU35
+ 120 0056 9B00     		lsls	r3, r3, #2
+  81:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 121              		.loc 1 81 34 view .LVU36
+ 122 0058 0F21     		movs	r1, #15
+ 123 005a 01FA03F3 		lsl	r3, r1, r3
+  81:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 124              		.loc 1 81 15 view .LVU37
+ 125 005e 1343     		orrs	r3, r3, r2
+ 126 0060 6360     		str	r3, [r4, #4]
+ 127              		.loc 1 83 1 view .LVU38
+ 128 0062 EBE7     		b	.L1
+ 129              	.L6:
+ 130              		.align	2
+ 131              	.L5:
+ 132 0064 00640240 		.word	1073898496
+ 133 0068 CDCCCCCC 		.word	-858993459
+ 134 006c 00660240 		.word	1073899008
+ 135              		.cfi_endproc
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 5
+
+
+ 136              	.LFE133:
+ 138              		.section	.text.dma_data_number_set,"ax",%progbits
+ 139              		.align	1
+ 140              		.global	dma_data_number_set
+ 141              		.syntax unified
+ 142              		.thumb
+ 143              		.thumb_func
+ 145              	dma_data_number_set:
+ 146              	.LVL6:
+ 147              	.LFB134:
+  84:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+  85:bsp/libraries/drivers/src/at32f435_437_dma.c **** /**
+  86:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @brief  set the number of data to be transferred.
+  87:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dmax_channely:
+  88:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         this parameter can be one of the following values:
+  89:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL1
+  90:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL2
+  91:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL3
+  92:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL4
+  93:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL5
+  94:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL6
+  95:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL7
+  96:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL1
+  97:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL2
+  98:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL3
+  99:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL4
+ 100:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL5
+ 101:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL6
+ 102:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL7
+ 103:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  data_number: the number of data to be transferred (0x0000~0xFFFF).
+ 104:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @retval none.
+ 105:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+ 106:bsp/libraries/drivers/src/at32f435_437_dma.c **** void dma_data_number_set(dma_channel_type *dmax_channely, uint16_t data_number)
+ 107:bsp/libraries/drivers/src/at32f435_437_dma.c **** {
+ 148              		.loc 1 107 1 is_stmt 1 view -0
+ 149              		.cfi_startproc
+ 150              		@ args = 0, pretend = 0, frame = 0
+ 151              		@ frame_needed = 0, uses_anonymous_args = 0
+ 152              		@ link register save eliminated.
+ 108:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmax_channely->dtcnt = data_number;
+ 153              		.loc 1 108 3 view .LVU40
+ 154              		.loc 1 108 24 is_stmt 0 view .LVU41
+ 155 0000 4160     		str	r1, [r0, #4]
+ 109:bsp/libraries/drivers/src/at32f435_437_dma.c **** }
+ 156              		.loc 1 109 1 view .LVU42
+ 157 0002 7047     		bx	lr
+ 158              		.cfi_endproc
+ 159              	.LFE134:
+ 161              		.section	.text.dma_data_number_get,"ax",%progbits
+ 162              		.align	1
+ 163              		.global	dma_data_number_get
+ 164              		.syntax unified
+ 165              		.thumb
+ 166              		.thumb_func
+ 168              	dma_data_number_get:
+ 169              	.LVL7:
+ 170              	.LFB135:
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 6
+
+
+ 110:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ 111:bsp/libraries/drivers/src/at32f435_437_dma.c **** /**
+ 112:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @brief  get the number of data to be transferred.
+ 113:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dmax_channely:
+ 114:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         this parameter can be one of the following values:
+ 115:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL1
+ 116:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL2
+ 117:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL3
+ 118:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL4
+ 119:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL5
+ 120:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL6
+ 121:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL7
+ 122:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL1
+ 123:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL2
+ 124:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL3
+ 125:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL4
+ 126:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL5
+ 127:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL6
+ 128:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL7
+ 129:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @retval the number value.
+ 130:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+ 131:bsp/libraries/drivers/src/at32f435_437_dma.c **** uint16_t dma_data_number_get(dma_channel_type *dmax_channely)
+ 132:bsp/libraries/drivers/src/at32f435_437_dma.c **** {
+ 171              		.loc 1 132 1 is_stmt 1 view -0
+ 172              		.cfi_startproc
+ 173              		@ args = 0, pretend = 0, frame = 0
+ 174              		@ frame_needed = 0, uses_anonymous_args = 0
+ 175              		@ link register save eliminated.
+ 133:bsp/libraries/drivers/src/at32f435_437_dma.c ****   return (uint16_t)dmax_channely->dtcnt;
+ 176              		.loc 1 133 3 view .LVU44
+ 177              		.loc 1 133 33 is_stmt 0 view .LVU45
+ 178 0000 4068     		ldr	r0, [r0, #4]
+ 179              	.LVL8:
+ 134:bsp/libraries/drivers/src/at32f435_437_dma.c **** }
+ 180              		.loc 1 134 1 view .LVU46
+ 181 0002 80B2     		uxth	r0, r0
+ 182 0004 7047     		bx	lr
+ 183              		.cfi_endproc
+ 184              	.LFE135:
+ 186              		.section	.text.dma_interrupt_enable,"ax",%progbits
+ 187              		.align	1
+ 188              		.global	dma_interrupt_enable
+ 189              		.syntax unified
+ 190              		.thumb
+ 191              		.thumb_func
+ 193              	dma_interrupt_enable:
+ 194              	.LVL9:
+ 195              	.LFB136:
+ 135:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ 136:bsp/libraries/drivers/src/at32f435_437_dma.c **** /**
+ 137:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @brief  enable or disable dma interrupt.
+ 138:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dmax_channely:
+ 139:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         this parameter can be one of the following values:
+ 140:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL1
+ 141:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL2
+ 142:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL3
+ 143:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL4
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 7
+
+
+ 144:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL5
+ 145:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL6
+ 146:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL7
+ 147:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL1
+ 148:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL2
+ 149:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL3
+ 150:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL4
+ 151:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL5
+ 152:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL6
+ 153:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL7
+ 154:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dma_int:
+ 155:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         this parameter can be any combination of the following values:
+ 156:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA_FDT_INT
+ 157:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA_HDT_INT
+ 158:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA_DTERR_INT
+ 159:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  new_state (TRUE or FALSE)
+ 160:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @retval none.
+ 161:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+ 162:bsp/libraries/drivers/src/at32f435_437_dma.c **** void dma_interrupt_enable(dma_channel_type *dmax_channely, uint32_t dma_int, confirm_state new_stat
+ 163:bsp/libraries/drivers/src/at32f435_437_dma.c **** {
+ 196              		.loc 1 163 1 is_stmt 1 view -0
+ 197              		.cfi_startproc
+ 198              		@ args = 0, pretend = 0, frame = 0
+ 199              		@ frame_needed = 0, uses_anonymous_args = 0
+ 200              		@ link register save eliminated.
+ 164:bsp/libraries/drivers/src/at32f435_437_dma.c ****   if(new_state != FALSE)
+ 201              		.loc 1 164 3 view .LVU48
+ 202              		.loc 1 164 5 is_stmt 0 view .LVU49
+ 203 0000 1AB1     		cbz	r2, .L10
+ 165:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 166:bsp/libraries/drivers/src/at32f435_437_dma.c ****     dmax_channely->ctrl |= dma_int;
+ 204              		.loc 1 166 5 is_stmt 1 view .LVU50
+ 205              		.loc 1 166 25 is_stmt 0 view .LVU51
+ 206 0002 0368     		ldr	r3, [r0]
+ 207 0004 1943     		orrs	r1, r1, r3
+ 208              	.LVL10:
+ 209              		.loc 1 166 25 view .LVU52
+ 210 0006 0160     		str	r1, [r0]
+ 211 0008 7047     		bx	lr
+ 212              	.LVL11:
+ 213              	.L10:
+ 167:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 168:bsp/libraries/drivers/src/at32f435_437_dma.c ****   else
+ 169:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 170:bsp/libraries/drivers/src/at32f435_437_dma.c ****     dmax_channely->ctrl &= ~dma_int;
+ 214              		.loc 1 170 5 is_stmt 1 view .LVU53
+ 215              		.loc 1 170 25 is_stmt 0 view .LVU54
+ 216 000a 0368     		ldr	r3, [r0]
+ 217 000c 23EA0101 		bic	r1, r3, r1
+ 218              	.LVL12:
+ 219              		.loc 1 170 25 view .LVU55
+ 220 0010 0160     		str	r1, [r0]
+ 171:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 172:bsp/libraries/drivers/src/at32f435_437_dma.c **** }
+ 221              		.loc 1 172 1 view .LVU56
+ 222 0012 7047     		bx	lr
+ 223              		.cfi_endproc
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 8
+
+
+ 224              	.LFE136:
+ 226              		.section	.text.dma_channel_enable,"ax",%progbits
+ 227              		.align	1
+ 228              		.global	dma_channel_enable
+ 229              		.syntax unified
+ 230              		.thumb
+ 231              		.thumb_func
+ 233              	dma_channel_enable:
+ 234              	.LVL13:
+ 235              	.LFB137:
+ 173:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ 174:bsp/libraries/drivers/src/at32f435_437_dma.c **** /**
+ 175:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @brief  enable or disable dma channel.
+ 176:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dmax_channely:
+ 177:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         this parameter can be one of the following values:
+ 178:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL1
+ 179:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL2
+ 180:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL3
+ 181:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL4
+ 182:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL5
+ 183:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL6
+ 184:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL7
+ 185:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL1
+ 186:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL2
+ 187:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL3
+ 188:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL4
+ 189:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL5
+ 190:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL6
+ 191:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL7
+ 192:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  new_state (TRUE or FALSE).
+ 193:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @retval none.
+ 194:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+ 195:bsp/libraries/drivers/src/at32f435_437_dma.c **** void dma_channel_enable(dma_channel_type *dmax_channely, confirm_state new_state)
+ 196:bsp/libraries/drivers/src/at32f435_437_dma.c **** {
+ 236              		.loc 1 196 1 is_stmt 1 view -0
+ 237              		.cfi_startproc
+ 238              		@ args = 0, pretend = 0, frame = 0
+ 239              		@ frame_needed = 0, uses_anonymous_args = 0
+ 240              		@ link register save eliminated.
+ 197:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmax_channely->ctrl_bit.chen = new_state;
+ 241              		.loc 1 197 3 view .LVU58
+ 242              		.loc 1 197 32 is_stmt 0 view .LVU59
+ 243 0000 0368     		ldr	r3, [r0]
+ 244 0002 61F30003 		bfi	r3, r1, #0, #1
+ 245 0006 0360     		str	r3, [r0]
+ 198:bsp/libraries/drivers/src/at32f435_437_dma.c **** }
+ 246              		.loc 1 198 1 view .LVU60
+ 247 0008 7047     		bx	lr
+ 248              		.cfi_endproc
+ 249              	.LFE137:
+ 251              		.section	.text.dma_flag_get,"ax",%progbits
+ 252              		.align	1
+ 253              		.global	dma_flag_get
+ 254              		.syntax unified
+ 255              		.thumb
+ 256              		.thumb_func
+ 258              	dma_flag_get:
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 9
+
+
+ 259              	.LVL14:
+ 260              	.LFB138:
+ 199:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ 200:bsp/libraries/drivers/src/at32f435_437_dma.c **** /**
+ 201:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @brief  dma flag get.
+ 202:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dma_flag
+ 203:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_GL1_FLAG        - DMA1_FDT1_FLAG        - DMA1_HDT1_FLAG        - DMA1_DTERR1_FL
+ 204:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_GL2_FLAG        - DMA1_FDT2_FLAG        - DMA1_HDT2_FLAG        - DMA1_DTERR2_FL
+ 205:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_GL3_FLAG        - DMA1_FDT3_FLAG        - DMA1_HDT3_FLAG        - DMA1_DTERR3_FL
+ 206:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_GL4_FLAG        - DMA1_FDT4_FLAG        - DMA1_HDT4_FLAG        - DMA1_DTERR4_FL
+ 207:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_GL5_FLAG        - DMA1_FDT5_FLAG        - DMA1_HDT5_FLAG        - DMA1_DTERR5_FL
+ 208:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_GL6_FLAG        - DMA1_FDT6_FLAG        - DMA1_HDT6_FLAG        - DMA1_DTERR6_FL
+ 209:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_GL7_FLAG        - DMA1_FDT7_FLAG        - DMA1_HDT7_FLAG        - DMA1_DTERR7_FL
+ 210:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_GL1_FLAG        - DMA2_FDT1_FLAG        - DMA2_HDT1_FLAG        - DMA2_DTERR1_FL
+ 211:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_GL2_FLAG        - DMA2_FDT2_FLAG        - DMA2_HDT2_FLAG        - DMA2_DTERR2_FL
+ 212:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_GL3_FLAG        - DMA2_FDT3_FLAG        - DMA2_HDT3_FLAG        - DMA2_DTERR3_FL
+ 213:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_GL4_FLAG        - DMA2_FDT4_FLAG        - DMA2_HDT4_FLAG        - DMA2_DTERR4_FL
+ 214:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_GL5_FLAG        - DMA2_FDT5_FLAG        - DMA2_HDT5_FLAG        - DMA2_DTERR5_FL
+ 215:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_GL6_FLAG        - DMA2_FDT6_FLAG        - DMA2_HDT6_FLAG        - DMA2_DTERR6_FL
+ 216:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_GL7_FLAG        - DMA2_FDT7_FLAG        - DMA2_HDT7_FLAG        - DMA2_DTERR7_FL
+ 217:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @retval state of dma flag.
+ 218:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+ 219:bsp/libraries/drivers/src/at32f435_437_dma.c **** flag_status dma_flag_get(uint32_t dmax_flag)
+ 220:bsp/libraries/drivers/src/at32f435_437_dma.c **** {
+ 261              		.loc 1 220 1 is_stmt 1 view -0
+ 262              		.cfi_startproc
+ 263              		@ args = 0, pretend = 0, frame = 0
+ 264              		@ frame_needed = 0, uses_anonymous_args = 0
+ 265              		@ link register save eliminated.
+ 221:bsp/libraries/drivers/src/at32f435_437_dma.c ****   uint32_t temp = 0;
+ 266              		.loc 1 221 3 view .LVU62
+ 222:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ 223:bsp/libraries/drivers/src/at32f435_437_dma.c ****   if(dmax_flag > 0x10000000)
+ 267              		.loc 1 223 3 view .LVU63
+ 268              		.loc 1 223 5 is_stmt 0 view .LVU64
+ 269 0000 B0F1805F 		cmp	r0, #268435456
+ 270 0004 05D9     		bls	.L14
+ 224:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 225:bsp/libraries/drivers/src/at32f435_437_dma.c ****     temp = DMA2->sts;
+ 271              		.loc 1 225 5 is_stmt 1 view .LVU65
+ 272              		.loc 1 225 10 is_stmt 0 view .LVU66
+ 273 0006 054B     		ldr	r3, .L18
+ 274 0008 1B68     		ldr	r3, [r3]
+ 275              	.LVL15:
+ 276              	.L15:
+ 226:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 227:bsp/libraries/drivers/src/at32f435_437_dma.c ****   else
+ 228:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 229:bsp/libraries/drivers/src/at32f435_437_dma.c ****     temp = DMA1->sts;
+ 230:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 231:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ 232:bsp/libraries/drivers/src/at32f435_437_dma.c ****   if((temp & dmax_flag) != RESET)
+ 277              		.loc 1 232 3 is_stmt 1 view .LVU67
+ 278              		.loc 1 232 5 is_stmt 0 view .LVU68
+ 279 000a 0342     		tst	r3, r0
+ 280 000c 04D0     		beq	.L17
+ 233:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 10
+
+
+ 234:bsp/libraries/drivers/src/at32f435_437_dma.c ****     return SET;
+ 281              		.loc 1 234 12 view .LVU69
+ 282 000e 0120     		movs	r0, #1
+ 283              	.LVL16:
+ 284              		.loc 1 234 12 view .LVU70
+ 285 0010 7047     		bx	lr
+ 286              	.LVL17:
+ 287              	.L14:
+ 229:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 288              		.loc 1 229 5 is_stmt 1 view .LVU71
+ 229:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 289              		.loc 1 229 10 is_stmt 0 view .LVU72
+ 290 0012 034B     		ldr	r3, .L18+4
+ 291 0014 1B68     		ldr	r3, [r3]
+ 292              	.LVL18:
+ 229:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 293              		.loc 1 229 10 view .LVU73
+ 294 0016 F8E7     		b	.L15
+ 295              	.L17:
+ 235:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 236:bsp/libraries/drivers/src/at32f435_437_dma.c ****   else
+ 237:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 238:bsp/libraries/drivers/src/at32f435_437_dma.c ****     return RESET;
+ 296              		.loc 1 238 12 view .LVU74
+ 297 0018 0020     		movs	r0, #0
+ 298              	.LVL19:
+ 239:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 240:bsp/libraries/drivers/src/at32f435_437_dma.c **** }
+ 299              		.loc 1 240 1 view .LVU75
+ 300 001a 7047     		bx	lr
+ 301              	.L19:
+ 302              		.align	2
+ 303              	.L18:
+ 304 001c 00660240 		.word	1073899008
+ 305 0020 00640240 		.word	1073898496
+ 306              		.cfi_endproc
+ 307              	.LFE138:
+ 309              		.section	.text.dma_interrupt_flag_get,"ax",%progbits
+ 310              		.align	1
+ 311              		.global	dma_interrupt_flag_get
+ 312              		.syntax unified
+ 313              		.thumb
+ 314              		.thumb_func
+ 316              	dma_interrupt_flag_get:
+ 317              	.LVL20:
+ 318              	.LFB139:
+ 241:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ 242:bsp/libraries/drivers/src/at32f435_437_dma.c **** /**
+ 243:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @brief  dma interrupt flag get.
+ 244:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dma_flag
+ 245:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_FDT1_FLAG        - DMA1_HDT1_FLAG        - DMA1_DTERR1_FLAG
+ 246:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_FDT2_FLAG        - DMA1_HDT2_FLAG        - DMA1_DTERR2_FLAG
+ 247:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_FDT3_FLAG        - DMA1_HDT3_FLAG        - DMA1_DTERR3_FLAG
+ 248:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_FDT4_FLAG        - DMA1_HDT4_FLAG        - DMA1_DTERR4_FLAG
+ 249:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_FDT5_FLAG        - DMA1_HDT5_FLAG        - DMA1_DTERR5_FLAG
+ 250:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_FDT6_FLAG        - DMA1_HDT6_FLAG        - DMA1_DTERR6_FLAG
+ 251:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_FDT7_FLAG        - DMA1_HDT7_FLAG        - DMA1_DTERR7_FLAG
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 11
+
+
+ 252:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_FDT1_FLAG        - DMA2_HDT1_FLAG        - DMA2_DTERR1_FLAG
+ 253:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_FDT2_FLAG        - DMA2_HDT2_FLAG        - DMA2_DTERR2_FLAG
+ 254:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_FDT3_FLAG        - DMA2_HDT3_FLAG        - DMA2_DTERR3_FLAG
+ 255:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_FDT4_FLAG        - DMA2_HDT4_FLAG        - DMA2_DTERR4_FLAG
+ 256:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_FDT5_FLAG        - DMA2_HDT5_FLAG        - DMA2_DTERR5_FLAG
+ 257:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_FDT6_FLAG        - DMA2_HDT6_FLAG        - DMA2_DTERR6_FLAG
+ 258:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_FDT7_FLAG        - DMA2_HDT7_FLAG        - DMA2_DTERR7_FLAG
+ 259:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @retval state of dma flag.
+ 260:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+ 261:bsp/libraries/drivers/src/at32f435_437_dma.c **** flag_status dma_interrupt_flag_get(uint32_t dmax_flag)
+ 262:bsp/libraries/drivers/src/at32f435_437_dma.c **** {
+ 319              		.loc 1 262 1 is_stmt 1 view -0
+ 320              		.cfi_startproc
+ 321              		@ args = 0, pretend = 0, frame = 0
+ 322              		@ frame_needed = 0, uses_anonymous_args = 0
+ 323              		@ link register save eliminated.
+ 263:bsp/libraries/drivers/src/at32f435_437_dma.c ****   uint32_t temp = 0;
+ 324              		.loc 1 263 3 view .LVU77
+ 264:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ 265:bsp/libraries/drivers/src/at32f435_437_dma.c ****   if(dmax_flag > 0x10000000)
+ 325              		.loc 1 265 3 view .LVU78
+ 326              		.loc 1 265 5 is_stmt 0 view .LVU79
+ 327 0000 B0F1805F 		cmp	r0, #268435456
+ 328 0004 05D9     		bls	.L21
+ 266:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 267:bsp/libraries/drivers/src/at32f435_437_dma.c ****     temp = DMA2->sts;
+ 329              		.loc 1 267 5 is_stmt 1 view .LVU80
+ 330              		.loc 1 267 10 is_stmt 0 view .LVU81
+ 331 0006 054B     		ldr	r3, .L25
+ 332 0008 1B68     		ldr	r3, [r3]
+ 333              	.LVL21:
+ 334              	.L22:
+ 268:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 269:bsp/libraries/drivers/src/at32f435_437_dma.c ****   else
+ 270:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 271:bsp/libraries/drivers/src/at32f435_437_dma.c ****     temp = DMA1->sts;
+ 272:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 273:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ 274:bsp/libraries/drivers/src/at32f435_437_dma.c ****   if((temp & dmax_flag) != RESET)
+ 335              		.loc 1 274 3 is_stmt 1 view .LVU82
+ 336              		.loc 1 274 5 is_stmt 0 view .LVU83
+ 337 000a 0342     		tst	r3, r0
+ 338 000c 04D0     		beq	.L24
+ 275:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 276:bsp/libraries/drivers/src/at32f435_437_dma.c ****     return SET;
+ 339              		.loc 1 276 12 view .LVU84
+ 340 000e 0120     		movs	r0, #1
+ 341              	.LVL22:
+ 342              		.loc 1 276 12 view .LVU85
+ 343 0010 7047     		bx	lr
+ 344              	.LVL23:
+ 345              	.L21:
+ 271:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 346              		.loc 1 271 5 is_stmt 1 view .LVU86
+ 271:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 347              		.loc 1 271 10 is_stmt 0 view .LVU87
+ 348 0012 034B     		ldr	r3, .L25+4
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 12
+
+
+ 349 0014 1B68     		ldr	r3, [r3]
+ 350              	.LVL24:
+ 271:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 351              		.loc 1 271 10 view .LVU88
+ 352 0016 F8E7     		b	.L22
+ 353              	.L24:
+ 277:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 278:bsp/libraries/drivers/src/at32f435_437_dma.c ****   else
+ 279:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 280:bsp/libraries/drivers/src/at32f435_437_dma.c ****     return RESET;
+ 354              		.loc 1 280 12 view .LVU89
+ 355 0018 0020     		movs	r0, #0
+ 356              	.LVL25:
+ 281:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 282:bsp/libraries/drivers/src/at32f435_437_dma.c **** }
+ 357              		.loc 1 282 1 view .LVU90
+ 358 001a 7047     		bx	lr
+ 359              	.L26:
+ 360              		.align	2
+ 361              	.L25:
+ 362 001c 00660240 		.word	1073899008
+ 363 0020 00640240 		.word	1073898496
+ 364              		.cfi_endproc
+ 365              	.LFE139:
+ 367              		.section	.text.dma_flag_clear,"ax",%progbits
+ 368              		.align	1
+ 369              		.global	dma_flag_clear
+ 370              		.syntax unified
+ 371              		.thumb
+ 372              		.thumb_func
+ 374              	dma_flag_clear:
+ 375              	.LVL26:
+ 376              	.LFB140:
+ 283:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ 284:bsp/libraries/drivers/src/at32f435_437_dma.c **** /**
+ 285:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @brief  dma flag clear.
+ 286:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dma_flag
+ 287:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         this parameter can be one of the following values:
+ 288:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_GL1_FLAG        - DMA1_FDT1_FLAG        - DMA1_HDT1_FLAG        - DMA1_DTERR1_FL
+ 289:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_GL2_FLAG        - DMA1_FDT2_FLAG        - DMA1_HDT2_FLAG        - DMA1_DTERR2_FL
+ 290:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_GL3_FLAG        - DMA1_FDT3_FLAG        - DMA1_HDT3_FLAG        - DMA1_DTERR3_FL
+ 291:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_GL4_FLAG        - DMA1_FDT4_FLAG        - DMA1_HDT4_FLAG        - DMA1_DTERR4_FL
+ 292:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_GL5_FLAG        - DMA1_FDT5_FLAG        - DMA1_HDT5_FLAG        - DMA1_DTERR5_FL
+ 293:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_GL6_FLAG        - DMA1_FDT6_FLAG        - DMA1_HDT6_FLAG        - DMA1_DTERR6_FL
+ 294:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_GL7_FLAG        - DMA1_FDT7_FLAG        - DMA1_HDT7_FLAG        - DMA1_DTERR7_FL
+ 295:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_GL1_FLAG        - DMA2_FDT1_FLAG        - DMA2_HDT1_FLAG        - DMA2_DTERR1_FL
+ 296:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_GL2_FLAG        - DMA2_FDT2_FLAG        - DMA2_HDT2_FLAG        - DMA2_DTERR2_FL
+ 297:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_GL3_FLAG        - DMA2_FDT3_FLAG        - DMA2_HDT3_FLAG        - DMA2_DTERR3_FL
+ 298:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_GL4_FLAG        - DMA2_FDT4_FLAG        - DMA2_HDT4_FLAG        - DMA2_DTERR4_FL
+ 299:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_GL5_FLAG        - DMA2_FDT5_FLAG        - DMA2_HDT5_FLAG        - DMA2_DTERR5_FL
+ 300:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_GL6_FLAG        - DMA2_FDT6_FLAG        - DMA2_HDT6_FLAG        - DMA2_DTERR6_FL
+ 301:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_GL7_FLAG        - DMA2_FDT7_FLAG        - DMA2_HDT7_FLAG        - DMA2_DTERR7_FL
+ 302:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @retval none.
+ 303:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+ 304:bsp/libraries/drivers/src/at32f435_437_dma.c **** void dma_flag_clear(uint32_t dmax_flag)
+ 305:bsp/libraries/drivers/src/at32f435_437_dma.c **** {
+ 377              		.loc 1 305 1 is_stmt 1 view -0
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 13
+
+
+ 378              		.cfi_startproc
+ 379              		@ args = 0, pretend = 0, frame = 0
+ 380              		@ frame_needed = 0, uses_anonymous_args = 0
+ 381              		@ link register save eliminated.
+ 306:bsp/libraries/drivers/src/at32f435_437_dma.c ****   if(dmax_flag > ((uint32_t)0x10000000))
+ 382              		.loc 1 306 3 view .LVU92
+ 383              		.loc 1 306 5 is_stmt 0 view .LVU93
+ 384 0000 B0F1805F 		cmp	r0, #268435456
+ 385 0004 04D9     		bls	.L28
+ 307:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 308:bsp/libraries/drivers/src/at32f435_437_dma.c ****     DMA2->clr = (uint32_t)(dmax_flag & 0x0FFFFFFF);
+ 386              		.loc 1 308 5 is_stmt 1 view .LVU94
+ 387              		.loc 1 308 17 is_stmt 0 view .LVU95
+ 388 0006 20F07040 		bic	r0, r0, #-268435456
+ 389              	.LVL27:
+ 390              		.loc 1 308 15 view .LVU96
+ 391 000a 034B     		ldr	r3, .L30
+ 392 000c 5860     		str	r0, [r3, #4]
+ 393 000e 7047     		bx	lr
+ 394              	.LVL28:
+ 395              	.L28:
+ 309:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 310:bsp/libraries/drivers/src/at32f435_437_dma.c ****   else
+ 311:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 312:bsp/libraries/drivers/src/at32f435_437_dma.c ****     DMA1->clr = dmax_flag;
+ 396              		.loc 1 312 5 is_stmt 1 view .LVU97
+ 397              		.loc 1 312 15 is_stmt 0 view .LVU98
+ 398 0010 024B     		ldr	r3, .L30+4
+ 399 0012 5860     		str	r0, [r3, #4]
+ 313:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 314:bsp/libraries/drivers/src/at32f435_437_dma.c **** }
+ 400              		.loc 1 314 1 view .LVU99
+ 401 0014 7047     		bx	lr
+ 402              	.L31:
+ 403 0016 00BF     		.align	2
+ 404              	.L30:
+ 405 0018 00660240 		.word	1073899008
+ 406 001c 00640240 		.word	1073898496
+ 407              		.cfi_endproc
+ 408              	.LFE140:
+ 410              		.section	.text.dma_default_para_init,"ax",%progbits
+ 411              		.align	1
+ 412              		.global	dma_default_para_init
+ 413              		.syntax unified
+ 414              		.thumb
+ 415              		.thumb_func
+ 417              	dma_default_para_init:
+ 418              	.LVL29:
+ 419              	.LFB141:
+ 315:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ 316:bsp/libraries/drivers/src/at32f435_437_dma.c **** /**
+ 317:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @brief  dma init config with its default value.
+ 318:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dma_init_struct: pointer to a dma_init_type structure which will be initialized.
+ 319:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @retval none.
+ 320:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+ 321:bsp/libraries/drivers/src/at32f435_437_dma.c **** void dma_default_para_init(dma_init_type *dma_init_struct)
+ 322:bsp/libraries/drivers/src/at32f435_437_dma.c **** {
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 14
+
+
+ 420              		.loc 1 322 1 is_stmt 1 view -0
+ 421              		.cfi_startproc
+ 422              		@ args = 0, pretend = 0, frame = 0
+ 423              		@ frame_needed = 0, uses_anonymous_args = 0
+ 424              		@ link register save eliminated.
+ 323:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dma_init_struct->peripheral_base_addr = 0;
+ 425              		.loc 1 323 3 view .LVU101
+ 426              		.loc 1 323 41 is_stmt 0 view .LVU102
+ 427 0000 0023     		movs	r3, #0
+ 428 0002 0360     		str	r3, [r0]
+ 324:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dma_init_struct->memory_base_addr = 0;
+ 429              		.loc 1 324 3 is_stmt 1 view .LVU103
+ 430              		.loc 1 324 37 is_stmt 0 view .LVU104
+ 431 0004 4360     		str	r3, [r0, #4]
+ 325:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dma_init_struct->direction = DMA_DIR_PERIPHERAL_TO_MEMORY;
+ 432              		.loc 1 325 3 is_stmt 1 view .LVU105
+ 433              		.loc 1 325 30 is_stmt 0 view .LVU106
+ 434 0006 0381     		strh	r3, [r0, #8]	@ movhi
+ 326:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dma_init_struct->buffer_size = 0;
+ 435              		.loc 1 326 3 is_stmt 1 view .LVU107
+ 436              		.loc 1 326 32 is_stmt 0 view .LVU108
+ 437 0008 4381     		strh	r3, [r0, #10]	@ movhi
+ 327:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dma_init_struct->peripheral_inc_enable = FALSE;
+ 438              		.loc 1 327 3 is_stmt 1 view .LVU109
+ 439              		.loc 1 327 42 is_stmt 0 view .LVU110
+ 440 000a 0373     		strb	r3, [r0, #12]
+ 328:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dma_init_struct->memory_inc_enable = FALSE;
+ 441              		.loc 1 328 3 is_stmt 1 view .LVU111
+ 442              		.loc 1 328 38 is_stmt 0 view .LVU112
+ 443 000c 4373     		strb	r3, [r0, #13]
+ 329:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dma_init_struct->peripheral_data_width = DMA_PERIPHERAL_DATA_WIDTH_BYTE;
+ 444              		.loc 1 329 3 is_stmt 1 view .LVU113
+ 445              		.loc 1 329 42 is_stmt 0 view .LVU114
+ 446 000e 8373     		strb	r3, [r0, #14]
+ 330:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dma_init_struct->memory_data_width = DMA_MEMORY_DATA_WIDTH_BYTE;
+ 447              		.loc 1 330 3 is_stmt 1 view .LVU115
+ 448              		.loc 1 330 38 is_stmt 0 view .LVU116
+ 449 0010 C373     		strb	r3, [r0, #15]
+ 331:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dma_init_struct->loop_mode_enable = FALSE;
+ 450              		.loc 1 331 3 is_stmt 1 view .LVU117
+ 451              		.loc 1 331 37 is_stmt 0 view .LVU118
+ 452 0012 0374     		strb	r3, [r0, #16]
+ 332:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dma_init_struct->priority = DMA_PRIORITY_LOW;
+ 453              		.loc 1 332 3 is_stmt 1 view .LVU119
+ 454              		.loc 1 332 29 is_stmt 0 view .LVU120
+ 455 0014 4374     		strb	r3, [r0, #17]
+ 333:bsp/libraries/drivers/src/at32f435_437_dma.c **** }
+ 456              		.loc 1 333 1 view .LVU121
+ 457 0016 7047     		bx	lr
+ 458              		.cfi_endproc
+ 459              	.LFE141:
+ 461              		.section	.text.dma_init,"ax",%progbits
+ 462              		.align	1
+ 463              		.global	dma_init
+ 464              		.syntax unified
+ 465              		.thumb
+ 466              		.thumb_func
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 15
+
+
+ 468              	dma_init:
+ 469              	.LVL30:
+ 470              	.LFB142:
+ 334:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ 335:bsp/libraries/drivers/src/at32f435_437_dma.c **** /**
+ 336:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @brief  dma init.
+ 337:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dmax_channely:
+ 338:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         this parameter can be one of the following values:
+ 339:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL1
+ 340:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL2
+ 341:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL3
+ 342:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL4
+ 343:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL5
+ 344:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL6
+ 345:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1_CHANNEL7
+ 346:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL1
+ 347:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL2
+ 348:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL3
+ 349:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL4
+ 350:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL5
+ 351:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL6
+ 352:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2_CHANNEL7
+ 353:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dma_init_struct: pointer to a dma_init_type structure.
+ 354:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @retval none.
+ 355:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+ 356:bsp/libraries/drivers/src/at32f435_437_dma.c **** void dma_init(dma_channel_type *dmax_channely, dma_init_type *dma_init_struct)
+ 357:bsp/libraries/drivers/src/at32f435_437_dma.c **** {
+ 471              		.loc 1 357 1 is_stmt 1 view -0
+ 472              		.cfi_startproc
+ 473              		@ args = 0, pretend = 0, frame = 0
+ 474              		@ frame_needed = 0, uses_anonymous_args = 0
+ 475              		@ link register save eliminated.
+ 358:bsp/libraries/drivers/src/at32f435_437_dma.c ****   /* clear ctrl register dtd bit and m2m bit */
+ 359:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmax_channely->ctrl &= 0xbfef;
+ 476              		.loc 1 359 3 view .LVU123
+ 477              		.loc 1 359 23 is_stmt 0 view .LVU124
+ 478 0000 0368     		ldr	r3, [r0]
+ 479 0002 23F48043 		bic	r3, r3, #16384
+ 480 0006 23F01003 		bic	r3, r3, #16
+ 481 000a 1B04     		lsls	r3, r3, #16
+ 482 000c 1B0C     		lsrs	r3, r3, #16
+ 483 000e 0360     		str	r3, [r0]
+ 360:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmax_channely->ctrl |= dma_init_struct->direction;
+ 484              		.loc 1 360 3 is_stmt 1 view .LVU125
+ 485              		.loc 1 360 23 is_stmt 0 view .LVU126
+ 486 0010 0368     		ldr	r3, [r0]
+ 487              		.loc 1 360 41 view .LVU127
+ 488 0012 0A89     		ldrh	r2, [r1, #8]
+ 489              		.loc 1 360 23 view .LVU128
+ 490 0014 1343     		orrs	r3, r3, r2
+ 491 0016 0360     		str	r3, [r0]
+ 361:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ 362:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmax_channely->ctrl_bit.chpl = dma_init_struct->priority;
+ 492              		.loc 1 362 3 is_stmt 1 view .LVU129
+ 493              		.loc 1 362 49 is_stmt 0 view .LVU130
+ 494 0018 4A7C     		ldrb	r2, [r1, #17]	@ zero_extendqisi2
+ 495              		.loc 1 362 32 view .LVU131
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 16
+
+
+ 496 001a 0368     		ldr	r3, [r0]
+ 497 001c 62F30D33 		bfi	r3, r2, #12, #2
+ 498 0020 0360     		str	r3, [r0]
+ 363:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmax_channely->ctrl_bit.mwidth = dma_init_struct->memory_data_width;
+ 499              		.loc 1 363 3 is_stmt 1 view .LVU132
+ 500              		.loc 1 363 51 is_stmt 0 view .LVU133
+ 501 0022 CA7B     		ldrb	r2, [r1, #15]	@ zero_extendqisi2
+ 502              		.loc 1 363 34 view .LVU134
+ 503 0024 0368     		ldr	r3, [r0]
+ 504 0026 62F38B23 		bfi	r3, r2, #10, #2
+ 505 002a 0360     		str	r3, [r0]
+ 364:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmax_channely->ctrl_bit.pwidth = dma_init_struct->peripheral_data_width;
+ 506              		.loc 1 364 3 is_stmt 1 view .LVU135
+ 507              		.loc 1 364 51 is_stmt 0 view .LVU136
+ 508 002c 8A7B     		ldrb	r2, [r1, #14]	@ zero_extendqisi2
+ 509              		.loc 1 364 34 view .LVU137
+ 510 002e 0368     		ldr	r3, [r0]
+ 511 0030 62F30923 		bfi	r3, r2, #8, #2
+ 512 0034 0360     		str	r3, [r0]
+ 365:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmax_channely->ctrl_bit.mincm = dma_init_struct->memory_inc_enable;
+ 513              		.loc 1 365 3 is_stmt 1 view .LVU138
+ 514              		.loc 1 365 50 is_stmt 0 view .LVU139
+ 515 0036 4A7B     		ldrb	r2, [r1, #13]	@ zero_extendqisi2
+ 516              		.loc 1 365 33 view .LVU140
+ 517 0038 0368     		ldr	r3, [r0]
+ 518 003a 62F3C713 		bfi	r3, r2, #7, #1
+ 519 003e 0360     		str	r3, [r0]
+ 366:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmax_channely->ctrl_bit.pincm = dma_init_struct->peripheral_inc_enable;
+ 520              		.loc 1 366 3 is_stmt 1 view .LVU141
+ 521              		.loc 1 366 50 is_stmt 0 view .LVU142
+ 522 0040 0A7B     		ldrb	r2, [r1, #12]	@ zero_extendqisi2
+ 523              		.loc 1 366 33 view .LVU143
+ 524 0042 0368     		ldr	r3, [r0]
+ 525 0044 62F38613 		bfi	r3, r2, #6, #1
+ 526 0048 0360     		str	r3, [r0]
+ 367:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmax_channely->ctrl_bit.lm = dma_init_struct->loop_mode_enable;
+ 527              		.loc 1 367 3 is_stmt 1 view .LVU144
+ 528              		.loc 1 367 47 is_stmt 0 view .LVU145
+ 529 004a 0A7C     		ldrb	r2, [r1, #16]	@ zero_extendqisi2
+ 530              		.loc 1 367 30 view .LVU146
+ 531 004c 0368     		ldr	r3, [r0]
+ 532 004e 62F34513 		bfi	r3, r2, #5, #1
+ 533 0052 0360     		str	r3, [r0]
+ 368:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmax_channely->dtcnt_bit.cnt = dma_init_struct->buffer_size;
+ 534              		.loc 1 368 3 is_stmt 1 view .LVU147
+ 535              		.loc 1 368 49 is_stmt 0 view .LVU148
+ 536 0054 4A89     		ldrh	r2, [r1, #10]
+ 537              		.loc 1 368 32 view .LVU149
+ 538 0056 4368     		ldr	r3, [r0, #4]
+ 539 0058 62F30F03 		bfi	r3, r2, #0, #16
+ 540 005c 4360     		str	r3, [r0, #4]
+ 369:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmax_channely->paddr = dma_init_struct->peripheral_base_addr;
+ 541              		.loc 1 369 3 is_stmt 1 view .LVU150
+ 542              		.loc 1 369 41 is_stmt 0 view .LVU151
+ 543 005e 0B68     		ldr	r3, [r1]
+ 544              		.loc 1 369 24 view .LVU152
+ 545 0060 8360     		str	r3, [r0, #8]
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 17
+
+
+ 370:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmax_channely->maddr = dma_init_struct->memory_base_addr;
+ 546              		.loc 1 370 3 is_stmt 1 view .LVU153
+ 547              		.loc 1 370 41 is_stmt 0 view .LVU154
+ 548 0062 4B68     		ldr	r3, [r1, #4]
+ 549              		.loc 1 370 24 view .LVU155
+ 550 0064 C360     		str	r3, [r0, #12]
+ 371:bsp/libraries/drivers/src/at32f435_437_dma.c **** }
+ 551              		.loc 1 371 1 view .LVU156
+ 552 0066 7047     		bx	lr
+ 553              		.cfi_endproc
+ 554              	.LFE142:
+ 556              		.section	.text.dma_flexible_config,"ax",%progbits
+ 557              		.align	1
+ 558              		.global	dma_flexible_config
+ 559              		.syntax unified
+ 560              		.thumb
+ 561              		.thumb_func
+ 563              	dma_flexible_config:
+ 564              	.LVL31:
+ 565              	.LFB143:
+ 372:bsp/libraries/drivers/src/at32f435_437_dma.c **** /**
+ 373:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @brief  dmamux init.
+ 374:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dma_x: pointer to a dma_type structure, can be DMA1 or DMA2.
+ 375:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dmamux_channelx:
+ 376:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         this parameter can be one of the following values:
+ 377:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL1
+ 378:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL2
+ 379:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL3
+ 380:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL4
+ 381:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL5
+ 382:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL6
+ 383:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL7
+ 384:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL1
+ 385:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL2
+ 386:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL3
+ 387:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL4
+ 388:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL5
+ 389:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL6
+ 390:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL7
+ 391:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dmamux_req_sel:
+ 392:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         this parameter can be one of the following values:
+ 393:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_REQ_G1       - DMAMUX_DMAREQ_ID_REQ_G2       - DMAMUX_DMAREQ_ID_REQ_
+ 394:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_ADC1         - DMAMUX_DMAREQ_ID_ADC2         - DMAMUX_DMAREQ_ID_ADC3
+ 395:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_DAC2         - DMAMUX_DMAREQ_ID_TMR6_OVERFLOW- DMAMUX_DMAREQ_ID_TMR7
+ 396:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_SPI1_TX      - DMAMUX_DMAREQ_ID_SPI2_RX      - DMAMUX_DMAREQ_ID_SPI2
+ 397:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_SPI3_TX      - DMAMUX_DMAREQ_ID_SPI4_RX      - DMAMUX_DMAREQ_ID_SPI4
+ 398:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_I2S2_EXT_TX  - DMAMUX_DMAREQ_ID_I2S3_EXT_RX  - DMAMUX_DMAREQ_ID_I2S3
+ 399:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_I2C1_TX      - DMAMUX_DMAREQ_ID_I2C2_RX      - DMAMUX_DMAREQ_ID_I2C2
+ 400:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_I2C3_TX      - DMAMUX_DMAREQ_ID_USART1_RX    - DMAMUX_DMAREQ_ID_USAR
+ 401:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_USART2_TX    - DMAMUX_DMAREQ_ID_USART3_RX    - DMAMUX_DMAREQ_ID_USAR
+ 402:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_UART4_TX     - DMAMUX_DMAREQ_ID_UART5_RX     - DMAMUX_DMAREQ_ID_UART
+ 403:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_USART6_TX    - DMAMUX_DMAREQ_ID_UART7_RX     - DMAMUX_DMAREQ_ID_UART
+ 404:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_UART8_TX     - DMAMUX_DMAREQ_ID_SDIO1        - DMAMUX_DMAREQ_ID_SDIO
+ 405:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_QSPI2        - DMAMUX_DMAREQ_ID_TMR1_CH1     - DMAMUX_DMAREQ_ID_TMR1
+ 406:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_TMR1_CH4     - DMAMUX_DMAREQ_ID_TMR1_OVERFLOW- DMAMUX_DMAREQ_ID_TMR1
+ 407:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_TMR8_CH1     - DMAMUX_DMAREQ_ID_TMR8_CH2     - DMAMUX_DMAREQ_ID_TMR8
+ 408:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_TMR8_OVERFLOW- DMAMUX_DMAREQ_ID_TMR8_TRIG    - DMAMUX_DMAREQ_ID_TMR8
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 18
+
+
+ 409:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_TMR2_CH2     - DMAMUX_DMAREQ_ID_TMR2_CH3     - DMAMUX_DMAREQ_ID_TMR2
+ 410:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_TMR2_TRIG    - DMAMUX_DMAREQ_ID_TMR3_CH1     - DMAMUX_DMAREQ_ID_TMR3
+ 411:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_TMR3_CH4     - DMAMUX_DMAREQ_ID_TMR3_OVERFLOW- DMAMUX_DMAREQ_ID_TMR3
+ 412:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_TMR4_CH2     - DMAMUX_DMAREQ_ID_TMR4_CH3     - DMAMUX_DMAREQ_ID_TMR4
+ 413:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_TMR4_TRIG    - DMAMUX_DMAREQ_ID_TMR5_CH1     - DMAMUX_DMAREQ_ID_TMR5
+ 414:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_TMR5_CH4     - DMAMUX_DMAREQ_ID_TMR5_OVERFLOW- DMAMUX_DMAREQ_ID_TMR5
+ 415:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_TMR20_CH2    - DMAMUX_DMAREQ_ID_TMR20_CH3    - DMAMUX_DMAREQ_ID_TMR2
+ 416:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_TMR20_TRIG   - DMAMUX_DMAREQ_ID_TMR20_HALL   - DMAMUX_DMAREQ_ID_DVP
+ 417:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @retval none.
+ 418:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+ 419:bsp/libraries/drivers/src/at32f435_437_dma.c **** void dma_flexible_config(dma_type* dma_x, dmamux_channel_type *dmamux_channelx, dmamux_requst_id_se
+ 420:bsp/libraries/drivers/src/at32f435_437_dma.c **** {
+ 566              		.loc 1 420 1 is_stmt 1 view -0
+ 567              		.cfi_startproc
+ 568              		@ args = 0, pretend = 0, frame = 0
+ 569              		@ frame_needed = 0, uses_anonymous_args = 0
+ 570              		@ link register save eliminated.
+ 421:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dma_x->muxsel_bit.tblsel = TRUE;
+ 571              		.loc 1 421 3 view .LVU158
+ 572              		.loc 1 421 28 is_stmt 0 view .LVU159
+ 573 0000 D0F80031 		ldr	r3, [r0, #256]
+ 574 0004 43F00103 		orr	r3, r3, #1
+ 575 0008 C0F80031 		str	r3, [r0, #256]
+ 422:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmamux_channelx->muxctrl_bit.reqsel = dmamux_req_sel;
+ 576              		.loc 1 422 3 is_stmt 1 view .LVU160
+ 577              		.loc 1 422 39 is_stmt 0 view .LVU161
+ 578 000c 0B68     		ldr	r3, [r1]
+ 579 000e 62F30603 		bfi	r3, r2, #0, #7
+ 580 0012 0B60     		str	r3, [r1]
+ 423:bsp/libraries/drivers/src/at32f435_437_dma.c **** }
+ 581              		.loc 1 423 1 view .LVU162
+ 582 0014 7047     		bx	lr
+ 583              		.cfi_endproc
+ 584              	.LFE143:
+ 586              		.section	.text.dmamux_enable,"ax",%progbits
+ 587              		.align	1
+ 588              		.global	dmamux_enable
+ 589              		.syntax unified
+ 590              		.thumb
+ 591              		.thumb_func
+ 593              	dmamux_enable:
+ 594              	.LVL32:
+ 595              	.LFB144:
+ 424:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ 425:bsp/libraries/drivers/src/at32f435_437_dma.c **** /**
+ 426:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @brief  enable or disable the dmamux.
+ 427:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dma_x: pointer to a dma_type structure, can be DMA1 or DMA2.
+ 428:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  new_state (TRUE or FALSE) .
+ 429:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @retval none.
+ 430:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+ 431:bsp/libraries/drivers/src/at32f435_437_dma.c **** void dmamux_enable(dma_type *dma_x, confirm_state new_state)
+ 432:bsp/libraries/drivers/src/at32f435_437_dma.c **** {
+ 596              		.loc 1 432 1 is_stmt 1 view -0
+ 597              		.cfi_startproc
+ 598              		@ args = 0, pretend = 0, frame = 0
+ 599              		@ frame_needed = 0, uses_anonymous_args = 0
+ 600              		@ link register save eliminated.
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 19
+
+
+ 433:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dma_x->muxsel_bit.tblsel = new_state;
+ 601              		.loc 1 433 3 view .LVU164
+ 602              		.loc 1 433 28 is_stmt 0 view .LVU165
+ 603 0000 D0F80031 		ldr	r3, [r0, #256]
+ 604 0004 61F30003 		bfi	r3, r1, #0, #1
+ 605 0008 C0F80031 		str	r3, [r0, #256]
+ 434:bsp/libraries/drivers/src/at32f435_437_dma.c **** }
+ 606              		.loc 1 434 1 view .LVU166
+ 607 000c 7047     		bx	lr
+ 608              		.cfi_endproc
+ 609              	.LFE144:
+ 611              		.section	.text.dmamux_init,"ax",%progbits
+ 612              		.align	1
+ 613              		.global	dmamux_init
+ 614              		.syntax unified
+ 615              		.thumb
+ 616              		.thumb_func
+ 618              	dmamux_init:
+ 619              	.LVL33:
+ 620              	.LFB145:
+ 435:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ 436:bsp/libraries/drivers/src/at32f435_437_dma.c **** /**
+ 437:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @brief  dmamux init.
+ 438:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dmamux_channelx:
+ 439:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         this parameter can be one of the following values:
+ 440:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL1
+ 441:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL2
+ 442:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL3
+ 443:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL4
+ 444:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL5
+ 445:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL6
+ 446:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL7
+ 447:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL1
+ 448:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL2
+ 449:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL3
+ 450:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL4
+ 451:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL5
+ 452:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL6
+ 453:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL7
+ 454:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dmamux_req_sel:
+ 455:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         this parameter can be one of the following values:
+ 456:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_REQ_G1       - DMAMUX_DMAREQ_ID_REQ_G2       - DMAMUX_DMAREQ_ID_REQ_
+ 457:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_ADC1         - DMAMUX_DMAREQ_ID_ADC2         - DMAMUX_DMAREQ_ID_ADC3
+ 458:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_DAC2         - DMAMUX_DMAREQ_ID_TMR6_OVERFLOW- DMAMUX_DMAREQ_ID_TMR7
+ 459:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_SPI1_TX      - DMAMUX_DMAREQ_ID_SPI2_RX      - DMAMUX_DMAREQ_ID_SPI2
+ 460:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_SPI3_TX      - DMAMUX_DMAREQ_ID_SPI4_RX      - DMAMUX_DMAREQ_ID_SPI4
+ 461:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_I2S2_EXT_TX  - DMAMUX_DMAREQ_ID_I2S3_EXT_RX  - DMAMUX_DMAREQ_ID_I2S3
+ 462:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_I2C1_TX      - DMAMUX_DMAREQ_ID_I2C2_RX      - DMAMUX_DMAREQ_ID_I2C2
+ 463:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_I2C3_TX      - DMAMUX_DMAREQ_ID_USART1_RX    - DMAMUX_DMAREQ_ID_USAR
+ 464:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_USART2_TX    - DMAMUX_DMAREQ_ID_USART3_RX    - DMAMUX_DMAREQ_ID_USAR
+ 465:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_UART4_TX     - DMAMUX_DMAREQ_ID_UART5_RX     - DMAMUX_DMAREQ_ID_UART
+ 466:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_USART6_TX    - DMAMUX_DMAREQ_ID_UART7_RX     - DMAMUX_DMAREQ_ID_UART
+ 467:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_UART8_TX     - DMAMUX_DMAREQ_ID_SDIO1        - DMAMUX_DMAREQ_ID_SDIO
+ 468:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_QSPI2        - DMAMUX_DMAREQ_ID_TMR1_CH1     - DMAMUX_DMAREQ_ID_TMR1
+ 469:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_TMR1_CH4     - DMAMUX_DMAREQ_ID_TMR1_OVERFLOW- DMAMUX_DMAREQ_ID_TMR1
+ 470:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_TMR8_CH1     - DMAMUX_DMAREQ_ID_TMR8_CH2     - DMAMUX_DMAREQ_ID_TMR8
+ 471:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_TMR8_OVERFLOW- DMAMUX_DMAREQ_ID_TMR8_TRIG    - DMAMUX_DMAREQ_ID_TMR8
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 20
+
+
+ 472:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_TMR2_CH2     - DMAMUX_DMAREQ_ID_TMR2_CH3     - DMAMUX_DMAREQ_ID_TMR2
+ 473:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_TMR2_TRIG    - DMAMUX_DMAREQ_ID_TMR3_CH1     - DMAMUX_DMAREQ_ID_TMR3
+ 474:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_TMR3_CH4     - DMAMUX_DMAREQ_ID_TMR3_OVERFLOW- DMAMUX_DMAREQ_ID_TMR3
+ 475:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_TMR4_CH2     - DMAMUX_DMAREQ_ID_TMR4_CH3     - DMAMUX_DMAREQ_ID_TMR4
+ 476:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_TMR4_TRIG    - DMAMUX_DMAREQ_ID_TMR5_CH1     - DMAMUX_DMAREQ_ID_TMR5
+ 477:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_TMR5_CH4     - DMAMUX_DMAREQ_ID_TMR5_OVERFLOW- DMAMUX_DMAREQ_ID_TMR5
+ 478:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_TMR20_CH2    - DMAMUX_DMAREQ_ID_TMR20_CH3    - DMAMUX_DMAREQ_ID_TMR2
+ 479:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_DMAREQ_ID_TMR20_TRIG   - DMAMUX_DMAREQ_ID_TMR20_HALL   - DMAMUX_DMAREQ_ID_DVP
+ 480:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @retval none.
+ 481:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+ 482:bsp/libraries/drivers/src/at32f435_437_dma.c **** void dmamux_init(dmamux_channel_type *dmamux_channelx, dmamux_requst_id_sel_type dmamux_req_sel)
+ 483:bsp/libraries/drivers/src/at32f435_437_dma.c **** {
+ 621              		.loc 1 483 1 is_stmt 1 view -0
+ 622              		.cfi_startproc
+ 623              		@ args = 0, pretend = 0, frame = 0
+ 624              		@ frame_needed = 0, uses_anonymous_args = 0
+ 625              		@ link register save eliminated.
+ 484:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmamux_channelx->muxctrl_bit.reqsel = dmamux_req_sel;
+ 626              		.loc 1 484 3 view .LVU168
+ 627              		.loc 1 484 39 is_stmt 0 view .LVU169
+ 628 0000 0368     		ldr	r3, [r0]
+ 629 0002 61F30603 		bfi	r3, r1, #0, #7
+ 630 0006 0360     		str	r3, [r0]
+ 485:bsp/libraries/drivers/src/at32f435_437_dma.c **** }
+ 631              		.loc 1 485 1 view .LVU170
+ 632 0008 7047     		bx	lr
+ 633              		.cfi_endproc
+ 634              	.LFE145:
+ 636              		.section	.text.dmamux_sync_default_para_init,"ax",%progbits
+ 637              		.align	1
+ 638              		.global	dmamux_sync_default_para_init
+ 639              		.syntax unified
+ 640              		.thumb
+ 641              		.thumb_func
+ 643              	dmamux_sync_default_para_init:
+ 644              	.LVL34:
+ 645              	.LFB146:
+ 486:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ 487:bsp/libraries/drivers/src/at32f435_437_dma.c **** /**
+ 488:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @brief  dmamux sync init struct config with its default value.
+ 489:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dmamux_sync_init_struct: pointer to a dmamux_sync_init_type structure which will be ini
+ 490:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @retval none.
+ 491:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+ 492:bsp/libraries/drivers/src/at32f435_437_dma.c **** void dmamux_sync_default_para_init(dmamux_sync_init_type *dmamux_sync_init_struct)
+ 493:bsp/libraries/drivers/src/at32f435_437_dma.c **** {
+ 646              		.loc 1 493 1 is_stmt 1 view -0
+ 647              		.cfi_startproc
+ 648              		@ args = 0, pretend = 0, frame = 0
+ 649              		@ frame_needed = 0, uses_anonymous_args = 0
+ 650              		@ link register save eliminated.
+ 494:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmamux_sync_init_struct->sync_enable = FALSE;
+ 651              		.loc 1 494 3 view .LVU172
+ 652              		.loc 1 494 40 is_stmt 0 view .LVU173
+ 653 0000 0023     		movs	r3, #0
+ 654 0002 4373     		strb	r3, [r0, #13]
+ 495:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmamux_sync_init_struct->sync_event_enable = FALSE;
+ 655              		.loc 1 495 3 is_stmt 1 view .LVU174
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 21
+
+
+ 656              		.loc 1 495 46 is_stmt 0 view .LVU175
+ 657 0004 0373     		strb	r3, [r0, #12]
+ 496:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmamux_sync_init_struct->sync_polarity = DMAMUX_SYNC_POLARITY_DISABLE;
+ 658              		.loc 1 496 3 is_stmt 1 view .LVU176
+ 659              		.loc 1 496 42 is_stmt 0 view .LVU177
+ 660 0006 4360     		str	r3, [r0, #4]
+ 497:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmamux_sync_init_struct->sync_request_number = 0x0;
+ 661              		.loc 1 497 3 is_stmt 1 view .LVU178
+ 662              		.loc 1 497 48 is_stmt 0 view .LVU179
+ 663 0008 8360     		str	r3, [r0, #8]
+ 498:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmamux_sync_init_struct->sync_signal_sel = (dmamux_sync_id_sel_type)0;
+ 664              		.loc 1 498 3 is_stmt 1 view .LVU180
+ 665              		.loc 1 498 44 is_stmt 0 view .LVU181
+ 666 000a 0370     		strb	r3, [r0]
+ 499:bsp/libraries/drivers/src/at32f435_437_dma.c **** }
+ 667              		.loc 1 499 1 view .LVU182
+ 668 000c 7047     		bx	lr
+ 669              		.cfi_endproc
+ 670              	.LFE146:
+ 672              		.section	.text.dmamux_sync_config,"ax",%progbits
+ 673              		.align	1
+ 674              		.global	dmamux_sync_config
+ 675              		.syntax unified
+ 676              		.thumb
+ 677              		.thumb_func
+ 679              	dmamux_sync_config:
+ 680              	.LVL35:
+ 681              	.LFB147:
+ 500:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ 501:bsp/libraries/drivers/src/at32f435_437_dma.c **** /**
+ 502:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @brief  dmamux synchronization config.
+ 503:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dmamux_channelx:
+ 504:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         this parameter can be one of the following values:
+ 505:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL1
+ 506:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL2
+ 507:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL3
+ 508:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL4
+ 509:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL5
+ 510:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL6
+ 511:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL7
+ 512:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL1
+ 513:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL2
+ 514:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL3
+ 515:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL4
+ 516:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL5
+ 517:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL6
+ 518:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL7
+ 519:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dmamux_sync_init_struct: ointer to a dmamux_sync_init_type structure.
+ 520:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @retval none.
+ 521:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+ 522:bsp/libraries/drivers/src/at32f435_437_dma.c **** void dmamux_sync_config(dmamux_channel_type *dmamux_channelx, dmamux_sync_init_type *dmamux_sync_in
+ 523:bsp/libraries/drivers/src/at32f435_437_dma.c **** {
+ 682              		.loc 1 523 1 is_stmt 1 view -0
+ 683              		.cfi_startproc
+ 684              		@ args = 0, pretend = 0, frame = 0
+ 685              		@ frame_needed = 0, uses_anonymous_args = 0
+ 686              		@ link register save eliminated.
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 22
+
+
+ 524:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmamux_channelx->muxctrl_bit.syncsel = dmamux_sync_init_struct->sync_signal_sel;
+ 687              		.loc 1 524 3 view .LVU184
+ 688              		.loc 1 524 65 is_stmt 0 view .LVU185
+ 689 0000 0A78     		ldrb	r2, [r1]	@ zero_extendqisi2
+ 690              		.loc 1 524 40 view .LVU186
+ 691 0002 0368     		ldr	r3, [r0]
+ 692 0004 62F31C63 		bfi	r3, r2, #24, #5
+ 693 0008 0360     		str	r3, [r0]
+ 525:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmamux_channelx->muxctrl_bit.syncpol = dmamux_sync_init_struct->sync_polarity;
+ 694              		.loc 1 525 3 is_stmt 1 view .LVU187
+ 695              		.loc 1 525 65 is_stmt 0 view .LVU188
+ 696 000a 4A68     		ldr	r2, [r1, #4]
+ 697              		.loc 1 525 40 view .LVU189
+ 698 000c 0368     		ldr	r3, [r0]
+ 699 000e 62F35243 		bfi	r3, r2, #17, #2
+ 700 0012 0360     		str	r3, [r0]
+ 526:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmamux_channelx->muxctrl_bit.reqcnt  = dmamux_sync_init_struct->sync_request_number - 1;
+ 701              		.loc 1 526 3 is_stmt 1 view .LVU190
+ 702              		.loc 1 526 65 is_stmt 0 view .LVU191
+ 703 0014 8B68     		ldr	r3, [r1, #8]
+ 704              		.loc 1 526 87 view .LVU192
+ 705 0016 013B     		subs	r3, r3, #1
+ 706              		.loc 1 526 40 view .LVU193
+ 707 0018 0268     		ldr	r2, [r0]
+ 708 001a 63F3D742 		bfi	r2, r3, #19, #5
+ 709 001e 0260     		str	r2, [r0]
+ 527:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmamux_channelx->muxctrl_bit.evtgen  = dmamux_sync_init_struct->sync_event_enable;
+ 710              		.loc 1 527 3 is_stmt 1 view .LVU194
+ 711              		.loc 1 527 65 is_stmt 0 view .LVU195
+ 712 0020 0A7B     		ldrb	r2, [r1, #12]	@ zero_extendqisi2
+ 713              		.loc 1 527 40 view .LVU196
+ 714 0022 0368     		ldr	r3, [r0]
+ 715 0024 62F34923 		bfi	r3, r2, #9, #1
+ 716 0028 0360     		str	r3, [r0]
+ 528:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmamux_channelx->muxctrl_bit.syncen  = dmamux_sync_init_struct->sync_enable;
+ 717              		.loc 1 528 3 is_stmt 1 view .LVU197
+ 718              		.loc 1 528 65 is_stmt 0 view .LVU198
+ 719 002a 4A7B     		ldrb	r2, [r1, #13]	@ zero_extendqisi2
+ 720              		.loc 1 528 40 view .LVU199
+ 721 002c 0368     		ldr	r3, [r0]
+ 722 002e 62F31043 		bfi	r3, r2, #16, #1
+ 723 0032 0360     		str	r3, [r0]
+ 529:bsp/libraries/drivers/src/at32f435_437_dma.c **** }
+ 724              		.loc 1 529 1 view .LVU200
+ 725 0034 7047     		bx	lr
+ 726              		.cfi_endproc
+ 727              	.LFE147:
+ 729              		.section	.text.dmamux_generator_default_para_init,"ax",%progbits
+ 730              		.align	1
+ 731              		.global	dmamux_generator_default_para_init
+ 732              		.syntax unified
+ 733              		.thumb
+ 734              		.thumb_func
+ 736              	dmamux_generator_default_para_init:
+ 737              	.LVL36:
+ 738              	.LFB148:
+ 530:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 23
+
+
+ 531:bsp/libraries/drivers/src/at32f435_437_dma.c **** /**
+ 532:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @brief  dmamux request generator init struct config with its default value.
+ 533:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dmamux_gen_init_struct: pointer to a dmamux_gen_init_type structure which will be initi
+ 534:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @retval none.
+ 535:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+ 536:bsp/libraries/drivers/src/at32f435_437_dma.c **** void dmamux_generator_default_para_init(dmamux_gen_init_type *dmamux_gen_init_struct)
+ 537:bsp/libraries/drivers/src/at32f435_437_dma.c **** {
+ 739              		.loc 1 537 1 is_stmt 1 view -0
+ 740              		.cfi_startproc
+ 741              		@ args = 0, pretend = 0, frame = 0
+ 742              		@ frame_needed = 0, uses_anonymous_args = 0
+ 743              		@ link register save eliminated.
+ 538:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmamux_gen_init_struct->gen_enable         = FALSE;
+ 744              		.loc 1 538 3 view .LVU202
+ 745              		.loc 1 538 46 is_stmt 0 view .LVU203
+ 746 0000 0023     		movs	r3, #0
+ 747 0002 0372     		strb	r3, [r0, #8]
+ 539:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmamux_gen_init_struct->gen_polarity       = DMAMUX_GEN_POLARITY_DISABLE;
+ 748              		.loc 1 539 3 is_stmt 1 view .LVU204
+ 749              		.loc 1 539 46 is_stmt 0 view .LVU205
+ 750 0004 4370     		strb	r3, [r0, #1]
+ 540:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmamux_gen_init_struct->gen_request_number = 0x0;
+ 751              		.loc 1 540 3 is_stmt 1 view .LVU206
+ 752              		.loc 1 540 46 is_stmt 0 view .LVU207
+ 753 0006 4360     		str	r3, [r0, #4]
+ 541:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmamux_gen_init_struct->gen_signal_sel     = (dmamux_gen_id_sel_type)0x0;
+ 754              		.loc 1 541 3 is_stmt 1 view .LVU208
+ 755              		.loc 1 541 46 is_stmt 0 view .LVU209
+ 756 0008 0370     		strb	r3, [r0]
+ 542:bsp/libraries/drivers/src/at32f435_437_dma.c **** }
+ 757              		.loc 1 542 1 view .LVU210
+ 758 000a 7047     		bx	lr
+ 759              		.cfi_endproc
+ 760              	.LFE148:
+ 762              		.section	.text.dmamux_generator_config,"ax",%progbits
+ 763              		.align	1
+ 764              		.global	dmamux_generator_config
+ 765              		.syntax unified
+ 766              		.thumb
+ 767              		.thumb_func
+ 769              	dmamux_generator_config:
+ 770              	.LVL37:
+ 771              	.LFB149:
+ 543:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ 544:bsp/libraries/drivers/src/at32f435_437_dma.c **** /**
+ 545:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @brief  dmamux request generator init.
+ 546:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dmamux_gen_x :
+ 547:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         this parameter can be one of the following values:
+ 548:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_GENERATOR1
+ 549:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_GENERATOR2
+ 550:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_GENERATOR3
+ 551:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_GENERATOR4
+ 552:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_GENERATOR1
+ 553:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_GENERATOR2
+ 554:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_GENERATOR3
+ 555:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_GENERATOR4
+ 556:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dmamux_gen_init_struct: pointer to a dmamux_gen_init_type structure which will be initi
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 24
+
+
+ 557:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @retval none.
+ 558:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+ 559:bsp/libraries/drivers/src/at32f435_437_dma.c **** void dmamux_generator_config(dmamux_generator_type *dmamux_gen_x, dmamux_gen_init_type *dmamux_gen_
+ 560:bsp/libraries/drivers/src/at32f435_437_dma.c **** {
+ 772              		.loc 1 560 1 is_stmt 1 view -0
+ 773              		.cfi_startproc
+ 774              		@ args = 0, pretend = 0, frame = 0
+ 775              		@ frame_needed = 0, uses_anonymous_args = 0
+ 776              		@ link register save eliminated.
+ 561:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmamux_gen_x->gctrl_bit.sigsel  = dmamux_gen_init_struct->gen_signal_sel;
+ 777              		.loc 1 561 3 view .LVU212
+ 778              		.loc 1 561 59 is_stmt 0 view .LVU213
+ 779 0000 0A78     		ldrb	r2, [r1]	@ zero_extendqisi2
+ 780              		.loc 1 561 35 view .LVU214
+ 781 0002 0368     		ldr	r3, [r0]
+ 782 0004 62F30403 		bfi	r3, r2, #0, #5
+ 783 0008 0360     		str	r3, [r0]
+ 562:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmamux_gen_x->gctrl_bit.gpol    = dmamux_gen_init_struct->gen_polarity;
+ 784              		.loc 1 562 3 is_stmt 1 view .LVU215
+ 785              		.loc 1 562 59 is_stmt 0 view .LVU216
+ 786 000a 4A78     		ldrb	r2, [r1, #1]	@ zero_extendqisi2
+ 787              		.loc 1 562 35 view .LVU217
+ 788 000c 0368     		ldr	r3, [r0]
+ 789 000e 62F35243 		bfi	r3, r2, #17, #2
+ 790 0012 0360     		str	r3, [r0]
+ 563:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmamux_gen_x->gctrl_bit.greqcnt = dmamux_gen_init_struct->gen_request_number - 1;
+ 791              		.loc 1 563 3 is_stmt 1 view .LVU218
+ 792              		.loc 1 563 59 is_stmt 0 view .LVU219
+ 793 0014 4B68     		ldr	r3, [r1, #4]
+ 794              		.loc 1 563 80 view .LVU220
+ 795 0016 013B     		subs	r3, r3, #1
+ 796              		.loc 1 563 35 view .LVU221
+ 797 0018 0268     		ldr	r2, [r0]
+ 798 001a 63F3D742 		bfi	r2, r3, #19, #5
+ 799 001e 0260     		str	r2, [r0]
+ 564:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dmamux_gen_x->gctrl_bit.gen     = dmamux_gen_init_struct->gen_enable;
+ 800              		.loc 1 564 3 is_stmt 1 view .LVU222
+ 801              		.loc 1 564 59 is_stmt 0 view .LVU223
+ 802 0020 0A7A     		ldrb	r2, [r1, #8]	@ zero_extendqisi2
+ 803              		.loc 1 564 35 view .LVU224
+ 804 0022 0368     		ldr	r3, [r0]
+ 805 0024 62F31043 		bfi	r3, r2, #16, #1
+ 806 0028 0360     		str	r3, [r0]
+ 565:bsp/libraries/drivers/src/at32f435_437_dma.c **** }
+ 807              		.loc 1 565 1 view .LVU225
+ 808 002a 7047     		bx	lr
+ 809              		.cfi_endproc
+ 810              	.LFE149:
+ 812              		.section	.text.dmamux_sync_interrupt_enable,"ax",%progbits
+ 813              		.align	1
+ 814              		.global	dmamux_sync_interrupt_enable
+ 815              		.syntax unified
+ 816              		.thumb
+ 817              		.thumb_func
+ 819              	dmamux_sync_interrupt_enable:
+ 820              	.LVL38:
+ 821              	.LFB150:
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 25
+
+
+ 566:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ 567:bsp/libraries/drivers/src/at32f435_437_dma.c **** /**
+ 568:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @brief  enable or disable the dmamux sync interrupts.
+ 569:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dmamux_channelx:
+ 570:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         this parameter can be one of the following values:
+ 571:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL1
+ 572:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL2
+ 573:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL3
+ 574:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL4
+ 575:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL5
+ 576:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL6
+ 577:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_CHANNEL7
+ 578:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL1
+ 579:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL2
+ 580:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL3
+ 581:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL4
+ 582:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL5
+ 583:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL6
+ 584:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_CHANNEL7
+ 585:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  new_state (TRUE or FALSE).
+ 586:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @retval none.
+ 587:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+ 588:bsp/libraries/drivers/src/at32f435_437_dma.c **** void dmamux_sync_interrupt_enable(dmamux_channel_type *dmamux_channelx, confirm_state new_state)
+ 589:bsp/libraries/drivers/src/at32f435_437_dma.c **** {
+ 822              		.loc 1 589 1 is_stmt 1 view -0
+ 823              		.cfi_startproc
+ 824              		@ args = 0, pretend = 0, frame = 0
+ 825              		@ frame_needed = 0, uses_anonymous_args = 0
+ 826              		@ link register save eliminated.
+ 590:bsp/libraries/drivers/src/at32f435_437_dma.c ****   if(new_state != FALSE)
+ 827              		.loc 1 590 3 view .LVU227
+ 828              		.loc 1 590 5 is_stmt 0 view .LVU228
+ 829 0000 21B1     		cbz	r1, .L42
+ 591:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 592:bsp/libraries/drivers/src/at32f435_437_dma.c ****     dmamux_channelx->muxctrl_bit.syncovien = TRUE;
+ 830              		.loc 1 592 5 is_stmt 1 view .LVU229
+ 831              		.loc 1 592 44 is_stmt 0 view .LVU230
+ 832 0002 0368     		ldr	r3, [r0]
+ 833 0004 43F48073 		orr	r3, r3, #256
+ 834 0008 0360     		str	r3, [r0]
+ 835 000a 7047     		bx	lr
+ 836              	.L42:
+ 593:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 594:bsp/libraries/drivers/src/at32f435_437_dma.c ****   else
+ 595:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 596:bsp/libraries/drivers/src/at32f435_437_dma.c ****     dmamux_channelx->muxctrl_bit.syncovien = FALSE;
+ 837              		.loc 1 596 5 is_stmt 1 view .LVU231
+ 838              		.loc 1 596 44 is_stmt 0 view .LVU232
+ 839 000c 0368     		ldr	r3, [r0]
+ 840 000e 6FF30823 		bfc	r3, #8, #1
+ 841 0012 0360     		str	r3, [r0]
+ 597:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 598:bsp/libraries/drivers/src/at32f435_437_dma.c **** }
+ 842              		.loc 1 598 1 view .LVU233
+ 843 0014 7047     		bx	lr
+ 844              		.cfi_endproc
+ 845              	.LFE150:
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 26
+
+
+ 847              		.section	.text.dmamux_generator_interrupt_enable,"ax",%progbits
+ 848              		.align	1
+ 849              		.global	dmamux_generator_interrupt_enable
+ 850              		.syntax unified
+ 851              		.thumb
+ 852              		.thumb_func
+ 854              	dmamux_generator_interrupt_enable:
+ 855              	.LVL39:
+ 856              	.LFB151:
+ 599:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ 600:bsp/libraries/drivers/src/at32f435_437_dma.c **** /**
+ 601:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @brief  enable or disable the dmamux request generator interrupts.
+ 602:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dmamux_gen_x : pointer to a dmamux_generator_type structure.
+ 603:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         this parameter can be one of the following values:
+ 604:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_GENERATOR1
+ 605:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_GENERATOR2
+ 606:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_GENERATOR3
+ 607:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA1MUX_GENERATOR4
+ 608:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_GENERATOR1
+ 609:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_GENERATOR2
+ 610:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_GENERATOR3
+ 611:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMA2MUX_GENERATOR4
+ 612:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  new_state (TRUE or FALSE).
+ 613:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @retval none.
+ 614:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+ 615:bsp/libraries/drivers/src/at32f435_437_dma.c **** void dmamux_generator_interrupt_enable(dmamux_generator_type *dmamux_gen_x, confirm_state new_state
+ 616:bsp/libraries/drivers/src/at32f435_437_dma.c **** {
+ 857              		.loc 1 616 1 is_stmt 1 view -0
+ 858              		.cfi_startproc
+ 859              		@ args = 0, pretend = 0, frame = 0
+ 860              		@ frame_needed = 0, uses_anonymous_args = 0
+ 861              		@ link register save eliminated.
+ 617:bsp/libraries/drivers/src/at32f435_437_dma.c ****   if(new_state != FALSE)
+ 862              		.loc 1 617 3 view .LVU235
+ 863              		.loc 1 617 5 is_stmt 0 view .LVU236
+ 864 0000 21B1     		cbz	r1, .L45
+ 618:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 619:bsp/libraries/drivers/src/at32f435_437_dma.c ****     dmamux_gen_x->gctrl_bit.trgovien = TRUE;
+ 865              		.loc 1 619 5 is_stmt 1 view .LVU237
+ 866              		.loc 1 619 38 is_stmt 0 view .LVU238
+ 867 0002 0368     		ldr	r3, [r0]
+ 868 0004 43F48073 		orr	r3, r3, #256
+ 869 0008 0360     		str	r3, [r0]
+ 870 000a 7047     		bx	lr
+ 871              	.L45:
+ 620:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 621:bsp/libraries/drivers/src/at32f435_437_dma.c ****   else
+ 622:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 623:bsp/libraries/drivers/src/at32f435_437_dma.c ****     dmamux_gen_x->gctrl_bit.trgovien = FALSE;
+ 872              		.loc 1 623 5 is_stmt 1 view .LVU239
+ 873              		.loc 1 623 38 is_stmt 0 view .LVU240
+ 874 000c 0368     		ldr	r3, [r0]
+ 875 000e 6FF30823 		bfc	r3, #8, #1
+ 876 0012 0360     		str	r3, [r0]
+ 624:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 625:bsp/libraries/drivers/src/at32f435_437_dma.c **** }
+ 877              		.loc 1 625 1 view .LVU241
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 27
+
+
+ 878 0014 7047     		bx	lr
+ 879              		.cfi_endproc
+ 880              	.LFE151:
+ 882              		.section	.text.dmamux_sync_flag_get,"ax",%progbits
+ 883              		.align	1
+ 884              		.global	dmamux_sync_flag_get
+ 885              		.syntax unified
+ 886              		.thumb
+ 887              		.thumb_func
+ 889              	dmamux_sync_flag_get:
+ 890              	.LVL40:
+ 891              	.LFB152:
+ 626:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ 627:bsp/libraries/drivers/src/at32f435_437_dma.c **** /**
+ 628:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @brief  dmamux sync flag get.
+ 629:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dma_x : pointer to a dma_type structure, can be DMA1 or DMA2.
+ 630:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  flag
+ 631:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         this parameter can be any combination of the following values:
+ 632:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_SYNC_OV1_FLAG
+ 633:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_SYNC_OV2_FLAG
+ 634:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_SYNC_OV3_FLAG
+ 635:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_SYNC_OV4_FLAG
+ 636:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_SYNC_OV5_FLAG
+ 637:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_SYNC_OV6_FLAG
+ 638:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_SYNC_OV7_FLAG
+ 639:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @retval state of dmamux sync flag.
+ 640:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+ 641:bsp/libraries/drivers/src/at32f435_437_dma.c **** flag_status dmamux_sync_flag_get(dma_type *dma_x, uint32_t flag)
+ 642:bsp/libraries/drivers/src/at32f435_437_dma.c **** {
+ 892              		.loc 1 642 1 is_stmt 1 view -0
+ 893              		.cfi_startproc
+ 894              		@ args = 0, pretend = 0, frame = 0
+ 895              		@ frame_needed = 0, uses_anonymous_args = 0
+ 896              		@ link register save eliminated.
+ 643:bsp/libraries/drivers/src/at32f435_437_dma.c ****   if((dma_x->muxsyncsts & flag) != RESET)
+ 897              		.loc 1 643 3 view .LVU243
+ 898              		.loc 1 643 12 is_stmt 0 view .LVU244
+ 899 0000 D0F83031 		ldr	r3, [r0, #304]
+ 900              		.loc 1 643 5 view .LVU245
+ 901 0004 0B42     		tst	r3, r1
+ 902 0006 01D0     		beq	.L49
+ 644:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 645:bsp/libraries/drivers/src/at32f435_437_dma.c ****     return SET;
+ 903              		.loc 1 645 12 view .LVU246
+ 904 0008 0120     		movs	r0, #1
+ 905              	.LVL41:
+ 906              		.loc 1 645 12 view .LVU247
+ 907 000a 7047     		bx	lr
+ 908              	.LVL42:
+ 909              	.L49:
+ 646:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 647:bsp/libraries/drivers/src/at32f435_437_dma.c ****   else
+ 648:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 649:bsp/libraries/drivers/src/at32f435_437_dma.c ****     return RESET;
+ 910              		.loc 1 649 12 view .LVU248
+ 911 000c 0020     		movs	r0, #0
+ 912              	.LVL43:
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 28
+
+
+ 650:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 651:bsp/libraries/drivers/src/at32f435_437_dma.c **** }
+ 913              		.loc 1 651 1 view .LVU249
+ 914 000e 7047     		bx	lr
+ 915              		.cfi_endproc
+ 916              	.LFE152:
+ 918              		.section	.text.dmamux_sync_interrupt_flag_get,"ax",%progbits
+ 919              		.align	1
+ 920              		.global	dmamux_sync_interrupt_flag_get
+ 921              		.syntax unified
+ 922              		.thumb
+ 923              		.thumb_func
+ 925              	dmamux_sync_interrupt_flag_get:
+ 926              	.LVL44:
+ 927              	.LFB153:
+ 652:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ 653:bsp/libraries/drivers/src/at32f435_437_dma.c **** /**
+ 654:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @brief  dmamux sync interrupt flag get.
+ 655:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dma_x : pointer to a dma_type structure, can be DMA1 or DMA2.
+ 656:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  flag
+ 657:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         this parameter can be any combination of the following values:
+ 658:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_SYNC_OV1_FLAG
+ 659:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_SYNC_OV2_FLAG
+ 660:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_SYNC_OV3_FLAG
+ 661:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_SYNC_OV4_FLAG
+ 662:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_SYNC_OV5_FLAG
+ 663:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_SYNC_OV6_FLAG
+ 664:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_SYNC_OV7_FLAG
+ 665:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @retval state of dmamux sync flag.
+ 666:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+ 667:bsp/libraries/drivers/src/at32f435_437_dma.c **** flag_status dmamux_sync_interrupt_flag_get(dma_type *dma_x, uint32_t flag)
+ 668:bsp/libraries/drivers/src/at32f435_437_dma.c **** {
+ 928              		.loc 1 668 1 is_stmt 1 view -0
+ 929              		.cfi_startproc
+ 930              		@ args = 0, pretend = 0, frame = 0
+ 931              		@ frame_needed = 0, uses_anonymous_args = 0
+ 932              		@ link register save eliminated.
+ 669:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ 670:bsp/libraries/drivers/src/at32f435_437_dma.c ****   flag_status bitstatus = RESET;
+ 933              		.loc 1 670 3 view .LVU251
+ 671:bsp/libraries/drivers/src/at32f435_437_dma.c ****   uint32_t sync_int_temp = flag;
+ 934              		.loc 1 671 3 view .LVU252
+ 672:bsp/libraries/drivers/src/at32f435_437_dma.c ****   uint32_t index = 0;
+ 935              		.loc 1 672 3 view .LVU253
+ 673:bsp/libraries/drivers/src/at32f435_437_dma.c ****   uint32_t tmpreg = 0, enablestatus = 0;
+ 936              		.loc 1 673 3 view .LVU254
+ 674:bsp/libraries/drivers/src/at32f435_437_dma.c ****   uint32_t regoffset = 0x4;
+ 937              		.loc 1 674 3 view .LVU255
+ 675:bsp/libraries/drivers/src/at32f435_437_dma.c ****   
+ 676:bsp/libraries/drivers/src/at32f435_437_dma.c ****   while((sync_int_temp & 0x00000001) == RESET)
+ 938              		.loc 1 676 3 view .LVU256
+ 671:bsp/libraries/drivers/src/at32f435_437_dma.c ****   uint32_t index = 0;
+ 939              		.loc 1 671 12 is_stmt 0 view .LVU257
+ 940 0000 0B46     		mov	r3, r1
+ 672:bsp/libraries/drivers/src/at32f435_437_dma.c ****   uint32_t tmpreg = 0, enablestatus = 0;
+ 941              		.loc 1 672 12 view .LVU258
+ 942 0002 0022     		movs	r2, #0
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 29
+
+
+ 943              		.loc 1 676 8 view .LVU259
+ 944 0004 01E0     		b	.L51
+ 945              	.LVL45:
+ 946              	.L52:
+ 677:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 678:bsp/libraries/drivers/src/at32f435_437_dma.c ****     sync_int_temp = sync_int_temp >> 1;
+ 947              		.loc 1 678 5 is_stmt 1 view .LVU260
+ 948              		.loc 1 678 19 is_stmt 0 view .LVU261
+ 949 0006 5B08     		lsrs	r3, r3, #1
+ 950              	.LVL46:
+ 679:bsp/libraries/drivers/src/at32f435_437_dma.c ****     index++;
+ 951              		.loc 1 679 5 is_stmt 1 view .LVU262
+ 952              		.loc 1 679 10 is_stmt 0 view .LVU263
+ 953 0008 0132     		adds	r2, r2, #1
+ 954              	.LVL47:
+ 955              	.L51:
+ 676:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 956              		.loc 1 676 8 is_stmt 1 view .LVU264
+ 957 000a 13F0010F 		tst	r3, #1
+ 958 000e FAD0     		beq	.L52
+ 680:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 681:bsp/libraries/drivers/src/at32f435_437_dma.c ****   
+ 682:bsp/libraries/drivers/src/at32f435_437_dma.c ****   if(dma_x == DMA1)
+ 959              		.loc 1 682 3 view .LVU265
+ 960              		.loc 1 682 5 is_stmt 0 view .LVU266
+ 961 0010 144B     		ldr	r3, .L64
+ 962              	.LVL48:
+ 963              		.loc 1 682 5 view .LVU267
+ 964 0012 9842     		cmp	r0, r3
+ 965 0014 11D0     		beq	.L62
+ 683:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 684:bsp/libraries/drivers/src/at32f435_437_dma.c ****     tmpreg = *(uint32_t*)(DMA1MUX_BASE + (index * regoffset));
+ 685:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 686:bsp/libraries/drivers/src/at32f435_437_dma.c ****   else
+ 687:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 688:bsp/libraries/drivers/src/at32f435_437_dma.c ****     tmpreg = *(uint32_t*)(DMA2MUX_BASE + (index * regoffset));
+ 966              		.loc 1 688 5 is_stmt 1 view .LVU268
+ 967              		.loc 1 688 40 is_stmt 0 view .LVU269
+ 968 0016 144B     		ldr	r3, .L64+4
+ 969              		.loc 1 688 12 view .LVU270
+ 970 0018 53F82230 		ldr	r3, [r3, r2, lsl #2]
+ 971              	.LVL49:
+ 972              	.L54:
+ 689:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 690:bsp/libraries/drivers/src/at32f435_437_dma.c ****   
+ 691:bsp/libraries/drivers/src/at32f435_437_dma.c ****   if((tmpreg & (uint32_t)0x00000100) != (uint32_t)RESET)
+ 973              		.loc 1 691 3 is_stmt 1 view .LVU271
+ 974              		.loc 1 691 5 is_stmt 0 view .LVU272
+ 975 001c 13F48073 		ands	r3, r3, #256
+ 976              	.LVL50:
+ 977              		.loc 1 691 5 view .LVU273
+ 978 0020 00D0     		beq	.L55
+ 692:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 693:bsp/libraries/drivers/src/at32f435_437_dma.c ****     enablestatus = SET;
+ 979              		.loc 1 693 18 view .LVU274
+ 980 0022 0123     		movs	r3, #1
+ 981              	.L55:
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 30
+
+
+ 982              	.LVL51:
+ 694:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 695:bsp/libraries/drivers/src/at32f435_437_dma.c ****   else
+ 696:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 697:bsp/libraries/drivers/src/at32f435_437_dma.c ****     enablestatus = RESET;
+ 698:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 699:bsp/libraries/drivers/src/at32f435_437_dma.c ****   
+ 700:bsp/libraries/drivers/src/at32f435_437_dma.c ****   if(dma_x == DMA1)
+ 983              		.loc 1 700 3 is_stmt 1 view .LVU275
+ 984              		.loc 1 700 5 is_stmt 0 view .LVU276
+ 985 0024 0F4A     		ldr	r2, .L64
+ 986              	.LVL52:
+ 987              		.loc 1 700 5 view .LVU277
+ 988 0026 9042     		cmp	r0, r2
+ 989 0028 0CD0     		beq	.L63
+ 701:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 702:bsp/libraries/drivers/src/at32f435_437_dma.c ****     if(((DMA1->muxsyncsts & flag) != (uint32_t)RESET) && (enablestatus != RESET))
+ 703:bsp/libraries/drivers/src/at32f435_437_dma.c ****     {
+ 704:bsp/libraries/drivers/src/at32f435_437_dma.c ****       bitstatus = SET;
+ 705:bsp/libraries/drivers/src/at32f435_437_dma.c ****     }
+ 706:bsp/libraries/drivers/src/at32f435_437_dma.c ****     else
+ 707:bsp/libraries/drivers/src/at32f435_437_dma.c ****     {
+ 708:bsp/libraries/drivers/src/at32f435_437_dma.c ****       bitstatus = RESET;
+ 709:bsp/libraries/drivers/src/at32f435_437_dma.c ****     }
+ 710:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 711:bsp/libraries/drivers/src/at32f435_437_dma.c ****   else
+ 712:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 713:bsp/libraries/drivers/src/at32f435_437_dma.c ****     if(((DMA2->muxsyncsts & flag) != (uint32_t)RESET) && (enablestatus != RESET))
+ 990              		.loc 1 713 5 is_stmt 1 view .LVU278
+ 991              		.loc 1 713 14 is_stmt 0 view .LVU279
+ 992 002a 104A     		ldr	r2, .L64+8
+ 993 002c D2F83021 		ldr	r2, [r2, #304]
+ 994              		.loc 1 713 7 view .LVU280
+ 995 0030 0A42     		tst	r2, r1
+ 996 0032 12D0     		beq	.L60
+ 997              		.loc 1 713 55 discriminator 1 view .LVU281
+ 998 0034 9BB9     		cbnz	r3, .L61
+ 714:bsp/libraries/drivers/src/at32f435_437_dma.c ****     {
+ 715:bsp/libraries/drivers/src/at32f435_437_dma.c ****       bitstatus = SET;
+ 716:bsp/libraries/drivers/src/at32f435_437_dma.c ****     }
+ 717:bsp/libraries/drivers/src/at32f435_437_dma.c ****     else
+ 718:bsp/libraries/drivers/src/at32f435_437_dma.c ****     {
+ 719:bsp/libraries/drivers/src/at32f435_437_dma.c ****       bitstatus = RESET;
+ 999              		.loc 1 719 17 view .LVU282
+ 1000 0036 0020     		movs	r0, #0
+ 1001              	.LVL53:
+ 1002              		.loc 1 719 17 view .LVU283
+ 1003 0038 7047     		bx	lr
+ 1004              	.LVL54:
+ 1005              	.L62:
+ 684:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 1006              		.loc 1 684 5 is_stmt 1 view .LVU284
+ 684:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 1007              		.loc 1 684 40 is_stmt 0 view .LVU285
+ 1008 003a 03F58273 		add	r3, r3, #260
+ 684:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 1009              		.loc 1 684 12 view .LVU286
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 31
+
+
+ 1010 003e 53F82230 		ldr	r3, [r3, r2, lsl #2]
+ 1011              	.LVL55:
+ 684:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 1012              		.loc 1 684 12 view .LVU287
+ 1013 0042 EBE7     		b	.L54
+ 1014              	.LVL56:
+ 1015              	.L63:
+ 702:bsp/libraries/drivers/src/at32f435_437_dma.c ****     {
+ 1016              		.loc 1 702 5 is_stmt 1 view .LVU288
+ 702:bsp/libraries/drivers/src/at32f435_437_dma.c ****     {
+ 1017              		.loc 1 702 14 is_stmt 0 view .LVU289
+ 1018 0044 D2F83021 		ldr	r2, [r2, #304]
+ 702:bsp/libraries/drivers/src/at32f435_437_dma.c ****     {
+ 1019              		.loc 1 702 7 view .LVU290
+ 1020 0048 0A42     		tst	r2, r1
+ 1021 004a 02D0     		beq	.L58
+ 702:bsp/libraries/drivers/src/at32f435_437_dma.c ****     {
+ 1022              		.loc 1 702 55 discriminator 1 view .LVU291
+ 1023 004c 1BB9     		cbnz	r3, .L59
+ 708:bsp/libraries/drivers/src/at32f435_437_dma.c ****     }
+ 1024              		.loc 1 708 17 view .LVU292
+ 1025 004e 0020     		movs	r0, #0
+ 1026              	.LVL57:
+ 708:bsp/libraries/drivers/src/at32f435_437_dma.c ****     }
+ 1027              		.loc 1 708 17 view .LVU293
+ 1028 0050 7047     		bx	lr
+ 1029              	.LVL58:
+ 1030              	.L58:
+ 708:bsp/libraries/drivers/src/at32f435_437_dma.c ****     }
+ 1031              		.loc 1 708 17 view .LVU294
+ 1032 0052 0020     		movs	r0, #0
+ 1033              	.LVL59:
+ 708:bsp/libraries/drivers/src/at32f435_437_dma.c ****     }
+ 1034              		.loc 1 708 17 view .LVU295
+ 1035 0054 7047     		bx	lr
+ 1036              	.LVL60:
+ 1037              	.L59:
+ 704:bsp/libraries/drivers/src/at32f435_437_dma.c ****     }
+ 1038              		.loc 1 704 17 view .LVU296
+ 1039 0056 0120     		movs	r0, #1
+ 1040              	.LVL61:
+ 704:bsp/libraries/drivers/src/at32f435_437_dma.c ****     }
+ 1041              		.loc 1 704 17 view .LVU297
+ 1042 0058 7047     		bx	lr
+ 1043              	.LVL62:
+ 1044              	.L60:
+ 1045              		.loc 1 719 17 view .LVU298
+ 1046 005a 0020     		movs	r0, #0
+ 1047              	.LVL63:
+ 1048              		.loc 1 719 17 view .LVU299
+ 1049 005c 7047     		bx	lr
+ 1050              	.LVL64:
+ 1051              	.L61:
+ 715:bsp/libraries/drivers/src/at32f435_437_dma.c ****     }
+ 1052              		.loc 1 715 17 view .LVU300
+ 1053 005e 0120     		movs	r0, #1
+ 1054              	.LVL65:
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 32
+
+
+ 720:bsp/libraries/drivers/src/at32f435_437_dma.c ****     }
+ 721:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 722:bsp/libraries/drivers/src/at32f435_437_dma.c ****   return bitstatus;   
+ 1055              		.loc 1 722 3 is_stmt 1 view .LVU301
+ 723:bsp/libraries/drivers/src/at32f435_437_dma.c **** }
+ 1056              		.loc 1 723 1 is_stmt 0 view .LVU302
+ 1057 0060 7047     		bx	lr
+ 1058              	.L65:
+ 1059 0062 00BF     		.align	2
+ 1060              	.L64:
+ 1061 0064 00640240 		.word	1073898496
+ 1062 0068 04670240 		.word	1073899268
+ 1063 006c 00660240 		.word	1073899008
+ 1064              		.cfi_endproc
+ 1065              	.LFE153:
+ 1067              		.section	.text.dmamux_sync_flag_clear,"ax",%progbits
+ 1068              		.align	1
+ 1069              		.global	dmamux_sync_flag_clear
+ 1070              		.syntax unified
+ 1071              		.thumb
+ 1072              		.thumb_func
+ 1074              	dmamux_sync_flag_clear:
+ 1075              	.LVL66:
+ 1076              	.LFB154:
+ 724:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ 725:bsp/libraries/drivers/src/at32f435_437_dma.c **** /**
+ 726:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @brief  dmamux sync flag clear.
+ 727:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dma_x : pointer to a dma_type structure, can be DMA1 or DMA2.
+ 728:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  flag
+ 729:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         this parameter can be any combination of the following values:
+ 730:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_SYNC_OV1_FLAG
+ 731:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_SYNC_OV2_FLAG
+ 732:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_SYNC_OV3_FLAG
+ 733:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_SYNC_OV4_FLAG
+ 734:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_SYNC_OV5_FLAG
+ 735:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_SYNC_OV6_FLAG
+ 736:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_SYNC_OV7_FLAG
+ 737:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @retval none.
+ 738:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+ 739:bsp/libraries/drivers/src/at32f435_437_dma.c **** void dmamux_sync_flag_clear(dma_type *dma_x, uint32_t flag)
+ 740:bsp/libraries/drivers/src/at32f435_437_dma.c **** {
+ 1077              		.loc 1 740 1 is_stmt 1 view -0
+ 1078              		.cfi_startproc
+ 1079              		@ args = 0, pretend = 0, frame = 0
+ 1080              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1081              		@ link register save eliminated.
+ 741:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dma_x->muxsyncclr = flag;
+ 1082              		.loc 1 741 3 view .LVU304
+ 1083              		.loc 1 741 21 is_stmt 0 view .LVU305
+ 1084 0000 C0F83411 		str	r1, [r0, #308]
+ 742:bsp/libraries/drivers/src/at32f435_437_dma.c **** }
+ 1085              		.loc 1 742 1 view .LVU306
+ 1086 0004 7047     		bx	lr
+ 1087              		.cfi_endproc
+ 1088              	.LFE154:
+ 1090              		.section	.text.dmamux_generator_flag_get,"ax",%progbits
+ 1091              		.align	1
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 33
+
+
+ 1092              		.global	dmamux_generator_flag_get
+ 1093              		.syntax unified
+ 1094              		.thumb
+ 1095              		.thumb_func
+ 1097              	dmamux_generator_flag_get:
+ 1098              	.LVL67:
+ 1099              	.LFB155:
+ 743:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ 744:bsp/libraries/drivers/src/at32f435_437_dma.c **** /**
+ 745:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @brief  dmamux request generator flag get.
+ 746:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dma_x : pointer to a dma_type structure, can be DMA1 or DMA2.
+ 747:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  flag
+ 748:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         this parameter can be any combination of the following values:
+ 749:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_GEN_TRIG_OV1_FLAG
+ 750:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_GEN_TRIG_OV2_FLAG
+ 751:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_GEN_TRIG_OV3_FLAG
+ 752:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_GEN_TRIG_OV4_FLAG
+ 753:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @retval state of dmamux sync flag.
+ 754:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+ 755:bsp/libraries/drivers/src/at32f435_437_dma.c **** flag_status dmamux_generator_flag_get(dma_type *dma_x, uint32_t flag)
+ 756:bsp/libraries/drivers/src/at32f435_437_dma.c **** {
+ 1100              		.loc 1 756 1 is_stmt 1 view -0
+ 1101              		.cfi_startproc
+ 1102              		@ args = 0, pretend = 0, frame = 0
+ 1103              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1104              		@ link register save eliminated.
+ 757:bsp/libraries/drivers/src/at32f435_437_dma.c ****   if((dma_x->muxgsts & flag) != RESET)
+ 1105              		.loc 1 757 3 view .LVU308
+ 1106              		.loc 1 757 12 is_stmt 0 view .LVU309
+ 1107 0000 D0F83831 		ldr	r3, [r0, #312]
+ 1108              		.loc 1 757 5 view .LVU310
+ 1109 0004 0B42     		tst	r3, r1
+ 1110 0006 01D0     		beq	.L69
+ 758:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 759:bsp/libraries/drivers/src/at32f435_437_dma.c ****     return SET;
+ 1111              		.loc 1 759 12 view .LVU311
+ 1112 0008 0120     		movs	r0, #1
+ 1113              	.LVL68:
+ 1114              		.loc 1 759 12 view .LVU312
+ 1115 000a 7047     		bx	lr
+ 1116              	.LVL69:
+ 1117              	.L69:
+ 760:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 761:bsp/libraries/drivers/src/at32f435_437_dma.c ****   else
+ 762:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 763:bsp/libraries/drivers/src/at32f435_437_dma.c ****     return RESET;
+ 1118              		.loc 1 763 12 view .LVU313
+ 1119 000c 0020     		movs	r0, #0
+ 1120              	.LVL70:
+ 764:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 765:bsp/libraries/drivers/src/at32f435_437_dma.c **** }
+ 1121              		.loc 1 765 1 view .LVU314
+ 1122 000e 7047     		bx	lr
+ 1123              		.cfi_endproc
+ 1124              	.LFE155:
+ 1126              		.section	.text.dmamux_generator_interrupt_flag_get,"ax",%progbits
+ 1127              		.align	1
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 34
+
+
+ 1128              		.global	dmamux_generator_interrupt_flag_get
+ 1129              		.syntax unified
+ 1130              		.thumb
+ 1131              		.thumb_func
+ 1133              	dmamux_generator_interrupt_flag_get:
+ 1134              	.LVL71:
+ 1135              	.LFB156:
+ 766:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ 767:bsp/libraries/drivers/src/at32f435_437_dma.c **** /**
+ 768:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @brief  dmamux request generator interrupt flag get.
+ 769:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dma_x : pointer to a dma_type structure, can be DMA1 or DMA2.
+ 770:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  flag
+ 771:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         this parameter can be any combination of the following values:
+ 772:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_GEN_TRIG_OV1_FLAG
+ 773:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_GEN_TRIG_OV2_FLAG
+ 774:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_GEN_TRIG_OV3_FLAG
+ 775:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_GEN_TRIG_OV4_FLAG
+ 776:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @retval state of dmamux sync flag.
+ 777:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+ 778:bsp/libraries/drivers/src/at32f435_437_dma.c **** flag_status dmamux_generator_interrupt_flag_get(dma_type *dma_x, uint32_t flag)
+ 779:bsp/libraries/drivers/src/at32f435_437_dma.c **** {
+ 1136              		.loc 1 779 1 is_stmt 1 view -0
+ 1137              		.cfi_startproc
+ 1138              		@ args = 0, pretend = 0, frame = 0
+ 1139              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1140              		@ link register save eliminated.
+ 780:bsp/libraries/drivers/src/at32f435_437_dma.c ****   flag_status bitstatus = RESET;
+ 1141              		.loc 1 780 3 view .LVU316
+ 781:bsp/libraries/drivers/src/at32f435_437_dma.c ****   uint32_t sync_int_temp = flag;
+ 1142              		.loc 1 781 3 view .LVU317
+ 782:bsp/libraries/drivers/src/at32f435_437_dma.c ****   uint32_t index = 0;
+ 1143              		.loc 1 782 3 view .LVU318
+ 783:bsp/libraries/drivers/src/at32f435_437_dma.c ****   uint32_t tmpreg = 0, enablestatus = 0;
+ 1144              		.loc 1 783 3 view .LVU319
+ 784:bsp/libraries/drivers/src/at32f435_437_dma.c ****   uint32_t regoffset = 0x4;
+ 1145              		.loc 1 784 3 view .LVU320
+ 785:bsp/libraries/drivers/src/at32f435_437_dma.c ****   
+ 786:bsp/libraries/drivers/src/at32f435_437_dma.c ****   while((sync_int_temp & 0x00000001) == RESET)
+ 1146              		.loc 1 786 3 view .LVU321
+ 781:bsp/libraries/drivers/src/at32f435_437_dma.c ****   uint32_t index = 0;
+ 1147              		.loc 1 781 12 is_stmt 0 view .LVU322
+ 1148 0000 0B46     		mov	r3, r1
+ 782:bsp/libraries/drivers/src/at32f435_437_dma.c ****   uint32_t tmpreg = 0, enablestatus = 0;
+ 1149              		.loc 1 782 12 view .LVU323
+ 1150 0002 0022     		movs	r2, #0
+ 1151              		.loc 1 786 8 view .LVU324
+ 1152 0004 01E0     		b	.L71
+ 1153              	.LVL72:
+ 1154              	.L72:
+ 787:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 788:bsp/libraries/drivers/src/at32f435_437_dma.c ****     sync_int_temp = sync_int_temp >> 1;
+ 1155              		.loc 1 788 5 is_stmt 1 view .LVU325
+ 1156              		.loc 1 788 19 is_stmt 0 view .LVU326
+ 1157 0006 5B08     		lsrs	r3, r3, #1
+ 1158              	.LVL73:
+ 789:bsp/libraries/drivers/src/at32f435_437_dma.c ****     index++;
+ 1159              		.loc 1 789 5 is_stmt 1 view .LVU327
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 35
+
+
+ 1160              		.loc 1 789 10 is_stmt 0 view .LVU328
+ 1161 0008 0132     		adds	r2, r2, #1
+ 1162              	.LVL74:
+ 1163              	.L71:
+ 786:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 1164              		.loc 1 786 8 is_stmt 1 view .LVU329
+ 1165 000a 13F0010F 		tst	r3, #1
+ 1166 000e FAD0     		beq	.L72
+ 790:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 791:bsp/libraries/drivers/src/at32f435_437_dma.c ****   
+ 792:bsp/libraries/drivers/src/at32f435_437_dma.c ****   if(dma_x == DMA1)
+ 1167              		.loc 1 792 3 view .LVU330
+ 1168              		.loc 1 792 5 is_stmt 0 view .LVU331
+ 1169 0010 144B     		ldr	r3, .L84
+ 1170              	.LVL75:
+ 1171              		.loc 1 792 5 view .LVU332
+ 1172 0012 9842     		cmp	r0, r3
+ 1173 0014 11D0     		beq	.L82
+ 793:bsp/libraries/drivers/src/at32f435_437_dma.c ****     tmpreg = *(uint32_t*)(DMA1MUX_GENERATOR1_BASE + (index * regoffset));
+ 794:bsp/libraries/drivers/src/at32f435_437_dma.c ****   else
+ 795:bsp/libraries/drivers/src/at32f435_437_dma.c ****     tmpreg = *(uint32_t*)(DMA2MUX_GENERATOR1_BASE + (index * regoffset));
+ 1174              		.loc 1 795 5 is_stmt 1 view .LVU333
+ 1175              		.loc 1 795 51 is_stmt 0 view .LVU334
+ 1176 0016 144B     		ldr	r3, .L84+4
+ 1177              		.loc 1 795 12 view .LVU335
+ 1178 0018 53F82230 		ldr	r3, [r3, r2, lsl #2]
+ 1179              	.LVL76:
+ 1180              	.L74:
+ 796:bsp/libraries/drivers/src/at32f435_437_dma.c ****   
+ 797:bsp/libraries/drivers/src/at32f435_437_dma.c ****   if((tmpreg & (uint32_t)0x00000100) != (uint32_t)RESET)
+ 1181              		.loc 1 797 3 is_stmt 1 view .LVU336
+ 1182              		.loc 1 797 5 is_stmt 0 view .LVU337
+ 1183 001c 13F48073 		ands	r3, r3, #256
+ 1184              	.LVL77:
+ 1185              		.loc 1 797 5 view .LVU338
+ 1186 0020 00D0     		beq	.L75
+ 798:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 799:bsp/libraries/drivers/src/at32f435_437_dma.c ****     enablestatus = SET;
+ 1187              		.loc 1 799 18 view .LVU339
+ 1188 0022 0123     		movs	r3, #1
+ 1189              	.L75:
+ 1190              	.LVL78:
+ 800:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 801:bsp/libraries/drivers/src/at32f435_437_dma.c ****   else
+ 802:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 803:bsp/libraries/drivers/src/at32f435_437_dma.c ****     enablestatus = RESET;
+ 804:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 805:bsp/libraries/drivers/src/at32f435_437_dma.c ****   if(dma_x == DMA1)
+ 1191              		.loc 1 805 3 is_stmt 1 view .LVU340
+ 1192              		.loc 1 805 5 is_stmt 0 view .LVU341
+ 1193 0024 0F4A     		ldr	r2, .L84
+ 1194              	.LVL79:
+ 1195              		.loc 1 805 5 view .LVU342
+ 1196 0026 9042     		cmp	r0, r2
+ 1197 0028 0CD0     		beq	.L83
+ 806:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 807:bsp/libraries/drivers/src/at32f435_437_dma.c ****     if(((DMA1->muxgsts & flag) != (uint32_t)RESET) && (enablestatus != RESET))
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 36
+
+
+ 808:bsp/libraries/drivers/src/at32f435_437_dma.c ****     {
+ 809:bsp/libraries/drivers/src/at32f435_437_dma.c ****       bitstatus = SET;
+ 810:bsp/libraries/drivers/src/at32f435_437_dma.c ****     }
+ 811:bsp/libraries/drivers/src/at32f435_437_dma.c ****     else
+ 812:bsp/libraries/drivers/src/at32f435_437_dma.c ****     {
+ 813:bsp/libraries/drivers/src/at32f435_437_dma.c ****       bitstatus = RESET;
+ 814:bsp/libraries/drivers/src/at32f435_437_dma.c ****     }
+ 815:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 816:bsp/libraries/drivers/src/at32f435_437_dma.c ****   else
+ 817:bsp/libraries/drivers/src/at32f435_437_dma.c ****   {
+ 818:bsp/libraries/drivers/src/at32f435_437_dma.c ****     if(((DMA2->muxgsts & flag) != (uint32_t)RESET) && (enablestatus != RESET))
+ 1198              		.loc 1 818 5 is_stmt 1 view .LVU343
+ 1199              		.loc 1 818 14 is_stmt 0 view .LVU344
+ 1200 002a 104A     		ldr	r2, .L84+8
+ 1201 002c D2F83821 		ldr	r2, [r2, #312]
+ 1202              		.loc 1 818 7 view .LVU345
+ 1203 0030 0A42     		tst	r2, r1
+ 1204 0032 12D0     		beq	.L80
+ 1205              		.loc 1 818 52 discriminator 1 view .LVU346
+ 1206 0034 9BB9     		cbnz	r3, .L81
+ 819:bsp/libraries/drivers/src/at32f435_437_dma.c ****     {
+ 820:bsp/libraries/drivers/src/at32f435_437_dma.c ****       bitstatus = SET;
+ 821:bsp/libraries/drivers/src/at32f435_437_dma.c ****     }
+ 822:bsp/libraries/drivers/src/at32f435_437_dma.c ****     else
+ 823:bsp/libraries/drivers/src/at32f435_437_dma.c ****     {
+ 824:bsp/libraries/drivers/src/at32f435_437_dma.c ****       bitstatus = RESET;
+ 1207              		.loc 1 824 17 view .LVU347
+ 1208 0036 0020     		movs	r0, #0
+ 1209              	.LVL80:
+ 1210              		.loc 1 824 17 view .LVU348
+ 1211 0038 7047     		bx	lr
+ 1212              	.LVL81:
+ 1213              	.L82:
+ 793:bsp/libraries/drivers/src/at32f435_437_dma.c ****   else
+ 1214              		.loc 1 793 5 is_stmt 1 view .LVU349
+ 793:bsp/libraries/drivers/src/at32f435_437_dma.c ****   else
+ 1215              		.loc 1 793 51 is_stmt 0 view .LVU350
+ 1216 003a 03F59073 		add	r3, r3, #288
+ 793:bsp/libraries/drivers/src/at32f435_437_dma.c ****   else
+ 1217              		.loc 1 793 12 view .LVU351
+ 1218 003e 53F82230 		ldr	r3, [r3, r2, lsl #2]
+ 1219              	.LVL82:
+ 793:bsp/libraries/drivers/src/at32f435_437_dma.c ****   else
+ 1220              		.loc 1 793 12 view .LVU352
+ 1221 0042 EBE7     		b	.L74
+ 1222              	.LVL83:
+ 1223              	.L83:
+ 807:bsp/libraries/drivers/src/at32f435_437_dma.c ****     {
+ 1224              		.loc 1 807 5 is_stmt 1 view .LVU353
+ 807:bsp/libraries/drivers/src/at32f435_437_dma.c ****     {
+ 1225              		.loc 1 807 14 is_stmt 0 view .LVU354
+ 1226 0044 D2F83821 		ldr	r2, [r2, #312]
+ 807:bsp/libraries/drivers/src/at32f435_437_dma.c ****     {
+ 1227              		.loc 1 807 7 view .LVU355
+ 1228 0048 0A42     		tst	r2, r1
+ 1229 004a 02D0     		beq	.L78
+ 807:bsp/libraries/drivers/src/at32f435_437_dma.c ****     {
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 37
+
+
+ 1230              		.loc 1 807 52 discriminator 1 view .LVU356
+ 1231 004c 1BB9     		cbnz	r3, .L79
+ 813:bsp/libraries/drivers/src/at32f435_437_dma.c ****     }
+ 1232              		.loc 1 813 17 view .LVU357
+ 1233 004e 0020     		movs	r0, #0
+ 1234              	.LVL84:
+ 813:bsp/libraries/drivers/src/at32f435_437_dma.c ****     }
+ 1235              		.loc 1 813 17 view .LVU358
+ 1236 0050 7047     		bx	lr
+ 1237              	.LVL85:
+ 1238              	.L78:
+ 813:bsp/libraries/drivers/src/at32f435_437_dma.c ****     }
+ 1239              		.loc 1 813 17 view .LVU359
+ 1240 0052 0020     		movs	r0, #0
+ 1241              	.LVL86:
+ 813:bsp/libraries/drivers/src/at32f435_437_dma.c ****     }
+ 1242              		.loc 1 813 17 view .LVU360
+ 1243 0054 7047     		bx	lr
+ 1244              	.LVL87:
+ 1245              	.L79:
+ 809:bsp/libraries/drivers/src/at32f435_437_dma.c ****     }
+ 1246              		.loc 1 809 17 view .LVU361
+ 1247 0056 0120     		movs	r0, #1
+ 1248              	.LVL88:
+ 809:bsp/libraries/drivers/src/at32f435_437_dma.c ****     }
+ 1249              		.loc 1 809 17 view .LVU362
+ 1250 0058 7047     		bx	lr
+ 1251              	.LVL89:
+ 1252              	.L80:
+ 1253              		.loc 1 824 17 view .LVU363
+ 1254 005a 0020     		movs	r0, #0
+ 1255              	.LVL90:
+ 1256              		.loc 1 824 17 view .LVU364
+ 1257 005c 7047     		bx	lr
+ 1258              	.LVL91:
+ 1259              	.L81:
+ 820:bsp/libraries/drivers/src/at32f435_437_dma.c ****     }
+ 1260              		.loc 1 820 17 view .LVU365
+ 1261 005e 0120     		movs	r0, #1
+ 1262              	.LVL92:
+ 825:bsp/libraries/drivers/src/at32f435_437_dma.c ****     }
+ 826:bsp/libraries/drivers/src/at32f435_437_dma.c ****   }
+ 827:bsp/libraries/drivers/src/at32f435_437_dma.c ****   
+ 828:bsp/libraries/drivers/src/at32f435_437_dma.c ****   return bitstatus; 
+ 1263              		.loc 1 828 3 is_stmt 1 view .LVU366
+ 829:bsp/libraries/drivers/src/at32f435_437_dma.c **** }
+ 1264              		.loc 1 829 1 is_stmt 0 view .LVU367
+ 1265 0060 7047     		bx	lr
+ 1266              	.L85:
+ 1267 0062 00BF     		.align	2
+ 1268              	.L84:
+ 1269 0064 00640240 		.word	1073898496
+ 1270 0068 20670240 		.word	1073899296
+ 1271 006c 00660240 		.word	1073899008
+ 1272              		.cfi_endproc
+ 1273              	.LFE156:
+ 1275              		.section	.text.dmamux_generator_flag_clear,"ax",%progbits
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 38
+
+
+ 1276              		.align	1
+ 1277              		.global	dmamux_generator_flag_clear
+ 1278              		.syntax unified
+ 1279              		.thumb
+ 1280              		.thumb_func
+ 1282              	dmamux_generator_flag_clear:
+ 1283              	.LVL93:
+ 1284              	.LFB157:
+ 830:bsp/libraries/drivers/src/at32f435_437_dma.c **** 
+ 831:bsp/libraries/drivers/src/at32f435_437_dma.c **** /**
+ 832:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @brief  dmamux request generator flag clear.
+ 833:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  dma_x : pointer to a dma_type structure, can be DMA1 or DMA2.
+ 834:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @param  flag
+ 835:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         this parameter can be any combination of the following values:
+ 836:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_GEN_TRIG_OV1_FLAG
+ 837:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_GEN_TRIG_OV2_FLAG
+ 838:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_GEN_TRIG_OV3_FLAG
+ 839:bsp/libraries/drivers/src/at32f435_437_dma.c ****   *         - DMAMUX_GEN_TRIG_OV4_FLAG
+ 840:bsp/libraries/drivers/src/at32f435_437_dma.c ****   * @retval none.
+ 841:bsp/libraries/drivers/src/at32f435_437_dma.c ****   */
+ 842:bsp/libraries/drivers/src/at32f435_437_dma.c **** void dmamux_generator_flag_clear(dma_type *dma_x, uint32_t flag)
+ 843:bsp/libraries/drivers/src/at32f435_437_dma.c **** {
+ 1285              		.loc 1 843 1 is_stmt 1 view -0
+ 1286              		.cfi_startproc
+ 1287              		@ args = 0, pretend = 0, frame = 0
+ 1288              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1289              		@ link register save eliminated.
+ 844:bsp/libraries/drivers/src/at32f435_437_dma.c ****   dma_x->muxgclr = flag;
+ 1290              		.loc 1 844 3 view .LVU369
+ 1291              		.loc 1 844 18 is_stmt 0 view .LVU370
+ 1292 0000 C0F83C11 		str	r1, [r0, #316]
+ 845:bsp/libraries/drivers/src/at32f435_437_dma.c **** }
+ 1293              		.loc 1 845 1 view .LVU371
+ 1294 0004 7047     		bx	lr
+ 1295              		.cfi_endproc
+ 1296              	.LFE157:
+ 1298              		.text
+ 1299              	.Letext0:
+ 1300              		.file 2 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\mac
+ 1301              		.file 3 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\sys
+ 1302              		.file 4 "bsp/libraries/cmsis/cm4/device_support/at32f435_437.h"
+ 1303              		.file 5 "bsp/libraries/drivers/inc/at32f435_437_dma.h"
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 39
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 at32f435_437_dma.c
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:18     .text.dma_reset:00000000 $t
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:24     .text.dma_reset:00000000 dma_reset
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:132    .text.dma_reset:00000064 $d
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:139    .text.dma_data_number_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:145    .text.dma_data_number_set:00000000 dma_data_number_set
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:162    .text.dma_data_number_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:168    .text.dma_data_number_get:00000000 dma_data_number_get
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:187    .text.dma_interrupt_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:193    .text.dma_interrupt_enable:00000000 dma_interrupt_enable
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:227    .text.dma_channel_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:233    .text.dma_channel_enable:00000000 dma_channel_enable
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:252    .text.dma_flag_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:258    .text.dma_flag_get:00000000 dma_flag_get
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:304    .text.dma_flag_get:0000001c $d
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:310    .text.dma_interrupt_flag_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:316    .text.dma_interrupt_flag_get:00000000 dma_interrupt_flag_get
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:362    .text.dma_interrupt_flag_get:0000001c $d
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:368    .text.dma_flag_clear:00000000 $t
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:374    .text.dma_flag_clear:00000000 dma_flag_clear
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:405    .text.dma_flag_clear:00000018 $d
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:411    .text.dma_default_para_init:00000000 $t
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:417    .text.dma_default_para_init:00000000 dma_default_para_init
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:462    .text.dma_init:00000000 $t
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:468    .text.dma_init:00000000 dma_init
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:557    .text.dma_flexible_config:00000000 $t
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:563    .text.dma_flexible_config:00000000 dma_flexible_config
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:587    .text.dmamux_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:593    .text.dmamux_enable:00000000 dmamux_enable
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:612    .text.dmamux_init:00000000 $t
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:618    .text.dmamux_init:00000000 dmamux_init
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:637    .text.dmamux_sync_default_para_init:00000000 $t
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:643    .text.dmamux_sync_default_para_init:00000000 dmamux_sync_default_para_init
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:673    .text.dmamux_sync_config:00000000 $t
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:679    .text.dmamux_sync_config:00000000 dmamux_sync_config
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:730    .text.dmamux_generator_default_para_init:00000000 $t
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:736    .text.dmamux_generator_default_para_init:00000000 dmamux_generator_default_para_init
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:763    .text.dmamux_generator_config:00000000 $t
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:769    .text.dmamux_generator_config:00000000 dmamux_generator_config
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:813    .text.dmamux_sync_interrupt_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:819    .text.dmamux_sync_interrupt_enable:00000000 dmamux_sync_interrupt_enable
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:848    .text.dmamux_generator_interrupt_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:854    .text.dmamux_generator_interrupt_enable:00000000 dmamux_generator_interrupt_enable
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:883    .text.dmamux_sync_flag_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:889    .text.dmamux_sync_flag_get:00000000 dmamux_sync_flag_get
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:919    .text.dmamux_sync_interrupt_flag_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:925    .text.dmamux_sync_interrupt_flag_get:00000000 dmamux_sync_interrupt_flag_get
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:1061   .text.dmamux_sync_interrupt_flag_get:00000064 $d
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:1068   .text.dmamux_sync_flag_clear:00000000 $t
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:1074   .text.dmamux_sync_flag_clear:00000000 dmamux_sync_flag_clear
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:1091   .text.dmamux_generator_flag_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:1097   .text.dmamux_generator_flag_get:00000000 dmamux_generator_flag_get
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:1127   .text.dmamux_generator_interrupt_flag_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:1133   .text.dmamux_generator_interrupt_flag_get:00000000 dmamux_generator_interrupt_flag_get
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:1269   .text.dmamux_generator_interrupt_flag_get:00000064 $d
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:1276   .text.dmamux_generator_flag_clear:00000000 $t
+ARM GAS  C:\Users\user\AppData\Local\Temp\cceL34FR.s 			page 40
+
+
+C:\Users\user\AppData\Local\Temp\cceL34FR.s:1282   .text.dmamux_generator_flag_clear:00000000 dmamux_generator_flag_clear
+
+NO UNDEFINED SYMBOLS

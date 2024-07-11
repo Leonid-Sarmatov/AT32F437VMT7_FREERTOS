@@ -1,0 +1,488 @@
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccd8asrB.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"at32f435_437_wwdt.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.wwdt_reset,"ax",%progbits
+  18              		.align	1
+  19              		.global	wwdt_reset
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	wwdt_reset:
+  25              	.LFB133:
+  26              		.file 1 "bsp/libraries/drivers/src/at32f435_437_wwdt.c"
+   1:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** /**
+   2:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   **************************************************************************
+   3:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @file     at32f435_437_wwdt.c
+   4:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @brief    contains all the functions for the wwdt firmware library
+   5:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   **************************************************************************
+   6:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   *                       Copyright notice & Disclaimer
+   7:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   *
+   8:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * The software Board Support Package (BSP) that is made available to
+   9:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * download from Artery official website is the copyrighted work of Artery.
+  10:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * Artery authorizes customers to use, copy, and distribute the BSP
+  11:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * software and its related documentation for the purpose of design and
+  12:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * development in conjunction with Artery microcontrollers. Use of the
+  13:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * software is governed by this copyright notice and the following disclaimer.
+  14:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   *
+  15:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
+  16:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * GUARANTEES OR REPRESENTATIONS OF ANY KIND. ARTERY EXPRESSLY DISCLAIMS,
+  17:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * TO THE FULLEST EXTENT PERMITTED BY LAW, ALL EXPRESS, IMPLIED OR
+  18:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * STATUTORY OR OTHER WARRANTIES, GUARANTEES OR REPRESENTATIONS,
+  19:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * INCLUDING BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+  20:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
+  21:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   *
+  22:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   **************************************************************************
+  23:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   */
+  24:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** 
+  25:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** #include "at32f435_437_conf.h"
+  26:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** 
+  27:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** /** @addtogroup AT32F435_437_periph_driver
+  28:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @{
+  29:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   */
+  30:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** 
+  31:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** /** @defgroup WWDT
+  32:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @brief WWDT driver modules
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccd8asrB.s 			page 2
+
+
+  33:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @{
+  34:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   */
+  35:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** 
+  36:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** #ifdef WWDT_MODULE_ENABLED
+  37:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** 
+  38:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** /** @defgroup WWDT_private_functions
+  39:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @{
+  40:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   */
+  41:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** 
+  42:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** /**
+  43:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @brief  wwdt reset by crm reset register
+  44:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @retval none
+  45:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   */
+  46:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** void wwdt_reset(void)
+  47:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** {
+  27              		.loc 1 47 1 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 10B5     		push	{r4, lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 4, -8
+  35              		.cfi_offset 14, -4
+  48:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   crm_periph_reset(CRM_WWDT_PERIPH_RESET, TRUE);
+  36              		.loc 1 48 3 view .LVU1
+  37 0002 054C     		ldr	r4, .L3
+  38 0004 0121     		movs	r1, #1
+  39 0006 2046     		mov	r0, r4
+  40 0008 FFF7FEFF 		bl	crm_periph_reset
+  41              	.LVL0:
+  49:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   crm_periph_reset(CRM_WWDT_PERIPH_RESET, FALSE);
+  42              		.loc 1 49 3 view .LVU2
+  43 000c 0021     		movs	r1, #0
+  44 000e 2046     		mov	r0, r4
+  45 0010 FFF7FEFF 		bl	crm_periph_reset
+  46              	.LVL1:
+  50:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** }
+  47              		.loc 1 50 1 is_stmt 0 view .LVU3
+  48 0014 10BD     		pop	{r4, pc}
+  49              	.L4:
+  50 0016 00BF     		.align	2
+  51              	.L3:
+  52 0018 0B002000 		.word	2097163
+  53              		.cfi_endproc
+  54              	.LFE133:
+  56              		.section	.text.wwdt_divider_set,"ax",%progbits
+  57              		.align	1
+  58              		.global	wwdt_divider_set
+  59              		.syntax unified
+  60              		.thumb
+  61              		.thumb_func
+  63              	wwdt_divider_set:
+  64              	.LVL2:
+  65              	.LFB134:
+  51:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** 
+  52:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** /**
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccd8asrB.s 			page 3
+
+
+  53:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @brief  wwdt division set
+  54:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @param  division
+  55:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   *         this parameter can be one of the following values:
+  56:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   *         - WWDT_PCLK1_DIV_4096        (wwdt counter clock = (pclk1/4096)/1)
+  57:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   *         - WWDT_PCLK1_DIV_8192        (wwdt counter clock = (pclk1/4096)/2)
+  58:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   *         - WWDT_PCLK1_DIV_16384       (wwdt counter clock = (pclk1/4096)/4)
+  59:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   *         - WWDT_PCLK1_DIV_32768       (wwdt counter clock = (pclk1/4096)/8)
+  60:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @retval none
+  61:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   */
+  62:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** void wwdt_divider_set(wwdt_division_type division)
+  63:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** {
+  66              		.loc 1 63 1 is_stmt 1 view -0
+  67              		.cfi_startproc
+  68              		@ args = 0, pretend = 0, frame = 0
+  69              		@ frame_needed = 0, uses_anonymous_args = 0
+  70              		@ link register save eliminated.
+  64:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   WWDT->cfg_bit.div = division;
+  71              		.loc 1 64 3 view .LVU5
+  72              		.loc 1 64 21 is_stmt 0 view .LVU6
+  73 0000 024B     		ldr	r3, .L6
+  74 0002 5A68     		ldr	r2, [r3, #4]
+  75 0004 60F3C812 		bfi	r2, r0, #7, #2
+  76 0008 5A60     		str	r2, [r3, #4]
+  65:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** }
+  77              		.loc 1 65 1 view .LVU7
+  78 000a 7047     		bx	lr
+  79              	.L7:
+  80              		.align	2
+  81              	.L6:
+  82 000c 002C0040 		.word	1073753088
+  83              		.cfi_endproc
+  84              	.LFE134:
+  86              		.section	.text.wwdt_flag_clear,"ax",%progbits
+  87              		.align	1
+  88              		.global	wwdt_flag_clear
+  89              		.syntax unified
+  90              		.thumb
+  91              		.thumb_func
+  93              	wwdt_flag_clear:
+  94              	.LFB135:
+  66:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** 
+  67:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** /**
+  68:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @brief  wwdt reload counter interrupt flag clear
+  69:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @param  none
+  70:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @retval none
+  71:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   */
+  72:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** void wwdt_flag_clear(void)
+  73:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** {
+  95              		.loc 1 73 1 is_stmt 1 view -0
+  96              		.cfi_startproc
+  97              		@ args = 0, pretend = 0, frame = 0
+  98              		@ frame_needed = 0, uses_anonymous_args = 0
+  99              		@ link register save eliminated.
+  74:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   WWDT->sts = 0;
+ 100              		.loc 1 74 3 view .LVU9
+ 101              		.loc 1 74 13 is_stmt 0 view .LVU10
+ 102 0000 014B     		ldr	r3, .L9
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccd8asrB.s 			page 4
+
+
+ 103 0002 0022     		movs	r2, #0
+ 104 0004 9A60     		str	r2, [r3, #8]
+  75:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** }
+ 105              		.loc 1 75 1 view .LVU11
+ 106 0006 7047     		bx	lr
+ 107              	.L10:
+ 108              		.align	2
+ 109              	.L9:
+ 110 0008 002C0040 		.word	1073753088
+ 111              		.cfi_endproc
+ 112              	.LFE135:
+ 114              		.section	.text.wwdt_enable,"ax",%progbits
+ 115              		.align	1
+ 116              		.global	wwdt_enable
+ 117              		.syntax unified
+ 118              		.thumb
+ 119              		.thumb_func
+ 121              	wwdt_enable:
+ 122              	.LVL3:
+ 123              	.LFB136:
+  76:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** 
+  77:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** /**
+  78:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @brief  wwdt enable and the counter value load
+  79:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @param  wwdt_cnt (0x40~0x7f)
+  80:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @retval none
+  81:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   */
+  82:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** void wwdt_enable(uint8_t wwdt_cnt)
+  83:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** {
+ 124              		.loc 1 83 1 is_stmt 1 view -0
+ 125              		.cfi_startproc
+ 126              		@ args = 0, pretend = 0, frame = 0
+ 127              		@ frame_needed = 0, uses_anonymous_args = 0
+ 128              		@ link register save eliminated.
+  84:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   WWDT->ctrl = wwdt_cnt | WWDT_EN_BIT;
+ 129              		.loc 1 84 3 view .LVU13
+ 130              		.loc 1 84 25 is_stmt 0 view .LVU14
+ 131 0000 40F08000 		orr	r0, r0, #128
+ 132              	.LVL4:
+ 133              		.loc 1 84 14 view .LVU15
+ 134 0004 014B     		ldr	r3, .L12
+ 135 0006 1860     		str	r0, [r3]
+  85:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** }
+ 136              		.loc 1 85 1 view .LVU16
+ 137 0008 7047     		bx	lr
+ 138              	.L13:
+ 139 000a 00BF     		.align	2
+ 140              	.L12:
+ 141 000c 002C0040 		.word	1073753088
+ 142              		.cfi_endproc
+ 143              	.LFE136:
+ 145              		.section	.text.wwdt_interrupt_enable,"ax",%progbits
+ 146              		.align	1
+ 147              		.global	wwdt_interrupt_enable
+ 148              		.syntax unified
+ 149              		.thumb
+ 150              		.thumb_func
+ 152              	wwdt_interrupt_enable:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccd8asrB.s 			page 5
+
+
+ 153              	.LFB137:
+  86:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** 
+  87:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** /**
+  88:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @brief  wwdt reload counter interrupt enable
+  89:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @param  none
+  90:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @retval none
+  91:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   */
+  92:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** void wwdt_interrupt_enable(void)
+  93:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** {
+ 154              		.loc 1 93 1 is_stmt 1 view -0
+ 155              		.cfi_startproc
+ 156              		@ args = 0, pretend = 0, frame = 0
+ 157              		@ frame_needed = 0, uses_anonymous_args = 0
+ 158              		@ link register save eliminated.
+  94:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   WWDT->cfg_bit.rldien = TRUE;
+ 159              		.loc 1 94 3 view .LVU18
+ 160              		.loc 1 94 24 is_stmt 0 view .LVU19
+ 161 0000 024A     		ldr	r2, .L15
+ 162 0002 5368     		ldr	r3, [r2, #4]
+ 163 0004 43F40073 		orr	r3, r3, #512
+ 164 0008 5360     		str	r3, [r2, #4]
+  95:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** }
+ 165              		.loc 1 95 1 view .LVU20
+ 166 000a 7047     		bx	lr
+ 167              	.L16:
+ 168              		.align	2
+ 169              	.L15:
+ 170 000c 002C0040 		.word	1073753088
+ 171              		.cfi_endproc
+ 172              	.LFE137:
+ 174              		.section	.text.wwdt_flag_get,"ax",%progbits
+ 175              		.align	1
+ 176              		.global	wwdt_flag_get
+ 177              		.syntax unified
+ 178              		.thumb
+ 179              		.thumb_func
+ 181              	wwdt_flag_get:
+ 182              	.LFB138:
+  96:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** 
+  97:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** /**
+  98:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @brief  wwdt reload counter interrupt flag get
+  99:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @param  none
+ 100:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @retval state of reload counter interrupt flag
+ 101:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   */
+ 102:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** flag_status wwdt_flag_get(void)
+ 103:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** {
+ 183              		.loc 1 103 1 is_stmt 1 view -0
+ 184              		.cfi_startproc
+ 185              		@ args = 0, pretend = 0, frame = 0
+ 186              		@ frame_needed = 0, uses_anonymous_args = 0
+ 187              		@ link register save eliminated.
+ 104:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   return (flag_status)WWDT->sts_bit.rldf;
+ 188              		.loc 1 104 3 view .LVU22
+ 189              		.loc 1 104 36 is_stmt 0 view .LVU23
+ 190 0000 024B     		ldr	r3, .L18
+ 191 0002 9868     		ldr	r0, [r3, #8]
+ 105:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** }
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccd8asrB.s 			page 6
+
+
+ 192              		.loc 1 105 1 view .LVU24
+ 193 0004 00F00100 		and	r0, r0, #1
+ 194 0008 7047     		bx	lr
+ 195              	.L19:
+ 196 000a 00BF     		.align	2
+ 197              	.L18:
+ 198 000c 002C0040 		.word	1073753088
+ 199              		.cfi_endproc
+ 200              	.LFE138:
+ 202              		.section	.text.wwdt_interrupt_flag_get,"ax",%progbits
+ 203              		.align	1
+ 204              		.global	wwdt_interrupt_flag_get
+ 205              		.syntax unified
+ 206              		.thumb
+ 207              		.thumb_func
+ 209              	wwdt_interrupt_flag_get:
+ 210              	.LFB139:
+ 106:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** 
+ 107:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** /**
+ 108:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @brief  wwdt reload counter interrupt flag get
+ 109:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @param  none
+ 110:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @retval state of reload counter interrupt flag
+ 111:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   */
+ 112:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** flag_status wwdt_interrupt_flag_get(void)
+ 113:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** {
+ 211              		.loc 1 113 1 is_stmt 1 view -0
+ 212              		.cfi_startproc
+ 213              		@ args = 0, pretend = 0, frame = 0
+ 214              		@ frame_needed = 0, uses_anonymous_args = 0
+ 215              		@ link register save eliminated.
+ 114:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   return (flag_status)(WWDT->sts_bit.rldf && WWDT->cfg_bit.rldien);
+ 216              		.loc 1 114 3 view .LVU26
+ 217              		.loc 1 114 37 is_stmt 0 view .LVU27
+ 218 0000 074B     		ldr	r3, .L24
+ 219 0002 9B68     		ldr	r3, [r3, #8]
+ 220              		.loc 1 114 43 view .LVU28
+ 221 0004 13F0010F 		tst	r3, #1
+ 222 0008 06D0     		beq	.L22
+ 223              		.loc 1 114 59 discriminator 1 view .LVU29
+ 224 000a 054B     		ldr	r3, .L24
+ 225 000c 5B68     		ldr	r3, [r3, #4]
+ 226              		.loc 1 114 43 discriminator 1 view .LVU30
+ 227 000e 13F4007F 		tst	r3, #512
+ 228 0012 03D1     		bne	.L23
+ 229              		.loc 1 114 43 view .LVU31
+ 230 0014 0020     		movs	r0, #0
+ 231 0016 7047     		bx	lr
+ 232              	.L22:
+ 233 0018 0020     		movs	r0, #0
+ 234 001a 7047     		bx	lr
+ 235              	.L23:
+ 236 001c 0120     		movs	r0, #1
+ 115:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** }
+ 237              		.loc 1 115 1 view .LVU32
+ 238 001e 7047     		bx	lr
+ 239              	.L25:
+ 240              		.align	2
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccd8asrB.s 			page 7
+
+
+ 241              	.L24:
+ 242 0020 002C0040 		.word	1073753088
+ 243              		.cfi_endproc
+ 244              	.LFE139:
+ 246              		.section	.text.wwdt_counter_set,"ax",%progbits
+ 247              		.align	1
+ 248              		.global	wwdt_counter_set
+ 249              		.syntax unified
+ 250              		.thumb
+ 251              		.thumb_func
+ 253              	wwdt_counter_set:
+ 254              	.LVL5:
+ 255              	.LFB140:
+ 116:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** 
+ 117:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** /**
+ 118:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @brief  wwdt counter value set
+ 119:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @param  wwdt_cnt (0x40~0x7f)
+ 120:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @retval none
+ 121:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   */
+ 122:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** void wwdt_counter_set(uint8_t wwdt_cnt)
+ 123:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** {
+ 256              		.loc 1 123 1 is_stmt 1 view -0
+ 257              		.cfi_startproc
+ 258              		@ args = 0, pretend = 0, frame = 0
+ 259              		@ frame_needed = 0, uses_anonymous_args = 0
+ 260              		@ link register save eliminated.
+ 124:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   WWDT->ctrl_bit.cnt = wwdt_cnt;
+ 261              		.loc 1 124 3 view .LVU34
+ 262              		.loc 1 124 22 is_stmt 0 view .LVU35
+ 263 0000 024B     		ldr	r3, .L27
+ 264 0002 1A68     		ldr	r2, [r3]
+ 265 0004 60F30602 		bfi	r2, r0, #0, #7
+ 266 0008 1A60     		str	r2, [r3]
+ 125:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** }
+ 267              		.loc 1 125 1 view .LVU36
+ 268 000a 7047     		bx	lr
+ 269              	.L28:
+ 270              		.align	2
+ 271              	.L27:
+ 272 000c 002C0040 		.word	1073753088
+ 273              		.cfi_endproc
+ 274              	.LFE140:
+ 276              		.section	.text.wwdt_window_counter_set,"ax",%progbits
+ 277              		.align	1
+ 278              		.global	wwdt_window_counter_set
+ 279              		.syntax unified
+ 280              		.thumb
+ 281              		.thumb_func
+ 283              	wwdt_window_counter_set:
+ 284              	.LVL6:
+ 285              	.LFB141:
+ 126:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** 
+ 127:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** /**
+ 128:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @brief  wwdt window counter value set
+ 129:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @param  window_cnt (0x40~0x7f)
+ 130:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   * @retval none
+ 131:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   */
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccd8asrB.s 			page 8
+
+
+ 132:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** void wwdt_window_counter_set(uint8_t window_cnt)
+ 133:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** {
+ 286              		.loc 1 133 1 is_stmt 1 view -0
+ 287              		.cfi_startproc
+ 288              		@ args = 0, pretend = 0, frame = 0
+ 289              		@ frame_needed = 0, uses_anonymous_args = 0
+ 290              		@ link register save eliminated.
+ 134:bsp/libraries/drivers/src/at32f435_437_wwdt.c ****   WWDT->cfg_bit.win = window_cnt;
+ 291              		.loc 1 134 3 view .LVU38
+ 292              		.loc 1 134 21 is_stmt 0 view .LVU39
+ 293 0000 024B     		ldr	r3, .L30
+ 294 0002 5A68     		ldr	r2, [r3, #4]
+ 295 0004 60F30602 		bfi	r2, r0, #0, #7
+ 296 0008 5A60     		str	r2, [r3, #4]
+ 135:bsp/libraries/drivers/src/at32f435_437_wwdt.c **** }
+ 297              		.loc 1 135 1 view .LVU40
+ 298 000a 7047     		bx	lr
+ 299              	.L31:
+ 300              		.align	2
+ 301              	.L30:
+ 302 000c 002C0040 		.word	1073753088
+ 303              		.cfi_endproc
+ 304              	.LFE141:
+ 306              		.text
+ 307              	.Letext0:
+ 308              		.file 2 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\mac
+ 309              		.file 3 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\sys
+ 310              		.file 4 "bsp/libraries/cmsis/cm4/device_support/at32f435_437.h"
+ 311              		.file 5 "bsp/libraries/drivers/inc/at32f435_437_crm.h"
+ 312              		.file 6 "bsp/libraries/drivers/inc/at32f435_437_wwdt.h"
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccd8asrB.s 			page 9
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 at32f435_437_wwdt.c
+C:\Users\user\AppData\Local\Temp\ccd8asrB.s:18     .text.wwdt_reset:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccd8asrB.s:24     .text.wwdt_reset:00000000 wwdt_reset
+C:\Users\user\AppData\Local\Temp\ccd8asrB.s:52     .text.wwdt_reset:00000018 $d
+C:\Users\user\AppData\Local\Temp\ccd8asrB.s:57     .text.wwdt_divider_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccd8asrB.s:63     .text.wwdt_divider_set:00000000 wwdt_divider_set
+C:\Users\user\AppData\Local\Temp\ccd8asrB.s:82     .text.wwdt_divider_set:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccd8asrB.s:87     .text.wwdt_flag_clear:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccd8asrB.s:93     .text.wwdt_flag_clear:00000000 wwdt_flag_clear
+C:\Users\user\AppData\Local\Temp\ccd8asrB.s:110    .text.wwdt_flag_clear:00000008 $d
+C:\Users\user\AppData\Local\Temp\ccd8asrB.s:115    .text.wwdt_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccd8asrB.s:121    .text.wwdt_enable:00000000 wwdt_enable
+C:\Users\user\AppData\Local\Temp\ccd8asrB.s:141    .text.wwdt_enable:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccd8asrB.s:146    .text.wwdt_interrupt_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccd8asrB.s:152    .text.wwdt_interrupt_enable:00000000 wwdt_interrupt_enable
+C:\Users\user\AppData\Local\Temp\ccd8asrB.s:170    .text.wwdt_interrupt_enable:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccd8asrB.s:175    .text.wwdt_flag_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccd8asrB.s:181    .text.wwdt_flag_get:00000000 wwdt_flag_get
+C:\Users\user\AppData\Local\Temp\ccd8asrB.s:198    .text.wwdt_flag_get:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccd8asrB.s:203    .text.wwdt_interrupt_flag_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccd8asrB.s:209    .text.wwdt_interrupt_flag_get:00000000 wwdt_interrupt_flag_get
+C:\Users\user\AppData\Local\Temp\ccd8asrB.s:242    .text.wwdt_interrupt_flag_get:00000020 $d
+C:\Users\user\AppData\Local\Temp\ccd8asrB.s:247    .text.wwdt_counter_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccd8asrB.s:253    .text.wwdt_counter_set:00000000 wwdt_counter_set
+C:\Users\user\AppData\Local\Temp\ccd8asrB.s:272    .text.wwdt_counter_set:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccd8asrB.s:277    .text.wwdt_window_counter_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccd8asrB.s:283    .text.wwdt_window_counter_set:00000000 wwdt_window_counter_set
+C:\Users\user\AppData\Local\Temp\ccd8asrB.s:302    .text.wwdt_window_counter_set:0000000c $d
+
+UNDEFINED SYMBOLS
+crm_periph_reset

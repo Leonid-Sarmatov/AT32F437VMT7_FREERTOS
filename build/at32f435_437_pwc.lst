@@ -1,0 +1,800 @@
+ARM GAS  C:\Users\user\AppData\Local\Temp\cch5NqDy.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"at32f435_437_pwc.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.pwc_reset,"ax",%progbits
+  18              		.align	1
+  19              		.global	pwc_reset
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	pwc_reset:
+  25              	.LFB133:
+  26              		.file 1 "bsp/libraries/drivers/src/at32f435_437_pwc.c"
+   1:bsp/libraries/drivers/src/at32f435_437_pwc.c **** /**
+   2:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   **************************************************************************
+   3:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @file     at32f435_437_pwc.c
+   4:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @brief    contains all the functions for the pwc firmware library
+   5:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   **************************************************************************
+   6:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *                       Copyright notice & Disclaimer
+   7:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *
+   8:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * The software Board Support Package (BSP) that is made available to
+   9:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * download from Artery official website is the copyrighted work of Artery.
+  10:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * Artery authorizes customers to use, copy, and distribute the BSP
+  11:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * software and its related documentation for the purpose of design and
+  12:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * development in conjunction with Artery microcontrollers. Use of the
+  13:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * software is governed by this copyright notice and the following disclaimer.
+  14:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *
+  15:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
+  16:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * GUARANTEES OR REPRESENTATIONS OF ANY KIND. ARTERY EXPRESSLY DISCLAIMS,
+  17:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * TO THE FULLEST EXTENT PERMITTED BY LAW, ALL EXPRESS, IMPLIED OR
+  18:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * STATUTORY OR OTHER WARRANTIES, GUARANTEES OR REPRESENTATIONS,
+  19:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * INCLUDING BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+  20:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
+  21:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *
+  22:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   **************************************************************************
+  23:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   */
+  24:bsp/libraries/drivers/src/at32f435_437_pwc.c **** 
+  25:bsp/libraries/drivers/src/at32f435_437_pwc.c **** #include "at32f435_437_conf.h"
+  26:bsp/libraries/drivers/src/at32f435_437_pwc.c **** 
+  27:bsp/libraries/drivers/src/at32f435_437_pwc.c **** /** @addtogroup AT32F435_437_periph_driver
+  28:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @{
+  29:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   */
+  30:bsp/libraries/drivers/src/at32f435_437_pwc.c **** 
+  31:bsp/libraries/drivers/src/at32f435_437_pwc.c **** /** @defgroup PWC
+  32:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @brief PWC driver modules
+ARM GAS  C:\Users\user\AppData\Local\Temp\cch5NqDy.s 			page 2
+
+
+  33:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @{
+  34:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   */
+  35:bsp/libraries/drivers/src/at32f435_437_pwc.c **** 
+  36:bsp/libraries/drivers/src/at32f435_437_pwc.c **** #ifdef PWC_MODULE_ENABLED
+  37:bsp/libraries/drivers/src/at32f435_437_pwc.c **** 
+  38:bsp/libraries/drivers/src/at32f435_437_pwc.c **** /** @defgroup PWC_private_functions
+  39:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @{
+  40:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   */
+  41:bsp/libraries/drivers/src/at32f435_437_pwc.c **** 
+  42:bsp/libraries/drivers/src/at32f435_437_pwc.c **** /**
+  43:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @brief  deinitialize the pwc peripheral registers to their default reset values.
+  44:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @param  none
+  45:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @retval none
+  46:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   */
+  47:bsp/libraries/drivers/src/at32f435_437_pwc.c **** void pwc_reset(void)
+  48:bsp/libraries/drivers/src/at32f435_437_pwc.c **** {
+  27              		.loc 1 48 1 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 10B5     		push	{r4, lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 4, -8
+  35              		.cfi_offset 14, -4
+  49:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   crm_periph_reset(CRM_PWC_PERIPH_RESET, TRUE);
+  36              		.loc 1 49 3 view .LVU1
+  37 0002 054C     		ldr	r4, .L3
+  38 0004 0121     		movs	r1, #1
+  39 0006 2046     		mov	r0, r4
+  40 0008 FFF7FEFF 		bl	crm_periph_reset
+  41              	.LVL0:
+  50:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   crm_periph_reset(CRM_PWC_PERIPH_RESET, FALSE);
+  42              		.loc 1 50 3 view .LVU2
+  43 000c 0021     		movs	r1, #0
+  44 000e 2046     		mov	r0, r4
+  45 0010 FFF7FEFF 		bl	crm_periph_reset
+  46              	.LVL1:
+  51:bsp/libraries/drivers/src/at32f435_437_pwc.c **** }
+  47              		.loc 1 51 1 is_stmt 0 view .LVU3
+  48 0014 10BD     		pop	{r4, pc}
+  49              	.L4:
+  50 0016 00BF     		.align	2
+  51              	.L3:
+  52 0018 1C002000 		.word	2097180
+  53              		.cfi_endproc
+  54              	.LFE133:
+  56              		.section	.text.pwc_battery_powered_domain_access,"ax",%progbits
+  57              		.align	1
+  58              		.global	pwc_battery_powered_domain_access
+  59              		.syntax unified
+  60              		.thumb
+  61              		.thumb_func
+  63              	pwc_battery_powered_domain_access:
+  64              	.LVL2:
+  65              	.LFB134:
+  52:bsp/libraries/drivers/src/at32f435_437_pwc.c **** 
+ARM GAS  C:\Users\user\AppData\Local\Temp\cch5NqDy.s 			page 3
+
+
+  53:bsp/libraries/drivers/src/at32f435_437_pwc.c **** /**
+  54:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @brief  enable or disable access to the battery powered domain.
+  55:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @param  new_state: new state of battery powered domain access.
+  56:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         this parameter can be: TRUE or FALSE.
+  57:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @retval none
+  58:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   */
+  59:bsp/libraries/drivers/src/at32f435_437_pwc.c **** void pwc_battery_powered_domain_access(confirm_state new_state)
+  60:bsp/libraries/drivers/src/at32f435_437_pwc.c **** {
+  66              		.loc 1 60 1 is_stmt 1 view -0
+  67              		.cfi_startproc
+  68              		@ args = 0, pretend = 0, frame = 0
+  69              		@ frame_needed = 0, uses_anonymous_args = 0
+  70              		@ link register save eliminated.
+  61:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   PWC->ctrl_bit.bpwen= new_state;
+  71              		.loc 1 61 3 view .LVU5
+  72              		.loc 1 61 22 is_stmt 0 view .LVU6
+  73 0000 024B     		ldr	r3, .L6
+  74 0002 1A68     		ldr	r2, [r3]
+  75 0004 60F30822 		bfi	r2, r0, #8, #1
+  76 0008 1A60     		str	r2, [r3]
+  62:bsp/libraries/drivers/src/at32f435_437_pwc.c **** }
+  77              		.loc 1 62 1 view .LVU7
+  78 000a 7047     		bx	lr
+  79              	.L7:
+  80              		.align	2
+  81              	.L6:
+  82 000c 00700040 		.word	1073770496
+  83              		.cfi_endproc
+  84              	.LFE134:
+  86              		.section	.text.pwc_pvm_level_select,"ax",%progbits
+  87              		.align	1
+  88              		.global	pwc_pvm_level_select
+  89              		.syntax unified
+  90              		.thumb
+  91              		.thumb_func
+  93              	pwc_pvm_level_select:
+  94              	.LVL3:
+  95              	.LFB135:
+  63:bsp/libraries/drivers/src/at32f435_437_pwc.c **** 
+  64:bsp/libraries/drivers/src/at32f435_437_pwc.c **** /**
+  65:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @brief  select the voltage threshold detected by the power voltage detector.
+  66:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @param  pvm_voltage: select pwc pvm voltage
+  67:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         this parameter can be one of the following values:
+  68:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         - PWC_PVM_VOLTAGE_2V3
+  69:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         - PWC_PVM_VOLTAGE_2V4
+  70:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         - PWC_PVM_VOLTAGE_2V5
+  71:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         - PWC_PVM_VOLTAGE_2V6
+  72:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         - PWC_PVM_VOLTAGE_2V7
+  73:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         - PWC_PVM_VOLTAGE_2V8
+  74:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         - PWC_PVM_VOLTAGE_2V9
+  75:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @retval none
+  76:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   */
+  77:bsp/libraries/drivers/src/at32f435_437_pwc.c **** void pwc_pvm_level_select(pwc_pvm_voltage_type pvm_voltage)
+  78:bsp/libraries/drivers/src/at32f435_437_pwc.c **** {
+  96              		.loc 1 78 1 is_stmt 1 view -0
+  97              		.cfi_startproc
+  98              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\user\AppData\Local\Temp\cch5NqDy.s 			page 4
+
+
+  99              		@ frame_needed = 0, uses_anonymous_args = 0
+ 100              		@ link register save eliminated.
+  79:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   PWC->ctrl_bit.pvmsel= pvm_voltage;
+ 101              		.loc 1 79 3 view .LVU9
+ 102              		.loc 1 79 23 is_stmt 0 view .LVU10
+ 103 0000 024B     		ldr	r3, .L9
+ 104 0002 1A68     		ldr	r2, [r3]
+ 105 0004 60F34712 		bfi	r2, r0, #5, #3
+ 106 0008 1A60     		str	r2, [r3]
+  80:bsp/libraries/drivers/src/at32f435_437_pwc.c **** }
+ 107              		.loc 1 80 1 view .LVU11
+ 108 000a 7047     		bx	lr
+ 109              	.L10:
+ 110              		.align	2
+ 111              	.L9:
+ 112 000c 00700040 		.word	1073770496
+ 113              		.cfi_endproc
+ 114              	.LFE135:
+ 116              		.section	.text.pwc_power_voltage_monitor_enable,"ax",%progbits
+ 117              		.align	1
+ 118              		.global	pwc_power_voltage_monitor_enable
+ 119              		.syntax unified
+ 120              		.thumb
+ 121              		.thumb_func
+ 123              	pwc_power_voltage_monitor_enable:
+ 124              	.LVL4:
+ 125              	.LFB136:
+  81:bsp/libraries/drivers/src/at32f435_437_pwc.c **** 
+  82:bsp/libraries/drivers/src/at32f435_437_pwc.c **** /**
+  83:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @brief  enable or disable pwc power voltage monitor (pvm)
+  84:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @param  new_state: new state of pvm.
+  85:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         this parameter can be: TRUE or FALSE.
+  86:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @retval none
+  87:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   */
+  88:bsp/libraries/drivers/src/at32f435_437_pwc.c **** void pwc_power_voltage_monitor_enable(confirm_state new_state)
+  89:bsp/libraries/drivers/src/at32f435_437_pwc.c **** {
+ 126              		.loc 1 89 1 is_stmt 1 view -0
+ 127              		.cfi_startproc
+ 128              		@ args = 0, pretend = 0, frame = 0
+ 129              		@ frame_needed = 0, uses_anonymous_args = 0
+ 130              		@ link register save eliminated.
+  90:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   PWC->ctrl_bit.pvmen= new_state;
+ 131              		.loc 1 90 3 view .LVU13
+ 132              		.loc 1 90 22 is_stmt 0 view .LVU14
+ 133 0000 024B     		ldr	r3, .L12
+ 134 0002 1A68     		ldr	r2, [r3]
+ 135 0004 60F30412 		bfi	r2, r0, #4, #1
+ 136 0008 1A60     		str	r2, [r3]
+  91:bsp/libraries/drivers/src/at32f435_437_pwc.c **** }
+ 137              		.loc 1 91 1 view .LVU15
+ 138 000a 7047     		bx	lr
+ 139              	.L13:
+ 140              		.align	2
+ 141              	.L12:
+ 142 000c 00700040 		.word	1073770496
+ 143              		.cfi_endproc
+ 144              	.LFE136:
+ARM GAS  C:\Users\user\AppData\Local\Temp\cch5NqDy.s 			page 5
+
+
+ 146              		.section	.text.pwc_wakeup_pin_enable,"ax",%progbits
+ 147              		.align	1
+ 148              		.global	pwc_wakeup_pin_enable
+ 149              		.syntax unified
+ 150              		.thumb
+ 151              		.thumb_func
+ 153              	pwc_wakeup_pin_enable:
+ 154              	.LVL5:
+ 155              	.LFB137:
+  92:bsp/libraries/drivers/src/at32f435_437_pwc.c **** 
+  93:bsp/libraries/drivers/src/at32f435_437_pwc.c **** /**
+  94:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @brief  enable or disable pwc standby wakeup pin
+  95:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @param  pin_num: choose the wakeup pin.
+  96:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         this parameter can be be any combination of the following values:
+  97:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         - PWC_WAKEUP_PIN_1
+  98:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         - PWC_WAKEUP_PIN_2
+  99:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @param  new_state: new state of the standby wakeup pin.
+ 100:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         this parameter can be one of the following values:
+ 101:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         - TRUE <wakeup pin is used for wake up cpu from standby mode>
+ 102:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         - FALSE <wakeup pin is used for general purpose I/O>
+ 103:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @retval none
+ 104:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   */
+ 105:bsp/libraries/drivers/src/at32f435_437_pwc.c **** void pwc_wakeup_pin_enable(uint32_t pin_num, confirm_state new_state)
+ 106:bsp/libraries/drivers/src/at32f435_437_pwc.c **** {
+ 156              		.loc 1 106 1 is_stmt 1 view -0
+ 157              		.cfi_startproc
+ 158              		@ args = 0, pretend = 0, frame = 0
+ 159              		@ frame_needed = 0, uses_anonymous_args = 0
+ 160              		@ link register save eliminated.
+ 107:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   if(new_state == TRUE)
+ 161              		.loc 1 107 3 view .LVU17
+ 162              		.loc 1 107 5 is_stmt 0 view .LVU18
+ 163 0000 0129     		cmp	r1, #1
+ 164 0002 05D0     		beq	.L17
+ 108:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   {
+ 109:bsp/libraries/drivers/src/at32f435_437_pwc.c ****     PWC->ctrlsts |= pin_num;
+ 110:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   }
+ 111:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   else
+ 112:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   {
+ 113:bsp/libraries/drivers/src/at32f435_437_pwc.c ****     PWC->ctrlsts &= ~pin_num;
+ 165              		.loc 1 113 5 is_stmt 1 view .LVU19
+ 166              		.loc 1 113 18 is_stmt 0 view .LVU20
+ 167 0004 054A     		ldr	r2, .L18
+ 168 0006 5368     		ldr	r3, [r2, #4]
+ 169 0008 23EA0000 		bic	r0, r3, r0
+ 170              	.LVL6:
+ 171              		.loc 1 113 18 view .LVU21
+ 172 000c 5060     		str	r0, [r2, #4]
+ 114:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   }
+ 115:bsp/libraries/drivers/src/at32f435_437_pwc.c **** }
+ 173              		.loc 1 115 1 view .LVU22
+ 174 000e 7047     		bx	lr
+ 175              	.LVL7:
+ 176              	.L17:
+ 109:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   }
+ 177              		.loc 1 109 5 is_stmt 1 view .LVU23
+ 109:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   }
+ARM GAS  C:\Users\user\AppData\Local\Temp\cch5NqDy.s 			page 6
+
+
+ 178              		.loc 1 109 18 is_stmt 0 view .LVU24
+ 179 0010 024A     		ldr	r2, .L18
+ 180 0012 5368     		ldr	r3, [r2, #4]
+ 181 0014 1843     		orrs	r0, r0, r3
+ 182              	.LVL8:
+ 109:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   }
+ 183              		.loc 1 109 18 view .LVU25
+ 184 0016 5060     		str	r0, [r2, #4]
+ 185 0018 7047     		bx	lr
+ 186              	.L19:
+ 187 001a 00BF     		.align	2
+ 188              	.L18:
+ 189 001c 00700040 		.word	1073770496
+ 190              		.cfi_endproc
+ 191              	.LFE137:
+ 193              		.section	.text.pwc_flag_clear,"ax",%progbits
+ 194              		.align	1
+ 195              		.global	pwc_flag_clear
+ 196              		.syntax unified
+ 197              		.thumb
+ 198              		.thumb_func
+ 200              	pwc_flag_clear:
+ 201              	.LVL9:
+ 202              	.LFB138:
+ 116:bsp/libraries/drivers/src/at32f435_437_pwc.c **** 
+ 117:bsp/libraries/drivers/src/at32f435_437_pwc.c **** /**
+ 118:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @brief  clear flag of pwc
+ 119:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @param  pwc_flag: select the pwc flag.
+ 120:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         this parameter can be any combination of the following values:
+ 121:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         - PWC_WAKEUP_FLAG
+ 122:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         - PWC_STANDBY_FLAG
+ 123:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         - note:"PWC_PVM_OUTPUT_FLAG" cannot be choose!this bit is readonly bit,it means the vol
+ 124:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @retval none
+ 125:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   */
+ 126:bsp/libraries/drivers/src/at32f435_437_pwc.c **** void pwc_flag_clear(uint32_t pwc_flag)
+ 127:bsp/libraries/drivers/src/at32f435_437_pwc.c **** {
+ 203              		.loc 1 127 1 is_stmt 1 view -0
+ 204              		.cfi_startproc
+ 205              		@ args = 0, pretend = 0, frame = 0
+ 206              		@ frame_needed = 0, uses_anonymous_args = 0
+ 207              		@ link register save eliminated.
+ 128:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   if(pwc_flag & PWC_STANDBY_FLAG)
+ 208              		.loc 1 128 3 view .LVU27
+ 209              		.loc 1 128 5 is_stmt 0 view .LVU28
+ 210 0000 10F0020F 		tst	r0, #2
+ 211 0004 04D0     		beq	.L21
+ 129:bsp/libraries/drivers/src/at32f435_437_pwc.c ****     PWC->ctrl_bit.clsef = TRUE;
+ 212              		.loc 1 129 5 is_stmt 1 view .LVU29
+ 213              		.loc 1 129 25 is_stmt 0 view .LVU30
+ 214 0006 074A     		ldr	r2, .L23
+ 215 0008 1368     		ldr	r3, [r2]
+ 216 000a 43F00803 		orr	r3, r3, #8
+ 217 000e 1360     		str	r3, [r2]
+ 218              	.L21:
+ 130:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   if(pwc_flag & PWC_WAKEUP_FLAG)
+ 219              		.loc 1 130 3 is_stmt 1 view .LVU31
+ 220              		.loc 1 130 5 is_stmt 0 view .LVU32
+ARM GAS  C:\Users\user\AppData\Local\Temp\cch5NqDy.s 			page 7
+
+
+ 221 0010 10F0010F 		tst	r0, #1
+ 222 0014 04D0     		beq	.L20
+ 131:bsp/libraries/drivers/src/at32f435_437_pwc.c ****     PWC->ctrl_bit.clswef = TRUE;
+ 223              		.loc 1 131 5 is_stmt 1 view .LVU33
+ 224              		.loc 1 131 26 is_stmt 0 view .LVU34
+ 225 0016 034A     		ldr	r2, .L23
+ 226 0018 1368     		ldr	r3, [r2]
+ 227 001a 43F00403 		orr	r3, r3, #4
+ 228 001e 1360     		str	r3, [r2]
+ 229              	.L20:
+ 132:bsp/libraries/drivers/src/at32f435_437_pwc.c **** }
+ 230              		.loc 1 132 1 view .LVU35
+ 231 0020 7047     		bx	lr
+ 232              	.L24:
+ 233 0022 00BF     		.align	2
+ 234              	.L23:
+ 235 0024 00700040 		.word	1073770496
+ 236              		.cfi_endproc
+ 237              	.LFE138:
+ 239              		.section	.text.pwc_flag_get,"ax",%progbits
+ 240              		.align	1
+ 241              		.global	pwc_flag_get
+ 242              		.syntax unified
+ 243              		.thumb
+ 244              		.thumb_func
+ 246              	pwc_flag_get:
+ 247              	.LVL10:
+ 248              	.LFB139:
+ 133:bsp/libraries/drivers/src/at32f435_437_pwc.c **** 
+ 134:bsp/libraries/drivers/src/at32f435_437_pwc.c **** /**
+ 135:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @brief  get flag of pwc
+ 136:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @param  pwc_flag: select the pwc flag.
+ 137:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         this parameter can be one of the following values:
+ 138:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         - PWC_WAKEUP_FLAG
+ 139:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         - PWC_STANDBY_FLAG
+ 140:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         - PWC_PVM_OUTPUT_FLAG
+ 141:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @retval state of select flag(SET or RESET).
+ 142:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   */
+ 143:bsp/libraries/drivers/src/at32f435_437_pwc.c **** flag_status pwc_flag_get(uint32_t pwc_flag)
+ 144:bsp/libraries/drivers/src/at32f435_437_pwc.c **** {
+ 249              		.loc 1 144 1 is_stmt 1 view -0
+ 250              		.cfi_startproc
+ 251              		@ args = 0, pretend = 0, frame = 0
+ 252              		@ frame_needed = 0, uses_anonymous_args = 0
+ 253              		@ link register save eliminated.
+ 145:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   flag_status status = RESET;
+ 254              		.loc 1 145 3 view .LVU37
+ 146:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   if ((PWC->ctrlsts & pwc_flag) == RESET)
+ 255              		.loc 1 146 3 view .LVU38
+ 256              		.loc 1 146 11 is_stmt 0 view .LVU39
+ 257 0000 034B     		ldr	r3, .L28
+ 258 0002 5B68     		ldr	r3, [r3, #4]
+ 259              		.loc 1 146 6 view .LVU40
+ 260 0004 0342     		tst	r3, r0
+ 261 0006 01D1     		bne	.L27
+ 147:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   {
+ 148:bsp/libraries/drivers/src/at32f435_437_pwc.c ****     status = RESET;
+ARM GAS  C:\Users\user\AppData\Local\Temp\cch5NqDy.s 			page 8
+
+
+ 262              		.loc 1 148 12 view .LVU41
+ 263 0008 0020     		movs	r0, #0
+ 264              	.LVL11:
+ 265              		.loc 1 148 12 view .LVU42
+ 266 000a 7047     		bx	lr
+ 267              	.LVL12:
+ 268              	.L27:
+ 149:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   }
+ 150:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   else
+ 151:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   {
+ 152:bsp/libraries/drivers/src/at32f435_437_pwc.c ****     status = SET;
+ 269              		.loc 1 152 12 view .LVU43
+ 270 000c 0120     		movs	r0, #1
+ 271              	.LVL13:
+ 153:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   }
+ 154:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   return status;
+ 272              		.loc 1 154 3 is_stmt 1 view .LVU44
+ 155:bsp/libraries/drivers/src/at32f435_437_pwc.c **** }
+ 273              		.loc 1 155 1 is_stmt 0 view .LVU45
+ 274 000e 7047     		bx	lr
+ 275              	.L29:
+ 276              		.align	2
+ 277              	.L28:
+ 278 0010 00700040 		.word	1073770496
+ 279              		.cfi_endproc
+ 280              	.LFE139:
+ 282              		.section	.text.pwc_sleep_mode_enter,"ax",%progbits
+ 283              		.align	1
+ 284              		.global	pwc_sleep_mode_enter
+ 285              		.syntax unified
+ 286              		.thumb
+ 287              		.thumb_func
+ 289              	pwc_sleep_mode_enter:
+ 290              	.LVL14:
+ 291              	.LFB140:
+ 156:bsp/libraries/drivers/src/at32f435_437_pwc.c **** 
+ 157:bsp/libraries/drivers/src/at32f435_437_pwc.c **** /**
+ 158:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @brief  enter pwc sleep mode
+ 159:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @param  sleep_mode_enter: choose the instruction to enter sleep mode.
+ 160:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         this parameter can be one of the following values:
+ 161:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         - PWC_SLEEP_ENTER_WFI
+ 162:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         - PWC_SLEEP_ENTER_WFE
+ 163:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @retval none
+ 164:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   */
+ 165:bsp/libraries/drivers/src/at32f435_437_pwc.c **** void pwc_sleep_mode_enter(pwc_sleep_enter_type pwc_sleep_enter)
+ 166:bsp/libraries/drivers/src/at32f435_437_pwc.c **** {
+ 292              		.loc 1 166 1 is_stmt 1 view -0
+ 293              		.cfi_startproc
+ 294              		@ args = 0, pretend = 0, frame = 0
+ 295              		@ frame_needed = 0, uses_anonymous_args = 0
+ 296              		@ link register save eliminated.
+ 167:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   SCB->SCR &= (uint32_t)~0x4;
+ 297              		.loc 1 167 3 view .LVU47
+ 298              		.loc 1 167 12 is_stmt 0 view .LVU48
+ 299 0000 064A     		ldr	r2, .L34
+ 300 0002 1369     		ldr	r3, [r2, #16]
+ 301 0004 23F00403 		bic	r3, r3, #4
+ARM GAS  C:\Users\user\AppData\Local\Temp\cch5NqDy.s 			page 9
+
+
+ 302 0008 1361     		str	r3, [r2, #16]
+ 168:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   if(pwc_sleep_enter == PWC_SLEEP_ENTER_WFE)
+ 303              		.loc 1 168 3 is_stmt 1 view .LVU49
+ 304              		.loc 1 168 5 is_stmt 0 view .LVU50
+ 305 000a 0128     		cmp	r0, #1
+ 306 000c 02D0     		beq	.L33
+ 169:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   {
+ 170:bsp/libraries/drivers/src/at32f435_437_pwc.c ****     __SEV();
+ 171:bsp/libraries/drivers/src/at32f435_437_pwc.c ****     __WFE();
+ 172:bsp/libraries/drivers/src/at32f435_437_pwc.c ****     __WFE();
+ 173:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   }
+ 174:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   else if(pwc_sleep_enter == PWC_SLEEP_ENTER_WFI)
+ 307              		.loc 1 174 8 is_stmt 1 view .LVU51
+ 308              		.loc 1 174 10 is_stmt 0 view .LVU52
+ 309 000e 00B9     		cbnz	r0, .L30
+ 175:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   {
+ 176:bsp/libraries/drivers/src/at32f435_437_pwc.c ****     __WFI();
+ 310              		.loc 1 176 5 is_stmt 1 view .LVU53
+ 311              		.syntax unified
+ 312              	@ 176 "bsp/libraries/drivers/src/at32f435_437_pwc.c" 1
+ 313 0010 30BF     		wfi
+ 314              	@ 0 "" 2
+ 315              		.thumb
+ 316              		.syntax unified
+ 317              	.L30:
+ 177:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   }
+ 178:bsp/libraries/drivers/src/at32f435_437_pwc.c **** }
+ 318              		.loc 1 178 1 is_stmt 0 view .LVU54
+ 319 0012 7047     		bx	lr
+ 320              	.L33:
+ 170:bsp/libraries/drivers/src/at32f435_437_pwc.c ****     __WFE();
+ 321              		.loc 1 170 5 is_stmt 1 view .LVU55
+ 322              		.syntax unified
+ 323              	@ 170 "bsp/libraries/drivers/src/at32f435_437_pwc.c" 1
+ 324 0014 40BF     		sev
+ 325              	@ 0 "" 2
+ 171:bsp/libraries/drivers/src/at32f435_437_pwc.c ****     __WFE();
+ 326              		.loc 1 171 5 view .LVU56
+ 327              	@ 171 "bsp/libraries/drivers/src/at32f435_437_pwc.c" 1
+ 328 0016 20BF     		wfe
+ 329              	@ 0 "" 2
+ 172:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   }
+ 330              		.loc 1 172 5 view .LVU57
+ 331              	@ 172 "bsp/libraries/drivers/src/at32f435_437_pwc.c" 1
+ 332 0018 20BF     		wfe
+ 333              	@ 0 "" 2
+ 334              		.thumb
+ 335              		.syntax unified
+ 336 001a 7047     		bx	lr
+ 337              	.L35:
+ 338              		.align	2
+ 339              	.L34:
+ 340 001c 00ED00E0 		.word	-536810240
+ 341              		.cfi_endproc
+ 342              	.LFE140:
+ 344              		.section	.text.pwc_deep_sleep_mode_enter,"ax",%progbits
+ 345              		.align	1
+ARM GAS  C:\Users\user\AppData\Local\Temp\cch5NqDy.s 			page 10
+
+
+ 346              		.global	pwc_deep_sleep_mode_enter
+ 347              		.syntax unified
+ 348              		.thumb
+ 349              		.thumb_func
+ 351              	pwc_deep_sleep_mode_enter:
+ 352              	.LVL15:
+ 353              	.LFB141:
+ 179:bsp/libraries/drivers/src/at32f435_437_pwc.c **** 
+ 180:bsp/libraries/drivers/src/at32f435_437_pwc.c **** /**
+ 181:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @brief  enter pwc deep-sleep mode
+ 182:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @param  pwc_deep_sleep_enter: choose the instruction to enter deep sleep mode.
+ 183:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         this parameter can be one of the following values:
+ 184:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         - PWC_DEEP_SLEEP_ENTER_WFI
+ 185:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         - PWC_DEEP_SLEEP_ENTER_WFE
+ 186:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @retval none
+ 187:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   */
+ 188:bsp/libraries/drivers/src/at32f435_437_pwc.c **** void pwc_deep_sleep_mode_enter(pwc_deep_sleep_enter_type pwc_deep_sleep_enter)
+ 189:bsp/libraries/drivers/src/at32f435_437_pwc.c **** {
+ 354              		.loc 1 189 1 view -0
+ 355              		.cfi_startproc
+ 356              		@ args = 0, pretend = 0, frame = 0
+ 357              		@ frame_needed = 0, uses_anonymous_args = 0
+ 358              		@ link register save eliminated.
+ 190:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   SCB->SCR |= 0x04;
+ 359              		.loc 1 190 3 view .LVU59
+ 360              		.loc 1 190 12 is_stmt 0 view .LVU60
+ 361 0000 094A     		ldr	r2, .L40
+ 362 0002 1369     		ldr	r3, [r2, #16]
+ 363 0004 43F00403 		orr	r3, r3, #4
+ 364 0008 1361     		str	r3, [r2, #16]
+ 191:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   if(pwc_deep_sleep_enter == PWC_DEEP_SLEEP_ENTER_WFE)
+ 365              		.loc 1 191 3 is_stmt 1 view .LVU61
+ 366              		.loc 1 191 5 is_stmt 0 view .LVU62
+ 367 000a 0128     		cmp	r0, #1
+ 368 000c 02D0     		beq	.L39
+ 192:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   {
+ 193:bsp/libraries/drivers/src/at32f435_437_pwc.c ****     __SEV();
+ 194:bsp/libraries/drivers/src/at32f435_437_pwc.c ****     __WFE();
+ 195:bsp/libraries/drivers/src/at32f435_437_pwc.c ****     __WFE();
+ 196:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   }
+ 197:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   else if(pwc_deep_sleep_enter == PWC_DEEP_SLEEP_ENTER_WFI)
+ 369              		.loc 1 197 8 is_stmt 1 view .LVU63
+ 370              		.loc 1 197 10 is_stmt 0 view .LVU64
+ 371 000e 20B9     		cbnz	r0, .L38
+ 198:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   {
+ 199:bsp/libraries/drivers/src/at32f435_437_pwc.c ****     __WFI();
+ 372              		.loc 1 199 5 is_stmt 1 view .LVU65
+ 373              		.syntax unified
+ 374              	@ 199 "bsp/libraries/drivers/src/at32f435_437_pwc.c" 1
+ 375 0010 30BF     		wfi
+ 376              	@ 0 "" 2
+ 377              		.thumb
+ 378              		.syntax unified
+ 379 0012 02E0     		b	.L38
+ 380              	.L39:
+ 193:bsp/libraries/drivers/src/at32f435_437_pwc.c ****     __WFE();
+ 381              		.loc 1 193 5 view .LVU66
+ARM GAS  C:\Users\user\AppData\Local\Temp\cch5NqDy.s 			page 11
+
+
+ 382              		.syntax unified
+ 383              	@ 193 "bsp/libraries/drivers/src/at32f435_437_pwc.c" 1
+ 384 0014 40BF     		sev
+ 385              	@ 0 "" 2
+ 194:bsp/libraries/drivers/src/at32f435_437_pwc.c ****     __WFE();
+ 386              		.loc 1 194 5 view .LVU67
+ 387              	@ 194 "bsp/libraries/drivers/src/at32f435_437_pwc.c" 1
+ 388 0016 20BF     		wfe
+ 389              	@ 0 "" 2
+ 195:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   }
+ 390              		.loc 1 195 5 view .LVU68
+ 391              	@ 195 "bsp/libraries/drivers/src/at32f435_437_pwc.c" 1
+ 392 0018 20BF     		wfe
+ 393              	@ 0 "" 2
+ 394              		.thumb
+ 395              		.syntax unified
+ 396              	.L38:
+ 200:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   }
+ 201:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   SCB->SCR &= (uint32_t)~0x4;
+ 397              		.loc 1 201 3 view .LVU69
+ 398              		.loc 1 201 12 is_stmt 0 view .LVU70
+ 399 001a 034A     		ldr	r2, .L40
+ 400 001c 1369     		ldr	r3, [r2, #16]
+ 401 001e 23F00403 		bic	r3, r3, #4
+ 402 0022 1361     		str	r3, [r2, #16]
+ 202:bsp/libraries/drivers/src/at32f435_437_pwc.c **** }
+ 403              		.loc 1 202 1 view .LVU71
+ 404 0024 7047     		bx	lr
+ 405              	.L41:
+ 406 0026 00BF     		.align	2
+ 407              	.L40:
+ 408 0028 00ED00E0 		.word	-536810240
+ 409              		.cfi_endproc
+ 410              	.LFE141:
+ 412              		.section	.text.pwc_voltage_regulate_set,"ax",%progbits
+ 413              		.align	1
+ 414              		.global	pwc_voltage_regulate_set
+ 415              		.syntax unified
+ 416              		.thumb
+ 417              		.thumb_func
+ 419              	pwc_voltage_regulate_set:
+ 420              	.LVL16:
+ 421              	.LFB142:
+ 203:bsp/libraries/drivers/src/at32f435_437_pwc.c **** 
+ 204:bsp/libraries/drivers/src/at32f435_437_pwc.c **** /**
+ 205:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @brief  regulate low power consumption in the deep sleep mode
+ 206:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @param  pwc_regulator: set the regulator state.
+ 207:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         this parameter can be one of the following values:
+ 208:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         - PWC_REGULATOR_ON
+ 209:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   *         - PWC_REGULATOR_LOW_POWER
+ 210:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @retval none
+ 211:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   */
+ 212:bsp/libraries/drivers/src/at32f435_437_pwc.c **** void pwc_voltage_regulate_set(pwc_regulator_type pwc_regulator)
+ 213:bsp/libraries/drivers/src/at32f435_437_pwc.c **** {
+ 422              		.loc 1 213 1 is_stmt 1 view -0
+ 423              		.cfi_startproc
+ 424              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\user\AppData\Local\Temp\cch5NqDy.s 			page 12
+
+
+ 425              		@ frame_needed = 0, uses_anonymous_args = 0
+ 426              		@ link register save eliminated.
+ 214:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   PWC->ctrl_bit.vrsel = pwc_regulator;
+ 427              		.loc 1 214 3 view .LVU73
+ 428              		.loc 1 214 23 is_stmt 0 view .LVU74
+ 429 0000 024B     		ldr	r3, .L43
+ 430 0002 1A68     		ldr	r2, [r3]
+ 431 0004 60F30002 		bfi	r2, r0, #0, #1
+ 432 0008 1A60     		str	r2, [r3]
+ 215:bsp/libraries/drivers/src/at32f435_437_pwc.c **** }
+ 433              		.loc 1 215 1 view .LVU75
+ 434 000a 7047     		bx	lr
+ 435              	.L44:
+ 436              		.align	2
+ 437              	.L43:
+ 438 000c 00700040 		.word	1073770496
+ 439              		.cfi_endproc
+ 440              	.LFE142:
+ 442              		.section	.text.pwc_standby_mode_enter,"ax",%progbits
+ 443              		.align	1
+ 444              		.global	pwc_standby_mode_enter
+ 445              		.syntax unified
+ 446              		.thumb
+ 447              		.thumb_func
+ 449              	pwc_standby_mode_enter:
+ 450              	.LFB143:
+ 216:bsp/libraries/drivers/src/at32f435_437_pwc.c **** 
+ 217:bsp/libraries/drivers/src/at32f435_437_pwc.c **** /**
+ 218:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @brief  enter pwc standby mode
+ 219:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @param  none
+ 220:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   * @retval none
+ 221:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   */
+ 222:bsp/libraries/drivers/src/at32f435_437_pwc.c **** void pwc_standby_mode_enter(void)
+ 223:bsp/libraries/drivers/src/at32f435_437_pwc.c **** {
+ 451              		.loc 1 223 1 is_stmt 1 view -0
+ 452              		.cfi_startproc
+ 453              		@ Volatile: function does not return.
+ 454              		@ args = 0, pretend = 0, frame = 0
+ 455              		@ frame_needed = 0, uses_anonymous_args = 0
+ 456              		@ link register save eliminated.
+ 224:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   PWC->ctrl_bit.clswef = TRUE;
+ 457              		.loc 1 224 3 view .LVU77
+ 458              		.loc 1 224 24 is_stmt 0 view .LVU78
+ 459 0000 074B     		ldr	r3, .L47
+ 460 0002 1A68     		ldr	r2, [r3]
+ 461 0004 42F00402 		orr	r2, r2, #4
+ 462 0008 1A60     		str	r2, [r3]
+ 225:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   PWC->ctrl_bit.lpsel = TRUE;
+ 463              		.loc 1 225 3 is_stmt 1 view .LVU79
+ 464              		.loc 1 225 23 is_stmt 0 view .LVU80
+ 465 000a 1A68     		ldr	r2, [r3]
+ 466 000c 42F00202 		orr	r2, r2, #2
+ 467 0010 1A60     		str	r2, [r3]
+ 226:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   SCB->SCR |= 0x04;
+ 468              		.loc 1 226 3 is_stmt 1 view .LVU81
+ 469              		.loc 1 226 12 is_stmt 0 view .LVU82
+ 470 0012 044A     		ldr	r2, .L47+4
+ARM GAS  C:\Users\user\AppData\Local\Temp\cch5NqDy.s 			page 13
+
+
+ 471 0014 1369     		ldr	r3, [r2, #16]
+ 472 0016 43F00403 		orr	r3, r3, #4
+ 473 001a 1361     		str	r3, [r2, #16]
+ 474              	.L46:
+ 227:bsp/libraries/drivers/src/at32f435_437_pwc.c **** #if defined (__CC_ARM)
+ 228:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   __force_stores();
+ 229:bsp/libraries/drivers/src/at32f435_437_pwc.c **** #endif
+ 230:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   while(1)
+ 475              		.loc 1 230 3 is_stmt 1 discriminator 1 view .LVU83
+ 231:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   {
+ 232:bsp/libraries/drivers/src/at32f435_437_pwc.c ****     __WFI();
+ 476              		.loc 1 232 5 discriminator 1 view .LVU84
+ 477              		.syntax unified
+ 478              	@ 232 "bsp/libraries/drivers/src/at32f435_437_pwc.c" 1
+ 479 001c 30BF     		wfi
+ 480              	@ 0 "" 2
+ 230:bsp/libraries/drivers/src/at32f435_437_pwc.c ****   {
+ 481              		.loc 1 230 8 discriminator 1 view .LVU85
+ 482              		.thumb
+ 483              		.syntax unified
+ 484 001e FDE7     		b	.L46
+ 485              	.L48:
+ 486              		.align	2
+ 487              	.L47:
+ 488 0020 00700040 		.word	1073770496
+ 489 0024 00ED00E0 		.word	-536810240
+ 490              		.cfi_endproc
+ 491              	.LFE143:
+ 493              		.text
+ 494              	.Letext0:
+ 495              		.file 2 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\mac
+ 496              		.file 3 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\sys
+ 497              		.file 4 "bsp/libraries/cmsis/cm4/core_support/core_cm4.h"
+ 498              		.file 5 "bsp/libraries/cmsis/cm4/device_support/at32f435_437.h"
+ 499              		.file 6 "bsp/libraries/drivers/inc/at32f435_437_crm.h"
+ 500              		.file 7 "bsp/libraries/drivers/inc/at32f435_437_pwc.h"
+ARM GAS  C:\Users\user\AppData\Local\Temp\cch5NqDy.s 			page 14
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 at32f435_437_pwc.c
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:18     .text.pwc_reset:00000000 $t
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:24     .text.pwc_reset:00000000 pwc_reset
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:52     .text.pwc_reset:00000018 $d
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:57     .text.pwc_battery_powered_domain_access:00000000 $t
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:63     .text.pwc_battery_powered_domain_access:00000000 pwc_battery_powered_domain_access
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:82     .text.pwc_battery_powered_domain_access:0000000c $d
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:87     .text.pwc_pvm_level_select:00000000 $t
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:93     .text.pwc_pvm_level_select:00000000 pwc_pvm_level_select
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:112    .text.pwc_pvm_level_select:0000000c $d
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:117    .text.pwc_power_voltage_monitor_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:123    .text.pwc_power_voltage_monitor_enable:00000000 pwc_power_voltage_monitor_enable
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:142    .text.pwc_power_voltage_monitor_enable:0000000c $d
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:147    .text.pwc_wakeup_pin_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:153    .text.pwc_wakeup_pin_enable:00000000 pwc_wakeup_pin_enable
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:189    .text.pwc_wakeup_pin_enable:0000001c $d
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:194    .text.pwc_flag_clear:00000000 $t
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:200    .text.pwc_flag_clear:00000000 pwc_flag_clear
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:235    .text.pwc_flag_clear:00000024 $d
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:240    .text.pwc_flag_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:246    .text.pwc_flag_get:00000000 pwc_flag_get
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:278    .text.pwc_flag_get:00000010 $d
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:283    .text.pwc_sleep_mode_enter:00000000 $t
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:289    .text.pwc_sleep_mode_enter:00000000 pwc_sleep_mode_enter
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:340    .text.pwc_sleep_mode_enter:0000001c $d
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:345    .text.pwc_deep_sleep_mode_enter:00000000 $t
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:351    .text.pwc_deep_sleep_mode_enter:00000000 pwc_deep_sleep_mode_enter
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:408    .text.pwc_deep_sleep_mode_enter:00000028 $d
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:413    .text.pwc_voltage_regulate_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:419    .text.pwc_voltage_regulate_set:00000000 pwc_voltage_regulate_set
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:438    .text.pwc_voltage_regulate_set:0000000c $d
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:443    .text.pwc_standby_mode_enter:00000000 $t
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:449    .text.pwc_standby_mode_enter:00000000 pwc_standby_mode_enter
+C:\Users\user\AppData\Local\Temp\cch5NqDy.s:488    .text.pwc_standby_mode_enter:00000020 $d
+
+UNDEFINED SYMBOLS
+crm_periph_reset

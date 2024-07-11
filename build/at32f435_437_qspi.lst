@@ -1,0 +1,1610 @@
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccPQnBpM.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"at32f435_437_qspi.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.qspi_reset,"ax",%progbits
+  18              		.align	1
+  19              		.global	qspi_reset
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	qspi_reset:
+  25              	.LVL0:
+  26              	.LFB133:
+  27              		.file 1 "bsp/libraries/drivers/src/at32f435_437_qspi.c"
+   1:bsp/libraries/drivers/src/at32f435_437_qspi.c **** /**
+   2:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   **************************************************************************
+   3:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @file     at32f435_437_qspi.c
+   4:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @brief    contain all the functions for qspi firmware library
+   5:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   **************************************************************************
+   6:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *                       Copyright notice & Disclaimer
+   7:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *
+   8:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * The software Board Support Package (BSP) that is made available to
+   9:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * download from Artery official website is the copyrighted work of Artery.
+  10:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * Artery authorizes customers to use, copy, and distribute the BSP
+  11:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * software and its related documentation for the purpose of design and
+  12:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * development in conjunction with Artery microcontrollers. Use of the
+  13:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * software is governed by this copyright notice and the following disclaimer.
+  14:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *
+  15:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
+  16:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * GUARANTEES OR REPRESENTATIONS OF ANY KIND. ARTERY EXPRESSLY DISCLAIMS,
+  17:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * TO THE FULLEST EXTENT PERMITTED BY LAW, ALL EXPRESS, IMPLIED OR
+  18:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * STATUTORY OR OTHER WARRANTIES, GUARANTEES OR REPRESENTATIONS,
+  19:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * INCLUDING BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+  20:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
+  21:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *
+  22:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   **************************************************************************
+  23:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   */
+  24:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+  25:bsp/libraries/drivers/src/at32f435_437_qspi.c **** #include "at32f435_437_conf.h"
+  26:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+  27:bsp/libraries/drivers/src/at32f435_437_qspi.c **** /** @addtogroup AT32F435_437_periph_driver
+  28:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @{
+  29:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   */
+  30:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+  31:bsp/libraries/drivers/src/at32f435_437_qspi.c **** /** @defgroup QSPI
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccPQnBpM.s 			page 2
+
+
+  32:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @brief QSPI driver modules
+  33:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @{
+  34:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   */
+  35:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+  36:bsp/libraries/drivers/src/at32f435_437_qspi.c **** #ifdef QSPI_MODULE_ENABLED
+  37:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+  38:bsp/libraries/drivers/src/at32f435_437_qspi.c **** /** @defgroup QSPI_private_functions
+  39:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @{
+  40:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   */
+  41:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+  42:bsp/libraries/drivers/src/at32f435_437_qspi.c **** /**
+  43:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @brief  deinitialize the qspi peripheral registers to their default reset values.
+  44:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  qspi_x: select the qspi peripheral.
+  45:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         this parameter can be one of the following values:
+  46:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         QSPI1,QSPI2.
+  47:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @retval none
+  48:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   */
+  49:bsp/libraries/drivers/src/at32f435_437_qspi.c **** void qspi_reset(qspi_type* qspi_x)
+  50:bsp/libraries/drivers/src/at32f435_437_qspi.c **** {
+  28              		.loc 1 50 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		.loc 1 50 1 is_stmt 0 view .LVU1
+  33 0000 10B5     		push	{r4, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 4, -8
+  37              		.cfi_offset 14, -4
+  51:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   if(qspi_x == QSPI1)
+  38              		.loc 1 51 3 is_stmt 1 view .LVU2
+  39              		.loc 1 51 5 is_stmt 0 view .LVU3
+  40 0002 0D4B     		ldr	r3, .L7
+  41 0004 9842     		cmp	r0, r3
+  42 0006 03D0     		beq	.L5
+  52:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   {
+  53:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     crm_periph_reset(CRM_QSPI1_PERIPH_RESET, TRUE);
+  54:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     crm_periph_reset(CRM_QSPI1_PERIPH_RESET, FALSE);
+  55:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   }
+  56:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   else if(qspi_x == QSPI2)
+  43              		.loc 1 56 8 is_stmt 1 view .LVU4
+  44              		.loc 1 56 10 is_stmt 0 view .LVU5
+  45 0008 0C4B     		ldr	r3, .L7+4
+  46 000a 9842     		cmp	r0, r3
+  47 000c 0AD0     		beq	.L6
+  48              	.LVL1:
+  49              	.L1:
+  57:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   {
+  58:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     crm_periph_reset(CRM_QSPI2_PERIPH_RESET, TRUE);
+  59:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     crm_periph_reset(CRM_QSPI2_PERIPH_RESET, FALSE);
+  60:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   }
+  61:bsp/libraries/drivers/src/at32f435_437_qspi.c **** }
+  50              		.loc 1 61 1 view .LVU6
+  51 000e 10BD     		pop	{r4, pc}
+  52              	.LVL2:
+  53              	.L5:
+  53:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     crm_periph_reset(CRM_QSPI1_PERIPH_RESET, FALSE);
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccPQnBpM.s 			page 3
+
+
+  54              		.loc 1 53 5 is_stmt 1 view .LVU7
+  55 0010 0B4C     		ldr	r4, .L7+8
+  56 0012 0121     		movs	r1, #1
+  57 0014 2046     		mov	r0, r4
+  58              	.LVL3:
+  53:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     crm_periph_reset(CRM_QSPI1_PERIPH_RESET, FALSE);
+  59              		.loc 1 53 5 is_stmt 0 view .LVU8
+  60 0016 FFF7FEFF 		bl	crm_periph_reset
+  61              	.LVL4:
+  54:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   }
+  62              		.loc 1 54 5 is_stmt 1 view .LVU9
+  63 001a 0021     		movs	r1, #0
+  64 001c 2046     		mov	r0, r4
+  65 001e FFF7FEFF 		bl	crm_periph_reset
+  66              	.LVL5:
+  67 0022 F4E7     		b	.L1
+  68              	.LVL6:
+  69              	.L6:
+  58:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     crm_periph_reset(CRM_QSPI2_PERIPH_RESET, FALSE);
+  70              		.loc 1 58 5 view .LVU10
+  71 0024 074C     		ldr	r4, .L7+12
+  72 0026 0121     		movs	r1, #1
+  73 0028 2046     		mov	r0, r4
+  74              	.LVL7:
+  58:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     crm_periph_reset(CRM_QSPI2_PERIPH_RESET, FALSE);
+  75              		.loc 1 58 5 is_stmt 0 view .LVU11
+  76 002a FFF7FEFF 		bl	crm_periph_reset
+  77              	.LVL8:
+  59:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   }
+  78              		.loc 1 59 5 is_stmt 1 view .LVU12
+  79 002e 0021     		movs	r1, #0
+  80 0030 2046     		mov	r0, r4
+  81 0032 FFF7FEFF 		bl	crm_periph_reset
+  82              	.LVL9:
+  83              		.loc 1 61 1 is_stmt 0 view .LVU13
+  84 0036 EAE7     		b	.L1
+  85              	.L8:
+  86              		.align	2
+  87              	.L7:
+  88 0038 001000A0 		.word	-1610608640
+  89 003c 002000A0 		.word	-1610604544
+  90 0040 01001800 		.word	1572865
+  91 0044 0E001800 		.word	1572878
+  92              		.cfi_endproc
+  93              	.LFE133:
+  95              		.section	.text.qspi_encryption_enable,"ax",%progbits
+  96              		.align	1
+  97              		.global	qspi_encryption_enable
+  98              		.syntax unified
+  99              		.thumb
+ 100              		.thumb_func
+ 102              	qspi_encryption_enable:
+ 103              	.LVL10:
+ 104              	.LFB134:
+  62:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+  63:bsp/libraries/drivers/src/at32f435_437_qspi.c **** /**
+  64:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @brief  enable/disable encryption for qspi.
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccPQnBpM.s 			page 4
+
+
+  65:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @note   the function must be configured only when qspi in command-port mode!!!
+  66:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  qspi_x: select the qspi peripheral.
+  67:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         this parameter can be one of the following values:
+  68:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         QSPI1,QSPI2.
+  69:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  new_state (TRUE or FALSE)
+  70:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @retval none
+  71:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   */
+  72:bsp/libraries/drivers/src/at32f435_437_qspi.c **** void qspi_encryption_enable(qspi_type* qspi_x, confirm_state new_state)
+  73:bsp/libraries/drivers/src/at32f435_437_qspi.c **** {
+ 105              		.loc 1 73 1 is_stmt 1 view -0
+ 106              		.cfi_startproc
+ 107              		@ args = 0, pretend = 0, frame = 0
+ 108              		@ frame_needed = 0, uses_anonymous_args = 0
+ 109              		@ link register save eliminated.
+  74:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   qspi_x->ctrl_bit.keyen = new_state;
+ 110              		.loc 1 74 3 view .LVU15
+ 111              		.loc 1 74 26 is_stmt 0 view .LVU16
+ 112 0000 0369     		ldr	r3, [r0, #16]
+ 113 0002 61F35553 		bfi	r3, r1, #21, #1
+ 114 0006 0361     		str	r3, [r0, #16]
+  75:bsp/libraries/drivers/src/at32f435_437_qspi.c **** }
+ 115              		.loc 1 75 1 view .LVU17
+ 116 0008 7047     		bx	lr
+ 117              		.cfi_endproc
+ 118              	.LFE134:
+ 120              		.section	.text.qspi_sck_mode_set,"ax",%progbits
+ 121              		.align	1
+ 122              		.global	qspi_sck_mode_set
+ 123              		.syntax unified
+ 124              		.thumb
+ 125              		.thumb_func
+ 127              	qspi_sck_mode_set:
+ 128              	.LVL11:
+ 129              	.LFB135:
+  76:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+  77:bsp/libraries/drivers/src/at32f435_437_qspi.c **** /**
+  78:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @brief  set qspi sck mode.
+  79:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @note   the function must be configured only when qspi in command-port mode!!!
+  80:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  qspi_x: select the qspi peripheral.
+  81:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         this parameter can be one of the following values:
+  82:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         QSPI1,QSPI2.
+  83:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  new_mode: new state to be set
+  84:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         this parameter can be one of the following values:
+  85:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_SCK_MODE_0
+  86:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_SCK_MODE_3
+  87:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @retval none
+  88:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   */
+  89:bsp/libraries/drivers/src/at32f435_437_qspi.c **** void qspi_sck_mode_set(qspi_type* qspi_x, qspi_clk_mode_type new_mode)
+  90:bsp/libraries/drivers/src/at32f435_437_qspi.c **** {
+ 130              		.loc 1 90 1 is_stmt 1 view -0
+ 131              		.cfi_startproc
+ 132              		@ args = 0, pretend = 0, frame = 0
+ 133              		@ frame_needed = 0, uses_anonymous_args = 0
+ 134              		@ link register save eliminated.
+  91:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   qspi_x->ctrl_bit.sckmode = new_mode;
+ 135              		.loc 1 91 3 view .LVU19
+ 136              		.loc 1 91 28 is_stmt 0 view .LVU20
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccPQnBpM.s 			page 5
+
+
+ 137 0000 0369     		ldr	r3, [r0, #16]
+ 138 0002 61F30413 		bfi	r3, r1, #4, #1
+ 139 0006 0361     		str	r3, [r0, #16]
+  92:bsp/libraries/drivers/src/at32f435_437_qspi.c **** }
+ 140              		.loc 1 92 1 view .LVU21
+ 141 0008 7047     		bx	lr
+ 142              		.cfi_endproc
+ 143              	.LFE135:
+ 145              		.section	.text.qspi_clk_division_set,"ax",%progbits
+ 146              		.align	1
+ 147              		.global	qspi_clk_division_set
+ 148              		.syntax unified
+ 149              		.thumb
+ 150              		.thumb_func
+ 152              	qspi_clk_division_set:
+ 153              	.LVL12:
+ 154              	.LFB136:
+  93:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+  94:bsp/libraries/drivers/src/at32f435_437_qspi.c **** /**
+  95:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @brief  set qspi clock division
+  96:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @note   the function must be configured only when qspi in command-port mode!!!
+  97:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  qspi_x: select the qspi peripheral.
+  98:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         this parameter can be one of the following values:
+  99:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         QSPI1,QSPI2.
+ 100:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  new_clkdiv: new division value
+ 101:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         this parameter can be one of the following values:
+ 102:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_CLK_DIV_2
+ 103:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_CLK_DIV_4
+ 104:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_CLK_DIV_6
+ 105:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_CLK_DIV_8
+ 106:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_CLK_DIV_3
+ 107:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_CLK_DIV_5
+ 108:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_CLK_DIV_10
+ 109:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_CLK_DIV_12
+ 110:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @retval none
+ 111:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   */
+ 112:bsp/libraries/drivers/src/at32f435_437_qspi.c **** void qspi_clk_division_set(qspi_type* qspi_x, qspi_clk_div_type new_clkdiv)
+ 113:bsp/libraries/drivers/src/at32f435_437_qspi.c **** {
+ 155              		.loc 1 113 1 is_stmt 1 view -0
+ 156              		.cfi_startproc
+ 157              		@ args = 0, pretend = 0, frame = 0
+ 158              		@ frame_needed = 0, uses_anonymous_args = 0
+ 159              		@ link register save eliminated.
+ 114:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   qspi_x->ctrl_bit.clkdiv = new_clkdiv;
+ 160              		.loc 1 114 3 view .LVU23
+ 161              		.loc 1 114 27 is_stmt 0 view .LVU24
+ 162 0000 0369     		ldr	r3, [r0, #16]
+ 163 0002 61F30203 		bfi	r3, r1, #0, #3
+ 164 0006 0361     		str	r3, [r0, #16]
+ 115:bsp/libraries/drivers/src/at32f435_437_qspi.c **** }
+ 165              		.loc 1 115 1 view .LVU25
+ 166 0008 7047     		bx	lr
+ 167              		.cfi_endproc
+ 168              	.LFE136:
+ 170              		.section	.text.qspi_xip_cache_bypass_set,"ax",%progbits
+ 171              		.align	1
+ 172              		.global	qspi_xip_cache_bypass_set
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccPQnBpM.s 			page 6
+
+
+ 173              		.syntax unified
+ 174              		.thumb
+ 175              		.thumb_func
+ 177              	qspi_xip_cache_bypass_set:
+ 178              	.LVL13:
+ 179              	.LFB137:
+ 116:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 117:bsp/libraries/drivers/src/at32f435_437_qspi.c **** /**
+ 118:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @brief  enable/disable cache in xip mode
+ 119:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @note   the function must be configured only when qspi in command-port mode!!!
+ 120:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  qspi_x: select the qspi peripheral.
+ 121:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         this parameter can be one of the following values:
+ 122:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         QSPI1,QSPI2.
+ 123:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  new_state (TRUE or FALSE)
+ 124:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         TRUE: disable cache
+ 125:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         FALSE: enable cache
+ 126:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @retval none
+ 127:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   */
+ 128:bsp/libraries/drivers/src/at32f435_437_qspi.c **** void qspi_xip_cache_bypass_set(qspi_type* qspi_x, confirm_state new_state)
+ 129:bsp/libraries/drivers/src/at32f435_437_qspi.c **** {
+ 180              		.loc 1 129 1 is_stmt 1 view -0
+ 181              		.cfi_startproc
+ 182              		@ args = 0, pretend = 0, frame = 0
+ 183              		@ frame_needed = 0, uses_anonymous_args = 0
+ 184              		@ link register save eliminated.
+ 130:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   qspi_x->xip_cmd_w3_bit.bypassc = new_state;
+ 185              		.loc 1 130 3 view .LVU27
+ 186              		.loc 1 130 34 is_stmt 0 view .LVU28
+ 187 0000 C36B     		ldr	r3, [r0, #60]
+ 188 0002 61F30003 		bfi	r3, r1, #0, #1
+ 189 0006 C363     		str	r3, [r0, #60]
+ 131:bsp/libraries/drivers/src/at32f435_437_qspi.c **** }
+ 190              		.loc 1 131 1 view .LVU29
+ 191 0008 7047     		bx	lr
+ 192              		.cfi_endproc
+ 193              	.LFE137:
+ 195              		.section	.text.qspi_interrupt_enable,"ax",%progbits
+ 196              		.align	1
+ 197              		.global	qspi_interrupt_enable
+ 198              		.syntax unified
+ 199              		.thumb
+ 200              		.thumb_func
+ 202              	qspi_interrupt_enable:
+ 203              	.LVL14:
+ 204              	.LFB138:
+ 132:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 133:bsp/libraries/drivers/src/at32f435_437_qspi.c **** /**
+ 134:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @brief  enable/disable interrupt when command is completed
+ 135:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @note   the function must be configured only when qspi in command-port mode!!!
+ 136:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  qspi_x: select the qspi peripheral.
+ 137:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         this parameter can be one of the following values:
+ 138:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         QSPI1,QSPI2.
+ 139:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  new_state (TRUE or FALSE)
+ 140:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @retval none
+ 141:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   */
+ 142:bsp/libraries/drivers/src/at32f435_437_qspi.c **** void qspi_interrupt_enable(qspi_type* qspi_x, confirm_state new_state)
+ 143:bsp/libraries/drivers/src/at32f435_437_qspi.c **** {
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccPQnBpM.s 			page 7
+
+
+ 205              		.loc 1 143 1 is_stmt 1 view -0
+ 206              		.cfi_startproc
+ 207              		@ args = 0, pretend = 0, frame = 0
+ 208              		@ frame_needed = 0, uses_anonymous_args = 0
+ 209              		@ link register save eliminated.
+ 144:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   qspi_x->ctrl2_bit.cmdie = new_state;
+ 210              		.loc 1 144 3 view .LVU31
+ 211              		.loc 1 144 27 is_stmt 0 view .LVU32
+ 212 0000 036A     		ldr	r3, [r0, #32]
+ 213 0002 61F34103 		bfi	r3, r1, #1, #1
+ 214 0006 0362     		str	r3, [r0, #32]
+ 145:bsp/libraries/drivers/src/at32f435_437_qspi.c **** }
+ 215              		.loc 1 145 1 view .LVU33
+ 216 0008 7047     		bx	lr
+ 217              		.cfi_endproc
+ 218              	.LFE138:
+ 220              		.section	.text.qspi_flag_get,"ax",%progbits
+ 221              		.align	1
+ 222              		.global	qspi_flag_get
+ 223              		.syntax unified
+ 224              		.thumb
+ 225              		.thumb_func
+ 227              	qspi_flag_get:
+ 228              	.LVL15:
+ 229              	.LFB139:
+ 146:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 147:bsp/libraries/drivers/src/at32f435_437_qspi.c **** /**
+ 148:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @brief  get status flags.
+ 149:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  qspi_x: select the qspi peripheral.
+ 150:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         this parameter can be one of the following values:
+ 151:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         QSPI1,QSPI2.
+ 152:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  flag: specifies the flag to check.
+ 153:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         this parameter can be one of the following values:
+ 154:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_RXFIFORDY_FLAG
+ 155:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_TXFIFORDY_FLAG
+ 156:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_CMDSTS_FLAG
+ 157:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @retval the new state of the flag (SET or RESET).
+ 158:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   */
+ 159:bsp/libraries/drivers/src/at32f435_437_qspi.c **** flag_status qspi_flag_get(qspi_type* qspi_x, uint32_t flag)
+ 160:bsp/libraries/drivers/src/at32f435_437_qspi.c **** {
+ 230              		.loc 1 160 1 is_stmt 1 view -0
+ 231              		.cfi_startproc
+ 232              		@ args = 0, pretend = 0, frame = 0
+ 233              		@ frame_needed = 0, uses_anonymous_args = 0
+ 234              		@ link register save eliminated.
+ 161:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   flag_status bit_status = RESET;
+ 235              		.loc 1 161 3 view .LVU35
+ 162:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   switch(flag)
+ 236              		.loc 1 162 3 view .LVU36
+ 237 0000 0229     		cmp	r1, #2
+ 238 0002 05D0     		beq	.L15
+ 239 0004 0429     		cmp	r1, #4
+ 240 0006 07D0     		beq	.L16
+ 241 0008 0129     		cmp	r1, #1
+ 242 000a 09D0     		beq	.L17
+ 243 000c 0020     		movs	r0, #0
+ 244              	.LVL16:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccPQnBpM.s 			page 8
+
+
+ 245              		.loc 1 162 3 is_stmt 0 view .LVU37
+ 246 000e 7047     		bx	lr
+ 247              	.LVL17:
+ 248              	.L15:
+ 163:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   {
+ 164:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     case QSPI_RXFIFORDY_FLAG:
+ 165:bsp/libraries/drivers/src/at32f435_437_qspi.c ****       bit_status = (flag_status)qspi_x->fifosts_bit.rxfifordy;
+ 249              		.loc 1 165 7 is_stmt 1 view .LVU38
+ 250              		.loc 1 165 52 is_stmt 0 view .LVU39
+ 251 0010 8069     		ldr	r0, [r0, #24]
+ 252              	.LVL18:
+ 253              		.loc 1 165 52 view .LVU40
+ 254 0012 C0F34000 		ubfx	r0, r0, #1, #1
+ 255              	.LVL19:
+ 166:bsp/libraries/drivers/src/at32f435_437_qspi.c ****       break;
+ 256              		.loc 1 166 7 is_stmt 1 view .LVU41
+ 257 0016 7047     		bx	lr
+ 258              	.LVL20:
+ 259              	.L16:
+ 167:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     case QSPI_TXFIFORDY_FLAG:
+ 168:bsp/libraries/drivers/src/at32f435_437_qspi.c ****       bit_status = (flag_status)qspi_x->fifosts_bit.txfifordy;
+ 260              		.loc 1 168 7 view .LVU42
+ 261              		.loc 1 168 52 is_stmt 0 view .LVU43
+ 262 0018 8069     		ldr	r0, [r0, #24]
+ 263              	.LVL21:
+ 264              		.loc 1 168 52 view .LVU44
+ 265 001a 00F00100 		and	r0, r0, #1
+ 266              	.LVL22:
+ 169:bsp/libraries/drivers/src/at32f435_437_qspi.c ****       break;
+ 267              		.loc 1 169 7 is_stmt 1 view .LVU45
+ 268 001e 7047     		bx	lr
+ 269              	.LVL23:
+ 270              	.L17:
+ 170:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     case QSPI_CMDSTS_FLAG:
+ 171:bsp/libraries/drivers/src/at32f435_437_qspi.c ****       bit_status = (flag_status)qspi_x->cmdsts_bit.cmdsts;
+ 271              		.loc 1 171 7 view .LVU46
+ 272              		.loc 1 171 51 is_stmt 0 view .LVU47
+ 273 0020 406A     		ldr	r0, [r0, #36]
+ 274              	.LVL24:
+ 275              		.loc 1 171 51 view .LVU48
+ 276 0022 00F00100 		and	r0, r0, #1
+ 277              	.LVL25:
+ 172:bsp/libraries/drivers/src/at32f435_437_qspi.c ****       break;
+ 278              		.loc 1 172 7 is_stmt 1 view .LVU49
+ 173:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     default:
+ 174:bsp/libraries/drivers/src/at32f435_437_qspi.c ****       break;
+ 175:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   }
+ 176:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   return bit_status;
+ 279              		.loc 1 176 3 view .LVU50
+ 177:bsp/libraries/drivers/src/at32f435_437_qspi.c **** }
+ 280              		.loc 1 177 1 is_stmt 0 view .LVU51
+ 281 0026 7047     		bx	lr
+ 282              		.cfi_endproc
+ 283              	.LFE139:
+ 285              		.section	.text.qspi_interrupt_flag_get,"ax",%progbits
+ 286              		.align	1
+ 287              		.global	qspi_interrupt_flag_get
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccPQnBpM.s 			page 9
+
+
+ 288              		.syntax unified
+ 289              		.thumb
+ 290              		.thumb_func
+ 292              	qspi_interrupt_flag_get:
+ 293              	.LVL26:
+ 294              	.LFB140:
+ 178:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 179:bsp/libraries/drivers/src/at32f435_437_qspi.c **** /**
+ 180:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @brief  get interrupt flags.
+ 181:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  qspi_x: select the qspi peripheral.
+ 182:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         this parameter can be one of the following values:
+ 183:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         QSPI1,QSPI2.
+ 184:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  flag: only QSPI_CMDSTS_FLAG valid.
+ 185:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @retval the new state of the flag (SET or RESET).
+ 186:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   */
+ 187:bsp/libraries/drivers/src/at32f435_437_qspi.c **** flag_status qspi_interrupt_flag_get(qspi_type* qspi_x, uint32_t flag)
+ 188:bsp/libraries/drivers/src/at32f435_437_qspi.c **** {
+ 295              		.loc 1 188 1 is_stmt 1 view -0
+ 296              		.cfi_startproc
+ 297              		@ args = 0, pretend = 0, frame = 0
+ 298              		@ frame_needed = 0, uses_anonymous_args = 0
+ 299              		@ link register save eliminated.
+ 189:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   if(QSPI_CMDSTS_FLAG != flag)
+ 300              		.loc 1 189 3 view .LVU53
+ 301              		.loc 1 189 5 is_stmt 0 view .LVU54
+ 302 0000 0129     		cmp	r1, #1
+ 303 0002 09D1     		bne	.L21
+ 190:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     return RESET;
+ 191:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   if(qspi_x->cmdsts_bit.cmdsts && qspi_x->ctrl2_bit.cmdie)
+ 304              		.loc 1 191 3 is_stmt 1 view .LVU55
+ 305              		.loc 1 191 24 is_stmt 0 view .LVU56
+ 306 0004 436A     		ldr	r3, [r0, #36]
+ 307              		.loc 1 191 5 view .LVU57
+ 308 0006 13F0010F 		tst	r3, #1
+ 309 000a 07D0     		beq	.L22
+ 310              		.loc 1 191 52 discriminator 1 view .LVU58
+ 311 000c 036A     		ldr	r3, [r0, #32]
+ 312              		.loc 1 191 32 discriminator 1 view .LVU59
+ 313 000e 13F0020F 		tst	r3, #2
+ 314 0012 05D1     		bne	.L23
+ 192:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     return SET;
+ 193:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   else
+ 194:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     return RESET;
+ 315              		.loc 1 194 12 view .LVU60
+ 316 0014 0020     		movs	r0, #0
+ 317              	.LVL27:
+ 318              		.loc 1 194 12 view .LVU61
+ 319 0016 7047     		bx	lr
+ 320              	.LVL28:
+ 321              	.L21:
+ 190:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     return RESET;
+ 322              		.loc 1 190 12 view .LVU62
+ 323 0018 0020     		movs	r0, #0
+ 324              	.LVL29:
+ 190:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     return RESET;
+ 325              		.loc 1 190 12 view .LVU63
+ 326 001a 7047     		bx	lr
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccPQnBpM.s 			page 10
+
+
+ 327              	.LVL30:
+ 328              	.L22:
+ 329              		.loc 1 194 12 view .LVU64
+ 330 001c 0020     		movs	r0, #0
+ 331              	.LVL31:
+ 332              		.loc 1 194 12 view .LVU65
+ 333 001e 7047     		bx	lr
+ 334              	.LVL32:
+ 335              	.L23:
+ 192:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     return SET;
+ 336              		.loc 1 192 12 view .LVU66
+ 337 0020 0120     		movs	r0, #1
+ 338              	.LVL33:
+ 195:bsp/libraries/drivers/src/at32f435_437_qspi.c **** }
+ 339              		.loc 1 195 1 view .LVU67
+ 340 0022 7047     		bx	lr
+ 341              		.cfi_endproc
+ 342              	.LFE140:
+ 344              		.section	.text.qspi_flag_clear,"ax",%progbits
+ 345              		.align	1
+ 346              		.global	qspi_flag_clear
+ 347              		.syntax unified
+ 348              		.thumb
+ 349              		.thumb_func
+ 351              	qspi_flag_clear:
+ 352              	.LVL34:
+ 353              	.LFB141:
+ 196:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 197:bsp/libraries/drivers/src/at32f435_437_qspi.c **** /**
+ 198:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @brief  clear flags
+ 199:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  qspi_x: select the qspi peripheral.
+ 200:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         this parameter can be one of the following values:
+ 201:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         QSPI1,QSPI2.
+ 202:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  flag: flags to be clear
+ 203:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         this parameter can be one of the following values:
+ 204:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_CMDSTS_FLAG
+ 205:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @retval none
+ 206:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   */
+ 207:bsp/libraries/drivers/src/at32f435_437_qspi.c **** void qspi_flag_clear(qspi_type* qspi_x, uint32_t flag)
+ 208:bsp/libraries/drivers/src/at32f435_437_qspi.c **** {
+ 354              		.loc 1 208 1 is_stmt 1 view -0
+ 355              		.cfi_startproc
+ 356              		@ args = 0, pretend = 0, frame = 0
+ 357              		@ frame_needed = 0, uses_anonymous_args = 0
+ 358              		@ link register save eliminated.
+ 209:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   qspi_x->cmdsts = QSPI_CMDSTS_FLAG;
+ 359              		.loc 1 209 3 view .LVU69
+ 360              		.loc 1 209 18 is_stmt 0 view .LVU70
+ 361 0000 0123     		movs	r3, #1
+ 362 0002 4362     		str	r3, [r0, #36]
+ 210:bsp/libraries/drivers/src/at32f435_437_qspi.c **** }
+ 363              		.loc 1 210 1 view .LVU71
+ 364 0004 7047     		bx	lr
+ 365              		.cfi_endproc
+ 366              	.LFE141:
+ 368              		.section	.text.qspi_dma_rx_threshold_set,"ax",%progbits
+ 369              		.align	1
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccPQnBpM.s 			page 11
+
+
+ 370              		.global	qspi_dma_rx_threshold_set
+ 371              		.syntax unified
+ 372              		.thumb
+ 373              		.thumb_func
+ 375              	qspi_dma_rx_threshold_set:
+ 376              	.LVL35:
+ 377              	.LFB142:
+ 211:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 212:bsp/libraries/drivers/src/at32f435_437_qspi.c **** /**
+ 213:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @brief  set dma threshold for dma rx
+ 214:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @note   the function must be configured only when qspi in command-port mode!!!
+ 215:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  qspi_x: select the qspi peripheral.
+ 216:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         this parameter can be one of the following values:
+ 217:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         QSPI1,QSPI2.
+ 218:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  new_threshold: value to set
+ 219:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         this parameter can be one of the following values:
+ 220:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_DMA_FIFO_THOD_WORD08
+ 221:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_DMA_FIFO_THOD_WORD16
+ 222:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_DMA_FIFO_THOD_WORD32
+ 223:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @retval none
+ 224:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   */
+ 225:bsp/libraries/drivers/src/at32f435_437_qspi.c **** void qspi_dma_rx_threshold_set(qspi_type* qspi_x, qspi_dma_fifo_thod_type new_threshold)
+ 226:bsp/libraries/drivers/src/at32f435_437_qspi.c **** {
+ 378              		.loc 1 226 1 is_stmt 1 view -0
+ 379              		.cfi_startproc
+ 380              		@ args = 0, pretend = 0, frame = 0
+ 381              		@ frame_needed = 0, uses_anonymous_args = 0
+ 382              		@ link register save eliminated.
+ 227:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   qspi_x->ctrl2_bit.rxfifo_thod = new_threshold;
+ 383              		.loc 1 227 3 view .LVU73
+ 384              		.loc 1 227 33 is_stmt 0 view .LVU74
+ 385 0000 036A     		ldr	r3, [r0, #32]
+ 386 0002 61F30D33 		bfi	r3, r1, #12, #2
+ 387 0006 0362     		str	r3, [r0, #32]
+ 228:bsp/libraries/drivers/src/at32f435_437_qspi.c **** }
+ 388              		.loc 1 228 1 view .LVU75
+ 389 0008 7047     		bx	lr
+ 390              		.cfi_endproc
+ 391              	.LFE142:
+ 393              		.section	.text.qspi_dma_tx_threshold_set,"ax",%progbits
+ 394              		.align	1
+ 395              		.global	qspi_dma_tx_threshold_set
+ 396              		.syntax unified
+ 397              		.thumb
+ 398              		.thumb_func
+ 400              	qspi_dma_tx_threshold_set:
+ 401              	.LVL36:
+ 402              	.LFB143:
+ 229:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 230:bsp/libraries/drivers/src/at32f435_437_qspi.c **** /**
+ 231:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @brief  set dma threshold for dma tx
+ 232:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @note   the function must be configured only when qspi in command-port mode!!!
+ 233:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  qspi_x: select the qspi peripheral.
+ 234:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         this parameter can be one of the following values:
+ 235:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         QSPI1,QSPI2.
+ 236:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  new_threshold: value to set
+ 237:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         this parameter can be one of the following values:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccPQnBpM.s 			page 12
+
+
+ 238:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_DMA_FIFO_THOD_WORD08
+ 239:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_DMA_FIFO_THOD_WORD16
+ 240:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_DMA_FIFO_THOD_WORD32
+ 241:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @retval none
+ 242:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   */
+ 243:bsp/libraries/drivers/src/at32f435_437_qspi.c **** void qspi_dma_tx_threshold_set(qspi_type* qspi_x, qspi_dma_fifo_thod_type new_threshold)
+ 244:bsp/libraries/drivers/src/at32f435_437_qspi.c **** {
+ 403              		.loc 1 244 1 is_stmt 1 view -0
+ 404              		.cfi_startproc
+ 405              		@ args = 0, pretend = 0, frame = 0
+ 406              		@ frame_needed = 0, uses_anonymous_args = 0
+ 407              		@ link register save eliminated.
+ 245:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   qspi_x->ctrl2_bit.txfifo_thod = new_threshold;
+ 408              		.loc 1 245 3 view .LVU77
+ 409              		.loc 1 245 33 is_stmt 0 view .LVU78
+ 410 0000 036A     		ldr	r3, [r0, #32]
+ 411 0002 61F30923 		bfi	r3, r1, #8, #2
+ 412 0006 0362     		str	r3, [r0, #32]
+ 246:bsp/libraries/drivers/src/at32f435_437_qspi.c **** }
+ 413              		.loc 1 246 1 view .LVU79
+ 414 0008 7047     		bx	lr
+ 415              		.cfi_endproc
+ 416              	.LFE143:
+ 418              		.section	.text.qspi_dma_enable,"ax",%progbits
+ 419              		.align	1
+ 420              		.global	qspi_dma_enable
+ 421              		.syntax unified
+ 422              		.thumb
+ 423              		.thumb_func
+ 425              	qspi_dma_enable:
+ 426              	.LVL37:
+ 427              	.LFB144:
+ 247:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 248:bsp/libraries/drivers/src/at32f435_437_qspi.c **** /**
+ 249:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @brief  enable/disable dma transfer
+ 250:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @note   the function must be configured only when qspi in command-port mode!!!
+ 251:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  qspi_x: select the qspi peripheral.
+ 252:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         this parameter can be one of the following values:
+ 253:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         QSPI1,QSPI2.
+ 254:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  new_state (TRUE or FALSE)
+ 255:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @retval none
+ 256:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   */
+ 257:bsp/libraries/drivers/src/at32f435_437_qspi.c **** void qspi_dma_enable(qspi_type* qspi_x, confirm_state new_state)
+ 258:bsp/libraries/drivers/src/at32f435_437_qspi.c **** {
+ 428              		.loc 1 258 1 is_stmt 1 view -0
+ 429              		.cfi_startproc
+ 430              		@ args = 0, pretend = 0, frame = 0
+ 431              		@ frame_needed = 0, uses_anonymous_args = 0
+ 432              		@ link register save eliminated.
+ 259:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   qspi_x->ctrl2_bit.dmaen = new_state;
+ 433              		.loc 1 259 3 view .LVU81
+ 434              		.loc 1 259 27 is_stmt 0 view .LVU82
+ 435 0000 036A     		ldr	r3, [r0, #32]
+ 436 0002 61F30003 		bfi	r3, r1, #0, #1
+ 437 0006 0362     		str	r3, [r0, #32]
+ 260:bsp/libraries/drivers/src/at32f435_437_qspi.c **** }
+ 438              		.loc 1 260 1 view .LVU83
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccPQnBpM.s 			page 13
+
+
+ 439 0008 7047     		bx	lr
+ 440              		.cfi_endproc
+ 441              	.LFE144:
+ 443              		.section	.text.qspi_busy_config,"ax",%progbits
+ 444              		.align	1
+ 445              		.global	qspi_busy_config
+ 446              		.syntax unified
+ 447              		.thumb
+ 448              		.thumb_func
+ 450              	qspi_busy_config:
+ 451              	.LVL38:
+ 452              	.LFB145:
+ 261:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 262:bsp/libraries/drivers/src/at32f435_437_qspi.c **** /**
+ 263:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @brief  set wip position in status register of flash
+ 264:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @note   the function must be configured only when qspi in command-port mode!!!
+ 265:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  qspi_x: select the qspi peripheral.
+ 266:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         this parameter can be one of the following values:
+ 267:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         QSPI1,QSPI2.
+ 268:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  busy_pos: value to set
+ 269:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         this parameter can be one of the following values:
+ 270:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_BUSY_OFFSET_0
+ 271:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_BUSY_OFFSET_1
+ 272:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_BUSY_OFFSET_2
+ 273:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_BUSY_OFFSET_3
+ 274:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_BUSY_OFFSET_4
+ 275:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_BUSY_OFFSET_5
+ 276:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_BUSY_OFFSET_6
+ 277:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         - QSPI_BUSY_OFFSET_7
+ 278:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @retval none
+ 279:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   */
+ 280:bsp/libraries/drivers/src/at32f435_437_qspi.c **** void qspi_busy_config(qspi_type* qspi_x, qspi_busy_pos_type busy_pos)
+ 281:bsp/libraries/drivers/src/at32f435_437_qspi.c **** {
+ 453              		.loc 1 281 1 is_stmt 1 view -0
+ 454              		.cfi_startproc
+ 455              		@ args = 0, pretend = 0, frame = 0
+ 456              		@ frame_needed = 0, uses_anonymous_args = 0
+ 457              		@ link register save eliminated.
+ 282:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   qspi_x->ctrl_bit.busy = busy_pos;
+ 458              		.loc 1 282 3 view .LVU85
+ 459              		.loc 1 282 25 is_stmt 0 view .LVU86
+ 460 0000 0369     		ldr	r3, [r0, #16]
+ 461 0002 61F31243 		bfi	r3, r1, #16, #3
+ 462 0006 0361     		str	r3, [r0, #16]
+ 283:bsp/libraries/drivers/src/at32f435_437_qspi.c **** }
+ 463              		.loc 1 283 1 view .LVU87
+ 464 0008 7047     		bx	lr
+ 465              		.cfi_endproc
+ 466              	.LFE145:
+ 468              		.section	.text.qspi_xip_enable,"ax",%progbits
+ 469              		.align	1
+ 470              		.global	qspi_xip_enable
+ 471              		.syntax unified
+ 472              		.thumb
+ 473              		.thumb_func
+ 475              	qspi_xip_enable:
+ 476              	.LVL39:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccPQnBpM.s 			page 14
+
+
+ 477              	.LFB146:
+ 284:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 285:bsp/libraries/drivers/src/at32f435_437_qspi.c **** /**
+ 286:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @brief  enable xip mode or command-port mode.
+ 287:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  qspi_x: select the qspi peripheral.
+ 288:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         this parameter can be one of the following values:
+ 289:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         QSPI1,QSPI2.
+ 290:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  new_state (TRUE or FALSE)
+ 291:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @retval none
+ 292:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   */
+ 293:bsp/libraries/drivers/src/at32f435_437_qspi.c **** void qspi_xip_enable(qspi_type* qspi_x, confirm_state new_state)
+ 294:bsp/libraries/drivers/src/at32f435_437_qspi.c **** {
+ 478              		.loc 1 294 1 is_stmt 1 view -0
+ 479              		.cfi_startproc
+ 480              		@ args = 0, pretend = 0, frame = 0
+ 481              		@ frame_needed = 0, uses_anonymous_args = 0
+ 482              		@ link register save eliminated.
+ 295:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   register uint16_t dly=0;
+ 483              		.loc 1 295 3 view .LVU89
+ 296:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   /* skip if state is no change */
+ 297:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   if(new_state == (confirm_state)(qspi_x->ctrl_bit.xipsel))
+ 484              		.loc 1 297 3 view .LVU90
+ 485              		.loc 1 297 51 is_stmt 0 view .LVU91
+ 486 0000 0369     		ldr	r3, [r0, #16]
+ 487 0002 C3F30053 		ubfx	r3, r3, #20, #1
+ 488              		.loc 1 297 5 view .LVU92
+ 489 0006 8B42     		cmp	r3, r1
+ 490 0008 25D0     		beq	.L29
+ 491              	.L32:
+ 298:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   {
+ 299:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     return;
+ 300:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   }
+ 301:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 302:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   /* wait until tx fifo is empty*/
+ 303:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   while(qspi_x->fifosts_bit.txfifordy == 0);
+ 492              		.loc 1 303 44 is_stmt 1 discriminator 1 view .LVU93
+ 493              		.loc 1 303 8 discriminator 1 view .LVU94
+ 494              		.loc 1 303 28 is_stmt 0 discriminator 1 view .LVU95
+ 495 000a 8369     		ldr	r3, [r0, #24]
+ 496              		.loc 1 303 8 discriminator 1 view .LVU96
+ 497 000c 13F0010F 		tst	r3, #1
+ 498 0010 FBD0     		beq	.L32
+ 304:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 305:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   /* make sure IO is transmitted */
+ 306:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   dly = 64;
+ 499              		.loc 1 306 7 view .LVU97
+ 500 0012 4022     		movs	r2, #64
+ 501 0014 01E0     		b	.L31
+ 502              	.LVL40:
+ 503              	.L33:
+ 307:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   while(dly--)
+ 308:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   {
+ 309:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     __NOP();
+ 504              		.loc 1 309 5 is_stmt 1 view .LVU98
+ 505              		.syntax unified
+ 506              	@ 309 "bsp/libraries/drivers/src/at32f435_437_qspi.c" 1
+ 507 0016 00BF     		nop
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccPQnBpM.s 			page 15
+
+
+ 508              	@ 0 "" 2
+ 307:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   while(dly--)
+ 509              		.loc 1 307 12 is_stmt 0 view .LVU99
+ 510              		.thumb
+ 511              		.syntax unified
+ 512 0018 1A46     		mov	r2, r3
+ 513              	.LVL41:
+ 514              	.L31:
+ 307:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   while(dly--)
+ 515              		.loc 1 307 8 is_stmt 1 view .LVU100
+ 307:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   while(dly--)
+ 516              		.loc 1 307 12 is_stmt 0 view .LVU101
+ 517 001a 531E     		subs	r3, r2, #1
+ 518 001c 9BB2     		uxth	r3, r3
+ 519              	.LVL42:
+ 307:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   while(dly--)
+ 520              		.loc 1 307 8 view .LVU102
+ 521 001e 002A     		cmp	r2, #0
+ 522 0020 F9D1     		bne	.L33
+ 310:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   }
+ 311:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   
+ 312:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   /* flush and reset qspi state */
+ 313:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   qspi_x->ctrl_bit.xiprcmdf = 1;
+ 523              		.loc 1 313 3 is_stmt 1 view .LVU103
+ 524              		.loc 1 313 29 is_stmt 0 view .LVU104
+ 525 0022 0369     		ldr	r3, [r0, #16]
+ 526              	.LVL43:
+ 527              		.loc 1 313 29 view .LVU105
+ 528 0024 43F40023 		orr	r3, r3, #524288
+ 529 0028 0361     		str	r3, [r0, #16]
+ 314:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 315:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   /* wait until action is finished */
+ 316:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   while(qspi_x->ctrl_bit.abort);
+ 530              		.loc 1 316 3 is_stmt 1 view .LVU106
+ 531              	.L34:
+ 532              		.loc 1 316 32 discriminator 1 view .LVU107
+ 533              		.loc 1 316 8 discriminator 1 view .LVU108
+ 534              		.loc 1 316 25 is_stmt 0 discriminator 1 view .LVU109
+ 535 002a 0369     		ldr	r3, [r0, #16]
+ 536              		.loc 1 316 8 discriminator 1 view .LVU110
+ 537 002c 13F4807F 		tst	r3, #256
+ 538 0030 FBD1     		bne	.L34
+ 317:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 318:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   /* make sure IO is transmitted */
+ 319:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   dly = 64;
+ 539              		.loc 1 319 7 view .LVU111
+ 540 0032 4022     		movs	r2, #64
+ 541              	.LVL44:
+ 542              		.loc 1 319 7 view .LVU112
+ 543 0034 01E0     		b	.L35
+ 544              	.LVL45:
+ 545              	.L36:
+ 320:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   while(dly--)
+ 321:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   {
+ 322:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     __NOP();
+ 546              		.loc 1 322 5 is_stmt 1 view .LVU113
+ 547              		.syntax unified
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccPQnBpM.s 			page 16
+
+
+ 548              	@ 322 "bsp/libraries/drivers/src/at32f435_437_qspi.c" 1
+ 549 0036 00BF     		nop
+ 550              	@ 0 "" 2
+ 320:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   while(dly--)
+ 551              		.loc 1 320 12 is_stmt 0 view .LVU114
+ 552              		.thumb
+ 553              		.syntax unified
+ 554 0038 1A46     		mov	r2, r3
+ 555              	.LVL46:
+ 556              	.L35:
+ 320:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   while(dly--)
+ 557              		.loc 1 320 8 is_stmt 1 view .LVU115
+ 320:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   while(dly--)
+ 558              		.loc 1 320 12 is_stmt 0 view .LVU116
+ 559 003a 531E     		subs	r3, r2, #1
+ 560 003c 9BB2     		uxth	r3, r3
+ 561              	.LVL47:
+ 320:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   while(dly--)
+ 562              		.loc 1 320 8 view .LVU117
+ 563 003e 002A     		cmp	r2, #0
+ 564 0040 F9D1     		bne	.L36
+ 323:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   }
+ 324:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   /* set xip mode to new state */
+ 325:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   qspi_x->ctrl_bit.xipsel = new_state;
+ 565              		.loc 1 325 3 is_stmt 1 view .LVU118
+ 566              		.loc 1 325 27 is_stmt 0 view .LVU119
+ 567 0042 0369     		ldr	r3, [r0, #16]
+ 568              	.LVL48:
+ 569              		.loc 1 325 27 view .LVU120
+ 570 0044 61F31453 		bfi	r3, r1, #20, #1
+ 571 0048 0361     		str	r3, [r0, #16]
+ 326:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 327:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   /* wait until abort is not set */
+ 328:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   while(qspi_x->ctrl_bit.abort);
+ 572              		.loc 1 328 3 is_stmt 1 view .LVU121
+ 573              	.L37:
+ 574              		.loc 1 328 32 discriminator 1 view .LVU122
+ 575              		.loc 1 328 8 discriminator 1 view .LVU123
+ 576              		.loc 1 328 25 is_stmt 0 discriminator 1 view .LVU124
+ 577 004a 0369     		ldr	r3, [r0, #16]
+ 578              		.loc 1 328 8 discriminator 1 view .LVU125
+ 579 004c 13F4807F 		tst	r3, #256
+ 580 0050 FBD1     		bne	.L37
+ 329:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 330:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   /* wait until cache status valid*/
+ 331:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   if(new_state == TRUE)
+ 581              		.loc 1 331 3 is_stmt 1 view .LVU126
+ 582              		.loc 1 331 5 is_stmt 0 view .LVU127
+ 583 0052 0129     		cmp	r1, #1
+ 584 0054 00D0     		beq	.L38
+ 585              	.LVL49:
+ 586              	.L29:
+ 332:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   {
+ 333:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     while( qspi_x->xip_cmd_w3_bit.csts );
+ 334:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   }
+ 335:bsp/libraries/drivers/src/at32f435_437_qspi.c **** }
+ 587              		.loc 1 335 1 view .LVU128
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccPQnBpM.s 			page 17
+
+
+ 588 0056 7047     		bx	lr
+ 589              	.LVL50:
+ 590              	.L38:
+ 333:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   }
+ 591              		.loc 1 333 41 is_stmt 1 discriminator 1 view .LVU129
+ 333:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   }
+ 592              		.loc 1 333 10 discriminator 1 view .LVU130
+ 333:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   }
+ 593              		.loc 1 333 34 is_stmt 0 discriminator 1 view .LVU131
+ 594 0058 C36B     		ldr	r3, [r0, #60]
+ 333:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   }
+ 595              		.loc 1 333 10 discriminator 1 view .LVU132
+ 596 005a 13F0080F 		tst	r3, #8
+ 597 005e FBD1     		bne	.L38
+ 598 0060 F9E7     		b	.L29
+ 599              		.cfi_endproc
+ 600              	.LFE146:
+ 602              		.section	.text.qspi_cmd_operation_kick,"ax",%progbits
+ 603              		.align	1
+ 604              		.global	qspi_cmd_operation_kick
+ 605              		.syntax unified
+ 606              		.thumb
+ 607              		.thumb_func
+ 609              	qspi_cmd_operation_kick:
+ 610              	.LVL51:
+ 611              	.LFB147:
+ 336:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 337:bsp/libraries/drivers/src/at32f435_437_qspi.c **** /**
+ 338:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @brief  set command-port and qspi_x will start to work
+ 339:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  qspi_x: select the qspi peripheral.
+ 340:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         this parameter can be one of the following values:
+ 341:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         QSPI1,QSPI2.
+ 342:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  qspi_cmd_struct: pointer to qspi cmd structure
+ 343:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @retval none
+ 344:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   */
+ 345:bsp/libraries/drivers/src/at32f435_437_qspi.c **** void qspi_cmd_operation_kick(qspi_type* qspi_x, qspi_cmd_type* qspi_cmd_struct)
+ 346:bsp/libraries/drivers/src/at32f435_437_qspi.c **** {
+ 612              		.loc 1 346 1 is_stmt 1 view -0
+ 613              		.cfi_startproc
+ 614              		@ args = 0, pretend = 0, frame = 0
+ 615              		@ frame_needed = 0, uses_anonymous_args = 0
+ 616              		@ link register save eliminated.
+ 347:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   uint32_t w1_val = 0, w3_val = 0;
+ 617              		.loc 1 347 3 view .LVU134
+ 348:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 349:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   /* config analyse cmd_w0 register */
+ 350:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   qspi_x->cmd_w0 = (uint32_t)qspi_cmd_struct->address_code;
+ 618              		.loc 1 350 3 view .LVU135
+ 619              		.loc 1 350 45 is_stmt 0 view .LVU136
+ 620 0000 4B68     		ldr	r3, [r1, #4]
+ 621              		.loc 1 350 18 view .LVU137
+ 622 0002 0360     		str	r3, [r0]
+ 351:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 352:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   /* config analyse cmd_w1 register */
+ 353:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   w1_val = (uint32_t)qspi_cmd_struct->address_length;
+ 623              		.loc 1 353 3 is_stmt 1 view .LVU138
+ 624              		.loc 1 353 37 is_stmt 0 view .LVU139
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccPQnBpM.s 			page 18
+
+
+ 625 0004 0B7A     		ldrb	r3, [r1, #8]	@ zero_extendqisi2
+ 626              	.LVL52:
+ 354:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   w1_val |= (uint32_t)(qspi_cmd_struct->second_dummy_cycle_num << 16);
+ 627              		.loc 1 354 3 is_stmt 1 view .LVU140
+ 628              		.loc 1 354 39 is_stmt 0 view .LVU141
+ 629 0006 0A7C     		ldrb	r2, [r1, #16]	@ zero_extendqisi2
+ 630              		.loc 1 354 10 view .LVU142
+ 631 0008 43EA0243 		orr	r3, r3, r2, lsl #16
+ 632              	.LVL53:
+ 355:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   w1_val |= (uint32_t)(qspi_cmd_struct->instruction_length << 24);
+ 633              		.loc 1 355 3 is_stmt 1 view .LVU143
+ 634              		.loc 1 355 39 is_stmt 0 view .LVU144
+ 635 000c CA78     		ldrb	r2, [r1, #3]	@ zero_extendqisi2
+ 636              		.loc 1 355 10 view .LVU145
+ 637 000e 43EA0263 		orr	r3, r3, r2, lsl #24
+ 638              	.LVL54:
+ 356:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   w1_val |= (uint32_t)(qspi_cmd_struct->pe_mode_enable << 28);
+ 639              		.loc 1 356 3 is_stmt 1 view .LVU146
+ 640              		.loc 1 356 39 is_stmt 0 view .LVU147
+ 641 0012 0A78     		ldrb	r2, [r1]	@ zero_extendqisi2
+ 642              		.loc 1 356 10 view .LVU148
+ 643 0014 43EA0273 		orr	r3, r3, r2, lsl #28
+ 644              	.LVL55:
+ 357:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   qspi_x->cmd_w1 = w1_val;
+ 645              		.loc 1 357 3 is_stmt 1 view .LVU149
+ 646              		.loc 1 357 18 is_stmt 0 view .LVU150
+ 647 0018 4360     		str	r3, [r0, #4]
+ 358:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 359:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   /* config analyse cmd_w2 register */
+ 360:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   qspi_x->cmd_w2 = (uint32_t)qspi_cmd_struct->data_counter;
+ 648              		.loc 1 360 3 is_stmt 1 view .LVU151
+ 649              		.loc 1 360 45 is_stmt 0 view .LVU152
+ 650 001a CB68     		ldr	r3, [r1, #12]
+ 651              	.LVL56:
+ 652              		.loc 1 360 18 view .LVU153
+ 653 001c 8360     		str	r3, [r0, #8]
+ 654              	.LVL57:
+ 361:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 362:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   /* config analyse cmd_w3 register */
+ 363:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   w3_val = (uint32_t)(qspi_cmd_struct->write_data_enable << 1);
+ 655              		.loc 1 363 3 is_stmt 1 view .LVU154
+ 656              		.loc 1 363 38 is_stmt 0 view .LVU155
+ 657 001e 0A7D     		ldrb	r2, [r1, #20]	@ zero_extendqisi2
+ 658              	.LVL58:
+ 364:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   w3_val |= (uint32_t)(qspi_cmd_struct->read_status_enable << 2);
+ 659              		.loc 1 364 3 is_stmt 1 view .LVU156
+ 660              		.loc 1 364 39 is_stmt 0 view .LVU157
+ 661 0020 CB7C     		ldrb	r3, [r1, #19]	@ zero_extendqisi2
+ 662              		.loc 1 364 60 view .LVU158
+ 663 0022 9B00     		lsls	r3, r3, #2
+ 664              		.loc 1 364 10 view .LVU159
+ 665 0024 43EA4203 		orr	r3, r3, r2, lsl #1
+ 666              	.LVL59:
+ 365:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   w3_val |= (uint32_t)(qspi_cmd_struct->read_status_config << 3);
+ 667              		.loc 1 365 3 is_stmt 1 view .LVU160
+ 668              		.loc 1 365 39 is_stmt 0 view .LVU161
+ 669 0028 8A7C     		ldrb	r2, [r1, #18]	@ zero_extendqisi2
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccPQnBpM.s 			page 19
+
+
+ 670              		.loc 1 365 10 view .LVU162
+ 671 002a 43EAC203 		orr	r3, r3, r2, lsl #3
+ 672              	.LVL60:
+ 366:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   w3_val |= (uint32_t)(qspi_cmd_struct->operation_mode << 5);
+ 673              		.loc 1 366 3 is_stmt 1 view .LVU163
+ 674              		.loc 1 366 39 is_stmt 0 view .LVU164
+ 675 002e 4A7C     		ldrb	r2, [r1, #17]	@ zero_extendqisi2
+ 676              		.loc 1 366 10 view .LVU165
+ 677 0030 43EA4213 		orr	r3, r3, r2, lsl #5
+ 678              	.LVL61:
+ 367:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   w3_val |= (uint32_t)(qspi_cmd_struct->pe_mode_operate_code << 16);
+ 679              		.loc 1 367 3 is_stmt 1 view .LVU166
+ 680              		.loc 1 367 39 is_stmt 0 view .LVU167
+ 681 0034 4A78     		ldrb	r2, [r1, #1]	@ zero_extendqisi2
+ 682              		.loc 1 367 10 view .LVU168
+ 683 0036 43EA0243 		orr	r3, r3, r2, lsl #16
+ 684              	.LVL62:
+ 368:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   w3_val |= (uint32_t)(qspi_cmd_struct->instruction_code << 24);
+ 685              		.loc 1 368 3 is_stmt 1 view .LVU169
+ 686              		.loc 1 368 39 is_stmt 0 view .LVU170
+ 687 003a 8A78     		ldrb	r2, [r1, #2]	@ zero_extendqisi2
+ 688              		.loc 1 368 10 view .LVU171
+ 689 003c 43EA0263 		orr	r3, r3, r2, lsl #24
+ 690              	.LVL63:
+ 369:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   qspi_x->cmd_w3 = w3_val;
+ 691              		.loc 1 369 3 is_stmt 1 view .LVU172
+ 692              		.loc 1 369 18 is_stmt 0 view .LVU173
+ 693 0040 C360     		str	r3, [r0, #12]
+ 370:bsp/libraries/drivers/src/at32f435_437_qspi.c **** }
+ 694              		.loc 1 370 1 view .LVU174
+ 695 0042 7047     		bx	lr
+ 696              		.cfi_endproc
+ 697              	.LFE147:
+ 699              		.section	.text.qspi_xip_init,"ax",%progbits
+ 700              		.align	1
+ 701              		.global	qspi_xip_init
+ 702              		.syntax unified
+ 703              		.thumb
+ 704              		.thumb_func
+ 706              	qspi_xip_init:
+ 707              	.LVL64:
+ 708              	.LFB148:
+ 371:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 372:bsp/libraries/drivers/src/at32f435_437_qspi.c **** /**
+ 373:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @brief  initial xip mode for qspi_x
+ 374:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  qspi_x: select the qspi peripheral.
+ 375:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         this parameter can be one of the following values:
+ 376:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   *         QSPI1,QSPI2.
+ 377:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  xip_init_struct: pointer to xip init structure.
+ 378:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @retval none.
+ 379:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   */
+ 380:bsp/libraries/drivers/src/at32f435_437_qspi.c **** void qspi_xip_init(qspi_type* qspi_x, qspi_xip_type* xip_init_struct)
+ 381:bsp/libraries/drivers/src/at32f435_437_qspi.c **** {
+ 709              		.loc 1 381 1 is_stmt 1 view -0
+ 710              		.cfi_startproc
+ 711              		@ args = 0, pretend = 0, frame = 0
+ 712              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccPQnBpM.s 			page 20
+
+
+ 713              		@ link register save eliminated.
+ 382:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   uint32_t xc0_val = 0, xc1_val = 0, xc2_val = 0;
+ 714              		.loc 1 382 3 view .LVU176
+ 383:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   /* config analyse xip_cmd_w0 register */
+ 384:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   xc0_val = (uint32_t)xip_init_struct->read_second_dummy_cycle_num;
+ 715              		.loc 1 384 3 view .LVU177
+ 716              		.loc 1 384 38 is_stmt 0 view .LVU178
+ 717 0000 CB78     		ldrb	r3, [r1, #3]	@ zero_extendqisi2
+ 718              	.LVL65:
+ 385:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   xc0_val |= (uint32_t)(xip_init_struct->read_operation_mode << 8);
+ 719              		.loc 1 385 3 is_stmt 1 view .LVU179
+ 720              		.loc 1 385 40 is_stmt 0 view .LVU180
+ 721 0002 8A78     		ldrb	r2, [r1, #2]	@ zero_extendqisi2
+ 722              		.loc 1 385 11 view .LVU181
+ 723 0004 43EA0223 		orr	r3, r3, r2, lsl #8
+ 724              	.LVL66:
+ 386:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   xc0_val |= (uint32_t)(xip_init_struct->read_address_length << 11);
+ 725              		.loc 1 386 3 is_stmt 1 view .LVU182
+ 726              		.loc 1 386 40 is_stmt 0 view .LVU183
+ 727 0008 4A78     		ldrb	r2, [r1, #1]	@ zero_extendqisi2
+ 728              		.loc 1 386 11 view .LVU184
+ 729 000a 43EAC223 		orr	r3, r3, r2, lsl #11
+ 730              	.LVL67:
+ 387:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   xc0_val |= (uint32_t)(xip_init_struct->read_instruction_code << 12);
+ 731              		.loc 1 387 3 is_stmt 1 view .LVU185
+ 732              		.loc 1 387 40 is_stmt 0 view .LVU186
+ 733 000e 0A78     		ldrb	r2, [r1]	@ zero_extendqisi2
+ 734              		.loc 1 387 11 view .LVU187
+ 735 0010 43EA0233 		orr	r3, r3, r2, lsl #12
+ 736              	.LVL68:
+ 388:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   qspi_x->xip_cmd_w0 = xc0_val;
+ 737              		.loc 1 388 3 is_stmt 1 view .LVU188
+ 738              		.loc 1 388 22 is_stmt 0 view .LVU189
+ 739 0014 0363     		str	r3, [r0, #48]
+ 389:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 390:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   /* config analyse xip_cmd_w1 register */
+ 391:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   xc1_val = (uint32_t)xip_init_struct->write_second_dummy_cycle_num;
+ 740              		.loc 1 391 3 is_stmt 1 view .LVU190
+ 741              		.loc 1 391 38 is_stmt 0 view .LVU191
+ 742 0016 CB79     		ldrb	r3, [r1, #7]	@ zero_extendqisi2
+ 743              	.LVL69:
+ 392:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   xc1_val |= (uint32_t)(xip_init_struct->write_operation_mode << 8);
+ 744              		.loc 1 392 3 is_stmt 1 view .LVU192
+ 745              		.loc 1 392 40 is_stmt 0 view .LVU193
+ 746 0018 8A79     		ldrb	r2, [r1, #6]	@ zero_extendqisi2
+ 747              		.loc 1 392 11 view .LVU194
+ 748 001a 43EA0223 		orr	r3, r3, r2, lsl #8
+ 749              	.LVL70:
+ 393:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   xc1_val |= (uint32_t)(xip_init_struct->write_address_length << 11);
+ 750              		.loc 1 393 3 is_stmt 1 view .LVU195
+ 751              		.loc 1 393 40 is_stmt 0 view .LVU196
+ 752 001e 4A79     		ldrb	r2, [r1, #5]	@ zero_extendqisi2
+ 753              		.loc 1 393 11 view .LVU197
+ 754 0020 43EAC223 		orr	r3, r3, r2, lsl #11
+ 755              	.LVL71:
+ 394:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   xc1_val |= (uint32_t)(xip_init_struct->write_instruction_code << 12);
+ 756              		.loc 1 394 3 is_stmt 1 view .LVU198
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccPQnBpM.s 			page 21
+
+
+ 757              		.loc 1 394 40 is_stmt 0 view .LVU199
+ 758 0024 0A79     		ldrb	r2, [r1, #4]	@ zero_extendqisi2
+ 759              		.loc 1 394 11 view .LVU200
+ 760 0026 43EA0233 		orr	r3, r3, r2, lsl #12
+ 761              	.LVL72:
+ 395:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   qspi_x->xip_cmd_w1 = xc1_val;
+ 762              		.loc 1 395 3 is_stmt 1 view .LVU201
+ 763              		.loc 1 395 22 is_stmt 0 view .LVU202
+ 764 002a 4363     		str	r3, [r0, #52]
+ 765              	.LVL73:
+ 396:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 397:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   /* config analyse xip_cmd_w2 register */
+ 398:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   xc2_val = (uint32_t)xip_init_struct->read_data_counter;
+ 766              		.loc 1 398 3 is_stmt 1 view .LVU203
+ 767              		.loc 1 398 38 is_stmt 0 view .LVU204
+ 768 002c 4B7B     		ldrb	r3, [r1, #13]	@ zero_extendqisi2
+ 769              	.LVL74:
+ 399:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   xc2_val |= (uint32_t)(xip_init_struct->read_time_counter << 8);
+ 770              		.loc 1 399 3 is_stmt 1 view .LVU205
+ 771              		.loc 1 399 40 is_stmt 0 view .LVU206
+ 772 002e 0A7B     		ldrb	r2, [r1, #12]	@ zero_extendqisi2
+ 773              		.loc 1 399 11 view .LVU207
+ 774 0030 43EA0223 		orr	r3, r3, r2, lsl #8
+ 775              	.LVL75:
+ 400:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   xc2_val |= (uint32_t)(xip_init_struct->read_select_mode << 15);
+ 776              		.loc 1 400 3 is_stmt 1 view .LVU208
+ 777              		.loc 1 400 40 is_stmt 0 view .LVU209
+ 778 0034 CA7A     		ldrb	r2, [r1, #11]	@ zero_extendqisi2
+ 779              		.loc 1 400 11 view .LVU210
+ 780 0036 43EAC233 		orr	r3, r3, r2, lsl #15
+ 781              	.LVL76:
+ 401:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   xc2_val |= (uint32_t)(xip_init_struct->write_data_counter << 16);
+ 782              		.loc 1 401 3 is_stmt 1 view .LVU211
+ 783              		.loc 1 401 40 is_stmt 0 view .LVU212
+ 784 003a 8A7A     		ldrb	r2, [r1, #10]	@ zero_extendqisi2
+ 785              		.loc 1 401 11 view .LVU213
+ 786 003c 43EA0243 		orr	r3, r3, r2, lsl #16
+ 787              	.LVL77:
+ 402:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   xc2_val |= (uint32_t)(xip_init_struct->write_time_counter << 24);
+ 788              		.loc 1 402 3 is_stmt 1 view .LVU214
+ 789              		.loc 1 402 40 is_stmt 0 view .LVU215
+ 790 0040 4A7A     		ldrb	r2, [r1, #9]	@ zero_extendqisi2
+ 791              		.loc 1 402 11 view .LVU216
+ 792 0042 43EA0263 		orr	r3, r3, r2, lsl #24
+ 793              	.LVL78:
+ 403:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   xc2_val |= (uint32_t)(xip_init_struct->write_select_mode << 31);
+ 794              		.loc 1 403 3 is_stmt 1 view .LVU217
+ 795              		.loc 1 403 40 is_stmt 0 view .LVU218
+ 796 0046 0A7A     		ldrb	r2, [r1, #8]	@ zero_extendqisi2
+ 797              		.loc 1 403 11 view .LVU219
+ 798 0048 43EAC273 		orr	r3, r3, r2, lsl #31
+ 799              	.LVL79:
+ 404:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   qspi_x->xip_cmd_w2 = xc2_val;
+ 800              		.loc 1 404 3 is_stmt 1 view .LVU220
+ 801              		.loc 1 404 22 is_stmt 0 view .LVU221
+ 802 004c 8363     		str	r3, [r0, #56]
+ 803              	.LVL80:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccPQnBpM.s 			page 22
+
+
+ 405:bsp/libraries/drivers/src/at32f435_437_qspi.c **** }
+ 804              		.loc 1 405 1 view .LVU222
+ 805 004e 7047     		bx	lr
+ 806              		.cfi_endproc
+ 807              	.LFE148:
+ 809              		.section	.text.qspi_byte_read,"ax",%progbits
+ 810              		.align	1
+ 811              		.global	qspi_byte_read
+ 812              		.syntax unified
+ 813              		.thumb
+ 814              		.thumb_func
+ 816              	qspi_byte_read:
+ 817              	.LVL81:
+ 818              	.LFB149:
+ 406:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 407:bsp/libraries/drivers/src/at32f435_437_qspi.c **** /**
+ 408:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @brief  read one byte from qspi device in command mode
+ 409:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  qspi_x: select the qspi peripheral.
+ 410:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @retval 8-bit data.
+ 411:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   */
+ 412:bsp/libraries/drivers/src/at32f435_437_qspi.c **** uint8_t qspi_byte_read(qspi_type* qspi_x)
+ 413:bsp/libraries/drivers/src/at32f435_437_qspi.c **** {
+ 819              		.loc 1 413 1 is_stmt 1 view -0
+ 820              		.cfi_startproc
+ 821              		@ args = 0, pretend = 0, frame = 0
+ 822              		@ frame_needed = 0, uses_anonymous_args = 0
+ 823              		@ link register save eliminated.
+ 414:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   return qspi_x->dt_u8;
+ 824              		.loc 1 414 3 view .LVU224
+ 825              		.loc 1 414 16 is_stmt 0 view .LVU225
+ 826 0000 90F80001 		ldrb	r0, [r0, #256]	@ zero_extendqisi2
+ 827              	.LVL82:
+ 415:bsp/libraries/drivers/src/at32f435_437_qspi.c **** }
+ 828              		.loc 1 415 1 view .LVU226
+ 829 0004 7047     		bx	lr
+ 830              		.cfi_endproc
+ 831              	.LFE149:
+ 833              		.section	.text.qspi_half_word_read,"ax",%progbits
+ 834              		.align	1
+ 835              		.global	qspi_half_word_read
+ 836              		.syntax unified
+ 837              		.thumb
+ 838              		.thumb_func
+ 840              	qspi_half_word_read:
+ 841              	.LVL83:
+ 842              	.LFB150:
+ 416:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 417:bsp/libraries/drivers/src/at32f435_437_qspi.c **** /**
+ 418:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @brief  read one half-word from qspi device in command mode
+ 419:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  qspi_x: select the qspi peripheral.
+ 420:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @retval 16-bit data.
+ 421:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   */
+ 422:bsp/libraries/drivers/src/at32f435_437_qspi.c **** uint16_t qspi_half_word_read(qspi_type* qspi_x)
+ 423:bsp/libraries/drivers/src/at32f435_437_qspi.c **** {
+ 843              		.loc 1 423 1 is_stmt 1 view -0
+ 844              		.cfi_startproc
+ 845              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccPQnBpM.s 			page 23
+
+
+ 846              		@ frame_needed = 0, uses_anonymous_args = 0
+ 847              		@ link register save eliminated.
+ 424:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   return qspi_x->dt_u16;
+ 848              		.loc 1 424 3 view .LVU228
+ 849              		.loc 1 424 16 is_stmt 0 view .LVU229
+ 850 0000 B0F80001 		ldrh	r0, [r0, #256]
+ 851              	.LVL84:
+ 425:bsp/libraries/drivers/src/at32f435_437_qspi.c **** }
+ 852              		.loc 1 425 1 view .LVU230
+ 853 0004 80B2     		uxth	r0, r0
+ 854 0006 7047     		bx	lr
+ 855              		.cfi_endproc
+ 856              	.LFE150:
+ 858              		.section	.text.qspi_word_read,"ax",%progbits
+ 859              		.align	1
+ 860              		.global	qspi_word_read
+ 861              		.syntax unified
+ 862              		.thumb
+ 863              		.thumb_func
+ 865              	qspi_word_read:
+ 866              	.LVL85:
+ 867              	.LFB151:
+ 426:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 427:bsp/libraries/drivers/src/at32f435_437_qspi.c **** /**
+ 428:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @brief  read one word from qspi device in command mode
+ 429:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  qspi_x: select the qspi peripheral.
+ 430:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @retval 32-bit data.
+ 431:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   */
+ 432:bsp/libraries/drivers/src/at32f435_437_qspi.c **** uint32_t qspi_word_read(qspi_type* qspi_x)
+ 433:bsp/libraries/drivers/src/at32f435_437_qspi.c **** {
+ 868              		.loc 1 433 1 is_stmt 1 view -0
+ 869              		.cfi_startproc
+ 870              		@ args = 0, pretend = 0, frame = 0
+ 871              		@ frame_needed = 0, uses_anonymous_args = 0
+ 872              		@ link register save eliminated.
+ 434:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   return qspi_x->dt;
+ 873              		.loc 1 434 3 view .LVU232
+ 874              		.loc 1 434 16 is_stmt 0 view .LVU233
+ 875 0000 D0F80001 		ldr	r0, [r0, #256]
+ 876              	.LVL86:
+ 435:bsp/libraries/drivers/src/at32f435_437_qspi.c **** }
+ 877              		.loc 1 435 1 view .LVU234
+ 878 0004 7047     		bx	lr
+ 879              		.cfi_endproc
+ 880              	.LFE151:
+ 882              		.section	.text.qspi_byte_write,"ax",%progbits
+ 883              		.align	1
+ 884              		.global	qspi_byte_write
+ 885              		.syntax unified
+ 886              		.thumb
+ 887              		.thumb_func
+ 889              	qspi_byte_write:
+ 890              	.LVL87:
+ 891              	.LFB152:
+ 436:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 437:bsp/libraries/drivers/src/at32f435_437_qspi.c **** /**
+ 438:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @brief  write one byte to qspi device in command mode
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccPQnBpM.s 			page 24
+
+
+ 439:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  qspi_x: select the qspi peripheral.
+ 440:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  value:  8-bit data.
+ 441:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @retval none.
+ 442:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   */
+ 443:bsp/libraries/drivers/src/at32f435_437_qspi.c **** void qspi_byte_write(qspi_type* qspi_x, uint8_t value)
+ 444:bsp/libraries/drivers/src/at32f435_437_qspi.c **** {
+ 892              		.loc 1 444 1 is_stmt 1 view -0
+ 893              		.cfi_startproc
+ 894              		@ args = 0, pretend = 0, frame = 0
+ 895              		@ frame_needed = 0, uses_anonymous_args = 0
+ 896              		@ link register save eliminated.
+ 445:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   qspi_x->dt_u8 = value;
+ 897              		.loc 1 445 3 view .LVU236
+ 898              		.loc 1 445 17 is_stmt 0 view .LVU237
+ 899 0000 80F80011 		strb	r1, [r0, #256]
+ 446:bsp/libraries/drivers/src/at32f435_437_qspi.c **** }
+ 900              		.loc 1 446 1 view .LVU238
+ 901 0004 7047     		bx	lr
+ 902              		.cfi_endproc
+ 903              	.LFE152:
+ 905              		.section	.text.qspi_half_word_write,"ax",%progbits
+ 906              		.align	1
+ 907              		.global	qspi_half_word_write
+ 908              		.syntax unified
+ 909              		.thumb
+ 910              		.thumb_func
+ 912              	qspi_half_word_write:
+ 913              	.LVL88:
+ 914              	.LFB153:
+ 447:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 448:bsp/libraries/drivers/src/at32f435_437_qspi.c **** /**
+ 449:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @brief  write one half-word to qspi device in command mode
+ 450:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  qspi_x: select the qspi peripheral.
+ 451:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  value:  16-bit data.
+ 452:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @retval none.
+ 453:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   */
+ 454:bsp/libraries/drivers/src/at32f435_437_qspi.c **** void qspi_half_word_write(qspi_type* qspi_x, uint16_t value)
+ 455:bsp/libraries/drivers/src/at32f435_437_qspi.c **** {
+ 915              		.loc 1 455 1 is_stmt 1 view -0
+ 916              		.cfi_startproc
+ 917              		@ args = 0, pretend = 0, frame = 0
+ 918              		@ frame_needed = 0, uses_anonymous_args = 0
+ 919              		@ link register save eliminated.
+ 456:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   qspi_x->dt_u16 = value;
+ 920              		.loc 1 456 3 view .LVU240
+ 921              		.loc 1 456 18 is_stmt 0 view .LVU241
+ 922 0000 A0F80011 		strh	r1, [r0, #256]	@ movhi
+ 457:bsp/libraries/drivers/src/at32f435_437_qspi.c **** }
+ 923              		.loc 1 457 1 view .LVU242
+ 924 0004 7047     		bx	lr
+ 925              		.cfi_endproc
+ 926              	.LFE153:
+ 928              		.section	.text.qspi_word_write,"ax",%progbits
+ 929              		.align	1
+ 930              		.global	qspi_word_write
+ 931              		.syntax unified
+ 932              		.thumb
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccPQnBpM.s 			page 25
+
+
+ 933              		.thumb_func
+ 935              	qspi_word_write:
+ 936              	.LVL89:
+ 937              	.LFB154:
+ 458:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 459:bsp/libraries/drivers/src/at32f435_437_qspi.c **** /**
+ 460:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @brief  write one word to qspi device in command mode
+ 461:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  qspi_x: select the qspi peripheral.
+ 462:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  value:  32-bit data.
+ 463:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @retval none.
+ 464:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   */
+ 465:bsp/libraries/drivers/src/at32f435_437_qspi.c **** void qspi_word_write(qspi_type* qspi_x, uint32_t value)
+ 466:bsp/libraries/drivers/src/at32f435_437_qspi.c **** {
+ 938              		.loc 1 466 1 is_stmt 1 view -0
+ 939              		.cfi_startproc
+ 940              		@ args = 0, pretend = 0, frame = 0
+ 941              		@ frame_needed = 0, uses_anonymous_args = 0
+ 942              		@ link register save eliminated.
+ 467:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   qspi_x->dt = value;
+ 943              		.loc 1 467 3 view .LVU244
+ 944              		.loc 1 467 14 is_stmt 0 view .LVU245
+ 945 0000 C0F80011 		str	r1, [r0, #256]
+ 468:bsp/libraries/drivers/src/at32f435_437_qspi.c **** }
+ 946              		.loc 1 468 1 view .LVU246
+ 947 0004 7047     		bx	lr
+ 948              		.cfi_endproc
+ 949              	.LFE154:
+ 951              		.section	.text.qspi_auto_ispc_enable,"ax",%progbits
+ 952              		.align	1
+ 953              		.global	qspi_auto_ispc_enable
+ 954              		.syntax unified
+ 955              		.thumb
+ 956              		.thumb_func
+ 958              	qspi_auto_ispc_enable:
+ 959              	.LVL90:
+ 960              	.LFB155:
+ 469:bsp/libraries/drivers/src/at32f435_437_qspi.c **** 
+ 470:bsp/libraries/drivers/src/at32f435_437_qspi.c **** /**
+ 471:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @brief  enable auto input sampling phase correction
+ 472:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @param  qspi_x: select the qspi peripheral.
+ 473:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   * @retval none.
+ 474:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   */
+ 475:bsp/libraries/drivers/src/at32f435_437_qspi.c **** void qspi_auto_ispc_enable(qspi_type* qspi_x)
+ 476:bsp/libraries/drivers/src/at32f435_437_qspi.c **** {
+ 961              		.loc 1 476 1 is_stmt 1 view -0
+ 962              		.cfi_startproc
+ 963              		@ args = 0, pretend = 0, frame = 0
+ 964              		@ frame_needed = 0, uses_anonymous_args = 0
+ 965              		@ link register save eliminated.
+ 477:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   qspi_x->ctrl3_bit.ispc = TRUE;
+ 966              		.loc 1 477 3 view .LVU248
+ 967              		.loc 1 477 26 is_stmt 0 view .LVU249
+ 968 0000 036C     		ldr	r3, [r0, #64]
+ 969 0002 43F48073 		orr	r3, r3, #256
+ 970 0006 0364     		str	r3, [r0, #64]
+ 478:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   if(qspi_x == QSPI1)
+ 971              		.loc 1 478 3 is_stmt 1 view .LVU250
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccPQnBpM.s 			page 26
+
+
+ 972              		.loc 1 478 5 is_stmt 0 view .LVU251
+ 973 0008 094B     		ldr	r3, .L53
+ 974 000a 9842     		cmp	r0, r3
+ 975 000c 03D0     		beq	.L51
+ 479:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     qspi_x->ctrl3_bit.ispd = 56;
+ 480:bsp/libraries/drivers/src/at32f435_437_qspi.c ****   else if(qspi_x == QSPI2)
+ 976              		.loc 1 480 8 is_stmt 1 view .LVU252
+ 977              		.loc 1 480 10 is_stmt 0 view .LVU253
+ 978 000e 094B     		ldr	r3, .L53+4
+ 979 0010 9842     		cmp	r0, r3
+ 980 0012 06D0     		beq	.L52
+ 981              	.L48:
+ 481:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     qspi_x->ctrl3_bit.ispd = 50;
+ 482:bsp/libraries/drivers/src/at32f435_437_qspi.c **** }
+ 982              		.loc 1 482 1 view .LVU254
+ 983 0014 7047     		bx	lr
+ 984              	.L51:
+ 479:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     qspi_x->ctrl3_bit.ispd = 56;
+ 985              		.loc 1 479 5 is_stmt 1 view .LVU255
+ 479:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     qspi_x->ctrl3_bit.ispd = 56;
+ 986              		.loc 1 479 28 is_stmt 0 view .LVU256
+ 987 0016 036C     		ldr	r3, [r0, #64]
+ 988 0018 3822     		movs	r2, #56
+ 989 001a 62F30503 		bfi	r3, r2, #0, #6
+ 990 001e 0364     		str	r3, [r0, #64]
+ 991 0020 7047     		bx	lr
+ 992              	.L52:
+ 481:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     qspi_x->ctrl3_bit.ispd = 50;
+ 993              		.loc 1 481 5 is_stmt 1 view .LVU257
+ 481:bsp/libraries/drivers/src/at32f435_437_qspi.c ****     qspi_x->ctrl3_bit.ispd = 50;
+ 994              		.loc 1 481 28 is_stmt 0 view .LVU258
+ 995 0022 036C     		ldr	r3, [r0, #64]
+ 996 0024 3222     		movs	r2, #50
+ 997 0026 62F30503 		bfi	r3, r2, #0, #6
+ 998 002a 0364     		str	r3, [r0, #64]
+ 999              		.loc 1 482 1 view .LVU259
+ 1000 002c F2E7     		b	.L48
+ 1001              	.L54:
+ 1002 002e 00BF     		.align	2
+ 1003              	.L53:
+ 1004 0030 001000A0 		.word	-1610608640
+ 1005 0034 002000A0 		.word	-1610604544
+ 1006              		.cfi_endproc
+ 1007              	.LFE155:
+ 1009              		.text
+ 1010              	.Letext0:
+ 1011              		.file 2 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\mac
+ 1012              		.file 3 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\sys
+ 1013              		.file 4 "bsp/libraries/cmsis/cm4/device_support/at32f435_437.h"
+ 1014              		.file 5 "bsp/libraries/drivers/inc/at32f435_437_crm.h"
+ 1015              		.file 6 "bsp/libraries/drivers/inc/at32f435_437_qspi.h"
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccPQnBpM.s 			page 27
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 at32f435_437_qspi.c
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:18     .text.qspi_reset:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:24     .text.qspi_reset:00000000 qspi_reset
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:88     .text.qspi_reset:00000038 $d
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:96     .text.qspi_encryption_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:102    .text.qspi_encryption_enable:00000000 qspi_encryption_enable
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:121    .text.qspi_sck_mode_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:127    .text.qspi_sck_mode_set:00000000 qspi_sck_mode_set
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:146    .text.qspi_clk_division_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:152    .text.qspi_clk_division_set:00000000 qspi_clk_division_set
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:171    .text.qspi_xip_cache_bypass_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:177    .text.qspi_xip_cache_bypass_set:00000000 qspi_xip_cache_bypass_set
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:196    .text.qspi_interrupt_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:202    .text.qspi_interrupt_enable:00000000 qspi_interrupt_enable
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:221    .text.qspi_flag_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:227    .text.qspi_flag_get:00000000 qspi_flag_get
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:286    .text.qspi_interrupt_flag_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:292    .text.qspi_interrupt_flag_get:00000000 qspi_interrupt_flag_get
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:345    .text.qspi_flag_clear:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:351    .text.qspi_flag_clear:00000000 qspi_flag_clear
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:369    .text.qspi_dma_rx_threshold_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:375    .text.qspi_dma_rx_threshold_set:00000000 qspi_dma_rx_threshold_set
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:394    .text.qspi_dma_tx_threshold_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:400    .text.qspi_dma_tx_threshold_set:00000000 qspi_dma_tx_threshold_set
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:419    .text.qspi_dma_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:425    .text.qspi_dma_enable:00000000 qspi_dma_enable
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:444    .text.qspi_busy_config:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:450    .text.qspi_busy_config:00000000 qspi_busy_config
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:469    .text.qspi_xip_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:475    .text.qspi_xip_enable:00000000 qspi_xip_enable
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:603    .text.qspi_cmd_operation_kick:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:609    .text.qspi_cmd_operation_kick:00000000 qspi_cmd_operation_kick
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:700    .text.qspi_xip_init:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:706    .text.qspi_xip_init:00000000 qspi_xip_init
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:810    .text.qspi_byte_read:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:816    .text.qspi_byte_read:00000000 qspi_byte_read
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:834    .text.qspi_half_word_read:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:840    .text.qspi_half_word_read:00000000 qspi_half_word_read
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:859    .text.qspi_word_read:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:865    .text.qspi_word_read:00000000 qspi_word_read
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:883    .text.qspi_byte_write:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:889    .text.qspi_byte_write:00000000 qspi_byte_write
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:906    .text.qspi_half_word_write:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:912    .text.qspi_half_word_write:00000000 qspi_half_word_write
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:929    .text.qspi_word_write:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:935    .text.qspi_word_write:00000000 qspi_word_write
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:952    .text.qspi_auto_ispc_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:958    .text.qspi_auto_ispc_enable:00000000 qspi_auto_ispc_enable
+C:\Users\user\AppData\Local\Temp\ccPQnBpM.s:1004   .text.qspi_auto_ispc_enable:00000030 $d
+
+UNDEFINED SYMBOLS
+crm_periph_reset

@@ -1,0 +1,1490 @@
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKp097r.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"at32f435_437_dac.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.dac_reset,"ax",%progbits
+  18              		.align	1
+  19              		.global	dac_reset
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	dac_reset:
+  25              	.LFB133:
+  26              		.file 1 "bsp/libraries/drivers/src/at32f435_437_dac.c"
+   1:bsp/libraries/drivers/src/at32f435_437_dac.c **** /**
+   2:bsp/libraries/drivers/src/at32f435_437_dac.c ****   **************************************************************************
+   3:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @file     at32f435_437_dac.c
+   4:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @brief    contains all the functions for the dac firmware library
+   5:bsp/libraries/drivers/src/at32f435_437_dac.c ****   **************************************************************************
+   6:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *                       Copyright notice & Disclaimer
+   7:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *
+   8:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * The software Board Support Package (BSP) that is made available to
+   9:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * download from Artery official website is the copyrighted work of Artery.
+  10:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * Artery authorizes customers to use, copy, and distribute the BSP
+  11:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * software and its related documentation for the purpose of design and
+  12:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * development in conjunction with Artery microcontrollers. Use of the
+  13:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * software is governed by this copyright notice and the following disclaimer.
+  14:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *
+  15:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
+  16:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * GUARANTEES OR REPRESENTATIONS OF ANY KIND. ARTERY EXPRESSLY DISCLAIMS,
+  17:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * TO THE FULLEST EXTENT PERMITTED BY LAW, ALL EXPRESS, IMPLIED OR
+  18:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * STATUTORY OR OTHER WARRANTIES, GUARANTEES OR REPRESENTATIONS,
+  19:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * INCLUDING BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+  20:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
+  21:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *
+  22:bsp/libraries/drivers/src/at32f435_437_dac.c ****   **************************************************************************
+  23:bsp/libraries/drivers/src/at32f435_437_dac.c ****   */
+  24:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+  25:bsp/libraries/drivers/src/at32f435_437_dac.c **** #include "at32f435_437_conf.h"
+  26:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+  27:bsp/libraries/drivers/src/at32f435_437_dac.c **** /** @addtogroup AT32F435_437_periph_driver
+  28:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @{
+  29:bsp/libraries/drivers/src/at32f435_437_dac.c ****   */
+  30:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+  31:bsp/libraries/drivers/src/at32f435_437_dac.c **** /** @defgroup DAC
+  32:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @brief DAC driver modules
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKp097r.s 			page 2
+
+
+  33:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @{
+  34:bsp/libraries/drivers/src/at32f435_437_dac.c ****   */
+  35:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+  36:bsp/libraries/drivers/src/at32f435_437_dac.c **** #ifdef DAC_MODULE_ENABLED
+  37:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+  38:bsp/libraries/drivers/src/at32f435_437_dac.c **** /** @defgroup DAC_private_functions
+  39:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @{
+  40:bsp/libraries/drivers/src/at32f435_437_dac.c ****   */
+  41:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+  42:bsp/libraries/drivers/src/at32f435_437_dac.c **** /**
+  43:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @brief  dac reset
+  44:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  none
+  45:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @retval none
+  46:bsp/libraries/drivers/src/at32f435_437_dac.c ****   */
+  47:bsp/libraries/drivers/src/at32f435_437_dac.c **** void dac_reset(void)
+  48:bsp/libraries/drivers/src/at32f435_437_dac.c **** {
+  27              		.loc 1 48 1 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 10B5     		push	{r4, lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 4, -8
+  35              		.cfi_offset 14, -4
+  49:bsp/libraries/drivers/src/at32f435_437_dac.c ****   crm_periph_reset(CRM_DAC_PERIPH_RESET, TRUE);
+  36              		.loc 1 49 3 view .LVU1
+  37 0002 054C     		ldr	r4, .L3
+  38 0004 0121     		movs	r1, #1
+  39 0006 2046     		mov	r0, r4
+  40 0008 FFF7FEFF 		bl	crm_periph_reset
+  41              	.LVL0:
+  50:bsp/libraries/drivers/src/at32f435_437_dac.c ****   crm_periph_reset(CRM_DAC_PERIPH_RESET, FALSE);
+  42              		.loc 1 50 3 view .LVU2
+  43 000c 0021     		movs	r1, #0
+  44 000e 2046     		mov	r0, r4
+  45 0010 FFF7FEFF 		bl	crm_periph_reset
+  46              	.LVL1:
+  51:bsp/libraries/drivers/src/at32f435_437_dac.c **** }
+  47              		.loc 1 51 1 is_stmt 0 view .LVU3
+  48 0014 10BD     		pop	{r4, pc}
+  49              	.L4:
+  50 0016 00BF     		.align	2
+  51              	.L3:
+  52 0018 1D002000 		.word	2097181
+  53              		.cfi_endproc
+  54              	.LFE133:
+  56              		.section	.text.dac_enable,"ax",%progbits
+  57              		.align	1
+  58              		.global	dac_enable
+  59              		.syntax unified
+  60              		.thumb
+  61              		.thumb_func
+  63              	dac_enable:
+  64              	.LVL2:
+  65              	.LFB134:
+  52:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKp097r.s 			page 3
+
+
+  53:bsp/libraries/drivers/src/at32f435_437_dac.c **** /**
+  54:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @brief  enable or disable dac
+  55:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  dac_select
+  56:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         this parameter can be one of the following values:
+  57:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC1_SELECT
+  58:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC2_SELECT
+  59:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  new_state (TRUE or FALSE)
+  60:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @retval none
+  61:bsp/libraries/drivers/src/at32f435_437_dac.c ****   */
+  62:bsp/libraries/drivers/src/at32f435_437_dac.c **** void dac_enable(dac_select_type dac_select, confirm_state new_state)
+  63:bsp/libraries/drivers/src/at32f435_437_dac.c **** {
+  66              		.loc 1 63 1 is_stmt 1 view -0
+  67              		.cfi_startproc
+  68              		@ args = 0, pretend = 0, frame = 0
+  69              		@ frame_needed = 0, uses_anonymous_args = 0
+  70              		@ link register save eliminated.
+  64:bsp/libraries/drivers/src/at32f435_437_dac.c ****   switch(dac_select)
+  71              		.loc 1 64 3 view .LVU5
+  72 0000 0128     		cmp	r0, #1
+  73 0002 02D0     		beq	.L6
+  74 0004 0228     		cmp	r0, #2
+  75 0006 06D0     		beq	.L7
+  76 0008 7047     		bx	lr
+  77              	.L6:
+  65:bsp/libraries/drivers/src/at32f435_437_dac.c ****   {
+  66:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC1_SELECT:
+  67:bsp/libraries/drivers/src/at32f435_437_dac.c ****       DAC->ctrl_bit.d1en = new_state;
+  78              		.loc 1 67 7 view .LVU6
+  79              		.loc 1 67 26 is_stmt 0 view .LVU7
+  80 000a 064B     		ldr	r3, .L9
+  81 000c 1A68     		ldr	r2, [r3]
+  82 000e 61F30002 		bfi	r2, r1, #0, #1
+  83 0012 1A60     		str	r2, [r3]
+  68:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+  84              		.loc 1 68 7 is_stmt 1 view .LVU8
+  85 0014 7047     		bx	lr
+  86              	.L7:
+  69:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC2_SELECT:
+  70:bsp/libraries/drivers/src/at32f435_437_dac.c ****       DAC->ctrl_bit.d2en = new_state;
+  87              		.loc 1 70 7 view .LVU9
+  88              		.loc 1 70 26 is_stmt 0 view .LVU10
+  89 0016 034B     		ldr	r3, .L9
+  90 0018 1A68     		ldr	r2, [r3]
+  91 001a 61F31042 		bfi	r2, r1, #16, #1
+  92 001e 1A60     		str	r2, [r3]
+  71:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+  93              		.loc 1 71 7 is_stmt 1 view .LVU11
+  72:bsp/libraries/drivers/src/at32f435_437_dac.c ****     default:
+  73:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+  74:bsp/libraries/drivers/src/at32f435_437_dac.c ****   }
+  75:bsp/libraries/drivers/src/at32f435_437_dac.c **** }
+  94              		.loc 1 75 1 is_stmt 0 view .LVU12
+  95 0020 7047     		bx	lr
+  96              	.L10:
+  97 0022 00BF     		.align	2
+  98              	.L9:
+  99 0024 00740040 		.word	1073771520
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKp097r.s 			page 4
+
+
+ 100              		.cfi_endproc
+ 101              	.LFE134:
+ 103              		.section	.text.dac_output_buffer_enable,"ax",%progbits
+ 104              		.align	1
+ 105              		.global	dac_output_buffer_enable
+ 106              		.syntax unified
+ 107              		.thumb
+ 108              		.thumb_func
+ 110              	dac_output_buffer_enable:
+ 111              	.LVL3:
+ 112              	.LFB135:
+  76:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+  77:bsp/libraries/drivers/src/at32f435_437_dac.c **** /**
+  78:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @brief  enable or disable dac output buffer
+  79:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  dac_select
+  80:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         this parameter can be one of the following values:
+  81:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC1_SELECT
+  82:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC2_SELECT
+  83:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  new_state (TRUE or FALSE)
+  84:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @retval none
+  85:bsp/libraries/drivers/src/at32f435_437_dac.c ****   */
+  86:bsp/libraries/drivers/src/at32f435_437_dac.c **** void dac_output_buffer_enable(dac_select_type dac_select, confirm_state new_state)
+  87:bsp/libraries/drivers/src/at32f435_437_dac.c **** {
+ 113              		.loc 1 87 1 is_stmt 1 view -0
+ 114              		.cfi_startproc
+ 115              		@ args = 0, pretend = 0, frame = 0
+ 116              		@ frame_needed = 0, uses_anonymous_args = 0
+ 117              		@ link register save eliminated.
+  88:bsp/libraries/drivers/src/at32f435_437_dac.c ****   new_state = (confirm_state)!new_state;
+ 118              		.loc 1 88 3 view .LVU14
+ 119              		.loc 1 88 15 is_stmt 0 view .LVU15
+ 120 0000 B1FA81F1 		clz	r1, r1
+ 121              	.LVL4:
+ 122              		.loc 1 88 15 view .LVU16
+ 123 0004 4909     		lsrs	r1, r1, #5
+ 124              	.LVL5:
+  89:bsp/libraries/drivers/src/at32f435_437_dac.c ****   switch(dac_select)
+ 125              		.loc 1 89 3 is_stmt 1 view .LVU17
+ 126 0006 0128     		cmp	r0, #1
+ 127 0008 02D0     		beq	.L12
+ 128 000a 0228     		cmp	r0, #2
+ 129 000c 06D0     		beq	.L13
+ 130 000e 7047     		bx	lr
+ 131              	.L12:
+  90:bsp/libraries/drivers/src/at32f435_437_dac.c ****   {
+  91:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC1_SELECT:
+  92:bsp/libraries/drivers/src/at32f435_437_dac.c ****       DAC->ctrl_bit.d1obdis = new_state;
+ 132              		.loc 1 92 7 view .LVU18
+ 133              		.loc 1 92 29 is_stmt 0 view .LVU19
+ 134 0010 054B     		ldr	r3, .L15
+ 135 0012 1A68     		ldr	r2, [r3]
+ 136 0014 61F34102 		bfi	r2, r1, #1, #1
+ 137 0018 1A60     		str	r2, [r3]
+  93:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 138              		.loc 1 93 7 is_stmt 1 view .LVU20
+ 139 001a 7047     		bx	lr
+ 140              	.L13:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKp097r.s 			page 5
+
+
+  94:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC2_SELECT:
+  95:bsp/libraries/drivers/src/at32f435_437_dac.c ****       DAC->ctrl_bit.d2obdis = new_state;
+ 141              		.loc 1 95 7 view .LVU21
+ 142              		.loc 1 95 29 is_stmt 0 view .LVU22
+ 143 001c 024B     		ldr	r3, .L15
+ 144 001e 1A68     		ldr	r2, [r3]
+ 145 0020 61F35142 		bfi	r2, r1, #17, #1
+ 146 0024 1A60     		str	r2, [r3]
+  96:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 147              		.loc 1 96 7 is_stmt 1 view .LVU23
+  97:bsp/libraries/drivers/src/at32f435_437_dac.c ****     default:
+  98:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+  99:bsp/libraries/drivers/src/at32f435_437_dac.c ****   }
+ 100:bsp/libraries/drivers/src/at32f435_437_dac.c **** }
+ 148              		.loc 1 100 1 is_stmt 0 view .LVU24
+ 149 0026 7047     		bx	lr
+ 150              	.L16:
+ 151              		.align	2
+ 152              	.L15:
+ 153 0028 00740040 		.word	1073771520
+ 154              		.cfi_endproc
+ 155              	.LFE135:
+ 157              		.section	.text.dac_trigger_enable,"ax",%progbits
+ 158              		.align	1
+ 159              		.global	dac_trigger_enable
+ 160              		.syntax unified
+ 161              		.thumb
+ 162              		.thumb_func
+ 164              	dac_trigger_enable:
+ 165              	.LVL6:
+ 166              	.LFB136:
+ 101:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 102:bsp/libraries/drivers/src/at32f435_437_dac.c **** /**
+ 103:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @brief  enable or disable dac trigger
+ 104:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  dac_select
+ 105:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         this parameter can be one of the following values:
+ 106:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC1_SELECT
+ 107:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC2_SELECT
+ 108:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  new_state (TRUE or FALSE)
+ 109:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @retval none
+ 110:bsp/libraries/drivers/src/at32f435_437_dac.c ****   */
+ 111:bsp/libraries/drivers/src/at32f435_437_dac.c **** void dac_trigger_enable(dac_select_type dac_select, confirm_state new_state)
+ 112:bsp/libraries/drivers/src/at32f435_437_dac.c **** {
+ 167              		.loc 1 112 1 is_stmt 1 view -0
+ 168              		.cfi_startproc
+ 169              		@ args = 0, pretend = 0, frame = 0
+ 170              		@ frame_needed = 0, uses_anonymous_args = 0
+ 171              		@ link register save eliminated.
+ 113:bsp/libraries/drivers/src/at32f435_437_dac.c ****   switch(dac_select)
+ 172              		.loc 1 113 3 view .LVU26
+ 173 0000 0128     		cmp	r0, #1
+ 174 0002 02D0     		beq	.L18
+ 175 0004 0228     		cmp	r0, #2
+ 176 0006 06D0     		beq	.L19
+ 177 0008 7047     		bx	lr
+ 178              	.L18:
+ 114:bsp/libraries/drivers/src/at32f435_437_dac.c ****   {
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKp097r.s 			page 6
+
+
+ 115:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC1_SELECT:
+ 116:bsp/libraries/drivers/src/at32f435_437_dac.c ****       DAC->ctrl_bit.d1trgen = new_state;
+ 179              		.loc 1 116 7 view .LVU27
+ 180              		.loc 1 116 29 is_stmt 0 view .LVU28
+ 181 000a 064B     		ldr	r3, .L21
+ 182 000c 1A68     		ldr	r2, [r3]
+ 183 000e 61F38202 		bfi	r2, r1, #2, #1
+ 184 0012 1A60     		str	r2, [r3]
+ 117:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 185              		.loc 1 117 7 is_stmt 1 view .LVU29
+ 186 0014 7047     		bx	lr
+ 187              	.L19:
+ 118:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC2_SELECT:
+ 119:bsp/libraries/drivers/src/at32f435_437_dac.c ****       DAC->ctrl_bit.d2trgen = new_state;
+ 188              		.loc 1 119 7 view .LVU30
+ 189              		.loc 1 119 29 is_stmt 0 view .LVU31
+ 190 0016 034B     		ldr	r3, .L21
+ 191 0018 1A68     		ldr	r2, [r3]
+ 192 001a 61F39242 		bfi	r2, r1, #18, #1
+ 193 001e 1A60     		str	r2, [r3]
+ 120:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 194              		.loc 1 120 7 is_stmt 1 view .LVU32
+ 121:bsp/libraries/drivers/src/at32f435_437_dac.c ****     default:
+ 122:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 123:bsp/libraries/drivers/src/at32f435_437_dac.c ****   }
+ 124:bsp/libraries/drivers/src/at32f435_437_dac.c **** }
+ 195              		.loc 1 124 1 is_stmt 0 view .LVU33
+ 196 0020 7047     		bx	lr
+ 197              	.L22:
+ 198 0022 00BF     		.align	2
+ 199              	.L21:
+ 200 0024 00740040 		.word	1073771520
+ 201              		.cfi_endproc
+ 202              	.LFE136:
+ 204              		.section	.text.dac_trigger_select,"ax",%progbits
+ 205              		.align	1
+ 206              		.global	dac_trigger_select
+ 207              		.syntax unified
+ 208              		.thumb
+ 209              		.thumb_func
+ 211              	dac_trigger_select:
+ 212              	.LVL7:
+ 213              	.LFB137:
+ 125:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 126:bsp/libraries/drivers/src/at32f435_437_dac.c **** /**
+ 127:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @brief  select dac trigger
+ 128:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  dac_select
+ 129:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         this parameter can be one of the following values:
+ 130:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC1_SELECT
+ 131:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC2_SELECT
+ 132:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  dac_trigger_source
+ 133:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         this parameter can be one of the following values:
+ 134:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC_TMR6_TRGOUT_EVENT
+ 135:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC_TMR8_TRGOUT_EVENT
+ 136:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC_TMR7_TRGOUT_EVENT
+ 137:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC_TMR5_TRGOUT_EVENT
+ 138:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC_TMR2_TRGOUT_EVENT
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKp097r.s 			page 7
+
+
+ 139:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC_TMR4_TRGOUT_EVENT
+ 140:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC_EXTERNAL_INTERRUPT_LINE_9
+ 141:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC_SOFTWARE_TRIGGER
+ 142:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @retval none
+ 143:bsp/libraries/drivers/src/at32f435_437_dac.c ****   */
+ 144:bsp/libraries/drivers/src/at32f435_437_dac.c **** void dac_trigger_select(dac_select_type dac_select, dac_trigger_type dac_trigger_source)
+ 145:bsp/libraries/drivers/src/at32f435_437_dac.c **** {
+ 214              		.loc 1 145 1 is_stmt 1 view -0
+ 215              		.cfi_startproc
+ 216              		@ args = 0, pretend = 0, frame = 0
+ 217              		@ frame_needed = 0, uses_anonymous_args = 0
+ 218              		@ link register save eliminated.
+ 146:bsp/libraries/drivers/src/at32f435_437_dac.c ****   switch(dac_select)
+ 219              		.loc 1 146 3 view .LVU35
+ 220 0000 0128     		cmp	r0, #1
+ 221 0002 02D0     		beq	.L24
+ 222 0004 0228     		cmp	r0, #2
+ 223 0006 06D0     		beq	.L25
+ 224 0008 7047     		bx	lr
+ 225              	.L24:
+ 147:bsp/libraries/drivers/src/at32f435_437_dac.c ****   {
+ 148:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC1_SELECT:
+ 149:bsp/libraries/drivers/src/at32f435_437_dac.c ****       DAC->ctrl_bit.d1trgsel = dac_trigger_source;
+ 226              		.loc 1 149 7 view .LVU36
+ 227              		.loc 1 149 30 is_stmt 0 view .LVU37
+ 228 000a 064B     		ldr	r3, .L27
+ 229 000c 1A68     		ldr	r2, [r3]
+ 230 000e 61F3C502 		bfi	r2, r1, #3, #3
+ 231 0012 1A60     		str	r2, [r3]
+ 150:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 232              		.loc 1 150 7 is_stmt 1 view .LVU38
+ 233 0014 7047     		bx	lr
+ 234              	.L25:
+ 151:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC2_SELECT:
+ 152:bsp/libraries/drivers/src/at32f435_437_dac.c ****       DAC->ctrl_bit.d2trgsel = dac_trigger_source;
+ 235              		.loc 1 152 7 view .LVU39
+ 236              		.loc 1 152 30 is_stmt 0 view .LVU40
+ 237 0016 034B     		ldr	r3, .L27
+ 238 0018 1A68     		ldr	r2, [r3]
+ 239 001a 61F3D542 		bfi	r2, r1, #19, #3
+ 240 001e 1A60     		str	r2, [r3]
+ 153:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 241              		.loc 1 153 7 is_stmt 1 view .LVU41
+ 154:bsp/libraries/drivers/src/at32f435_437_dac.c ****     default:
+ 155:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 156:bsp/libraries/drivers/src/at32f435_437_dac.c ****   }
+ 157:bsp/libraries/drivers/src/at32f435_437_dac.c **** }
+ 242              		.loc 1 157 1 is_stmt 0 view .LVU42
+ 243 0020 7047     		bx	lr
+ 244              	.L28:
+ 245 0022 00BF     		.align	2
+ 246              	.L27:
+ 247 0024 00740040 		.word	1073771520
+ 248              		.cfi_endproc
+ 249              	.LFE137:
+ 251              		.section	.text.dac_software_trigger_generate,"ax",%progbits
+ 252              		.align	1
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKp097r.s 			page 8
+
+
+ 253              		.global	dac_software_trigger_generate
+ 254              		.syntax unified
+ 255              		.thumb
+ 256              		.thumb_func
+ 258              	dac_software_trigger_generate:
+ 259              	.LVL8:
+ 260              	.LFB138:
+ 158:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 159:bsp/libraries/drivers/src/at32f435_437_dac.c **** /**
+ 160:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @brief  generate dac software trigger
+ 161:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  dac_select
+ 162:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         this parameter can be one of the following values:
+ 163:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC1_SELECT
+ 164:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC2_SELECT
+ 165:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @retval none
+ 166:bsp/libraries/drivers/src/at32f435_437_dac.c ****   */
+ 167:bsp/libraries/drivers/src/at32f435_437_dac.c **** void dac_software_trigger_generate(dac_select_type dac_select)
+ 168:bsp/libraries/drivers/src/at32f435_437_dac.c **** {
+ 261              		.loc 1 168 1 is_stmt 1 view -0
+ 262              		.cfi_startproc
+ 263              		@ args = 0, pretend = 0, frame = 0
+ 264              		@ frame_needed = 0, uses_anonymous_args = 0
+ 265              		@ link register save eliminated.
+ 169:bsp/libraries/drivers/src/at32f435_437_dac.c ****   switch(dac_select)
+ 266              		.loc 1 169 3 view .LVU44
+ 267 0000 0128     		cmp	r0, #1
+ 268 0002 02D0     		beq	.L30
+ 269 0004 0228     		cmp	r0, #2
+ 270 0006 06D0     		beq	.L31
+ 271 0008 7047     		bx	lr
+ 272              	.L30:
+ 170:bsp/libraries/drivers/src/at32f435_437_dac.c ****   {
+ 171:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC1_SELECT:
+ 172:bsp/libraries/drivers/src/at32f435_437_dac.c ****       DAC->swtrg_bit.d1swtrg = TRUE;
+ 273              		.loc 1 172 7 view .LVU45
+ 274              		.loc 1 172 30 is_stmt 0 view .LVU46
+ 275 000a 064A     		ldr	r2, .L33
+ 276 000c 5368     		ldr	r3, [r2, #4]
+ 277 000e 43F00103 		orr	r3, r3, #1
+ 278 0012 5360     		str	r3, [r2, #4]
+ 173:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 279              		.loc 1 173 7 is_stmt 1 view .LVU47
+ 280 0014 7047     		bx	lr
+ 281              	.L31:
+ 174:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC2_SELECT:
+ 175:bsp/libraries/drivers/src/at32f435_437_dac.c ****       DAC->swtrg_bit.d2swtrg = TRUE;
+ 282              		.loc 1 175 7 view .LVU48
+ 283              		.loc 1 175 30 is_stmt 0 view .LVU49
+ 284 0016 034A     		ldr	r2, .L33
+ 285 0018 5368     		ldr	r3, [r2, #4]
+ 286 001a 43F00203 		orr	r3, r3, #2
+ 287 001e 5360     		str	r3, [r2, #4]
+ 176:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 288              		.loc 1 176 7 is_stmt 1 view .LVU50
+ 177:bsp/libraries/drivers/src/at32f435_437_dac.c ****     default:
+ 178:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 179:bsp/libraries/drivers/src/at32f435_437_dac.c ****   }
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKp097r.s 			page 9
+
+
+ 180:bsp/libraries/drivers/src/at32f435_437_dac.c **** }
+ 289              		.loc 1 180 1 is_stmt 0 view .LVU51
+ 290 0020 7047     		bx	lr
+ 291              	.L34:
+ 292 0022 00BF     		.align	2
+ 293              	.L33:
+ 294 0024 00740040 		.word	1073771520
+ 295              		.cfi_endproc
+ 296              	.LFE138:
+ 298              		.section	.text.dac_dual_software_trigger_generate,"ax",%progbits
+ 299              		.align	1
+ 300              		.global	dac_dual_software_trigger_generate
+ 301              		.syntax unified
+ 302              		.thumb
+ 303              		.thumb_func
+ 305              	dac_dual_software_trigger_generate:
+ 306              	.LFB139:
+ 181:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 182:bsp/libraries/drivers/src/at32f435_437_dac.c **** /**
+ 183:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @brief  generate dac dual software trigger synchronously
+ 184:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  none
+ 185:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @retval none
+ 186:bsp/libraries/drivers/src/at32f435_437_dac.c ****   */
+ 187:bsp/libraries/drivers/src/at32f435_437_dac.c **** void dac_dual_software_trigger_generate(void)
+ 188:bsp/libraries/drivers/src/at32f435_437_dac.c **** {
+ 307              		.loc 1 188 1 is_stmt 1 view -0
+ 308              		.cfi_startproc
+ 309              		@ args = 0, pretend = 0, frame = 0
+ 310              		@ frame_needed = 0, uses_anonymous_args = 0
+ 311              		@ link register save eliminated.
+ 189:bsp/libraries/drivers/src/at32f435_437_dac.c ****   DAC->swtrg |= 0x03;
+ 312              		.loc 1 189 3 view .LVU53
+ 313              		.loc 1 189 14 is_stmt 0 view .LVU54
+ 314 0000 024A     		ldr	r2, .L36
+ 315 0002 5368     		ldr	r3, [r2, #4]
+ 316 0004 43F00303 		orr	r3, r3, #3
+ 317 0008 5360     		str	r3, [r2, #4]
+ 190:bsp/libraries/drivers/src/at32f435_437_dac.c **** }
+ 318              		.loc 1 190 1 view .LVU55
+ 319 000a 7047     		bx	lr
+ 320              	.L37:
+ 321              		.align	2
+ 322              	.L36:
+ 323 000c 00740040 		.word	1073771520
+ 324              		.cfi_endproc
+ 325              	.LFE139:
+ 327              		.section	.text.dac_wave_generate,"ax",%progbits
+ 328              		.align	1
+ 329              		.global	dac_wave_generate
+ 330              		.syntax unified
+ 331              		.thumb
+ 332              		.thumb_func
+ 334              	dac_wave_generate:
+ 335              	.LVL9:
+ 336              	.LFB140:
+ 191:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 192:bsp/libraries/drivers/src/at32f435_437_dac.c **** /**
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKp097r.s 			page 10
+
+
+ 193:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @brief  generate dac wave
+ 194:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  dac_select
+ 195:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         this parameter can be one of the following values:
+ 196:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC1_SELECT
+ 197:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC2_SELECT
+ 198:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  dac_wave
+ 199:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         this parameter can be one of the following values:
+ 200:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC_WAVE_GENERATE_NONE
+ 201:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC_WAVE_GENERATE_NOISE
+ 202:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC_WAVE_GENERATE_TRIANGLE
+ 203:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @retval none
+ 204:bsp/libraries/drivers/src/at32f435_437_dac.c ****   */
+ 205:bsp/libraries/drivers/src/at32f435_437_dac.c **** void dac_wave_generate(dac_select_type dac_select, dac_wave_type dac_wave)
+ 206:bsp/libraries/drivers/src/at32f435_437_dac.c **** {
+ 337              		.loc 1 206 1 is_stmt 1 view -0
+ 338              		.cfi_startproc
+ 339              		@ args = 0, pretend = 0, frame = 0
+ 340              		@ frame_needed = 0, uses_anonymous_args = 0
+ 341              		@ link register save eliminated.
+ 207:bsp/libraries/drivers/src/at32f435_437_dac.c ****   switch(dac_select)
+ 342              		.loc 1 207 3 view .LVU57
+ 343 0000 0128     		cmp	r0, #1
+ 344 0002 02D0     		beq	.L39
+ 345 0004 0228     		cmp	r0, #2
+ 346 0006 06D0     		beq	.L40
+ 347 0008 7047     		bx	lr
+ 348              	.L39:
+ 208:bsp/libraries/drivers/src/at32f435_437_dac.c ****   {
+ 209:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC1_SELECT:
+ 210:bsp/libraries/drivers/src/at32f435_437_dac.c ****       DAC->ctrl_bit.d1nm = dac_wave;
+ 349              		.loc 1 210 7 view .LVU58
+ 350              		.loc 1 210 26 is_stmt 0 view .LVU59
+ 351 000a 064B     		ldr	r3, .L42
+ 352 000c 1A68     		ldr	r2, [r3]
+ 353 000e 61F38712 		bfi	r2, r1, #6, #2
+ 354 0012 1A60     		str	r2, [r3]
+ 211:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 355              		.loc 1 211 7 is_stmt 1 view .LVU60
+ 356 0014 7047     		bx	lr
+ 357              	.L40:
+ 212:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC2_SELECT:
+ 213:bsp/libraries/drivers/src/at32f435_437_dac.c ****       DAC->ctrl_bit.d2nm = dac_wave;
+ 358              		.loc 1 213 7 view .LVU61
+ 359              		.loc 1 213 26 is_stmt 0 view .LVU62
+ 360 0016 034B     		ldr	r3, .L42
+ 361 0018 1A68     		ldr	r2, [r3]
+ 362 001a 61F39752 		bfi	r2, r1, #22, #2
+ 363 001e 1A60     		str	r2, [r3]
+ 214:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 364              		.loc 1 214 7 is_stmt 1 view .LVU63
+ 215:bsp/libraries/drivers/src/at32f435_437_dac.c ****     default:
+ 216:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 217:bsp/libraries/drivers/src/at32f435_437_dac.c ****   }
+ 218:bsp/libraries/drivers/src/at32f435_437_dac.c **** }
+ 365              		.loc 1 218 1 is_stmt 0 view .LVU64
+ 366 0020 7047     		bx	lr
+ 367              	.L43:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKp097r.s 			page 11
+
+
+ 368 0022 00BF     		.align	2
+ 369              	.L42:
+ 370 0024 00740040 		.word	1073771520
+ 371              		.cfi_endproc
+ 372              	.LFE140:
+ 374              		.section	.text.dac_mask_amplitude_select,"ax",%progbits
+ 375              		.align	1
+ 376              		.global	dac_mask_amplitude_select
+ 377              		.syntax unified
+ 378              		.thumb
+ 379              		.thumb_func
+ 381              	dac_mask_amplitude_select:
+ 382              	.LVL10:
+ 383              	.LFB141:
+ 219:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 220:bsp/libraries/drivers/src/at32f435_437_dac.c **** /**
+ 221:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @brief  select dac mask amplitude
+ 222:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  dac_select
+ 223:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         this parameter can be one of the following values:
+ 224:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC1_SELECT
+ 225:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC2_SELECT
+ 226:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  dac_mask_amplitude
+ 227:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         this parameter can be one of the following values:
+ 228:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC_LSFR_BIT0_AMPLITUDE_1
+ 229:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC_LSFR_BIT10_AMPLITUDE_3
+ 230:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC_LSFR_BIT20_AMPLITUDE_7
+ 231:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC_LSFR_BIT30_AMPLITUDE_15
+ 232:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC_LSFR_BIT40_AMPLITUDE_31
+ 233:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC_LSFR_BIT50_AMPLITUDE_63
+ 234:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC_LSFR_BIT60_AMPLITUDE_127
+ 235:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC_LSFR_BIT70_AMPLITUDE_255
+ 236:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC_LSFR_BIT80_AMPLITUDE_511
+ 237:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC_LSFR_BIT90_AMPLITUDE_1023
+ 238:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC_LSFR_BITA0_AMPLITUDE_2047
+ 239:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC_LSFR_BITB0_AMPLITUDE_4095
+ 240:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @retval none
+ 241:bsp/libraries/drivers/src/at32f435_437_dac.c ****   */
+ 242:bsp/libraries/drivers/src/at32f435_437_dac.c **** void dac_mask_amplitude_select(dac_select_type dac_select, dac_mask_amplitude_type dac_mask_amplitu
+ 243:bsp/libraries/drivers/src/at32f435_437_dac.c **** {
+ 384              		.loc 1 243 1 is_stmt 1 view -0
+ 385              		.cfi_startproc
+ 386              		@ args = 0, pretend = 0, frame = 0
+ 387              		@ frame_needed = 0, uses_anonymous_args = 0
+ 388              		@ link register save eliminated.
+ 244:bsp/libraries/drivers/src/at32f435_437_dac.c ****   switch(dac_select)
+ 389              		.loc 1 244 3 view .LVU66
+ 390 0000 0128     		cmp	r0, #1
+ 391 0002 02D0     		beq	.L45
+ 392 0004 0228     		cmp	r0, #2
+ 393 0006 06D0     		beq	.L46
+ 394 0008 7047     		bx	lr
+ 395              	.L45:
+ 245:bsp/libraries/drivers/src/at32f435_437_dac.c ****   {
+ 246:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC1_SELECT:
+ 247:bsp/libraries/drivers/src/at32f435_437_dac.c ****       DAC->ctrl_bit.d1nbsel = dac_mask_amplitude;
+ 396              		.loc 1 247 7 view .LVU67
+ 397              		.loc 1 247 29 is_stmt 0 view .LVU68
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKp097r.s 			page 12
+
+
+ 398 000a 064B     		ldr	r3, .L48
+ 399 000c 1A68     		ldr	r2, [r3]
+ 400 000e 61F30B22 		bfi	r2, r1, #8, #4
+ 401 0012 1A60     		str	r2, [r3]
+ 248:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 402              		.loc 1 248 7 is_stmt 1 view .LVU69
+ 403 0014 7047     		bx	lr
+ 404              	.L46:
+ 249:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC2_SELECT:
+ 250:bsp/libraries/drivers/src/at32f435_437_dac.c ****       DAC->ctrl_bit.d2nbsel = dac_mask_amplitude;
+ 405              		.loc 1 250 7 view .LVU70
+ 406              		.loc 1 250 29 is_stmt 0 view .LVU71
+ 407 0016 034B     		ldr	r3, .L48
+ 408 0018 1A68     		ldr	r2, [r3]
+ 409 001a 61F31B62 		bfi	r2, r1, #24, #4
+ 410 001e 1A60     		str	r2, [r3]
+ 251:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 411              		.loc 1 251 7 is_stmt 1 view .LVU72
+ 252:bsp/libraries/drivers/src/at32f435_437_dac.c ****     default:
+ 253:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 254:bsp/libraries/drivers/src/at32f435_437_dac.c ****   }
+ 255:bsp/libraries/drivers/src/at32f435_437_dac.c **** }
+ 412              		.loc 1 255 1 is_stmt 0 view .LVU73
+ 413 0020 7047     		bx	lr
+ 414              	.L49:
+ 415 0022 00BF     		.align	2
+ 416              	.L48:
+ 417 0024 00740040 		.word	1073771520
+ 418              		.cfi_endproc
+ 419              	.LFE141:
+ 421              		.section	.text.dac_dma_enable,"ax",%progbits
+ 422              		.align	1
+ 423              		.global	dac_dma_enable
+ 424              		.syntax unified
+ 425              		.thumb
+ 426              		.thumb_func
+ 428              	dac_dma_enable:
+ 429              	.LVL11:
+ 430              	.LFB142:
+ 256:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 257:bsp/libraries/drivers/src/at32f435_437_dac.c **** /**
+ 258:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @brief  enable or disable dac dma
+ 259:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  dac_select
+ 260:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         this parameter can be one of the following values:
+ 261:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC1_SELECT
+ 262:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC2_SELECT
+ 263:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  new_state (TRUE or FALSE)
+ 264:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @retval none
+ 265:bsp/libraries/drivers/src/at32f435_437_dac.c ****   */
+ 266:bsp/libraries/drivers/src/at32f435_437_dac.c **** void dac_dma_enable(dac_select_type dac_select, confirm_state new_state)
+ 267:bsp/libraries/drivers/src/at32f435_437_dac.c **** {
+ 431              		.loc 1 267 1 is_stmt 1 view -0
+ 432              		.cfi_startproc
+ 433              		@ args = 0, pretend = 0, frame = 0
+ 434              		@ frame_needed = 0, uses_anonymous_args = 0
+ 435              		@ link register save eliminated.
+ 268:bsp/libraries/drivers/src/at32f435_437_dac.c ****   switch(dac_select)
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKp097r.s 			page 13
+
+
+ 436              		.loc 1 268 3 view .LVU75
+ 437 0000 0128     		cmp	r0, #1
+ 438 0002 02D0     		beq	.L51
+ 439 0004 0228     		cmp	r0, #2
+ 440 0006 06D0     		beq	.L52
+ 441 0008 7047     		bx	lr
+ 442              	.L51:
+ 269:bsp/libraries/drivers/src/at32f435_437_dac.c ****   {
+ 270:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC1_SELECT:
+ 271:bsp/libraries/drivers/src/at32f435_437_dac.c ****       DAC->ctrl_bit.d1dmaen = new_state;
+ 443              		.loc 1 271 7 view .LVU76
+ 444              		.loc 1 271 29 is_stmt 0 view .LVU77
+ 445 000a 064B     		ldr	r3, .L54
+ 446 000c 1A68     		ldr	r2, [r3]
+ 447 000e 61F30C32 		bfi	r2, r1, #12, #1
+ 448 0012 1A60     		str	r2, [r3]
+ 272:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 449              		.loc 1 272 7 is_stmt 1 view .LVU78
+ 450 0014 7047     		bx	lr
+ 451              	.L52:
+ 273:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC2_SELECT:
+ 274:bsp/libraries/drivers/src/at32f435_437_dac.c ****       DAC->ctrl_bit.d2dmaen = new_state;
+ 452              		.loc 1 274 7 view .LVU79
+ 453              		.loc 1 274 29 is_stmt 0 view .LVU80
+ 454 0016 034B     		ldr	r3, .L54
+ 455 0018 1A68     		ldr	r2, [r3]
+ 456 001a 61F31C72 		bfi	r2, r1, #28, #1
+ 457 001e 1A60     		str	r2, [r3]
+ 275:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 458              		.loc 1 275 7 is_stmt 1 view .LVU81
+ 276:bsp/libraries/drivers/src/at32f435_437_dac.c ****     default:
+ 277:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 278:bsp/libraries/drivers/src/at32f435_437_dac.c ****   }
+ 279:bsp/libraries/drivers/src/at32f435_437_dac.c **** }
+ 459              		.loc 1 279 1 is_stmt 0 view .LVU82
+ 460 0020 7047     		bx	lr
+ 461              	.L55:
+ 462 0022 00BF     		.align	2
+ 463              	.L54:
+ 464 0024 00740040 		.word	1073771520
+ 465              		.cfi_endproc
+ 466              	.LFE142:
+ 468              		.section	.text.dac_data_output_get,"ax",%progbits
+ 469              		.align	1
+ 470              		.global	dac_data_output_get
+ 471              		.syntax unified
+ 472              		.thumb
+ 473              		.thumb_func
+ 475              	dac_data_output_get:
+ 476              	.LVL12:
+ 477              	.LFB143:
+ 280:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 281:bsp/libraries/drivers/src/at32f435_437_dac.c **** /**
+ 282:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @brief  get dac data output
+ 283:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  dac_select
+ 284:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         this parameter can be one of the following values:
+ 285:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC1_SELECT
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKp097r.s 			page 14
+
+
+ 286:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC2_SELECT
+ 287:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @retval dac channel data output
+ 288:bsp/libraries/drivers/src/at32f435_437_dac.c ****   */
+ 289:bsp/libraries/drivers/src/at32f435_437_dac.c **** uint16_t dac_data_output_get(dac_select_type dac_select)
+ 290:bsp/libraries/drivers/src/at32f435_437_dac.c **** {
+ 478              		.loc 1 290 1 is_stmt 1 view -0
+ 479              		.cfi_startproc
+ 480              		@ args = 0, pretend = 0, frame = 0
+ 481              		@ frame_needed = 0, uses_anonymous_args = 0
+ 482              		@ link register save eliminated.
+ 291:bsp/libraries/drivers/src/at32f435_437_dac.c ****   uint16_t data_output =0;
+ 483              		.loc 1 291 3 view .LVU84
+ 292:bsp/libraries/drivers/src/at32f435_437_dac.c ****   switch(dac_select)
+ 484              		.loc 1 292 3 view .LVU85
+ 485 0000 0128     		cmp	r0, #1
+ 486 0002 03D0     		beq	.L57
+ 487 0004 0228     		cmp	r0, #2
+ 488 0006 06D0     		beq	.L58
+ 489 0008 0020     		movs	r0, #0
+ 490              	.LVL13:
+ 491              		.loc 1 292 3 is_stmt 0 view .LVU86
+ 492 000a 7047     		bx	lr
+ 493              	.LVL14:
+ 494              	.L57:
+ 293:bsp/libraries/drivers/src/at32f435_437_dac.c ****   {
+ 294:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC1_SELECT:
+ 295:bsp/libraries/drivers/src/at32f435_437_dac.c ****       data_output = DAC->d1odt_bit.d1odt;
+ 495              		.loc 1 295 7 is_stmt 1 view .LVU87
+ 496              		.loc 1 295 35 is_stmt 0 view .LVU88
+ 497 000c 044B     		ldr	r3, .L60
+ 498 000e D86A     		ldr	r0, [r3, #44]
+ 499              	.LVL15:
+ 500              		.loc 1 295 35 view .LVU89
+ 501 0010 C0F30B00 		ubfx	r0, r0, #0, #12
+ 502              	.LVL16:
+ 296:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 503              		.loc 1 296 7 is_stmt 1 view .LVU90
+ 504 0014 7047     		bx	lr
+ 505              	.LVL17:
+ 506              	.L58:
+ 297:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC2_SELECT:
+ 298:bsp/libraries/drivers/src/at32f435_437_dac.c ****       data_output = DAC->d2odt_bit.d2odt;
+ 507              		.loc 1 298 7 view .LVU91
+ 508              		.loc 1 298 35 is_stmt 0 view .LVU92
+ 509 0016 024B     		ldr	r3, .L60
+ 510 0018 186B     		ldr	r0, [r3, #48]
+ 511              	.LVL18:
+ 512              		.loc 1 298 35 view .LVU93
+ 513 001a C0F30B00 		ubfx	r0, r0, #0, #12
+ 514              	.LVL19:
+ 299:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 515              		.loc 1 299 7 is_stmt 1 view .LVU94
+ 300:bsp/libraries/drivers/src/at32f435_437_dac.c ****     default:
+ 301:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 302:bsp/libraries/drivers/src/at32f435_437_dac.c ****   }
+ 303:bsp/libraries/drivers/src/at32f435_437_dac.c ****   return data_output;
+ 516              		.loc 1 303 3 view .LVU95
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKp097r.s 			page 15
+
+
+ 304:bsp/libraries/drivers/src/at32f435_437_dac.c **** }
+ 517              		.loc 1 304 1 is_stmt 0 view .LVU96
+ 518 001e 7047     		bx	lr
+ 519              	.L61:
+ 520              		.align	2
+ 521              	.L60:
+ 522 0020 00740040 		.word	1073771520
+ 523              		.cfi_endproc
+ 524              	.LFE143:
+ 526              		.section	.text.dac_1_data_set,"ax",%progbits
+ 527              		.align	1
+ 528              		.global	dac_1_data_set
+ 529              		.syntax unified
+ 530              		.thumb
+ 531              		.thumb_func
+ 533              	dac_1_data_set:
+ 534              	.LVL20:
+ 535              	.LFB144:
+ 305:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 306:bsp/libraries/drivers/src/at32f435_437_dac.c **** /**
+ 307:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @brief  set dac1 data
+ 308:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  dac1_aligned
+ 309:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         this parameter can be one of the following values:
+ 310:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         DAC1_12BIT_RIGHT
+ 311:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         DAC1_12BIT_LEFT
+ 312:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         DAC1_8BIT_RIGHT
+ 313:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  dac1_data :indecate from selected data holding register
+ 314:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @retval none
+ 315:bsp/libraries/drivers/src/at32f435_437_dac.c ****   */
+ 316:bsp/libraries/drivers/src/at32f435_437_dac.c **** void dac_1_data_set(dac1_aligned_data_type dac1_aligned, uint16_t dac1_data)
+ 317:bsp/libraries/drivers/src/at32f435_437_dac.c **** {
+ 536              		.loc 1 317 1 is_stmt 1 view -0
+ 537              		.cfi_startproc
+ 538              		@ args = 0, pretend = 0, frame = 0
+ 539              		@ frame_needed = 0, uses_anonymous_args = 0
+ 540              		@ link register save eliminated.
+ 318:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *(__IO uint32_t *) dac1_aligned = dac1_data;
+ 541              		.loc 1 318 3 view .LVU98
+ 542              		.loc 1 318 35 is_stmt 0 view .LVU99
+ 543 0000 0160     		str	r1, [r0]
+ 319:bsp/libraries/drivers/src/at32f435_437_dac.c **** }
+ 544              		.loc 1 319 1 view .LVU100
+ 545 0002 7047     		bx	lr
+ 546              		.cfi_endproc
+ 547              	.LFE144:
+ 549              		.section	.text.dac_2_data_set,"ax",%progbits
+ 550              		.align	1
+ 551              		.global	dac_2_data_set
+ 552              		.syntax unified
+ 553              		.thumb
+ 554              		.thumb_func
+ 556              	dac_2_data_set:
+ 557              	.LVL21:
+ 558              	.LFB145:
+ 320:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 321:bsp/libraries/drivers/src/at32f435_437_dac.c **** /**
+ 322:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @brief  set dac2 data
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKp097r.s 			page 16
+
+
+ 323:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  dac2_aligned
+ 324:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         this parameter can be one of the following values:
+ 325:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         DAC2_12BIT_RIGHT
+ 326:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         DAC2_12BIT_LEFT
+ 327:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         DAC2_8BIT_RIGHT
+ 328:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  dac2_data :indecate from selected data holding register
+ 329:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @retval none
+ 330:bsp/libraries/drivers/src/at32f435_437_dac.c ****   */
+ 331:bsp/libraries/drivers/src/at32f435_437_dac.c **** void dac_2_data_set(dac2_aligned_data_type dac2_aligned, uint16_t dac2_data)
+ 332:bsp/libraries/drivers/src/at32f435_437_dac.c **** {
+ 559              		.loc 1 332 1 is_stmt 1 view -0
+ 560              		.cfi_startproc
+ 561              		@ args = 0, pretend = 0, frame = 0
+ 562              		@ frame_needed = 0, uses_anonymous_args = 0
+ 563              		@ link register save eliminated.
+ 333:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *(__IO uint32_t *) dac2_aligned = dac2_data;
+ 564              		.loc 1 333 3 view .LVU102
+ 565              		.loc 1 333 35 is_stmt 0 view .LVU103
+ 566 0000 0160     		str	r1, [r0]
+ 334:bsp/libraries/drivers/src/at32f435_437_dac.c **** }
+ 567              		.loc 1 334 1 view .LVU104
+ 568 0002 7047     		bx	lr
+ 569              		.cfi_endproc
+ 570              	.LFE145:
+ 572              		.section	.text.dac_dual_data_set,"ax",%progbits
+ 573              		.align	1
+ 574              		.global	dac_dual_data_set
+ 575              		.syntax unified
+ 576              		.thumb
+ 577              		.thumb_func
+ 579              	dac_dual_data_set:
+ 580              	.LVL22:
+ 581              	.LFB146:
+ 335:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 336:bsp/libraries/drivers/src/at32f435_437_dac.c **** /**
+ 337:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @brief  set dac dual data
+ 338:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  dac_dual
+ 339:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         this parameter can be one of the following values:
+ 340:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         DAC_DUAL_12BIT_RIGHT
+ 341:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         DAC_DUAL_12BIT_LEFT
+ 342:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         DAC_DUAL_8BIT_RIGHT
+ 343:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  data1 :dac1 channel indecate from selected data holding register
+ 344:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  data2 :dac1 channel indecate from selected data holding register
+ 345:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @retval none
+ 346:bsp/libraries/drivers/src/at32f435_437_dac.c ****   */
+ 347:bsp/libraries/drivers/src/at32f435_437_dac.c **** void dac_dual_data_set(dac_dual_data_type dac_dual, uint16_t data1, uint16_t data2)
+ 348:bsp/libraries/drivers/src/at32f435_437_dac.c **** {
+ 582              		.loc 1 348 1 is_stmt 1 view -0
+ 583              		.cfi_startproc
+ 584              		@ args = 0, pretend = 0, frame = 0
+ 585              		@ frame_needed = 0, uses_anonymous_args = 0
+ 586              		@ link register save eliminated.
+ 349:bsp/libraries/drivers/src/at32f435_437_dac.c ****   switch(dac_dual)
+ 587              		.loc 1 349 3 view .LVU106
+ 588 0000 0A4B     		ldr	r3, .L69
+ 589 0002 9842     		cmp	r0, r3
+ 590 0004 0AD0     		beq	.L65
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKp097r.s 			page 17
+
+
+ 591 0006 0433     		adds	r3, r3, #4
+ 592 0008 9842     		cmp	r0, r3
+ 593 000a 0BD0     		beq	.L66
+ 594 000c 083B     		subs	r3, r3, #8
+ 595 000e 9842     		cmp	r0, r3
+ 596 0010 00D0     		beq	.L68
+ 597              	.LVL23:
+ 598              	.L64:
+ 350:bsp/libraries/drivers/src/at32f435_437_dac.c ****   {
+ 351:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC_DUAL_12BIT_RIGHT:
+ 352:bsp/libraries/drivers/src/at32f435_437_dac.c ****       *(__IO uint32_t *) dac_dual = (uint32_t)(data1 | (data2 << 16));
+ 353:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 354:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC_DUAL_12BIT_LEFT:
+ 355:bsp/libraries/drivers/src/at32f435_437_dac.c ****       *(__IO uint32_t *) dac_dual = (uint32_t)(data1 | (data2 << 16));
+ 356:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 357:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC_DUAL_8BIT_RIGHT:
+ 358:bsp/libraries/drivers/src/at32f435_437_dac.c ****       *(__IO uint32_t *) dac_dual = (uint32_t)(data1 | (data2 << 8));
+ 359:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 360:bsp/libraries/drivers/src/at32f435_437_dac.c ****     default:
+ 361:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 362:bsp/libraries/drivers/src/at32f435_437_dac.c ****   }
+ 363:bsp/libraries/drivers/src/at32f435_437_dac.c **** }
+ 599              		.loc 1 363 1 is_stmt 0 view .LVU107
+ 600 0012 7047     		bx	lr
+ 601              	.LVL24:
+ 602              	.L68:
+ 352:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 603              		.loc 1 352 7 is_stmt 1 view .LVU108
+ 352:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 604              		.loc 1 352 54 is_stmt 0 view .LVU109
+ 605 0014 41EA0241 		orr	r1, r1, r2, lsl #16
+ 606              	.LVL25:
+ 352:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 607              		.loc 1 352 35 view .LVU110
+ 608 0018 0160     		str	r1, [r0]
+ 353:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC_DUAL_12BIT_LEFT:
+ 609              		.loc 1 353 7 is_stmt 1 view .LVU111
+ 610 001a 7047     		bx	lr
+ 611              	.LVL26:
+ 612              	.L65:
+ 355:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 613              		.loc 1 355 7 view .LVU112
+ 355:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 614              		.loc 1 355 54 is_stmt 0 view .LVU113
+ 615 001c 41EA0241 		orr	r1, r1, r2, lsl #16
+ 616              	.LVL27:
+ 355:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 617              		.loc 1 355 35 view .LVU114
+ 618 0020 0160     		str	r1, [r0]
+ 356:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC_DUAL_8BIT_RIGHT:
+ 619              		.loc 1 356 7 is_stmt 1 view .LVU115
+ 620 0022 7047     		bx	lr
+ 621              	.LVL28:
+ 622              	.L66:
+ 358:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 623              		.loc 1 358 7 view .LVU116
+ 358:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKp097r.s 			page 18
+
+
+ 624              		.loc 1 358 54 is_stmt 0 view .LVU117
+ 625 0024 41EA0221 		orr	r1, r1, r2, lsl #8
+ 626              	.LVL29:
+ 358:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 627              		.loc 1 358 35 view .LVU118
+ 628 0028 0160     		str	r1, [r0]
+ 359:bsp/libraries/drivers/src/at32f435_437_dac.c ****     default:
+ 629              		.loc 1 359 7 is_stmt 1 view .LVU119
+ 630              		.loc 1 363 1 is_stmt 0 view .LVU120
+ 631 002a F2E7     		b	.L64
+ 632              	.L70:
+ 633              		.align	2
+ 634              	.L69:
+ 635 002c 24740040 		.word	1073771556
+ 636              		.cfi_endproc
+ 637              	.LFE146:
+ 639              		.section	.text.dac_udr_enable,"ax",%progbits
+ 640              		.align	1
+ 641              		.global	dac_udr_enable
+ 642              		.syntax unified
+ 643              		.thumb
+ 644              		.thumb_func
+ 646              	dac_udr_enable:
+ 647              	.LVL30:
+ 648              	.LFB147:
+ 364:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 365:bsp/libraries/drivers/src/at32f435_437_dac.c **** /**
+ 366:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @brief  enable/disable dac dma udr interrupt
+ 367:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  dac_select
+ 368:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         this parameter can be one of the following values:
+ 369:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC1_SELECT
+ 370:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC2_SELECT
+ 371:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  new_state (TRUE or FALSE)
+ 372:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @retval none
+ 373:bsp/libraries/drivers/src/at32f435_437_dac.c ****   */
+ 374:bsp/libraries/drivers/src/at32f435_437_dac.c **** void dac_udr_enable(dac_select_type dac_select, confirm_state new_state)
+ 375:bsp/libraries/drivers/src/at32f435_437_dac.c **** {
+ 649              		.loc 1 375 1 is_stmt 1 view -0
+ 650              		.cfi_startproc
+ 651              		@ args = 0, pretend = 0, frame = 0
+ 652              		@ frame_needed = 0, uses_anonymous_args = 0
+ 653              		@ link register save eliminated.
+ 376:bsp/libraries/drivers/src/at32f435_437_dac.c ****   switch(dac_select)
+ 654              		.loc 1 376 3 view .LVU122
+ 655 0000 0128     		cmp	r0, #1
+ 656 0002 02D0     		beq	.L72
+ 657 0004 0228     		cmp	r0, #2
+ 658 0006 06D0     		beq	.L73
+ 659 0008 7047     		bx	lr
+ 660              	.L72:
+ 377:bsp/libraries/drivers/src/at32f435_437_dac.c ****   {
+ 378:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC1_SELECT:
+ 379:bsp/libraries/drivers/src/at32f435_437_dac.c ****       DAC->ctrl_bit.d1dmaudrien = new_state;
+ 661              		.loc 1 379 7 view .LVU123
+ 662              		.loc 1 379 33 is_stmt 0 view .LVU124
+ 663 000a 064B     		ldr	r3, .L75
+ 664 000c 1A68     		ldr	r2, [r3]
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKp097r.s 			page 19
+
+
+ 665 000e 61F34D32 		bfi	r2, r1, #13, #1
+ 666 0012 1A60     		str	r2, [r3]
+ 380:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 667              		.loc 1 380 7 is_stmt 1 view .LVU125
+ 668 0014 7047     		bx	lr
+ 669              	.L73:
+ 381:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC2_SELECT:
+ 382:bsp/libraries/drivers/src/at32f435_437_dac.c ****       DAC->ctrl_bit.d2dmaudrien = new_state;
+ 670              		.loc 1 382 7 view .LVU126
+ 671              		.loc 1 382 33 is_stmt 0 view .LVU127
+ 672 0016 034B     		ldr	r3, .L75
+ 673 0018 1A68     		ldr	r2, [r3]
+ 674 001a 61F35D72 		bfi	r2, r1, #29, #1
+ 675 001e 1A60     		str	r2, [r3]
+ 383:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 676              		.loc 1 383 7 is_stmt 1 view .LVU128
+ 384:bsp/libraries/drivers/src/at32f435_437_dac.c ****     default:
+ 385:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 386:bsp/libraries/drivers/src/at32f435_437_dac.c ****   }
+ 387:bsp/libraries/drivers/src/at32f435_437_dac.c **** }
+ 677              		.loc 1 387 1 is_stmt 0 view .LVU129
+ 678 0020 7047     		bx	lr
+ 679              	.L76:
+ 680 0022 00BF     		.align	2
+ 681              	.L75:
+ 682 0024 00740040 		.word	1073771520
+ 683              		.cfi_endproc
+ 684              	.LFE147:
+ 686              		.section	.text.dac_udr_flag_get,"ax",%progbits
+ 687              		.align	1
+ 688              		.global	dac_udr_flag_get
+ 689              		.syntax unified
+ 690              		.thumb
+ 691              		.thumb_func
+ 693              	dac_udr_flag_get:
+ 694              	.LVL31:
+ 695              	.LFB148:
+ 388:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 389:bsp/libraries/drivers/src/at32f435_437_dac.c **** /**
+ 390:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @brief  get flag of the dac udr flag.
+ 391:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  dac_select
+ 392:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         this parameter can be one of the following values:
+ 393:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC1_SELECT
+ 394:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC2_SELECT
+ 395:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @retval the new state of dac udr flag status(SET or RESET).
+ 396:bsp/libraries/drivers/src/at32f435_437_dac.c ****   */
+ 397:bsp/libraries/drivers/src/at32f435_437_dac.c **** flag_status dac_udr_flag_get(dac_select_type dac_select)
+ 398:bsp/libraries/drivers/src/at32f435_437_dac.c **** {
+ 696              		.loc 1 398 1 is_stmt 1 view -0
+ 697              		.cfi_startproc
+ 698              		@ args = 0, pretend = 0, frame = 0
+ 699              		@ frame_needed = 0, uses_anonymous_args = 0
+ 700              		@ link register save eliminated.
+ 399:bsp/libraries/drivers/src/at32f435_437_dac.c ****   flag_status status = RESET;
+ 701              		.loc 1 399 3 view .LVU131
+ 400:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 401:bsp/libraries/drivers/src/at32f435_437_dac.c ****   switch(dac_select)
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKp097r.s 			page 20
+
+
+ 702              		.loc 1 401 3 view .LVU132
+ 703 0000 0128     		cmp	r0, #1
+ 704 0002 03D0     		beq	.L78
+ 705 0004 0228     		cmp	r0, #2
+ 706 0006 08D0     		beq	.L79
+ 707 0008 0020     		movs	r0, #0
+ 708              	.LVL32:
+ 709              		.loc 1 401 3 is_stmt 0 view .LVU133
+ 710 000a 7047     		bx	lr
+ 711              	.LVL33:
+ 712              	.L78:
+ 402:bsp/libraries/drivers/src/at32f435_437_dac.c ****   {
+ 403:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC1_SELECT:
+ 404:bsp/libraries/drivers/src/at32f435_437_dac.c ****       if(DAC->sts_bit.d1dmaudrf != 0)
+ 713              		.loc 1 404 7 is_stmt 1 view .LVU134
+ 714              		.loc 1 404 22 is_stmt 0 view .LVU135
+ 715 000c 074B     		ldr	r3, .L83
+ 716 000e 5B6B     		ldr	r3, [r3, #52]
+ 717              		.loc 1 404 9 view .LVU136
+ 718 0010 13F4005F 		tst	r3, #8192
+ 719 0014 09D1     		bne	.L80
+ 399:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 720              		.loc 1 399 15 view .LVU137
+ 721 0016 0020     		movs	r0, #0
+ 722              	.LVL34:
+ 399:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 723              		.loc 1 399 15 view .LVU138
+ 724 0018 7047     		bx	lr
+ 725              	.LVL35:
+ 726              	.L79:
+ 405:bsp/libraries/drivers/src/at32f435_437_dac.c ****         status = SET;
+ 406:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 407:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC2_SELECT:
+ 408:bsp/libraries/drivers/src/at32f435_437_dac.c ****       if(DAC->sts_bit.d2dmaudrf != 0)
+ 727              		.loc 1 408 7 is_stmt 1 view .LVU139
+ 728              		.loc 1 408 22 is_stmt 0 view .LVU140
+ 729 001a 044B     		ldr	r3, .L83
+ 730 001c 5B6B     		ldr	r3, [r3, #52]
+ 731              		.loc 1 408 9 view .LVU141
+ 732 001e 13F0005F 		tst	r3, #536870912
+ 733 0022 01D1     		bne	.L82
+ 399:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 734              		.loc 1 399 15 view .LVU142
+ 735 0024 0020     		movs	r0, #0
+ 736              	.LVL36:
+ 399:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 737              		.loc 1 399 15 view .LVU143
+ 738 0026 7047     		bx	lr
+ 739              	.LVL37:
+ 740              	.L82:
+ 409:bsp/libraries/drivers/src/at32f435_437_dac.c ****         status = SET;
+ 741              		.loc 1 409 16 view .LVU144
+ 742 0028 0120     		movs	r0, #1
+ 743              	.LVL38:
+ 744              	.L80:
+ 410:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 411:bsp/libraries/drivers/src/at32f435_437_dac.c ****     default:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKp097r.s 			page 21
+
+
+ 412:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 413:bsp/libraries/drivers/src/at32f435_437_dac.c ****   }
+ 414:bsp/libraries/drivers/src/at32f435_437_dac.c ****   return status;
+ 745              		.loc 1 414 3 is_stmt 1 view .LVU145
+ 415:bsp/libraries/drivers/src/at32f435_437_dac.c **** }
+ 746              		.loc 1 415 1 is_stmt 0 view .LVU146
+ 747 002a 7047     		bx	lr
+ 748              	.L84:
+ 749              		.align	2
+ 750              	.L83:
+ 751 002c 00740040 		.word	1073771520
+ 752              		.cfi_endproc
+ 753              	.LFE148:
+ 755              		.section	.text.dac_udr_interrupt_flag_get,"ax",%progbits
+ 756              		.align	1
+ 757              		.global	dac_udr_interrupt_flag_get
+ 758              		.syntax unified
+ 759              		.thumb
+ 760              		.thumb_func
+ 762              	dac_udr_interrupt_flag_get:
+ 763              	.LVL39:
+ 764              	.LFB149:
+ 416:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 417:bsp/libraries/drivers/src/at32f435_437_dac.c **** /**
+ 418:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @brief  get flag of the dac udr interrupt flag.
+ 419:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  dac_select
+ 420:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         this parameter can be one of the following values:
+ 421:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC1_SELECT
+ 422:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC2_SELECT
+ 423:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @retval the new state of dac udr flag status(SET or RESET).
+ 424:bsp/libraries/drivers/src/at32f435_437_dac.c ****   */
+ 425:bsp/libraries/drivers/src/at32f435_437_dac.c **** flag_status dac_udr_interrupt_flag_get(dac_select_type dac_select)
+ 426:bsp/libraries/drivers/src/at32f435_437_dac.c **** {
+ 765              		.loc 1 426 1 is_stmt 1 view -0
+ 766              		.cfi_startproc
+ 767              		@ args = 0, pretend = 0, frame = 0
+ 768              		@ frame_needed = 0, uses_anonymous_args = 0
+ 769              		@ link register save eliminated.
+ 427:bsp/libraries/drivers/src/at32f435_437_dac.c ****   flag_status status = RESET;
+ 770              		.loc 1 427 3 view .LVU148
+ 428:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 429:bsp/libraries/drivers/src/at32f435_437_dac.c ****   switch(dac_select)
+ 771              		.loc 1 429 3 view .LVU149
+ 772 0000 0128     		cmp	r0, #1
+ 773 0002 03D0     		beq	.L86
+ 774 0004 0228     		cmp	r0, #2
+ 775 0006 0DD0     		beq	.L87
+ 776 0008 0020     		movs	r0, #0
+ 777              	.LVL40:
+ 778              		.loc 1 429 3 is_stmt 0 view .LVU150
+ 779 000a 7047     		bx	lr
+ 780              	.LVL41:
+ 781              	.L86:
+ 430:bsp/libraries/drivers/src/at32f435_437_dac.c ****   {
+ 431:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC1_SELECT:
+ 432:bsp/libraries/drivers/src/at32f435_437_dac.c ****       if((DAC->sts_bit.d1dmaudrf && DAC->ctrl_bit.d1dmaudrien) != 0)
+ 782              		.loc 1 432 7 is_stmt 1 view .LVU151
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKp097r.s 			page 22
+
+
+ 783              		.loc 1 432 23 is_stmt 0 view .LVU152
+ 784 000c 0E4B     		ldr	r3, .L93
+ 785 000e 5B6B     		ldr	r3, [r3, #52]
+ 786              		.loc 1 432 34 view .LVU153
+ 787 0010 13F4005F 		tst	r3, #8192
+ 788 0014 12D0     		beq	.L89
+ 789              		.loc 1 432 50 discriminator 1 view .LVU154
+ 790 0016 0C4B     		ldr	r3, .L93
+ 791 0018 1B68     		ldr	r3, [r3]
+ 792              		.loc 1 432 34 discriminator 1 view .LVU155
+ 793 001a 13F4005F 		tst	r3, #8192
+ 794 001e 12D1     		bne	.L88
+ 427:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 795              		.loc 1 427 15 view .LVU156
+ 796 0020 0020     		movs	r0, #0
+ 797              	.LVL42:
+ 427:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 798              		.loc 1 427 15 view .LVU157
+ 799 0022 7047     		bx	lr
+ 800              	.LVL43:
+ 801              	.L87:
+ 433:bsp/libraries/drivers/src/at32f435_437_dac.c ****         status = SET;
+ 434:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 435:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC2_SELECT:
+ 436:bsp/libraries/drivers/src/at32f435_437_dac.c ****       if((DAC->sts_bit.d2dmaudrf && DAC->ctrl_bit.d2dmaudrien) != 0)
+ 802              		.loc 1 436 7 is_stmt 1 view .LVU158
+ 803              		.loc 1 436 23 is_stmt 0 view .LVU159
+ 804 0024 084B     		ldr	r3, .L93
+ 805 0026 5B6B     		ldr	r3, [r3, #52]
+ 806              		.loc 1 436 34 view .LVU160
+ 807 0028 13F0005F 		tst	r3, #536870912
+ 808 002c 08D0     		beq	.L91
+ 809              		.loc 1 436 50 discriminator 1 view .LVU161
+ 810 002e 064B     		ldr	r3, .L93
+ 811 0030 1B68     		ldr	r3, [r3]
+ 812              		.loc 1 436 34 discriminator 1 view .LVU162
+ 813 0032 13F0005F 		tst	r3, #536870912
+ 814 0036 05D1     		bne	.L92
+ 427:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 815              		.loc 1 427 15 view .LVU163
+ 816 0038 0020     		movs	r0, #0
+ 817              	.LVL44:
+ 427:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 818              		.loc 1 427 15 view .LVU164
+ 819 003a 7047     		bx	lr
+ 820              	.LVL45:
+ 821              	.L89:
+ 427:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 822              		.loc 1 427 15 view .LVU165
+ 823 003c 0020     		movs	r0, #0
+ 824              	.LVL46:
+ 427:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 825              		.loc 1 427 15 view .LVU166
+ 826 003e 7047     		bx	lr
+ 827              	.LVL47:
+ 828              	.L91:
+ 427:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKp097r.s 			page 23
+
+
+ 829              		.loc 1 427 15 view .LVU167
+ 830 0040 0020     		movs	r0, #0
+ 831              	.LVL48:
+ 427:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 832              		.loc 1 427 15 view .LVU168
+ 833 0042 7047     		bx	lr
+ 834              	.LVL49:
+ 835              	.L92:
+ 437:bsp/libraries/drivers/src/at32f435_437_dac.c ****         status = SET;
+ 836              		.loc 1 437 16 view .LVU169
+ 837 0044 0120     		movs	r0, #1
+ 838              	.LVL50:
+ 839              	.L88:
+ 438:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 439:bsp/libraries/drivers/src/at32f435_437_dac.c ****     default:
+ 440:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 441:bsp/libraries/drivers/src/at32f435_437_dac.c ****   }
+ 442:bsp/libraries/drivers/src/at32f435_437_dac.c ****   return status;
+ 840              		.loc 1 442 3 is_stmt 1 view .LVU170
+ 443:bsp/libraries/drivers/src/at32f435_437_dac.c **** }
+ 841              		.loc 1 443 1 is_stmt 0 view .LVU171
+ 842 0046 7047     		bx	lr
+ 843              	.L94:
+ 844              		.align	2
+ 845              	.L93:
+ 846 0048 00740040 		.word	1073771520
+ 847              		.cfi_endproc
+ 848              	.LFE149:
+ 850              		.section	.text.dac_udr_flag_clear,"ax",%progbits
+ 851              		.align	1
+ 852              		.global	dac_udr_flag_clear
+ 853              		.syntax unified
+ 854              		.thumb
+ 855              		.thumb_func
+ 857              	dac_udr_flag_clear:
+ 858              	.LVL51:
+ 859              	.LFB150:
+ 444:bsp/libraries/drivers/src/at32f435_437_dac.c **** 
+ 445:bsp/libraries/drivers/src/at32f435_437_dac.c **** /**
+ 446:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @brief  clear the dac udr flag.
+ 447:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @param  dac_select
+ 448:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         this parameter can be one of the following values:
+ 449:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC1_SELECT
+ 450:bsp/libraries/drivers/src/at32f435_437_dac.c ****   *         - DAC2_SELECT
+ 451:bsp/libraries/drivers/src/at32f435_437_dac.c ****   * @retval none
+ 452:bsp/libraries/drivers/src/at32f435_437_dac.c ****   */
+ 453:bsp/libraries/drivers/src/at32f435_437_dac.c **** void dac_udr_flag_clear(dac_select_type dac_select)
+ 454:bsp/libraries/drivers/src/at32f435_437_dac.c **** {
+ 860              		.loc 1 454 1 is_stmt 1 view -0
+ 861              		.cfi_startproc
+ 862              		@ args = 0, pretend = 0, frame = 0
+ 863              		@ frame_needed = 0, uses_anonymous_args = 0
+ 864              		@ link register save eliminated.
+ 455:bsp/libraries/drivers/src/at32f435_437_dac.c ****   switch(dac_select)
+ 865              		.loc 1 455 3 view .LVU173
+ 866 0000 0128     		cmp	r0, #1
+ 867 0002 02D0     		beq	.L96
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKp097r.s 			page 24
+
+
+ 868 0004 0228     		cmp	r0, #2
+ 869 0006 05D0     		beq	.L97
+ 870 0008 7047     		bx	lr
+ 871              	.L96:
+ 456:bsp/libraries/drivers/src/at32f435_437_dac.c ****   {
+ 457:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC1_SELECT:
+ 458:bsp/libraries/drivers/src/at32f435_437_dac.c ****       DAC->sts = DAC1_D1DMAUDRF;
+ 872              		.loc 1 458 7 view .LVU174
+ 873              		.loc 1 458 16 is_stmt 0 view .LVU175
+ 874 000a 054B     		ldr	r3, .L99
+ 875 000c 4FF40052 		mov	r2, #8192
+ 876 0010 5A63     		str	r2, [r3, #52]
+ 459:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 877              		.loc 1 459 7 is_stmt 1 view .LVU176
+ 878 0012 7047     		bx	lr
+ 879              	.L97:
+ 460:bsp/libraries/drivers/src/at32f435_437_dac.c ****     case DAC2_SELECT:
+ 461:bsp/libraries/drivers/src/at32f435_437_dac.c ****       DAC->sts = DAC2_D2DMAUDRF;
+ 880              		.loc 1 461 7 view .LVU177
+ 881              		.loc 1 461 16 is_stmt 0 view .LVU178
+ 882 0014 024B     		ldr	r3, .L99
+ 883 0016 4FF00052 		mov	r2, #536870912
+ 884 001a 5A63     		str	r2, [r3, #52]
+ 462:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 885              		.loc 1 462 7 is_stmt 1 view .LVU179
+ 463:bsp/libraries/drivers/src/at32f435_437_dac.c ****     default:
+ 464:bsp/libraries/drivers/src/at32f435_437_dac.c ****       break;
+ 465:bsp/libraries/drivers/src/at32f435_437_dac.c ****   }
+ 466:bsp/libraries/drivers/src/at32f435_437_dac.c **** }
+ 886              		.loc 1 466 1 is_stmt 0 view .LVU180
+ 887 001c 7047     		bx	lr
+ 888              	.L100:
+ 889 001e 00BF     		.align	2
+ 890              	.L99:
+ 891 0020 00740040 		.word	1073771520
+ 892              		.cfi_endproc
+ 893              	.LFE150:
+ 895              		.text
+ 896              	.Letext0:
+ 897              		.file 2 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\mac
+ 898              		.file 3 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\sys
+ 899              		.file 4 "bsp/libraries/cmsis/cm4/device_support/at32f435_437.h"
+ 900              		.file 5 "bsp/libraries/drivers/inc/at32f435_437_crm.h"
+ 901              		.file 6 "bsp/libraries/drivers/inc/at32f435_437_dac.h"
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKp097r.s 			page 25
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 at32f435_437_dac.c
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:18     .text.dac_reset:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:24     .text.dac_reset:00000000 dac_reset
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:52     .text.dac_reset:00000018 $d
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:57     .text.dac_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:63     .text.dac_enable:00000000 dac_enable
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:99     .text.dac_enable:00000024 $d
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:104    .text.dac_output_buffer_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:110    .text.dac_output_buffer_enable:00000000 dac_output_buffer_enable
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:153    .text.dac_output_buffer_enable:00000028 $d
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:158    .text.dac_trigger_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:164    .text.dac_trigger_enable:00000000 dac_trigger_enable
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:200    .text.dac_trigger_enable:00000024 $d
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:205    .text.dac_trigger_select:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:211    .text.dac_trigger_select:00000000 dac_trigger_select
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:247    .text.dac_trigger_select:00000024 $d
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:252    .text.dac_software_trigger_generate:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:258    .text.dac_software_trigger_generate:00000000 dac_software_trigger_generate
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:294    .text.dac_software_trigger_generate:00000024 $d
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:299    .text.dac_dual_software_trigger_generate:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:305    .text.dac_dual_software_trigger_generate:00000000 dac_dual_software_trigger_generate
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:323    .text.dac_dual_software_trigger_generate:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:328    .text.dac_wave_generate:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:334    .text.dac_wave_generate:00000000 dac_wave_generate
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:370    .text.dac_wave_generate:00000024 $d
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:375    .text.dac_mask_amplitude_select:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:381    .text.dac_mask_amplitude_select:00000000 dac_mask_amplitude_select
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:417    .text.dac_mask_amplitude_select:00000024 $d
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:422    .text.dac_dma_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:428    .text.dac_dma_enable:00000000 dac_dma_enable
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:464    .text.dac_dma_enable:00000024 $d
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:469    .text.dac_data_output_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:475    .text.dac_data_output_get:00000000 dac_data_output_get
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:522    .text.dac_data_output_get:00000020 $d
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:527    .text.dac_1_data_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:533    .text.dac_1_data_set:00000000 dac_1_data_set
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:550    .text.dac_2_data_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:556    .text.dac_2_data_set:00000000 dac_2_data_set
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:573    .text.dac_dual_data_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:579    .text.dac_dual_data_set:00000000 dac_dual_data_set
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:635    .text.dac_dual_data_set:0000002c $d
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:640    .text.dac_udr_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:646    .text.dac_udr_enable:00000000 dac_udr_enable
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:682    .text.dac_udr_enable:00000024 $d
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:687    .text.dac_udr_flag_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:693    .text.dac_udr_flag_get:00000000 dac_udr_flag_get
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:751    .text.dac_udr_flag_get:0000002c $d
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:756    .text.dac_udr_interrupt_flag_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:762    .text.dac_udr_interrupt_flag_get:00000000 dac_udr_interrupt_flag_get
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:846    .text.dac_udr_interrupt_flag_get:00000048 $d
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:851    .text.dac_udr_flag_clear:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:857    .text.dac_udr_flag_clear:00000000 dac_udr_flag_clear
+C:\Users\user\AppData\Local\Temp\ccKp097r.s:891    .text.dac_udr_flag_clear:00000020 $d
+
+UNDEFINED SYMBOLS
+crm_periph_reset
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKp097r.s 			page 26
+
+

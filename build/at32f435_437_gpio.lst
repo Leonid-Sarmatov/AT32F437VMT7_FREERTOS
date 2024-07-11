@@ -1,0 +1,1437 @@
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKgnet8.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"at32f435_437_gpio.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.gpio_reset,"ax",%progbits
+  18              		.align	1
+  19              		.global	gpio_reset
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	gpio_reset:
+  25              	.LVL0:
+  26              	.LFB133:
+  27              		.file 1 "bsp/libraries/drivers/src/at32f435_437_gpio.c"
+   1:bsp/libraries/drivers/src/at32f435_437_gpio.c **** /**
+   2:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   **************************************************************************
+   3:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @file     at32f435_437_gpio.c
+   4:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @brief    contains all the functions for the gpio firmware library
+   5:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   **************************************************************************
+   6:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *                       Copyright notice & Disclaimer
+   7:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *
+   8:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * The software Board Support Package (BSP) that is made available to
+   9:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * download from Artery official website is the copyrighted work of Artery.
+  10:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * Artery authorizes customers to use, copy, and distribute the BSP
+  11:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * software and its related documentation for the purpose of design and
+  12:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * development in conjunction with Artery microcontrollers. Use of the
+  13:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * software is governed by this copyright notice and the following disclaimer.
+  14:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *
+  15:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
+  16:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * GUARANTEES OR REPRESENTATIONS OF ANY KIND. ARTERY EXPRESSLY DISCLAIMS,
+  17:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * TO THE FULLEST EXTENT PERMITTED BY LAW, ALL EXPRESS, IMPLIED OR
+  18:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * STATUTORY OR OTHER WARRANTIES, GUARANTEES OR REPRESENTATIONS,
+  19:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * INCLUDING BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+  20:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
+  21:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *
+  22:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   **************************************************************************
+  23:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   */
+  24:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+  25:bsp/libraries/drivers/src/at32f435_437_gpio.c **** #include "at32f435_437_conf.h"
+  26:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+  27:bsp/libraries/drivers/src/at32f435_437_gpio.c **** /** @addtogroup AT32F435_437_periph_driver
+  28:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @{
+  29:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   */
+  30:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+  31:bsp/libraries/drivers/src/at32f435_437_gpio.c **** /** @defgroup GPIO
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKgnet8.s 			page 2
+
+
+  32:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @brief GPIO driver modules
+  33:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @{
+  34:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   */
+  35:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+  36:bsp/libraries/drivers/src/at32f435_437_gpio.c **** #ifdef GPIO_MODULE_ENABLED
+  37:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+  38:bsp/libraries/drivers/src/at32f435_437_gpio.c **** /** @defgroup GPIO_private_functions
+  39:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @{
+  40:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   */
+  41:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+  42:bsp/libraries/drivers/src/at32f435_437_gpio.c **** /**
+  43:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @brief  reset the gpio register
+  44:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @param  gpio_x: to select the gpio peripheral.
+  45:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         this parameter can be one of the following values:
+  46:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         GPIOA, GPIOB, GPIOC, GPIOD, GPIOE, GPIOF, GPIOG, GPIOH.
+  47:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @retval none
+  48:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   */
+  49:bsp/libraries/drivers/src/at32f435_437_gpio.c **** void gpio_reset(gpio_type *gpio_x)
+  50:bsp/libraries/drivers/src/at32f435_437_gpio.c **** {
+  28              		.loc 1 50 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		.loc 1 50 1 is_stmt 0 view .LVU1
+  33 0000 10B5     		push	{r4, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 4, -8
+  37              		.cfi_offset 14, -4
+  51:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   if(gpio_x == GPIOA)
+  38              		.loc 1 51 3 is_stmt 1 view .LVU2
+  39              		.loc 1 51 5 is_stmt 0 view .LVU3
+  40 0002 354B     		ldr	r3, .L19
+  41 0004 9842     		cmp	r0, r3
+  42 0006 15D0     		beq	.L11
+  52:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   {
+  53:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOA_PERIPH_RESET, TRUE);
+  54:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOA_PERIPH_RESET, FALSE);
+  55:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   }
+  56:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   else if(gpio_x == GPIOB)
+  43              		.loc 1 56 8 is_stmt 1 view .LVU4
+  44              		.loc 1 56 10 is_stmt 0 view .LVU5
+  45 0008 344B     		ldr	r3, .L19+4
+  46 000a 9842     		cmp	r0, r3
+  47 000c 1DD0     		beq	.L12
+  57:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   {
+  58:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOB_PERIPH_RESET, TRUE);
+  59:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOB_PERIPH_RESET, FALSE);
+  60:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   }
+  61:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   else if(gpio_x == GPIOC)
+  48              		.loc 1 61 8 is_stmt 1 view .LVU6
+  49              		.loc 1 61 10 is_stmt 0 view .LVU7
+  50 000e 344B     		ldr	r3, .L19+8
+  51 0010 9842     		cmp	r0, r3
+  52 0012 24D0     		beq	.L13
+  62:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   {
+  63:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOC_PERIPH_RESET, TRUE);
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKgnet8.s 			page 3
+
+
+  64:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOC_PERIPH_RESET, FALSE);
+  65:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   }
+  66:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   else if(gpio_x == GPIOD)
+  53              		.loc 1 66 8 is_stmt 1 view .LVU8
+  54              		.loc 1 66 10 is_stmt 0 view .LVU9
+  55 0014 334B     		ldr	r3, .L19+12
+  56 0016 9842     		cmp	r0, r3
+  57 0018 2BD0     		beq	.L14
+  67:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   {
+  68:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOD_PERIPH_RESET, TRUE);
+  69:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOD_PERIPH_RESET, FALSE);
+  70:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   }
+  71:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   else if(gpio_x == GPIOE)
+  58              		.loc 1 71 8 is_stmt 1 view .LVU10
+  59              		.loc 1 71 10 is_stmt 0 view .LVU11
+  60 001a 334B     		ldr	r3, .L19+16
+  61 001c 9842     		cmp	r0, r3
+  62 001e 32D0     		beq	.L15
+  72:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   {
+  73:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOE_PERIPH_RESET, TRUE);
+  74:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOE_PERIPH_RESET, FALSE);
+  75:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   }
+  76:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   else if(gpio_x == GPIOF)
+  63              		.loc 1 76 8 is_stmt 1 view .LVU12
+  64              		.loc 1 76 10 is_stmt 0 view .LVU13
+  65 0020 324B     		ldr	r3, .L19+20
+  66 0022 9842     		cmp	r0, r3
+  67 0024 39D0     		beq	.L16
+  77:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   {
+  78:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOF_PERIPH_RESET, TRUE);
+  79:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOF_PERIPH_RESET, FALSE);
+  80:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   }
+  81:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   else if(gpio_x == GPIOG)
+  68              		.loc 1 81 8 is_stmt 1 view .LVU14
+  69              		.loc 1 81 10 is_stmt 0 view .LVU15
+  70 0026 324B     		ldr	r3, .L19+24
+  71 0028 9842     		cmp	r0, r3
+  72 002a 40D0     		beq	.L17
+  82:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   {
+  83:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOG_PERIPH_RESET, TRUE);
+  84:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOG_PERIPH_RESET, FALSE);
+  85:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   }
+  86:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   else if(gpio_x == GPIOH)
+  73              		.loc 1 86 8 is_stmt 1 view .LVU16
+  74              		.loc 1 86 10 is_stmt 0 view .LVU17
+  75 002c 314B     		ldr	r3, .L19+28
+  76 002e 9842     		cmp	r0, r3
+  77 0030 47D0     		beq	.L18
+  78              	.LVL1:
+  79              	.L1:
+  87:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   {
+  88:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOH_PERIPH_RESET, TRUE);
+  89:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOH_PERIPH_RESET, FALSE);
+  90:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   }
+  91:bsp/libraries/drivers/src/at32f435_437_gpio.c **** }
+  80              		.loc 1 91 1 view .LVU18
+  81 0032 10BD     		pop	{r4, pc}
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKgnet8.s 			page 4
+
+
+  82              	.LVL2:
+  83              	.L11:
+  53:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOA_PERIPH_RESET, FALSE);
+  84              		.loc 1 53 5 is_stmt 1 view .LVU19
+  85 0034 0121     		movs	r1, #1
+  86 0036 4FF48010 		mov	r0, #1048576
+  87              	.LVL3:
+  53:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOA_PERIPH_RESET, FALSE);
+  88              		.loc 1 53 5 is_stmt 0 view .LVU20
+  89 003a FFF7FEFF 		bl	crm_periph_reset
+  90              	.LVL4:
+  54:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   }
+  91              		.loc 1 54 5 is_stmt 1 view .LVU21
+  92 003e 0021     		movs	r1, #0
+  93 0040 4FF48010 		mov	r0, #1048576
+  94 0044 FFF7FEFF 		bl	crm_periph_reset
+  95              	.LVL5:
+  96 0048 F3E7     		b	.L1
+  97              	.LVL6:
+  98              	.L12:
+  58:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOB_PERIPH_RESET, FALSE);
+  99              		.loc 1 58 5 view .LVU22
+ 100 004a 2B4C     		ldr	r4, .L19+32
+ 101 004c 0121     		movs	r1, #1
+ 102 004e 2046     		mov	r0, r4
+ 103              	.LVL7:
+  58:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOB_PERIPH_RESET, FALSE);
+ 104              		.loc 1 58 5 is_stmt 0 view .LVU23
+ 105 0050 FFF7FEFF 		bl	crm_periph_reset
+ 106              	.LVL8:
+  59:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   }
+ 107              		.loc 1 59 5 is_stmt 1 view .LVU24
+ 108 0054 0021     		movs	r1, #0
+ 109 0056 2046     		mov	r0, r4
+ 110 0058 FFF7FEFF 		bl	crm_periph_reset
+ 111              	.LVL9:
+ 112 005c E9E7     		b	.L1
+ 113              	.LVL10:
+ 114              	.L13:
+  63:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOC_PERIPH_RESET, FALSE);
+ 115              		.loc 1 63 5 view .LVU25
+ 116 005e 274C     		ldr	r4, .L19+36
+ 117 0060 0121     		movs	r1, #1
+ 118 0062 2046     		mov	r0, r4
+ 119              	.LVL11:
+  63:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOC_PERIPH_RESET, FALSE);
+ 120              		.loc 1 63 5 is_stmt 0 view .LVU26
+ 121 0064 FFF7FEFF 		bl	crm_periph_reset
+ 122              	.LVL12:
+  64:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   }
+ 123              		.loc 1 64 5 is_stmt 1 view .LVU27
+ 124 0068 0021     		movs	r1, #0
+ 125 006a 2046     		mov	r0, r4
+ 126 006c FFF7FEFF 		bl	crm_periph_reset
+ 127              	.LVL13:
+ 128 0070 DFE7     		b	.L1
+ 129              	.LVL14:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKgnet8.s 			page 5
+
+
+ 130              	.L14:
+  68:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOD_PERIPH_RESET, FALSE);
+ 131              		.loc 1 68 5 view .LVU28
+ 132 0072 234C     		ldr	r4, .L19+40
+ 133 0074 0121     		movs	r1, #1
+ 134 0076 2046     		mov	r0, r4
+ 135              	.LVL15:
+  68:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOD_PERIPH_RESET, FALSE);
+ 136              		.loc 1 68 5 is_stmt 0 view .LVU29
+ 137 0078 FFF7FEFF 		bl	crm_periph_reset
+ 138              	.LVL16:
+  69:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   }
+ 139              		.loc 1 69 5 is_stmt 1 view .LVU30
+ 140 007c 0021     		movs	r1, #0
+ 141 007e 2046     		mov	r0, r4
+ 142 0080 FFF7FEFF 		bl	crm_periph_reset
+ 143              	.LVL17:
+ 144 0084 D5E7     		b	.L1
+ 145              	.LVL18:
+ 146              	.L15:
+  73:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOE_PERIPH_RESET, FALSE);
+ 147              		.loc 1 73 5 view .LVU31
+ 148 0086 1F4C     		ldr	r4, .L19+44
+ 149 0088 0121     		movs	r1, #1
+ 150 008a 2046     		mov	r0, r4
+ 151              	.LVL19:
+  73:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOE_PERIPH_RESET, FALSE);
+ 152              		.loc 1 73 5 is_stmt 0 view .LVU32
+ 153 008c FFF7FEFF 		bl	crm_periph_reset
+ 154              	.LVL20:
+  74:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   }
+ 155              		.loc 1 74 5 is_stmt 1 view .LVU33
+ 156 0090 0021     		movs	r1, #0
+ 157 0092 2046     		mov	r0, r4
+ 158 0094 FFF7FEFF 		bl	crm_periph_reset
+ 159              	.LVL21:
+ 160 0098 CBE7     		b	.L1
+ 161              	.LVL22:
+ 162              	.L16:
+  78:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOF_PERIPH_RESET, FALSE);
+ 163              		.loc 1 78 5 view .LVU34
+ 164 009a 1B4C     		ldr	r4, .L19+48
+ 165 009c 0121     		movs	r1, #1
+ 166 009e 2046     		mov	r0, r4
+ 167              	.LVL23:
+  78:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOF_PERIPH_RESET, FALSE);
+ 168              		.loc 1 78 5 is_stmt 0 view .LVU35
+ 169 00a0 FFF7FEFF 		bl	crm_periph_reset
+ 170              	.LVL24:
+  79:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   }
+ 171              		.loc 1 79 5 is_stmt 1 view .LVU36
+ 172 00a4 0021     		movs	r1, #0
+ 173 00a6 2046     		mov	r0, r4
+ 174 00a8 FFF7FEFF 		bl	crm_periph_reset
+ 175              	.LVL25:
+ 176 00ac C1E7     		b	.L1
+ 177              	.LVL26:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKgnet8.s 			page 6
+
+
+ 178              	.L17:
+  83:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOG_PERIPH_RESET, FALSE);
+ 179              		.loc 1 83 5 view .LVU37
+ 180 00ae 174C     		ldr	r4, .L19+52
+ 181 00b0 0121     		movs	r1, #1
+ 182 00b2 2046     		mov	r0, r4
+ 183              	.LVL27:
+  83:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOG_PERIPH_RESET, FALSE);
+ 184              		.loc 1 83 5 is_stmt 0 view .LVU38
+ 185 00b4 FFF7FEFF 		bl	crm_periph_reset
+ 186              	.LVL28:
+  84:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   }
+ 187              		.loc 1 84 5 is_stmt 1 view .LVU39
+ 188 00b8 0021     		movs	r1, #0
+ 189 00ba 2046     		mov	r0, r4
+ 190 00bc FFF7FEFF 		bl	crm_periph_reset
+ 191              	.LVL29:
+ 192 00c0 B7E7     		b	.L1
+ 193              	.LVL30:
+ 194              	.L18:
+  88:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOH_PERIPH_RESET, FALSE);
+ 195              		.loc 1 88 5 view .LVU40
+ 196 00c2 134C     		ldr	r4, .L19+56
+ 197 00c4 0121     		movs	r1, #1
+ 198 00c6 2046     		mov	r0, r4
+ 199              	.LVL31:
+  88:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     crm_periph_reset(CRM_GPIOH_PERIPH_RESET, FALSE);
+ 200              		.loc 1 88 5 is_stmt 0 view .LVU41
+ 201 00c8 FFF7FEFF 		bl	crm_periph_reset
+ 202              	.LVL32:
+  89:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   }
+ 203              		.loc 1 89 5 is_stmt 1 view .LVU42
+ 204 00cc 0021     		movs	r1, #0
+ 205 00ce 2046     		mov	r0, r4
+ 206 00d0 FFF7FEFF 		bl	crm_periph_reset
+ 207              	.LVL33:
+ 208              		.loc 1 91 1 is_stmt 0 view .LVU43
+ 209 00d4 ADE7     		b	.L1
+ 210              	.L20:
+ 211 00d6 00BF     		.align	2
+ 212              	.L19:
+ 213 00d8 00000240 		.word	1073872896
+ 214 00dc 00040240 		.word	1073873920
+ 215 00e0 00080240 		.word	1073874944
+ 216 00e4 000C0240 		.word	1073875968
+ 217 00e8 00100240 		.word	1073876992
+ 218 00ec 00140240 		.word	1073878016
+ 219 00f0 00180240 		.word	1073879040
+ 220 00f4 001C0240 		.word	1073880064
+ 221 00f8 01001000 		.word	1048577
+ 222 00fc 02001000 		.word	1048578
+ 223 0100 03001000 		.word	1048579
+ 224 0104 04001000 		.word	1048580
+ 225 0108 05001000 		.word	1048581
+ 226 010c 06001000 		.word	1048582
+ 227 0110 07001000 		.word	1048583
+ 228              		.cfi_endproc
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKgnet8.s 			page 7
+
+
+ 229              	.LFE133:
+ 231              		.section	.text.gpio_init,"ax",%progbits
+ 232              		.align	1
+ 233              		.global	gpio_init
+ 234              		.syntax unified
+ 235              		.thumb
+ 236              		.thumb_func
+ 238              	gpio_init:
+ 239              	.LVL34:
+ 240              	.LFB134:
+  92:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+  93:bsp/libraries/drivers/src/at32f435_437_gpio.c **** /**
+  94:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @brief  initialize the gpio peripheral.
+  95:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @param  gpio_x: to select the gpio peripheral.
+  96:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         this parameter can be one of the following values:
+  97:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         GPIOA, GPIOB, GPIOC, GPIOD, GPIOE, GPIOF, GPIOG, GPIOH.
+  98:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @param  gpio_init_struct: pointer to gpio init structure.
+  99:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @retval none
+ 100:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   */
+ 101:bsp/libraries/drivers/src/at32f435_437_gpio.c **** void gpio_init(gpio_type *gpio_x, gpio_init_type *gpio_init_struct)
+ 102:bsp/libraries/drivers/src/at32f435_437_gpio.c **** {
+ 241              		.loc 1 102 1 is_stmt 1 view -0
+ 242              		.cfi_startproc
+ 243              		@ args = 0, pretend = 0, frame = 0
+ 244              		@ frame_needed = 0, uses_anonymous_args = 0
+ 245              		.loc 1 102 1 is_stmt 0 view .LVU45
+ 246 0000 30B5     		push	{r4, r5, lr}
+ 247              	.LCFI1:
+ 248              		.cfi_def_cfa_offset 12
+ 249              		.cfi_offset 4, -12
+ 250              		.cfi_offset 5, -8
+ 251              		.cfi_offset 14, -4
+ 103:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   uint16_t pinx_value, pin_index = 0;
+ 252              		.loc 1 103 3 is_stmt 1 view .LVU46
+ 253              	.LVL35:
+ 104:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 105:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   pinx_value = (uint16_t)gpio_init_struct->gpio_pins;
+ 254              		.loc 1 105 3 view .LVU47
+ 255              		.loc 1 105 14 is_stmt 0 view .LVU48
+ 256 0002 0C88     		ldrh	r4, [r1]
+ 257              	.LVL36:
+ 106:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 107:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   while(pinx_value > 0)
+ 258              		.loc 1 107 3 is_stmt 1 view .LVU49
+ 103:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 259              		.loc 1 103 24 is_stmt 0 view .LVU50
+ 260 0004 0023     		movs	r3, #0
+ 261              		.loc 1 107 8 view .LVU51
+ 262 0006 02E0     		b	.L22
+ 263              	.LVL37:
+ 264              	.L23:
+ 108:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   {
+ 109:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     if(pinx_value & 0x01)
+ 110:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     {
+ 111:bsp/libraries/drivers/src/at32f435_437_gpio.c ****       gpio_x->cfgr  &= (uint32_t)~(0x03 << (pin_index * 2));
+ 112:bsp/libraries/drivers/src/at32f435_437_gpio.c ****       gpio_x->cfgr  |= (uint32_t)(gpio_init_struct->gpio_mode << (pin_index * 2));
+ 113:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKgnet8.s 			page 8
+
+
+ 114:bsp/libraries/drivers/src/at32f435_437_gpio.c ****       gpio_x->omode &= (uint32_t)~(0x01 << (pin_index));
+ 115:bsp/libraries/drivers/src/at32f435_437_gpio.c ****       gpio_x->omode |= (uint32_t)(gpio_init_struct->gpio_out_type << (pin_index));
+ 116:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 117:bsp/libraries/drivers/src/at32f435_437_gpio.c ****       gpio_x->odrvr &= (uint32_t)~(0x03 << (pin_index * 2));
+ 118:bsp/libraries/drivers/src/at32f435_437_gpio.c ****       gpio_x->odrvr |= (uint32_t)(gpio_init_struct->gpio_drive_strength << (pin_index * 2));
+ 119:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 120:bsp/libraries/drivers/src/at32f435_437_gpio.c ****       gpio_x->pull  &= (uint32_t)~(0x03 << (pin_index * 2));
+ 121:bsp/libraries/drivers/src/at32f435_437_gpio.c ****       gpio_x->pull  |= (uint32_t)(gpio_init_struct->gpio_pull << (pin_index * 2));
+ 122:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     }
+ 123:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     pinx_value >>= 1;
+ 265              		.loc 1 123 5 is_stmt 1 view .LVU52
+ 266              		.loc 1 123 16 is_stmt 0 view .LVU53
+ 267 0008 6408     		lsrs	r4, r4, #1
+ 268              	.LVL38:
+ 124:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     pin_index++;
+ 269              		.loc 1 124 5 is_stmt 1 view .LVU54
+ 270              		.loc 1 124 14 is_stmt 0 view .LVU55
+ 271 000a 0133     		adds	r3, r3, #1
+ 272              	.LVL39:
+ 273              		.loc 1 124 14 view .LVU56
+ 274 000c 9BB2     		uxth	r3, r3
+ 275              	.LVL40:
+ 276              	.L22:
+ 107:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   {
+ 277              		.loc 1 107 8 is_stmt 1 view .LVU57
+ 278 000e 002C     		cmp	r4, #0
+ 279 0010 3CD0     		beq	.L26
+ 109:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     {
+ 280              		.loc 1 109 5 view .LVU58
+ 109:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     {
+ 281              		.loc 1 109 7 is_stmt 0 view .LVU59
+ 282 0012 14F0010F 		tst	r4, #1
+ 283 0016 F7D0     		beq	.L23
+ 111:bsp/libraries/drivers/src/at32f435_437_gpio.c ****       gpio_x->cfgr  |= (uint32_t)(gpio_init_struct->gpio_mode << (pin_index * 2));
+ 284              		.loc 1 111 7 is_stmt 1 view .LVU60
+ 111:bsp/libraries/drivers/src/at32f435_437_gpio.c ****       gpio_x->cfgr  |= (uint32_t)(gpio_init_struct->gpio_mode << (pin_index * 2));
+ 285              		.loc 1 111 21 is_stmt 0 view .LVU61
+ 286 0018 0568     		ldr	r5, [r0]
+ 111:bsp/libraries/drivers/src/at32f435_437_gpio.c ****       gpio_x->cfgr  |= (uint32_t)(gpio_init_struct->gpio_mode << (pin_index * 2));
+ 287              		.loc 1 111 55 view .LVU62
+ 288 001a 4FEA430C 		lsl	ip, r3, #1
+ 111:bsp/libraries/drivers/src/at32f435_437_gpio.c ****       gpio_x->cfgr  |= (uint32_t)(gpio_init_struct->gpio_mode << (pin_index * 2));
+ 289              		.loc 1 111 41 view .LVU63
+ 290 001e 0322     		movs	r2, #3
+ 291 0020 02FA0CF2 		lsl	r2, r2, ip
+ 111:bsp/libraries/drivers/src/at32f435_437_gpio.c ****       gpio_x->cfgr  |= (uint32_t)(gpio_init_struct->gpio_mode << (pin_index * 2));
+ 292              		.loc 1 111 21 view .LVU64
+ 293 0024 25EA0205 		bic	r5, r5, r2
+ 294 0028 0560     		str	r5, [r0]
+ 112:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 295              		.loc 1 112 7 is_stmt 1 view .LVU65
+ 112:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 296              		.loc 1 112 21 is_stmt 0 view .LVU66
+ 297 002a 0568     		ldr	r5, [r0]
+ 112:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 298              		.loc 1 112 51 view .LVU67
+ 299 002c 91F806E0 		ldrb	lr, [r1, #6]	@ zero_extendqisi2
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKgnet8.s 			page 9
+
+
+ 112:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 300              		.loc 1 112 63 view .LVU68
+ 301 0030 0EFA0CFE 		lsl	lr, lr, ip
+ 112:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 302              		.loc 1 112 21 view .LVU69
+ 303 0034 45EA0E05 		orr	r5, r5, lr
+ 304 0038 0560     		str	r5, [r0]
+ 114:bsp/libraries/drivers/src/at32f435_437_gpio.c ****       gpio_x->omode |= (uint32_t)(gpio_init_struct->gpio_out_type << (pin_index));
+ 305              		.loc 1 114 7 is_stmt 1 view .LVU70
+ 114:bsp/libraries/drivers/src/at32f435_437_gpio.c ****       gpio_x->omode |= (uint32_t)(gpio_init_struct->gpio_out_type << (pin_index));
+ 306              		.loc 1 114 21 is_stmt 0 view .LVU71
+ 307 003a 4568     		ldr	r5, [r0, #4]
+ 114:bsp/libraries/drivers/src/at32f435_437_gpio.c ****       gpio_x->omode |= (uint32_t)(gpio_init_struct->gpio_out_type << (pin_index));
+ 308              		.loc 1 114 41 view .LVU72
+ 309 003c 4FF0010E 		mov	lr, #1
+ 310 0040 0EFA03FE 		lsl	lr, lr, r3
+ 114:bsp/libraries/drivers/src/at32f435_437_gpio.c ****       gpio_x->omode |= (uint32_t)(gpio_init_struct->gpio_out_type << (pin_index));
+ 311              		.loc 1 114 21 view .LVU73
+ 312 0044 25EA0E05 		bic	r5, r5, lr
+ 313 0048 4560     		str	r5, [r0, #4]
+ 115:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 314              		.loc 1 115 7 is_stmt 1 view .LVU74
+ 115:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 315              		.loc 1 115 21 is_stmt 0 view .LVU75
+ 316 004a 4568     		ldr	r5, [r0, #4]
+ 115:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 317              		.loc 1 115 51 view .LVU76
+ 318 004c 91F804E0 		ldrb	lr, [r1, #4]	@ zero_extendqisi2
+ 115:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 319              		.loc 1 115 67 view .LVU77
+ 320 0050 0EFA03FE 		lsl	lr, lr, r3
+ 115:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 321              		.loc 1 115 21 view .LVU78
+ 322 0054 45EA0E05 		orr	r5, r5, lr
+ 323 0058 4560     		str	r5, [r0, #4]
+ 117:bsp/libraries/drivers/src/at32f435_437_gpio.c ****       gpio_x->odrvr |= (uint32_t)(gpio_init_struct->gpio_drive_strength << (pin_index * 2));
+ 324              		.loc 1 117 7 is_stmt 1 view .LVU79
+ 117:bsp/libraries/drivers/src/at32f435_437_gpio.c ****       gpio_x->odrvr |= (uint32_t)(gpio_init_struct->gpio_drive_strength << (pin_index * 2));
+ 325              		.loc 1 117 21 is_stmt 0 view .LVU80
+ 326 005a 8568     		ldr	r5, [r0, #8]
+ 327 005c 25EA0205 		bic	r5, r5, r2
+ 328 0060 8560     		str	r5, [r0, #8]
+ 118:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 329              		.loc 1 118 7 is_stmt 1 view .LVU81
+ 118:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 330              		.loc 1 118 21 is_stmt 0 view .LVU82
+ 331 0062 8568     		ldr	r5, [r0, #8]
+ 118:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 332              		.loc 1 118 51 view .LVU83
+ 333 0064 91F807E0 		ldrb	lr, [r1, #7]	@ zero_extendqisi2
+ 118:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 334              		.loc 1 118 73 view .LVU84
+ 335 0068 0EFA0CFE 		lsl	lr, lr, ip
+ 118:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 336              		.loc 1 118 21 view .LVU85
+ 337 006c 45EA0E05 		orr	r5, r5, lr
+ 338 0070 8560     		str	r5, [r0, #8]
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKgnet8.s 			page 10
+
+
+ 120:bsp/libraries/drivers/src/at32f435_437_gpio.c ****       gpio_x->pull  |= (uint32_t)(gpio_init_struct->gpio_pull << (pin_index * 2));
+ 339              		.loc 1 120 7 is_stmt 1 view .LVU86
+ 120:bsp/libraries/drivers/src/at32f435_437_gpio.c ****       gpio_x->pull  |= (uint32_t)(gpio_init_struct->gpio_pull << (pin_index * 2));
+ 340              		.loc 1 120 21 is_stmt 0 view .LVU87
+ 341 0072 C568     		ldr	r5, [r0, #12]
+ 342 0074 25EA0202 		bic	r2, r5, r2
+ 343 0078 C260     		str	r2, [r0, #12]
+ 121:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     }
+ 344              		.loc 1 121 7 is_stmt 1 view .LVU88
+ 121:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     }
+ 345              		.loc 1 121 21 is_stmt 0 view .LVU89
+ 346 007a C268     		ldr	r2, [r0, #12]
+ 121:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     }
+ 347              		.loc 1 121 51 view .LVU90
+ 348 007c 91F805E0 		ldrb	lr, [r1, #5]	@ zero_extendqisi2
+ 121:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     }
+ 349              		.loc 1 121 63 view .LVU91
+ 350 0080 0EFA0CFC 		lsl	ip, lr, ip
+ 121:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     }
+ 351              		.loc 1 121 21 view .LVU92
+ 352 0084 42EA0C02 		orr	r2, r2, ip
+ 353 0088 C260     		str	r2, [r0, #12]
+ 354 008a BDE7     		b	.L23
+ 355              	.L26:
+ 125:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   }
+ 126:bsp/libraries/drivers/src/at32f435_437_gpio.c **** }
+ 356              		.loc 1 126 1 view .LVU93
+ 357 008c 30BD     		pop	{r4, r5, pc}
+ 358              		.loc 1 126 1 view .LVU94
+ 359              		.cfi_endproc
+ 360              	.LFE134:
+ 362              		.section	.text.gpio_default_para_init,"ax",%progbits
+ 363              		.align	1
+ 364              		.global	gpio_default_para_init
+ 365              		.syntax unified
+ 366              		.thumb
+ 367              		.thumb_func
+ 369              	gpio_default_para_init:
+ 370              	.LVL41:
+ 371              	.LFB135:
+ 127:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 128:bsp/libraries/drivers/src/at32f435_437_gpio.c **** /**
+ 129:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @brief  fill each gpio_init_type member with its default value.
+ 130:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @param  gpio_init_struct : pointer to a gpio_init_type structure which will be initialized.
+ 131:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @retval none
+ 132:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   */
+ 133:bsp/libraries/drivers/src/at32f435_437_gpio.c **** void gpio_default_para_init(gpio_init_type *gpio_init_struct)
+ 134:bsp/libraries/drivers/src/at32f435_437_gpio.c **** {
+ 372              		.loc 1 134 1 is_stmt 1 view -0
+ 373              		.cfi_startproc
+ 374              		@ args = 0, pretend = 0, frame = 0
+ 375              		@ frame_needed = 0, uses_anonymous_args = 0
+ 376              		@ link register save eliminated.
+ 135:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   /* reset gpio init structure parameters values */
+ 136:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   gpio_init_struct->gpio_pins  = GPIO_PINS_ALL;
+ 377              		.loc 1 136 3 view .LVU96
+ 378              		.loc 1 136 32 is_stmt 0 view .LVU97
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKgnet8.s 			page 11
+
+
+ 379 0000 4FF6FF73 		movw	r3, #65535
+ 380 0004 0360     		str	r3, [r0]
+ 137:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   gpio_init_struct->gpio_mode = GPIO_MODE_INPUT;
+ 381              		.loc 1 137 3 is_stmt 1 view .LVU98
+ 382              		.loc 1 137 31 is_stmt 0 view .LVU99
+ 383 0006 0023     		movs	r3, #0
+ 384 0008 8371     		strb	r3, [r0, #6]
+ 138:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   gpio_init_struct->gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
+ 385              		.loc 1 138 3 is_stmt 1 view .LVU100
+ 386              		.loc 1 138 35 is_stmt 0 view .LVU101
+ 387 000a 0371     		strb	r3, [r0, #4]
+ 139:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   gpio_init_struct->gpio_pull = GPIO_PULL_NONE;
+ 388              		.loc 1 139 3 is_stmt 1 view .LVU102
+ 389              		.loc 1 139 31 is_stmt 0 view .LVU103
+ 390 000c 4371     		strb	r3, [r0, #5]
+ 140:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   gpio_init_struct->gpio_drive_strength = GPIO_DRIVE_STRENGTH_STRONGER;
+ 391              		.loc 1 140 3 is_stmt 1 view .LVU104
+ 392              		.loc 1 140 41 is_stmt 0 view .LVU105
+ 393 000e 0123     		movs	r3, #1
+ 394 0010 C371     		strb	r3, [r0, #7]
+ 141:bsp/libraries/drivers/src/at32f435_437_gpio.c **** }
+ 395              		.loc 1 141 1 view .LVU106
+ 396 0012 7047     		bx	lr
+ 397              		.cfi_endproc
+ 398              	.LFE135:
+ 400              		.section	.text.gpio_input_data_bit_read,"ax",%progbits
+ 401              		.align	1
+ 402              		.global	gpio_input_data_bit_read
+ 403              		.syntax unified
+ 404              		.thumb
+ 405              		.thumb_func
+ 407              	gpio_input_data_bit_read:
+ 408              	.LVL42:
+ 409              	.LFB136:
+ 142:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 143:bsp/libraries/drivers/src/at32f435_437_gpio.c **** /**
+ 144:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @brief  read the specified input port pin.
+ 145:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @param  gpio_x: to select the gpio peripheral.
+ 146:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         this parameter can be one of the following values:
+ 147:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         GPIOA, GPIOB, GPIOC, GPIOD, GPIOE, GPIOF, GPIOG, GPIOH.
+ 148:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @param  pins: gpio pin number
+ 149:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         this parameter can be one of the following values:
+ 150:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_0
+ 151:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_1
+ 152:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_2
+ 153:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_3
+ 154:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_4
+ 155:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_5
+ 156:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_6
+ 157:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_7
+ 158:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_8
+ 159:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_9
+ 160:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_10
+ 161:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_11
+ 162:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_12
+ 163:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_13
+ 164:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_14
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKgnet8.s 			page 12
+
+
+ 165:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_15
+ 166:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @retval flag_status (SET or RESET)
+ 167:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   */
+ 168:bsp/libraries/drivers/src/at32f435_437_gpio.c **** flag_status gpio_input_data_bit_read(gpio_type *gpio_x, uint16_t pins)
+ 169:bsp/libraries/drivers/src/at32f435_437_gpio.c **** {
+ 410              		.loc 1 169 1 is_stmt 1 view -0
+ 411              		.cfi_startproc
+ 412              		@ args = 0, pretend = 0, frame = 0
+ 413              		@ frame_needed = 0, uses_anonymous_args = 0
+ 414              		@ link register save eliminated.
+ 170:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   flag_status status = RESET;
+ 415              		.loc 1 170 3 view .LVU108
+ 171:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 172:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   if(pins != (pins & gpio_x->idt))
+ 416              		.loc 1 172 3 view .LVU109
+ 417              		.loc 1 172 28 is_stmt 0 view .LVU110
+ 418 0000 0369     		ldr	r3, [r0, #16]
+ 419              		.loc 1 172 5 view .LVU111
+ 420 0002 31EA0303 		bics	r3, r1, r3
+ 421 0006 01D0     		beq	.L30
+ 173:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   {
+ 174:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     status = RESET;
+ 422              		.loc 1 174 12 view .LVU112
+ 423 0008 0020     		movs	r0, #0
+ 424              	.LVL43:
+ 425              		.loc 1 174 12 view .LVU113
+ 426 000a 7047     		bx	lr
+ 427              	.LVL44:
+ 428              	.L30:
+ 175:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   }
+ 176:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   else
+ 177:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   {
+ 178:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     status = SET;
+ 429              		.loc 1 178 12 view .LVU114
+ 430 000c 0120     		movs	r0, #1
+ 431              	.LVL45:
+ 179:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   }
+ 180:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 181:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   return status;
+ 432              		.loc 1 181 3 is_stmt 1 view .LVU115
+ 182:bsp/libraries/drivers/src/at32f435_437_gpio.c **** }
+ 433              		.loc 1 182 1 is_stmt 0 view .LVU116
+ 434 000e 7047     		bx	lr
+ 435              		.cfi_endproc
+ 436              	.LFE136:
+ 438              		.section	.text.gpio_input_data_read,"ax",%progbits
+ 439              		.align	1
+ 440              		.global	gpio_input_data_read
+ 441              		.syntax unified
+ 442              		.thumb
+ 443              		.thumb_func
+ 445              	gpio_input_data_read:
+ 446              	.LVL46:
+ 447              	.LFB137:
+ 183:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 184:bsp/libraries/drivers/src/at32f435_437_gpio.c **** /**
+ 185:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @brief  read the specified gpio input data port.
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKgnet8.s 			page 13
+
+
+ 186:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @param  gpio_x: to select the gpio peripheral.
+ 187:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         this parameter can be one of the following values:
+ 188:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         GPIOA, GPIOB, GPIOC, GPIOD, GPIOE, GPIOF, GPIOG, GPIOH.
+ 189:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @retval gpio input data port value.
+ 190:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   */
+ 191:bsp/libraries/drivers/src/at32f435_437_gpio.c **** uint16_t gpio_input_data_read(gpio_type *gpio_x)
+ 192:bsp/libraries/drivers/src/at32f435_437_gpio.c **** {
+ 448              		.loc 1 192 1 is_stmt 1 view -0
+ 449              		.cfi_startproc
+ 450              		@ args = 0, pretend = 0, frame = 0
+ 451              		@ frame_needed = 0, uses_anonymous_args = 0
+ 452              		@ link register save eliminated.
+ 193:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   return ((uint16_t)(gpio_x->idt));
+ 453              		.loc 1 193 3 view .LVU118
+ 454              		.loc 1 193 28 is_stmt 0 view .LVU119
+ 455 0000 0069     		ldr	r0, [r0, #16]
+ 456              	.LVL47:
+ 194:bsp/libraries/drivers/src/at32f435_437_gpio.c **** }
+ 457              		.loc 1 194 1 view .LVU120
+ 458 0002 80B2     		uxth	r0, r0
+ 459 0004 7047     		bx	lr
+ 460              		.cfi_endproc
+ 461              	.LFE137:
+ 463              		.section	.text.gpio_output_data_bit_read,"ax",%progbits
+ 464              		.align	1
+ 465              		.global	gpio_output_data_bit_read
+ 466              		.syntax unified
+ 467              		.thumb
+ 468              		.thumb_func
+ 470              	gpio_output_data_bit_read:
+ 471              	.LVL48:
+ 472              	.LFB138:
+ 195:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 196:bsp/libraries/drivers/src/at32f435_437_gpio.c **** /**
+ 197:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @brief  read the specified output port pin.
+ 198:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @param  gpio_x: to select the gpio peripheral.
+ 199:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         this parameter can be one of the following values:
+ 200:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         GPIOA, GPIOB, GPIOC, GPIOD, GPIOE, GPIOF, GPIOG, GPIOH.
+ 201:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @param  pins: gpio pin number
+ 202:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         this parameter can be one of the following values:
+ 203:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_0
+ 204:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_1
+ 205:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_2
+ 206:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_3
+ 207:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_4
+ 208:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_5
+ 209:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_6
+ 210:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_7
+ 211:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_8
+ 212:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_9
+ 213:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_10
+ 214:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_11
+ 215:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_12
+ 216:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_13
+ 217:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_14
+ 218:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_15
+ 219:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @retval flag_status (SET or RESET)
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKgnet8.s 			page 14
+
+
+ 220:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   */
+ 221:bsp/libraries/drivers/src/at32f435_437_gpio.c **** flag_status gpio_output_data_bit_read(gpio_type *gpio_x, uint16_t pins)
+ 222:bsp/libraries/drivers/src/at32f435_437_gpio.c **** {
+ 473              		.loc 1 222 1 is_stmt 1 view -0
+ 474              		.cfi_startproc
+ 475              		@ args = 0, pretend = 0, frame = 0
+ 476              		@ frame_needed = 0, uses_anonymous_args = 0
+ 477              		@ link register save eliminated.
+ 223:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   flag_status status = RESET;
+ 478              		.loc 1 223 3 view .LVU122
+ 224:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 225:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   if((gpio_x->odt & pins) != RESET)
+ 479              		.loc 1 225 3 view .LVU123
+ 480              		.loc 1 225 13 is_stmt 0 view .LVU124
+ 481 0000 4369     		ldr	r3, [r0, #20]
+ 482              		.loc 1 225 5 view .LVU125
+ 483 0002 1942     		tst	r1, r3
+ 484 0004 01D0     		beq	.L34
+ 226:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   {
+ 227:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     status = SET;
+ 485              		.loc 1 227 12 view .LVU126
+ 486 0006 0120     		movs	r0, #1
+ 487              	.LVL49:
+ 488              		.loc 1 227 12 view .LVU127
+ 489 0008 7047     		bx	lr
+ 490              	.LVL50:
+ 491              	.L34:
+ 228:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   }
+ 229:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   else
+ 230:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   {
+ 231:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     status = RESET;
+ 492              		.loc 1 231 12 view .LVU128
+ 493 000a 0020     		movs	r0, #0
+ 494              	.LVL51:
+ 232:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   }
+ 233:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 234:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   return status;
+ 495              		.loc 1 234 3 is_stmt 1 view .LVU129
+ 235:bsp/libraries/drivers/src/at32f435_437_gpio.c **** }
+ 496              		.loc 1 235 1 is_stmt 0 view .LVU130
+ 497 000c 7047     		bx	lr
+ 498              		.cfi_endproc
+ 499              	.LFE138:
+ 501              		.section	.text.gpio_output_data_read,"ax",%progbits
+ 502              		.align	1
+ 503              		.global	gpio_output_data_read
+ 504              		.syntax unified
+ 505              		.thumb
+ 506              		.thumb_func
+ 508              	gpio_output_data_read:
+ 509              	.LVL52:
+ 510              	.LFB139:
+ 236:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 237:bsp/libraries/drivers/src/at32f435_437_gpio.c **** /**
+ 238:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @brief  read the specified gpio ouput data port.
+ 239:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @param  gpio_x: to select the gpio peripheral.
+ 240:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         this parameter can be one of the following values:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKgnet8.s 			page 15
+
+
+ 241:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         GPIOA, GPIOB, GPIOC, GPIOD, GPIOE, GPIOF, GPIOG, GPIOH.
+ 242:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @retval gpio input data port value.
+ 243:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   */
+ 244:bsp/libraries/drivers/src/at32f435_437_gpio.c **** uint16_t gpio_output_data_read(gpio_type *gpio_x)
+ 245:bsp/libraries/drivers/src/at32f435_437_gpio.c **** {
+ 511              		.loc 1 245 1 is_stmt 1 view -0
+ 512              		.cfi_startproc
+ 513              		@ args = 0, pretend = 0, frame = 0
+ 514              		@ frame_needed = 0, uses_anonymous_args = 0
+ 515              		@ link register save eliminated.
+ 246:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   return ((uint16_t)(gpio_x->odt));
+ 516              		.loc 1 246 3 view .LVU132
+ 517              		.loc 1 246 28 is_stmt 0 view .LVU133
+ 518 0000 4069     		ldr	r0, [r0, #20]
+ 519              	.LVL53:
+ 247:bsp/libraries/drivers/src/at32f435_437_gpio.c **** }
+ 520              		.loc 1 247 1 view .LVU134
+ 521 0002 80B2     		uxth	r0, r0
+ 522 0004 7047     		bx	lr
+ 523              		.cfi_endproc
+ 524              	.LFE139:
+ 526              		.section	.text.gpio_bits_set,"ax",%progbits
+ 527              		.align	1
+ 528              		.global	gpio_bits_set
+ 529              		.syntax unified
+ 530              		.thumb
+ 531              		.thumb_func
+ 533              	gpio_bits_set:
+ 534              	.LVL54:
+ 535              	.LFB140:
+ 248:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 249:bsp/libraries/drivers/src/at32f435_437_gpio.c **** /**
+ 250:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @brief  set the selected data port bits.
+ 251:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @param  gpio_x: to select the gpio peripheral.
+ 252:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         this parameter can be one of the following values:
+ 253:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         GPIOA, GPIOB, GPIOC, GPIOD, GPIOE, GPIOF, GPIOG, GPIOH.
+ 254:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @param  pins: gpio pin number
+ 255:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         parameter can be any combination of gpio_pin_x, gpio_pin_x as following values:
+ 256:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_0
+ 257:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_1
+ 258:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_2
+ 259:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_3
+ 260:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_4
+ 261:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_5
+ 262:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_6
+ 263:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_7
+ 264:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_8
+ 265:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_9
+ 266:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_10
+ 267:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_11
+ 268:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_12
+ 269:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_13
+ 270:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_14
+ 271:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_15
+ 272:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_ALL
+ 273:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @retval none
+ 274:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   */
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKgnet8.s 			page 16
+
+
+ 275:bsp/libraries/drivers/src/at32f435_437_gpio.c **** void gpio_bits_set(gpio_type *gpio_x, uint16_t pins)
+ 276:bsp/libraries/drivers/src/at32f435_437_gpio.c **** {
+ 536              		.loc 1 276 1 is_stmt 1 view -0
+ 537              		.cfi_startproc
+ 538              		@ args = 0, pretend = 0, frame = 0
+ 539              		@ frame_needed = 0, uses_anonymous_args = 0
+ 540              		@ link register save eliminated.
+ 277:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   gpio_x->scr = pins;
+ 541              		.loc 1 277 3 view .LVU136
+ 542              		.loc 1 277 15 is_stmt 0 view .LVU137
+ 543 0000 8161     		str	r1, [r0, #24]
+ 278:bsp/libraries/drivers/src/at32f435_437_gpio.c **** }
+ 544              		.loc 1 278 1 view .LVU138
+ 545 0002 7047     		bx	lr
+ 546              		.cfi_endproc
+ 547              	.LFE140:
+ 549              		.section	.text.gpio_bits_reset,"ax",%progbits
+ 550              		.align	1
+ 551              		.global	gpio_bits_reset
+ 552              		.syntax unified
+ 553              		.thumb
+ 554              		.thumb_func
+ 556              	gpio_bits_reset:
+ 557              	.LVL55:
+ 558              	.LFB141:
+ 279:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 280:bsp/libraries/drivers/src/at32f435_437_gpio.c **** /**
+ 281:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @brief  clear the selected data port bits.
+ 282:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @param  gpio_x: to select the gpio peripheral.
+ 283:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         this parameter can be one of the following values:
+ 284:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         GPIOA, GPIOB, GPIOC, GPIOD, GPIOE, GPIOF, GPIOG, GPIOH.
+ 285:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @param  pins: gpio pin number
+ 286:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         parameter can be any combination of gpio_pin_x, gpio_pin_x as following values:
+ 287:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_0
+ 288:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_1
+ 289:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_2
+ 290:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_3
+ 291:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_4
+ 292:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_5
+ 293:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_6
+ 294:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_7
+ 295:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_8
+ 296:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_9
+ 297:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_10
+ 298:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_11
+ 299:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_12
+ 300:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_13
+ 301:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_14
+ 302:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_15
+ 303:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_ALL
+ 304:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @retval none
+ 305:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   */
+ 306:bsp/libraries/drivers/src/at32f435_437_gpio.c **** void gpio_bits_reset(gpio_type *gpio_x, uint16_t pins)
+ 307:bsp/libraries/drivers/src/at32f435_437_gpio.c **** {
+ 559              		.loc 1 307 1 is_stmt 1 view -0
+ 560              		.cfi_startproc
+ 561              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKgnet8.s 			page 17
+
+
+ 562              		@ frame_needed = 0, uses_anonymous_args = 0
+ 563              		@ link register save eliminated.
+ 308:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   gpio_x->clr = pins;
+ 564              		.loc 1 308 3 view .LVU140
+ 565              		.loc 1 308 15 is_stmt 0 view .LVU141
+ 566 0000 8162     		str	r1, [r0, #40]
+ 309:bsp/libraries/drivers/src/at32f435_437_gpio.c **** }
+ 567              		.loc 1 309 1 view .LVU142
+ 568 0002 7047     		bx	lr
+ 569              		.cfi_endproc
+ 570              	.LFE141:
+ 572              		.section	.text.gpio_bits_write,"ax",%progbits
+ 573              		.align	1
+ 574              		.global	gpio_bits_write
+ 575              		.syntax unified
+ 576              		.thumb
+ 577              		.thumb_func
+ 579              	gpio_bits_write:
+ 580              	.LVL56:
+ 581              	.LFB142:
+ 310:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 311:bsp/libraries/drivers/src/at32f435_437_gpio.c **** /**
+ 312:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @brief  set or clear the selected data port bit.
+ 313:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @param  gpio_x: to select the gpio peripheral.
+ 314:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         this parameter can be one of the following values:
+ 315:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         GPIOA, GPIOB, GPIOC, GPIOD, GPIOE, GPIOF, GPIOG, GPIOH.
+ 316:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @param  pins: gpio pin number
+ 317:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         parameter can be any combination of gpio_pin_x, gpio_pin_x as following values:
+ 318:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_0
+ 319:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_1
+ 320:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_2
+ 321:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_3
+ 322:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_4
+ 323:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_5
+ 324:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_6
+ 325:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_7
+ 326:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_8
+ 327:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_9
+ 328:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_10
+ 329:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_11
+ 330:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_12
+ 331:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_13
+ 332:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_14
+ 333:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_15
+ 334:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_ALL
+ 335:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @param  bit_state: specifies the value to be written to the selected bit (TRUE or FALSE).
+ 336:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @retval none
+ 337:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   */
+ 338:bsp/libraries/drivers/src/at32f435_437_gpio.c **** void gpio_bits_write(gpio_type *gpio_x, uint16_t pins, confirm_state bit_state)
+ 339:bsp/libraries/drivers/src/at32f435_437_gpio.c **** {
+ 582              		.loc 1 339 1 is_stmt 1 view -0
+ 583              		.cfi_startproc
+ 584              		@ args = 0, pretend = 0, frame = 0
+ 585              		@ frame_needed = 0, uses_anonymous_args = 0
+ 586              		@ link register save eliminated.
+ 340:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   if(bit_state != FALSE)
+ 587              		.loc 1 340 3 view .LVU144
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKgnet8.s 			page 18
+
+
+ 588              		.loc 1 340 5 is_stmt 0 view .LVU145
+ 589 0000 0AB1     		cbz	r2, .L39
+ 341:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   {
+ 342:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     gpio_x->scr = pins;
+ 590              		.loc 1 342 5 is_stmt 1 view .LVU146
+ 591              		.loc 1 342 17 is_stmt 0 view .LVU147
+ 592 0002 8161     		str	r1, [r0, #24]
+ 593 0004 7047     		bx	lr
+ 594              	.L39:
+ 343:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   }
+ 344:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   else
+ 345:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   {
+ 346:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     gpio_x->clr = pins;
+ 595              		.loc 1 346 5 is_stmt 1 view .LVU148
+ 596              		.loc 1 346 17 is_stmt 0 view .LVU149
+ 597 0006 8162     		str	r1, [r0, #40]
+ 347:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   }
+ 348:bsp/libraries/drivers/src/at32f435_437_gpio.c **** }
+ 598              		.loc 1 348 1 view .LVU150
+ 599 0008 7047     		bx	lr
+ 600              		.cfi_endproc
+ 601              	.LFE142:
+ 603              		.section	.text.gpio_port_write,"ax",%progbits
+ 604              		.align	1
+ 605              		.global	gpio_port_write
+ 606              		.syntax unified
+ 607              		.thumb
+ 608              		.thumb_func
+ 610              	gpio_port_write:
+ 611              	.LVL57:
+ 612              	.LFB143:
+ 349:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 350:bsp/libraries/drivers/src/at32f435_437_gpio.c **** /**
+ 351:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @brief  write data to the specified gpio data port.
+ 352:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @param  gpio_x: to select the gpio peripheral.
+ 353:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         this parameter can be one of the following values:
+ 354:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         GPIOA, GPIOB, GPIOC, GPIOD, GPIOE, GPIOF, GPIOG, GPIOH.
+ 355:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @param  port_value: specifies the value to be written to the port output data register.
+ 356:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @retval none
+ 357:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   */
+ 358:bsp/libraries/drivers/src/at32f435_437_gpio.c **** void gpio_port_write(gpio_type *gpio_x, uint16_t port_value)
+ 359:bsp/libraries/drivers/src/at32f435_437_gpio.c **** {
+ 613              		.loc 1 359 1 is_stmt 1 view -0
+ 614              		.cfi_startproc
+ 615              		@ args = 0, pretend = 0, frame = 0
+ 616              		@ frame_needed = 0, uses_anonymous_args = 0
+ 617              		@ link register save eliminated.
+ 360:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   gpio_x->odt = port_value;
+ 618              		.loc 1 360 3 view .LVU152
+ 619              		.loc 1 360 15 is_stmt 0 view .LVU153
+ 620 0000 4161     		str	r1, [r0, #20]
+ 361:bsp/libraries/drivers/src/at32f435_437_gpio.c **** }
+ 621              		.loc 1 361 1 view .LVU154
+ 622 0002 7047     		bx	lr
+ 623              		.cfi_endproc
+ 624              	.LFE143:
+ 626              		.section	.text.gpio_pin_wp_config,"ax",%progbits
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKgnet8.s 			page 19
+
+
+ 627              		.align	1
+ 628              		.global	gpio_pin_wp_config
+ 629              		.syntax unified
+ 630              		.thumb
+ 631              		.thumb_func
+ 633              	gpio_pin_wp_config:
+ 634              	.LVL58:
+ 635              	.LFB144:
+ 362:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 363:bsp/libraries/drivers/src/at32f435_437_gpio.c **** /**
+ 364:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @brief  write protect gpio pins configuration registers.
+ 365:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @param  gpio_x: to select the gpio peripheral.
+ 366:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         this parameter can be one of the following values:
+ 367:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         GPIOA, GPIOB, GPIOC, GPIOD, GPIOE, GPIOF, GPIOG, GPIOH.
+ 368:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @param  pins: gpio pin number
+ 369:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         this parameter can be any combination of the following:
+ 370:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_0
+ 371:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_1
+ 372:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_2
+ 373:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_3
+ 374:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_4
+ 375:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_5
+ 376:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_6
+ 377:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_7
+ 378:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_8
+ 379:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_9
+ 380:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_10
+ 381:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_11
+ 382:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_12
+ 383:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_13
+ 384:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_14
+ 385:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_15
+ 386:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_ALL
+ 387:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @retval none
+ 388:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   */
+ 389:bsp/libraries/drivers/src/at32f435_437_gpio.c **** void gpio_pin_wp_config(gpio_type *gpio_x, uint16_t pins)
+ 390:bsp/libraries/drivers/src/at32f435_437_gpio.c **** {
+ 636              		.loc 1 390 1 is_stmt 1 view -0
+ 637              		.cfi_startproc
+ 638              		@ args = 0, pretend = 0, frame = 0
+ 639              		@ frame_needed = 0, uses_anonymous_args = 0
+ 640              		@ link register save eliminated.
+ 391:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   uint32_t temp = 0x00010000;
+ 641              		.loc 1 391 3 view .LVU156
+ 392:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 393:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   temp |= pins;
+ 642              		.loc 1 393 3 view .LVU157
+ 643              		.loc 1 393 8 is_stmt 0 view .LVU158
+ 644 0000 41F48033 		orr	r3, r1, #65536
+ 645              	.LVL59:
+ 394:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   /* set wpen bit */
+ 395:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   gpio_x->wpr = temp;
+ 646              		.loc 1 395 3 is_stmt 1 view .LVU159
+ 647              		.loc 1 395 15 is_stmt 0 view .LVU160
+ 648 0004 C361     		str	r3, [r0, #28]
+ 396:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   /* reset wpen bit */
+ 397:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   gpio_x->wpr =  pins;
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKgnet8.s 			page 20
+
+
+ 649              		.loc 1 397 3 is_stmt 1 view .LVU161
+ 650              		.loc 1 397 15 is_stmt 0 view .LVU162
+ 651 0006 C161     		str	r1, [r0, #28]
+ 398:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   /* set wpen bit */
+ 399:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   gpio_x->wpr = temp;
+ 652              		.loc 1 399 3 is_stmt 1 view .LVU163
+ 653              		.loc 1 399 15 is_stmt 0 view .LVU164
+ 654 0008 C361     		str	r3, [r0, #28]
+ 400:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   /* read wpen bit*/
+ 401:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   temp = gpio_x->wpr;
+ 655              		.loc 1 401 3 is_stmt 1 view .LVU165
+ 656              		.loc 1 401 8 is_stmt 0 view .LVU166
+ 657 000a C369     		ldr	r3, [r0, #28]
+ 658              	.LVL60:
+ 402:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   /* read wpen bit*/
+ 403:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   temp = gpio_x->wpr;
+ 659              		.loc 1 403 3 is_stmt 1 view .LVU167
+ 660              		.loc 1 403 8 is_stmt 0 view .LVU168
+ 661 000c C369     		ldr	r3, [r0, #28]
+ 404:bsp/libraries/drivers/src/at32f435_437_gpio.c **** }
+ 662              		.loc 1 404 1 view .LVU169
+ 663 000e 7047     		bx	lr
+ 664              		.cfi_endproc
+ 665              	.LFE144:
+ 667              		.section	.text.gpio_pins_huge_driven_config,"ax",%progbits
+ 668              		.align	1
+ 669              		.global	gpio_pins_huge_driven_config
+ 670              		.syntax unified
+ 671              		.thumb
+ 672              		.thumb_func
+ 674              	gpio_pins_huge_driven_config:
+ 675              	.LVL61:
+ 676              	.LFB145:
+ 405:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 406:bsp/libraries/drivers/src/at32f435_437_gpio.c **** /**
+ 407:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @brief  enable or disable gpio pins huge driven.
+ 408:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @param  gpio_x: to select the gpio peripheral.
+ 409:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         this parameter can be one of the following values:
+ 410:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         GPIOA, GPIOB, GPIOC, GPIOD, GPIOE, GPIOF, GPIOG, GPIOH.
+ 411:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @param  pins: gpio pin number
+ 412:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         parameter can be any combination of gpio_pin_x, gpio_pin_x as following values:
+ 413:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_0
+ 414:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_1
+ 415:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_2
+ 416:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_3
+ 417:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_4
+ 418:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_5
+ 419:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_6
+ 420:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_7
+ 421:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_8
+ 422:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_9
+ 423:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_10
+ 424:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_11
+ 425:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_12
+ 426:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_13
+ 427:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_14
+ 428:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_15
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKgnet8.s 			page 21
+
+
+ 429:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_ALL
+ 430:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @param  new_state: new state of the slew rate.
+ 431:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         this parameter can be: true or false.
+ 432:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @retval none
+ 433:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   */
+ 434:bsp/libraries/drivers/src/at32f435_437_gpio.c **** void gpio_pins_huge_driven_config(gpio_type *gpio_x, uint16_t pins, confirm_state new_state)
+ 435:bsp/libraries/drivers/src/at32f435_437_gpio.c **** {
+ 677              		.loc 1 435 1 is_stmt 1 view -0
+ 678              		.cfi_startproc
+ 679              		@ args = 0, pretend = 0, frame = 0
+ 680              		@ frame_needed = 0, uses_anonymous_args = 0
+ 681              		@ link register save eliminated.
+ 436:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   if(new_state != FALSE)
+ 682              		.loc 1 436 3 view .LVU171
+ 683              		.loc 1 436 5 is_stmt 0 view .LVU172
+ 684 0000 1AB1     		cbz	r2, .L44
+ 437:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   {
+ 438:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     gpio_x->hdrv |= pins;
+ 685              		.loc 1 438 5 is_stmt 1 view .LVU173
+ 686              		.loc 1 438 18 is_stmt 0 view .LVU174
+ 687 0002 C36B     		ldr	r3, [r0, #60]
+ 688 0004 1943     		orrs	r1, r1, r3
+ 689              	.LVL62:
+ 690              		.loc 1 438 18 view .LVU175
+ 691 0006 C163     		str	r1, [r0, #60]
+ 692 0008 7047     		bx	lr
+ 693              	.LVL63:
+ 694              	.L44:
+ 439:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   }
+ 440:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   else
+ 441:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   {
+ 442:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     gpio_x->hdrv &= ~pins;
+ 695              		.loc 1 442 5 is_stmt 1 view .LVU176
+ 696              		.loc 1 442 18 is_stmt 0 view .LVU177
+ 697 000a C36B     		ldr	r3, [r0, #60]
+ 698 000c 23EA0101 		bic	r1, r3, r1
+ 699              	.LVL64:
+ 700              		.loc 1 442 18 view .LVU178
+ 701 0010 C163     		str	r1, [r0, #60]
+ 443:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   }
+ 444:bsp/libraries/drivers/src/at32f435_437_gpio.c **** }
+ 702              		.loc 1 444 1 view .LVU179
+ 703 0012 7047     		bx	lr
+ 704              		.cfi_endproc
+ 705              	.LFE145:
+ 707              		.section	.text.gpio_pin_mux_config,"ax",%progbits
+ 708              		.align	1
+ 709              		.global	gpio_pin_mux_config
+ 710              		.syntax unified
+ 711              		.thumb
+ 712              		.thumb_func
+ 714              	gpio_pin_mux_config:
+ 715              	.LVL65:
+ 716              	.LFB146:
+ 445:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 446:bsp/libraries/drivers/src/at32f435_437_gpio.c **** /**
+ 447:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @brief  configure the pin's muxing function.
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKgnet8.s 			page 22
+
+
+ 448:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @param  gpio_x: to select the gpio peripheral.
+ 449:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         this parameter can be one of the following values:
+ 450:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         GPIOA, GPIOB, GPIOC, GPIOD, GPIOE, GPIOF, GPIOG, GPIOH.
+ 451:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @param  gpio_pin_source: specifies the pin for the muxing function.
+ 452:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         this parameter can be one of the following values:
+ 453:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_SOURCE0
+ 454:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_SOURCE1
+ 455:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_SOURCE2
+ 456:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_SOURCE3
+ 457:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_SOURCE4
+ 458:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_SOURCE5
+ 459:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_SOURCE6
+ 460:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_SOURCE7
+ 461:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_SOURCE8
+ 462:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_SOURCE9
+ 463:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_SOURCE10
+ 464:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_SOURCE11
+ 465:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_SOURCE12
+ 466:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_SOURCE13
+ 467:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_SOURCE14
+ 468:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_PINS_SOURCE15
+ 469:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @param  gpio_mux: select the pin to used as muxing function.
+ 470:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         this parameter can be one of the following values:
+ 471:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_MUX_0
+ 472:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_MUX_1
+ 473:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_MUX_2
+ 474:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_MUX_3
+ 475:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_MUX_4
+ 476:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_MUX_5
+ 477:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_MUX_6
+ 478:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_MUX_7
+ 479:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_MUX_8
+ 480:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_MUX_9
+ 481:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_MUX_10
+ 482:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_MUX_11
+ 483:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_MUX_12
+ 484:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_MUX_13
+ 485:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_MUX_14
+ 486:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   *         - GPIO_MUX_15
+ 487:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   * @retval none
+ 488:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   */
+ 489:bsp/libraries/drivers/src/at32f435_437_gpio.c **** void gpio_pin_mux_config(gpio_type *gpio_x, gpio_pins_source_type gpio_pin_source, gpio_mux_sel_typ
+ 490:bsp/libraries/drivers/src/at32f435_437_gpio.c **** {
+ 717              		.loc 1 490 1 is_stmt 1 view -0
+ 718              		.cfi_startproc
+ 719              		@ args = 0, pretend = 0, frame = 0
+ 720              		@ frame_needed = 0, uses_anonymous_args = 0
+ 721              		@ link register save eliminated.
+ 491:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   uint32_t temp = 0x00;
+ 722              		.loc 1 491 3 view .LVU181
+ 492:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   uint32_t temp_2 = 0x00;
+ 723              		.loc 1 492 3 view .LVU182
+ 493:bsp/libraries/drivers/src/at32f435_437_gpio.c **** 
+ 494:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   temp = ((uint32_t)(gpio_mux) << ((uint32_t)((uint32_t)gpio_pin_source & (uint32_t)0x07) * 4));
+ 724              		.loc 1 494 3 view .LVU183
+ 725              		.loc 1 494 36 is_stmt 0 view .LVU184
+ 726 0000 01F00703 		and	r3, r1, #7
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKgnet8.s 			page 23
+
+
+ 727              		.loc 1 494 91 view .LVU185
+ 728 0004 9B00     		lsls	r3, r3, #2
+ 729              		.loc 1 494 8 view .LVU186
+ 730 0006 9A40     		lsls	r2, r2, r3
+ 731              	.LVL66:
+ 495:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   if(gpio_pin_source >> 0x03)
+ 732              		.loc 1 495 3 is_stmt 1 view .LVU187
+ 733              		.loc 1 495 5 is_stmt 0 view .LVU188
+ 734 0008 C908     		lsrs	r1, r1, #3
+ 735              	.LVL67:
+ 736              		.loc 1 495 5 view .LVU189
+ 737 000a 0BD0     		beq	.L47
+ 496:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   {
+ 497:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     gpio_x->muxh &= ~((uint32_t)0xF << ((uint32_t)((uint32_t)gpio_pin_source & (uint32_t)0x07) * 4)
+ 738              		.loc 1 497 5 is_stmt 1 view .LVU190
+ 739              		.loc 1 497 18 is_stmt 0 view .LVU191
+ 740 000c 416A     		ldr	r1, [r0, #36]
+ 741              		.loc 1 497 37 view .LVU192
+ 742 000e 4FF00F0C 		mov	ip, #15
+ 743 0012 0CFA03F3 		lsl	r3, ip, r3
+ 744              		.loc 1 497 18 view .LVU193
+ 745 0016 21EA0303 		bic	r3, r1, r3
+ 746 001a 4362     		str	r3, [r0, #36]
+ 498:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     temp_2 = gpio_x->muxh | temp;
+ 747              		.loc 1 498 5 is_stmt 1 view .LVU194
+ 748              		.loc 1 498 20 is_stmt 0 view .LVU195
+ 749 001c 436A     		ldr	r3, [r0, #36]
+ 750              		.loc 1 498 12 view .LVU196
+ 751 001e 1A43     		orrs	r2, r2, r3
+ 752              	.LVL68:
+ 499:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     gpio_x->muxh = temp_2;
+ 753              		.loc 1 499 5 is_stmt 1 view .LVU197
+ 754              		.loc 1 499 18 is_stmt 0 view .LVU198
+ 755 0020 4262     		str	r2, [r0, #36]
+ 756 0022 7047     		bx	lr
+ 757              	.LVL69:
+ 758              	.L47:
+ 500:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   }
+ 501:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   else
+ 502:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   {
+ 503:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     gpio_x->muxl &= ~((uint32_t)0xF << ((uint32_t)((uint32_t)gpio_pin_source & (uint32_t)0x07) * 4)
+ 759              		.loc 1 503 5 is_stmt 1 view .LVU199
+ 760              		.loc 1 503 18 is_stmt 0 view .LVU200
+ 761 0024 016A     		ldr	r1, [r0, #32]
+ 762              		.loc 1 503 37 view .LVU201
+ 763 0026 4FF00F0C 		mov	ip, #15
+ 764 002a 0CFA03F3 		lsl	r3, ip, r3
+ 765              		.loc 1 503 18 view .LVU202
+ 766 002e 21EA0303 		bic	r3, r1, r3
+ 767 0032 0362     		str	r3, [r0, #32]
+ 504:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     temp_2 = gpio_x->muxl | temp;
+ 768              		.loc 1 504 5 is_stmt 1 view .LVU203
+ 769              		.loc 1 504 20 is_stmt 0 view .LVU204
+ 770 0034 036A     		ldr	r3, [r0, #32]
+ 771              		.loc 1 504 12 view .LVU205
+ 772 0036 1A43     		orrs	r2, r2, r3
+ 773              	.LVL70:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKgnet8.s 			page 24
+
+
+ 505:bsp/libraries/drivers/src/at32f435_437_gpio.c ****     gpio_x->muxl = temp_2;
+ 774              		.loc 1 505 5 is_stmt 1 view .LVU206
+ 775              		.loc 1 505 18 is_stmt 0 view .LVU207
+ 776 0038 0262     		str	r2, [r0, #32]
+ 506:bsp/libraries/drivers/src/at32f435_437_gpio.c ****   }
+ 507:bsp/libraries/drivers/src/at32f435_437_gpio.c **** }
+ 777              		.loc 1 507 1 view .LVU208
+ 778 003a 7047     		bx	lr
+ 779              		.cfi_endproc
+ 780              	.LFE146:
+ 782              		.text
+ 783              	.Letext0:
+ 784              		.file 2 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\mac
+ 785              		.file 3 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\sys
+ 786              		.file 4 "bsp/libraries/cmsis/cm4/device_support/at32f435_437.h"
+ 787              		.file 5 "bsp/libraries/drivers/inc/at32f435_437_crm.h"
+ 788              		.file 6 "bsp/libraries/drivers/inc/at32f435_437_gpio.h"
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKgnet8.s 			page 25
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 at32f435_437_gpio.c
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:18     .text.gpio_reset:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:24     .text.gpio_reset:00000000 gpio_reset
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:213    .text.gpio_reset:000000d8 $d
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:232    .text.gpio_init:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:238    .text.gpio_init:00000000 gpio_init
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:363    .text.gpio_default_para_init:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:369    .text.gpio_default_para_init:00000000 gpio_default_para_init
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:401    .text.gpio_input_data_bit_read:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:407    .text.gpio_input_data_bit_read:00000000 gpio_input_data_bit_read
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:439    .text.gpio_input_data_read:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:445    .text.gpio_input_data_read:00000000 gpio_input_data_read
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:464    .text.gpio_output_data_bit_read:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:470    .text.gpio_output_data_bit_read:00000000 gpio_output_data_bit_read
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:502    .text.gpio_output_data_read:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:508    .text.gpio_output_data_read:00000000 gpio_output_data_read
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:527    .text.gpio_bits_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:533    .text.gpio_bits_set:00000000 gpio_bits_set
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:550    .text.gpio_bits_reset:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:556    .text.gpio_bits_reset:00000000 gpio_bits_reset
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:573    .text.gpio_bits_write:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:579    .text.gpio_bits_write:00000000 gpio_bits_write
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:604    .text.gpio_port_write:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:610    .text.gpio_port_write:00000000 gpio_port_write
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:627    .text.gpio_pin_wp_config:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:633    .text.gpio_pin_wp_config:00000000 gpio_pin_wp_config
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:668    .text.gpio_pins_huge_driven_config:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:674    .text.gpio_pins_huge_driven_config:00000000 gpio_pins_huge_driven_config
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:708    .text.gpio_pin_mux_config:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccKgnet8.s:714    .text.gpio_pin_mux_config:00000000 gpio_pin_mux_config
+
+UNDEFINED SYMBOLS
+crm_periph_reset

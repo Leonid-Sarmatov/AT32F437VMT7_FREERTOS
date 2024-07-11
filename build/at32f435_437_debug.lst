@@ -1,0 +1,336 @@
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccUAJxrC.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"at32f435_437_debug.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.debug_device_id_get,"ax",%progbits
+  18              		.align	1
+  19              		.global	debug_device_id_get
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	debug_device_id_get:
+  25              	.LFB133:
+  26              		.file 1 "bsp/libraries/drivers/src/at32f435_437_debug.c"
+   1:bsp/libraries/drivers/src/at32f435_437_debug.c **** /**
+   2:bsp/libraries/drivers/src/at32f435_437_debug.c ****   **************************************************************************
+   3:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * @file     at32f435_437_mcudbg.c
+   4:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * @brief    contains all the functions for the mcudbg firmware library
+   5:bsp/libraries/drivers/src/at32f435_437_debug.c ****   **************************************************************************
+   6:bsp/libraries/drivers/src/at32f435_437_debug.c ****   *                       Copyright notice & Disclaimer
+   7:bsp/libraries/drivers/src/at32f435_437_debug.c ****   *
+   8:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * The software Board Support Package (BSP) that is made available to
+   9:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * download from Artery official website is the copyrighted work of Artery.
+  10:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * Artery authorizes customers to use, copy, and distribute the BSP
+  11:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * software and its related documentation for the purpose of design and
+  12:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * development in conjunction with Artery microcontrollers. Use of the
+  13:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * software is governed by this copyright notice and the following disclaimer.
+  14:bsp/libraries/drivers/src/at32f435_437_debug.c ****   *
+  15:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
+  16:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * GUARANTEES OR REPRESENTATIONS OF ANY KIND. ARTERY EXPRESSLY DISCLAIMS,
+  17:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * TO THE FULLEST EXTENT PERMITTED BY LAW, ALL EXPRESS, IMPLIED OR
+  18:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * STATUTORY OR OTHER WARRANTIES, GUARANTEES OR REPRESENTATIONS,
+  19:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * INCLUDING BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+  20:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
+  21:bsp/libraries/drivers/src/at32f435_437_debug.c ****   *
+  22:bsp/libraries/drivers/src/at32f435_437_debug.c ****   **************************************************************************
+  23:bsp/libraries/drivers/src/at32f435_437_debug.c ****   */
+  24:bsp/libraries/drivers/src/at32f435_437_debug.c **** 
+  25:bsp/libraries/drivers/src/at32f435_437_debug.c **** #include "at32f435_437_conf.h"
+  26:bsp/libraries/drivers/src/at32f435_437_debug.c **** 
+  27:bsp/libraries/drivers/src/at32f435_437_debug.c **** /** @addtogroup AT32F435_437_periph_driver
+  28:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * @{
+  29:bsp/libraries/drivers/src/at32f435_437_debug.c ****   */
+  30:bsp/libraries/drivers/src/at32f435_437_debug.c **** 
+  31:bsp/libraries/drivers/src/at32f435_437_debug.c **** /** @defgroup DEBUG
+  32:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * @brief DEBUG driver modules
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccUAJxrC.s 			page 2
+
+
+  33:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * @{
+  34:bsp/libraries/drivers/src/at32f435_437_debug.c ****   */
+  35:bsp/libraries/drivers/src/at32f435_437_debug.c **** 
+  36:bsp/libraries/drivers/src/at32f435_437_debug.c **** #ifdef DEBUG_MODULE_ENABLED
+  37:bsp/libraries/drivers/src/at32f435_437_debug.c **** 
+  38:bsp/libraries/drivers/src/at32f435_437_debug.c **** /** @defgroup DEBUG_private_functions
+  39:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * @{
+  40:bsp/libraries/drivers/src/at32f435_437_debug.c ****   */
+  41:bsp/libraries/drivers/src/at32f435_437_debug.c **** 
+  42:bsp/libraries/drivers/src/at32f435_437_debug.c **** /**
+  43:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * @brief  get debug device id
+  44:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * @param  none
+  45:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * @retval the debug device id
+  46:bsp/libraries/drivers/src/at32f435_437_debug.c ****   */
+  47:bsp/libraries/drivers/src/at32f435_437_debug.c **** uint32_t debug_device_id_get(void)
+  48:bsp/libraries/drivers/src/at32f435_437_debug.c **** {
+  27              		.loc 1 48 1 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  49:bsp/libraries/drivers/src/at32f435_437_debug.c ****   return DEBUGMCU->pid;
+  32              		.loc 1 49 3 view .LVU1
+  33              		.loc 1 49 18 is_stmt 0 view .LVU2
+  34 0000 014B     		ldr	r3, .L2
+  35 0002 1868     		ldr	r0, [r3]
+  50:bsp/libraries/drivers/src/at32f435_437_debug.c **** }
+  36              		.loc 1 50 1 view .LVU3
+  37 0004 7047     		bx	lr
+  38              	.L3:
+  39 0006 00BF     		.align	2
+  40              	.L2:
+  41 0008 002004E0 		.word	-536600576
+  42              		.cfi_endproc
+  43              	.LFE133:
+  45              		.section	.text.debug_low_power_mode_set,"ax",%progbits
+  46              		.align	1
+  47              		.global	debug_low_power_mode_set
+  48              		.syntax unified
+  49              		.thumb
+  50              		.thumb_func
+  52              	debug_low_power_mode_set:
+  53              	.LVL0:
+  54              	.LFB134:
+  51:bsp/libraries/drivers/src/at32f435_437_debug.c **** /**
+  52:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * @brief  set periph debug mode
+  53:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * @param  periph_debug_mode
+  54:bsp/libraries/drivers/src/at32f435_437_debug.c ****   *         this parameter can be one of the following values:
+  55:bsp/libraries/drivers/src/at32f435_437_debug.c ****   *         - DEBUG_SLEEP
+  56:bsp/libraries/drivers/src/at32f435_437_debug.c ****   *         - DEBUG_DEEPSLEEP
+  57:bsp/libraries/drivers/src/at32f435_437_debug.c ****   *         - DEBUG_STANDBY
+  58:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * @param  new_state (TRUE or FALSE)
+  59:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * @retval none
+  60:bsp/libraries/drivers/src/at32f435_437_debug.c ****   */
+  61:bsp/libraries/drivers/src/at32f435_437_debug.c **** void debug_low_power_mode_set(uint32_t low_power_mode, confirm_state new_state)
+  62:bsp/libraries/drivers/src/at32f435_437_debug.c **** {
+  55              		.loc 1 62 1 is_stmt 1 view -0
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccUAJxrC.s 			page 3
+
+
+  56              		.cfi_startproc
+  57              		@ args = 0, pretend = 0, frame = 0
+  58              		@ frame_needed = 0, uses_anonymous_args = 0
+  59              		@ link register save eliminated.
+  63:bsp/libraries/drivers/src/at32f435_437_debug.c ****   if(new_state != FALSE)
+  60              		.loc 1 63 3 view .LVU5
+  61              		.loc 1 63 5 is_stmt 0 view .LVU6
+  62 0000 21B1     		cbz	r1, .L5
+  64:bsp/libraries/drivers/src/at32f435_437_debug.c ****   {
+  65:bsp/libraries/drivers/src/at32f435_437_debug.c ****     DEBUGMCU->ctrl |= low_power_mode;
+  63              		.loc 1 65 5 is_stmt 1 view .LVU7
+  64              		.loc 1 65 20 is_stmt 0 view .LVU8
+  65 0002 054A     		ldr	r2, .L7
+  66 0004 5368     		ldr	r3, [r2, #4]
+  67 0006 1843     		orrs	r0, r0, r3
+  68              	.LVL1:
+  69              		.loc 1 65 20 view .LVU9
+  70 0008 5060     		str	r0, [r2, #4]
+  71 000a 7047     		bx	lr
+  72              	.LVL2:
+  73              	.L5:
+  66:bsp/libraries/drivers/src/at32f435_437_debug.c ****   }
+  67:bsp/libraries/drivers/src/at32f435_437_debug.c ****   else
+  68:bsp/libraries/drivers/src/at32f435_437_debug.c ****   {
+  69:bsp/libraries/drivers/src/at32f435_437_debug.c ****     DEBUGMCU->ctrl &= ~low_power_mode;
+  74              		.loc 1 69 5 is_stmt 1 view .LVU10
+  75              		.loc 1 69 20 is_stmt 0 view .LVU11
+  76 000c 024A     		ldr	r2, .L7
+  77 000e 5368     		ldr	r3, [r2, #4]
+  78 0010 23EA0000 		bic	r0, r3, r0
+  79              	.LVL3:
+  80              		.loc 1 69 20 view .LVU12
+  81 0014 5060     		str	r0, [r2, #4]
+  70:bsp/libraries/drivers/src/at32f435_437_debug.c ****   }
+  71:bsp/libraries/drivers/src/at32f435_437_debug.c **** }
+  82              		.loc 1 71 1 view .LVU13
+  83 0016 7047     		bx	lr
+  84              	.L8:
+  85              		.align	2
+  86              	.L7:
+  87 0018 002004E0 		.word	-536600576
+  88              		.cfi_endproc
+  89              	.LFE134:
+  91              		.section	.text.debug_apb1_periph_mode_set,"ax",%progbits
+  92              		.align	1
+  93              		.global	debug_apb1_periph_mode_set
+  94              		.syntax unified
+  95              		.thumb
+  96              		.thumb_func
+  98              	debug_apb1_periph_mode_set:
+  99              	.LVL4:
+ 100              	.LFB135:
+  72:bsp/libraries/drivers/src/at32f435_437_debug.c **** /**
+  73:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * @brief  set apb1 periph debug mode
+  74:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * @param  periph_debug_mode
+  75:bsp/libraries/drivers/src/at32f435_437_debug.c ****   *         this parameter can be any combination of the following values:
+  76:bsp/libraries/drivers/src/at32f435_437_debug.c ****   *         - DEBUG_TMR2_PAUSE                      - DEBUG_TMR3_PAUSE
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccUAJxrC.s 			page 4
+
+
+  77:bsp/libraries/drivers/src/at32f435_437_debug.c ****   *         - DEBUG_TMR4_PAUSE                      - DEBUG_TMR5_PAUSE
+  78:bsp/libraries/drivers/src/at32f435_437_debug.c ****   *         - DEBUG_TMR6_PAUSE                      - DEBUG_TMR7_PAUSE
+  79:bsp/libraries/drivers/src/at32f435_437_debug.c ****   *         - DEBUG_TMR12_PAUSE                     - DEBUG_TMR13_PAUSE
+  80:bsp/libraries/drivers/src/at32f435_437_debug.c ****   *         - DEBUG_TMR14_PAUSE                     - DEBUG_ERTC_PAUSE
+  81:bsp/libraries/drivers/src/at32f435_437_debug.c ****   *         - DEBUG_WWDT_PAUSE                      - DEBUG_WDT_PAUSE
+  82:bsp/libraries/drivers/src/at32f435_437_debug.c ****   *         - DEBUG_ERTC_512_PAUSE                  - DEBUG_I2C1_SMBUS_TIMEOUT
+  83:bsp/libraries/drivers/src/at32f435_437_debug.c ****   *         - DEBUG_I2C2_SMBUS_TIMEOUT              - DEBUG_I2C3_SMBUS_TIMEOUT
+  84:bsp/libraries/drivers/src/at32f435_437_debug.c ****   *         - DEBUG_CAN1_PAUSE                      - DEBUG_CAN2_PAUSE
+  85:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * @param  new_state (TRUE or FALSE)
+  86:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * @retval none
+  87:bsp/libraries/drivers/src/at32f435_437_debug.c ****   */
+  88:bsp/libraries/drivers/src/at32f435_437_debug.c **** void debug_apb1_periph_mode_set(uint32_t apb1_periph, confirm_state new_state)
+  89:bsp/libraries/drivers/src/at32f435_437_debug.c **** {
+ 101              		.loc 1 89 1 is_stmt 1 view -0
+ 102              		.cfi_startproc
+ 103              		@ args = 0, pretend = 0, frame = 0
+ 104              		@ frame_needed = 0, uses_anonymous_args = 0
+ 105              		@ link register save eliminated.
+  90:bsp/libraries/drivers/src/at32f435_437_debug.c ****   if(new_state != FALSE)
+ 106              		.loc 1 90 3 view .LVU15
+ 107              		.loc 1 90 5 is_stmt 0 view .LVU16
+ 108 0000 21B1     		cbz	r1, .L10
+  91:bsp/libraries/drivers/src/at32f435_437_debug.c ****   {
+  92:bsp/libraries/drivers/src/at32f435_437_debug.c ****     DEBUGMCU->apb1_frz |= apb1_periph;
+ 109              		.loc 1 92 5 is_stmt 1 view .LVU17
+ 110              		.loc 1 92 24 is_stmt 0 view .LVU18
+ 111 0002 054A     		ldr	r2, .L12
+ 112 0004 9368     		ldr	r3, [r2, #8]
+ 113 0006 1843     		orrs	r0, r0, r3
+ 114              	.LVL5:
+ 115              		.loc 1 92 24 view .LVU19
+ 116 0008 9060     		str	r0, [r2, #8]
+ 117 000a 7047     		bx	lr
+ 118              	.LVL6:
+ 119              	.L10:
+  93:bsp/libraries/drivers/src/at32f435_437_debug.c ****   }
+  94:bsp/libraries/drivers/src/at32f435_437_debug.c ****   else
+  95:bsp/libraries/drivers/src/at32f435_437_debug.c ****   {
+  96:bsp/libraries/drivers/src/at32f435_437_debug.c ****     DEBUGMCU->apb1_frz &= ~apb1_periph;
+ 120              		.loc 1 96 5 is_stmt 1 view .LVU20
+ 121              		.loc 1 96 24 is_stmt 0 view .LVU21
+ 122 000c 024A     		ldr	r2, .L12
+ 123 000e 9368     		ldr	r3, [r2, #8]
+ 124 0010 23EA0000 		bic	r0, r3, r0
+ 125              	.LVL7:
+ 126              		.loc 1 96 24 view .LVU22
+ 127 0014 9060     		str	r0, [r2, #8]
+  97:bsp/libraries/drivers/src/at32f435_437_debug.c ****   }
+  98:bsp/libraries/drivers/src/at32f435_437_debug.c **** }
+ 128              		.loc 1 98 1 view .LVU23
+ 129 0016 7047     		bx	lr
+ 130              	.L13:
+ 131              		.align	2
+ 132              	.L12:
+ 133 0018 002004E0 		.word	-536600576
+ 134              		.cfi_endproc
+ 135              	.LFE135:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccUAJxrC.s 			page 5
+
+
+ 137              		.section	.text.debug_apb2_periph_mode_set,"ax",%progbits
+ 138              		.align	1
+ 139              		.global	debug_apb2_periph_mode_set
+ 140              		.syntax unified
+ 141              		.thumb
+ 142              		.thumb_func
+ 144              	debug_apb2_periph_mode_set:
+ 145              	.LVL8:
+ 146              	.LFB136:
+  99:bsp/libraries/drivers/src/at32f435_437_debug.c **** /**
+ 100:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * @brief  set apb2 periph debug mode
+ 101:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * @param  periph_debug_mode
+ 102:bsp/libraries/drivers/src/at32f435_437_debug.c ****   *         this parameter can be any combination of the following values:
+ 103:bsp/libraries/drivers/src/at32f435_437_debug.c ****   *         - DEBUG_TMR1_PAUSE                      - DEBUG_TMR8_PAUSE
+ 104:bsp/libraries/drivers/src/at32f435_437_debug.c ****   *         - DEBUG_TMR20_PAUSE                     - DEBUG_TMR9_PAUSE
+ 105:bsp/libraries/drivers/src/at32f435_437_debug.c ****   *         - DEBUG_TMR10_PAUSE                     - DEBUG_TMR11_PAUSE
+ 106:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * @param  new_state (TRUE or FALSE)
+ 107:bsp/libraries/drivers/src/at32f435_437_debug.c ****   * @retval none
+ 108:bsp/libraries/drivers/src/at32f435_437_debug.c ****   */
+ 109:bsp/libraries/drivers/src/at32f435_437_debug.c **** void debug_apb2_periph_mode_set(uint32_t apb2_periph, confirm_state new_state)
+ 110:bsp/libraries/drivers/src/at32f435_437_debug.c **** {
+ 147              		.loc 1 110 1 is_stmt 1 view -0
+ 148              		.cfi_startproc
+ 149              		@ args = 0, pretend = 0, frame = 0
+ 150              		@ frame_needed = 0, uses_anonymous_args = 0
+ 151              		@ link register save eliminated.
+ 111:bsp/libraries/drivers/src/at32f435_437_debug.c ****   if(new_state != FALSE)
+ 152              		.loc 1 111 3 view .LVU25
+ 153              		.loc 1 111 5 is_stmt 0 view .LVU26
+ 154 0000 21B1     		cbz	r1, .L15
+ 112:bsp/libraries/drivers/src/at32f435_437_debug.c ****   {
+ 113:bsp/libraries/drivers/src/at32f435_437_debug.c ****     DEBUGMCU->apb2_frz |= apb2_periph;
+ 155              		.loc 1 113 5 is_stmt 1 view .LVU27
+ 156              		.loc 1 113 24 is_stmt 0 view .LVU28
+ 157 0002 054A     		ldr	r2, .L17
+ 158 0004 D368     		ldr	r3, [r2, #12]
+ 159 0006 1843     		orrs	r0, r0, r3
+ 160              	.LVL9:
+ 161              		.loc 1 113 24 view .LVU29
+ 162 0008 D060     		str	r0, [r2, #12]
+ 163 000a 7047     		bx	lr
+ 164              	.LVL10:
+ 165              	.L15:
+ 114:bsp/libraries/drivers/src/at32f435_437_debug.c ****   }
+ 115:bsp/libraries/drivers/src/at32f435_437_debug.c ****   else
+ 116:bsp/libraries/drivers/src/at32f435_437_debug.c ****   {
+ 117:bsp/libraries/drivers/src/at32f435_437_debug.c ****     DEBUGMCU->apb2_frz &= ~apb2_periph;
+ 166              		.loc 1 117 5 is_stmt 1 view .LVU30
+ 167              		.loc 1 117 24 is_stmt 0 view .LVU31
+ 168 000c 024A     		ldr	r2, .L17
+ 169 000e D368     		ldr	r3, [r2, #12]
+ 170 0010 23EA0000 		bic	r0, r3, r0
+ 171              	.LVL11:
+ 172              		.loc 1 117 24 view .LVU32
+ 173 0014 D060     		str	r0, [r2, #12]
+ 118:bsp/libraries/drivers/src/at32f435_437_debug.c ****   }
+ 119:bsp/libraries/drivers/src/at32f435_437_debug.c **** }
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccUAJxrC.s 			page 6
+
+
+ 174              		.loc 1 119 1 view .LVU33
+ 175 0016 7047     		bx	lr
+ 176              	.L18:
+ 177              		.align	2
+ 178              	.L17:
+ 179 0018 002004E0 		.word	-536600576
+ 180              		.cfi_endproc
+ 181              	.LFE136:
+ 183              		.text
+ 184              	.Letext0:
+ 185              		.file 2 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\mac
+ 186              		.file 3 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\sys
+ 187              		.file 4 "bsp/libraries/cmsis/cm4/device_support/at32f435_437.h"
+ 188              		.file 5 "bsp/libraries/drivers/inc/at32f435_437_debug.h"
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccUAJxrC.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 at32f435_437_debug.c
+C:\Users\user\AppData\Local\Temp\ccUAJxrC.s:18     .text.debug_device_id_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccUAJxrC.s:24     .text.debug_device_id_get:00000000 debug_device_id_get
+C:\Users\user\AppData\Local\Temp\ccUAJxrC.s:41     .text.debug_device_id_get:00000008 $d
+C:\Users\user\AppData\Local\Temp\ccUAJxrC.s:46     .text.debug_low_power_mode_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccUAJxrC.s:52     .text.debug_low_power_mode_set:00000000 debug_low_power_mode_set
+C:\Users\user\AppData\Local\Temp\ccUAJxrC.s:87     .text.debug_low_power_mode_set:00000018 $d
+C:\Users\user\AppData\Local\Temp\ccUAJxrC.s:92     .text.debug_apb1_periph_mode_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccUAJxrC.s:98     .text.debug_apb1_periph_mode_set:00000000 debug_apb1_periph_mode_set
+C:\Users\user\AppData\Local\Temp\ccUAJxrC.s:133    .text.debug_apb1_periph_mode_set:00000018 $d
+C:\Users\user\AppData\Local\Temp\ccUAJxrC.s:138    .text.debug_apb2_periph_mode_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccUAJxrC.s:144    .text.debug_apb2_periph_mode_set:00000000 debug_apb2_periph_mode_set
+C:\Users\user\AppData\Local\Temp\ccUAJxrC.s:179    .text.debug_apb2_periph_mode_set:00000018 $d
+
+NO UNDEFINED SYMBOLS

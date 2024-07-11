@@ -1,0 +1,1791 @@
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"at32f435_437_dvp.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.dvp_reset,"ax",%progbits
+  18              		.align	1
+  19              		.global	dvp_reset
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	dvp_reset:
+  25              	.LFB133:
+  26              		.file 1 "bsp/libraries/drivers/src/at32f435_437_dvp.c"
+   1:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+   2:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   **************************************************************************
+   3:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @file     at32f435_437_dvp.c
+   4:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief    contains all the functions for the dvp firmware library
+   5:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   **************************************************************************
+   6:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *                       Copyright notice & Disclaimer
+   7:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *
+   8:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * The software Board Support Package (BSP) that is made available to
+   9:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * download from Artery official website is the copyrighted work of Artery.
+  10:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * Artery authorizes customers to use, copy, and distribute the BSP
+  11:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * software and its related documentation for the purpose of design and
+  12:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * development in conjunction with Artery microcontrollers. Use of the
+  13:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * software is governed by this copyright notice and the following disclaimer.
+  14:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *
+  15:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
+  16:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * GUARANTEES OR REPRESENTATIONS OF ANY KIND. ARTERY EXPRESSLY DISCLAIMS,
+  17:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * TO THE FULLEST EXTENT PERMITTED BY LAW, ALL EXPRESS, IMPLIED OR
+  18:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * STATUTORY OR OTHER WARRANTIES, GUARANTEES OR REPRESENTATIONS,
+  19:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * INCLUDING BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+  20:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
+  21:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *
+  22:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   **************************************************************************
+  23:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+  24:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+  25:bsp/libraries/drivers/src/at32f435_437_dvp.c **** #include "at32f435_437_conf.h"
+  26:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+  27:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /** @addtogroup AT32F435_437_periph_driver
+  28:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @{
+  29:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+  30:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+  31:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /** @defgroup DVP
+  32:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief DVP driver modules
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 2
+
+
+  33:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @{
+  34:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+  35:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+  36:bsp/libraries/drivers/src/at32f435_437_dvp.c **** #ifdef DVP_MODULE_ENABLED
+  37:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+  38:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /** @defgroup DVP_private_functions
+  39:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @{
+  40:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+  41:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+  42:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+  43:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  reset the dvp register
+  44:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  none
+  45:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval none
+  46:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+  47:bsp/libraries/drivers/src/at32f435_437_dvp.c **** void dvp_reset(void)
+  48:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+  27              		.loc 1 48 1 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 08B5     		push	{r3, lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 3, -8
+  35              		.cfi_offset 14, -4
+  49:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   crm_periph_reset(CRM_DVP_PERIPH_RESET, TRUE);
+  36              		.loc 1 49 3 view .LVU1
+  37 0002 0121     		movs	r1, #1
+  38 0004 4FF4A010 		mov	r0, #1310720
+  39 0008 FFF7FEFF 		bl	crm_periph_reset
+  40              	.LVL0:
+  50:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   crm_periph_reset(CRM_DVP_PERIPH_RESET, FALSE);
+  41              		.loc 1 50 3 view .LVU2
+  42 000c 0021     		movs	r1, #0
+  43 000e 4FF4A010 		mov	r0, #1310720
+  44 0012 FFF7FEFF 		bl	crm_periph_reset
+  45              	.LVL1:
+  51:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+  46              		.loc 1 51 1 is_stmt 0 view .LVU3
+  47 0016 08BD     		pop	{r3, pc}
+  48              		.cfi_endproc
+  49              	.LFE133:
+  51              		.section	.text.dvp_capture_enable,"ax",%progbits
+  52              		.align	1
+  53              		.global	dvp_capture_enable
+  54              		.syntax unified
+  55              		.thumb
+  56              		.thumb_func
+  58              	dvp_capture_enable:
+  59              	.LVL2:
+  60              	.LFB134:
+  52:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+  53:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+  54:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  enable or disable dvp capture
+  55:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  new_state (TRUE or FALSE)
+  56:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval none
+  57:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 3
+
+
+  58:bsp/libraries/drivers/src/at32f435_437_dvp.c **** void dvp_capture_enable(confirm_state new_state)
+  59:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+  61              		.loc 1 59 1 is_stmt 1 view -0
+  62              		.cfi_startproc
+  63              		@ args = 0, pretend = 0, frame = 0
+  64              		@ frame_needed = 0, uses_anonymous_args = 0
+  65              		@ link register save eliminated.
+  60:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->ctrl_bit.cap = new_state;
+  66              		.loc 1 60 3 view .LVU5
+  67              		.loc 1 60 21 is_stmt 0 view .LVU6
+  68 0000 024B     		ldr	r3, .L4
+  69 0002 1A68     		ldr	r2, [r3]
+  70 0004 60F30002 		bfi	r2, r0, #0, #1
+  71 0008 1A60     		str	r2, [r3]
+  61:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+  72              		.loc 1 61 1 view .LVU7
+  73 000a 7047     		bx	lr
+  74              	.L5:
+  75              		.align	2
+  76              	.L4:
+  77 000c 00000550 		.word	1342504960
+  78              		.cfi_endproc
+  79              	.LFE134:
+  81              		.section	.text.dvp_capture_mode_set,"ax",%progbits
+  82              		.align	1
+  83              		.global	dvp_capture_mode_set
+  84              		.syntax unified
+  85              		.thumb
+  86              		.thumb_func
+  88              	dvp_capture_mode_set:
+  89              	.LVL3:
+  90              	.LFB135:
+  62:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+  63:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+  64:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  set dvp capture mode
+  65:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  cap_mode
+  66:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         this parameter can be one of the following values:
+  67:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_CAP_FUNC_MODE_CONTINUOUS
+  68:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_CAP_FUNC_MODE_SINGLE
+  69:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval none
+  70:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+  71:bsp/libraries/drivers/src/at32f435_437_dvp.c **** void dvp_capture_mode_set(dvp_cfm_type cap_mode)
+  72:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+  91              		.loc 1 72 1 is_stmt 1 view -0
+  92              		.cfi_startproc
+  93              		@ args = 0, pretend = 0, frame = 0
+  94              		@ frame_needed = 0, uses_anonymous_args = 0
+  95              		@ link register save eliminated.
+  73:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->ctrl_bit.cfm = cap_mode;
+  96              		.loc 1 73 3 view .LVU9
+  97              		.loc 1 73 21 is_stmt 0 view .LVU10
+  98 0000 024B     		ldr	r3, .L7
+  99 0002 1A68     		ldr	r2, [r3]
+ 100 0004 60F34102 		bfi	r2, r0, #1, #1
+ 101 0008 1A60     		str	r2, [r3]
+  74:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 102              		.loc 1 74 1 view .LVU11
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 4
+
+
+ 103 000a 7047     		bx	lr
+ 104              	.L8:
+ 105              		.align	2
+ 106              	.L7:
+ 107 000c 00000550 		.word	1342504960
+ 108              		.cfi_endproc
+ 109              	.LFE135:
+ 111              		.section	.text.dvp_window_crop_enable,"ax",%progbits
+ 112              		.align	1
+ 113              		.global	dvp_window_crop_enable
+ 114              		.syntax unified
+ 115              		.thumb
+ 116              		.thumb_func
+ 118              	dvp_window_crop_enable:
+ 119              	.LVL4:
+ 120              	.LFB136:
+  75:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+  76:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+  77:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  set dvp cropping window enable
+  78:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  new_state (TRUE or FALSE)
+  79:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval none
+  80:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+  81:bsp/libraries/drivers/src/at32f435_437_dvp.c **** void dvp_window_crop_enable(confirm_state new_state)
+  82:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+ 121              		.loc 1 82 1 is_stmt 1 view -0
+ 122              		.cfi_startproc
+ 123              		@ args = 0, pretend = 0, frame = 0
+ 124              		@ frame_needed = 0, uses_anonymous_args = 0
+ 125              		@ link register save eliminated.
+  83:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->ctrl_bit.crp = new_state;
+ 126              		.loc 1 83 3 view .LVU13
+ 127              		.loc 1 83 21 is_stmt 0 view .LVU14
+ 128 0000 024B     		ldr	r3, .L10
+ 129 0002 1A68     		ldr	r2, [r3]
+ 130 0004 60F38202 		bfi	r2, r0, #2, #1
+ 131 0008 1A60     		str	r2, [r3]
+  84:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 132              		.loc 1 84 1 view .LVU15
+ 133 000a 7047     		bx	lr
+ 134              	.L11:
+ 135              		.align	2
+ 136              	.L10:
+ 137 000c 00000550 		.word	1342504960
+ 138              		.cfi_endproc
+ 139              	.LFE136:
+ 141              		.section	.text.dvp_window_crop_set,"ax",%progbits
+ 142              		.align	1
+ 143              		.global	dvp_window_crop_set
+ 144              		.syntax unified
+ 145              		.thumb
+ 146              		.thumb_func
+ 148              	dvp_window_crop_set:
+ 149              	.LVL5:
+ 150              	.LFB137:
+  85:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+  86:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+  87:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  set dvp cropping window configuration
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 5
+
+
+  88:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  crop_x: cropping window horizontal start pixel
+  89:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  crop_y: cropping window vertical start line
+  90:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  crop_w: cropping window horizontal pixel number
+  91:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  crop_h: cropping window vertical line number
+  92:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  bytes: the number of bytes corresponding to one pixel
+  93:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         eg. y8:bytes = 1, rgb565:bytes = 2
+  94:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval none
+  95:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+  96:bsp/libraries/drivers/src/at32f435_437_dvp.c **** void dvp_window_crop_set(uint16_t crop_x, uint16_t crop_y, uint16_t crop_w, uint16_t crop_h, uint8_
+  97:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+ 151              		.loc 1 97 1 is_stmt 1 view -0
+ 152              		.cfi_startproc
+ 153              		@ args = 4, pretend = 0, frame = 0
+ 154              		@ frame_needed = 0, uses_anonymous_args = 0
+ 155              		@ link register save eliminated.
+ 156              		.loc 1 97 1 is_stmt 0 view .LVU17
+ 157 0000 9DF800C0 		ldrb	ip, [sp]	@ zero_extendqisi2
+  98:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->cwst = ((crop_x * bytes) | (crop_y << 16));
+ 158              		.loc 1 98 3 is_stmt 1 view .LVU18
+ 159              		.loc 1 98 24 is_stmt 0 view .LVU19
+ 160 0004 0CFB00F0 		mul	r0, ip, r0
+ 161              	.LVL6:
+ 162              		.loc 1 98 33 view .LVU20
+ 163 0008 40EA0140 		orr	r0, r0, r1, lsl #16
+ 164              		.loc 1 98 13 view .LVU21
+ 165 000c 0449     		ldr	r1, .L13
+ 166              	.LVL7:
+ 167              		.loc 1 98 13 view .LVU22
+ 168 000e 0862     		str	r0, [r1, #32]
+ 169              	.LVL8:
+  99:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->cwsz = ((crop_w * bytes - 1) | ((crop_h - 1) << 16));
+ 170              		.loc 1 99 3 is_stmt 1 view .LVU23
+ 171              		.loc 1 99 24 is_stmt 0 view .LVU24
+ 172 0010 0CFB02F2 		mul	r2, ip, r2
+ 173              	.LVL9:
+ 174              		.loc 1 99 32 view .LVU25
+ 175 0014 013A     		subs	r2, r2, #1
+ 176              		.loc 1 99 48 view .LVU26
+ 177 0016 013B     		subs	r3, r3, #1
+ 178              	.LVL10:
+ 179              		.loc 1 99 37 view .LVU27
+ 180 0018 42EA0342 		orr	r2, r2, r3, lsl #16
+ 181              		.loc 1 99 13 view .LVU28
+ 182 001c 4A62     		str	r2, [r1, #36]
+ 100:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 183              		.loc 1 100 1 view .LVU29
+ 184 001e 7047     		bx	lr
+ 185              	.L14:
+ 186              		.align	2
+ 187              	.L13:
+ 188 0020 00000550 		.word	1342504960
+ 189              		.cfi_endproc
+ 190              	.LFE137:
+ 192              		.section	.text.dvp_jpeg_enable,"ax",%progbits
+ 193              		.align	1
+ 194              		.global	dvp_jpeg_enable
+ 195              		.syntax unified
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 6
+
+
+ 196              		.thumb
+ 197              		.thumb_func
+ 199              	dvp_jpeg_enable:
+ 200              	.LVL11:
+ 201              	.LFB138:
+ 101:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 102:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+ 103:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  enable or disable dvp jpeg
+ 104:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  new_state (TRUE or FALSE)
+ 105:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval none
+ 106:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+ 107:bsp/libraries/drivers/src/at32f435_437_dvp.c **** void dvp_jpeg_enable(confirm_state new_state)
+ 108:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+ 202              		.loc 1 108 1 is_stmt 1 view -0
+ 203              		.cfi_startproc
+ 204              		@ args = 0, pretend = 0, frame = 0
+ 205              		@ frame_needed = 0, uses_anonymous_args = 0
+ 206              		@ link register save eliminated.
+ 109:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->ctrl_bit.jpeg = new_state;
+ 207              		.loc 1 109 3 view .LVU31
+ 208              		.loc 1 109 22 is_stmt 0 view .LVU32
+ 209 0000 024B     		ldr	r3, .L16
+ 210 0002 1A68     		ldr	r2, [r3]
+ 211 0004 60F3C302 		bfi	r2, r0, #3, #1
+ 212 0008 1A60     		str	r2, [r3]
+ 110:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 213              		.loc 1 110 1 view .LVU33
+ 214 000a 7047     		bx	lr
+ 215              	.L17:
+ 216              		.align	2
+ 217              	.L16:
+ 218 000c 00000550 		.word	1342504960
+ 219              		.cfi_endproc
+ 220              	.LFE138:
+ 222              		.section	.text.dvp_sync_mode_set,"ax",%progbits
+ 223              		.align	1
+ 224              		.global	dvp_sync_mode_set
+ 225              		.syntax unified
+ 226              		.thumb
+ 227              		.thumb_func
+ 229              	dvp_sync_mode_set:
+ 230              	.LVL12:
+ 231              	.LFB139:
+ 111:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 112:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+ 113:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  set dvp synchronization mode
+ 114:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  sync_mode
+ 115:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         this parameter can be one of the following values:
+ 116:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_SYNC_MODE_HARDWARE
+ 117:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_SYNC_MODE_EMBEDDED
+ 118:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval none
+ 119:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+ 120:bsp/libraries/drivers/src/at32f435_437_dvp.c **** void dvp_sync_mode_set(dvp_sm_type sync_mode)
+ 121:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+ 232              		.loc 1 121 1 is_stmt 1 view -0
+ 233              		.cfi_startproc
+ 234              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 7
+
+
+ 235              		@ frame_needed = 0, uses_anonymous_args = 0
+ 236              		@ link register save eliminated.
+ 122:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->ctrl_bit.sm = sync_mode;
+ 237              		.loc 1 122 3 view .LVU35
+ 238              		.loc 1 122 20 is_stmt 0 view .LVU36
+ 239 0000 024B     		ldr	r3, .L19
+ 240 0002 1A68     		ldr	r2, [r3]
+ 241 0004 60F30412 		bfi	r2, r0, #4, #1
+ 242 0008 1A60     		str	r2, [r3]
+ 123:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 243              		.loc 1 123 1 view .LVU37
+ 244 000a 7047     		bx	lr
+ 245              	.L20:
+ 246              		.align	2
+ 247              	.L19:
+ 248 000c 00000550 		.word	1342504960
+ 249              		.cfi_endproc
+ 250              	.LFE139:
+ 252              		.section	.text.dvp_sync_code_set,"ax",%progbits
+ 253              		.align	1
+ 254              		.global	dvp_sync_code_set
+ 255              		.syntax unified
+ 256              		.thumb
+ 257              		.thumb_func
+ 259              	dvp_sync_code_set:
+ 260              	.LVL13:
+ 261              	.LFB140:
+ 124:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 125:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+ 126:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  set dvp synchronization code configuration
+ 127:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  fmsc(0x00~0xFF): frame start code
+ 128:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  fmec(0x00~0xFF): frame end code
+ 129:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  lnsc(0x00~0xFF): line start code
+ 130:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  lnec(0x00~0xFF): line end code
+ 131:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval none
+ 132:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+ 133:bsp/libraries/drivers/src/at32f435_437_dvp.c **** void dvp_sync_code_set(uint8_t fmsc, uint8_t fmec, uint8_t lnsc, uint8_t lnec)
+ 134:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+ 262              		.loc 1 134 1 is_stmt 1 view -0
+ 263              		.cfi_startproc
+ 264              		@ args = 0, pretend = 0, frame = 0
+ 265              		@ frame_needed = 0, uses_anonymous_args = 0
+ 266              		@ link register save eliminated.
+ 135:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->scr = (fmsc | (lnsc << 8) | (lnec << 16) | (fmec << 24));
+ 267              		.loc 1 135 3 view .LVU39
+ 268              		.loc 1 135 20 is_stmt 0 view .LVU40
+ 269 0000 40EA0220 		orr	r0, r0, r2, lsl #8
+ 270              	.LVL14:
+ 271              		.loc 1 135 34 view .LVU41
+ 272 0004 40EA0340 		orr	r0, r0, r3, lsl #16
+ 273              		.loc 1 135 49 view .LVU42
+ 274 0008 40EA0160 		orr	r0, r0, r1, lsl #24
+ 275              		.loc 1 135 12 view .LVU43
+ 276 000c 014B     		ldr	r3, .L22
+ 277              	.LVL15:
+ 278              		.loc 1 135 12 view .LVU44
+ 279 000e 9861     		str	r0, [r3, #24]
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 8
+
+
+ 136:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 280              		.loc 1 136 1 view .LVU45
+ 281 0010 7047     		bx	lr
+ 282              	.L23:
+ 283 0012 00BF     		.align	2
+ 284              	.L22:
+ 285 0014 00000550 		.word	1342504960
+ 286              		.cfi_endproc
+ 287              	.LFE140:
+ 289              		.section	.text.dvp_sync_unmask_set,"ax",%progbits
+ 290              		.align	1
+ 291              		.global	dvp_sync_unmask_set
+ 292              		.syntax unified
+ 293              		.thumb
+ 294              		.thumb_func
+ 296              	dvp_sync_unmask_set:
+ 297              	.LVL16:
+ 298              	.LFB141:
+ 137:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 138:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+ 139:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  set dvp synchronization unmask configuration
+ 140:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  fmsu(0x00~0xFF): frame start unmask
+ 141:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  fmeu(0x00~0xFF): frame end unmask
+ 142:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  lnsu(0x00~0xFF): line start unmask
+ 143:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  lneu(0x00~0xFF): line end unmask
+ 144:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval none
+ 145:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+ 146:bsp/libraries/drivers/src/at32f435_437_dvp.c **** void dvp_sync_unmask_set(uint8_t fmsu, uint8_t fmeu, uint8_t lnsu, uint8_t lneu)
+ 147:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+ 299              		.loc 1 147 1 is_stmt 1 view -0
+ 300              		.cfi_startproc
+ 301              		@ args = 0, pretend = 0, frame = 0
+ 302              		@ frame_needed = 0, uses_anonymous_args = 0
+ 303              		@ link register save eliminated.
+ 148:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->sur = (fmsu | (lnsu << 8) | (lneu << 16) | (fmeu << 24));
+ 304              		.loc 1 148 3 view .LVU47
+ 305              		.loc 1 148 20 is_stmt 0 view .LVU48
+ 306 0000 40EA0220 		orr	r0, r0, r2, lsl #8
+ 307              	.LVL17:
+ 308              		.loc 1 148 34 view .LVU49
+ 309 0004 40EA0340 		orr	r0, r0, r3, lsl #16
+ 310              		.loc 1 148 49 view .LVU50
+ 311 0008 40EA0160 		orr	r0, r0, r1, lsl #24
+ 312              		.loc 1 148 12 view .LVU51
+ 313 000c 014B     		ldr	r3, .L25
+ 314              	.LVL18:
+ 315              		.loc 1 148 12 view .LVU52
+ 316 000e D861     		str	r0, [r3, #28]
+ 149:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 317              		.loc 1 149 1 view .LVU53
+ 318 0010 7047     		bx	lr
+ 319              	.L26:
+ 320 0012 00BF     		.align	2
+ 321              	.L25:
+ 322 0014 00000550 		.word	1342504960
+ 323              		.cfi_endproc
+ 324              	.LFE141:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 9
+
+
+ 326              		.section	.text.dvp_pclk_polarity_set,"ax",%progbits
+ 327              		.align	1
+ 328              		.global	dvp_pclk_polarity_set
+ 329              		.syntax unified
+ 330              		.thumb
+ 331              		.thumb_func
+ 333              	dvp_pclk_polarity_set:
+ 334              	.LVL19:
+ 335              	.LFB142:
+ 150:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 151:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+ 152:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  set dvp pixel clock polarity
+ 153:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  edge
+ 154:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         this parameter can be one of the following values:
+ 155:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_CLK_POLARITY_RISING
+ 156:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_CLK_POLARITY_FALLING
+ 157:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval none
+ 158:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+ 159:bsp/libraries/drivers/src/at32f435_437_dvp.c **** void dvp_pclk_polarity_set(dvp_ckp_type edge)
+ 160:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+ 336              		.loc 1 160 1 is_stmt 1 view -0
+ 337              		.cfi_startproc
+ 338              		@ args = 0, pretend = 0, frame = 0
+ 339              		@ frame_needed = 0, uses_anonymous_args = 0
+ 340              		@ link register save eliminated.
+ 161:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->ctrl_bit.ckp = edge;
+ 341              		.loc 1 161 3 view .LVU55
+ 342              		.loc 1 161 21 is_stmt 0 view .LVU56
+ 343 0000 024B     		ldr	r3, .L28
+ 344 0002 1A68     		ldr	r2, [r3]
+ 345 0004 60F34512 		bfi	r2, r0, #5, #1
+ 346 0008 1A60     		str	r2, [r3]
+ 162:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 347              		.loc 1 162 1 view .LVU57
+ 348 000a 7047     		bx	lr
+ 349              	.L29:
+ 350              		.align	2
+ 351              	.L28:
+ 352 000c 00000550 		.word	1342504960
+ 353              		.cfi_endproc
+ 354              	.LFE142:
+ 356              		.section	.text.dvp_hsync_polarity_set,"ax",%progbits
+ 357              		.align	1
+ 358              		.global	dvp_hsync_polarity_set
+ 359              		.syntax unified
+ 360              		.thumb
+ 361              		.thumb_func
+ 363              	dvp_hsync_polarity_set:
+ 364              	.LVL20:
+ 365              	.LFB143:
+ 163:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 164:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+ 165:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  set dvp horizontal synchronization polarity
+ 166:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  hsync_pol
+ 167:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         this parameter can be one of the following values:
+ 168:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_HSYNC_POLARITY_HIGH
+ 169:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_HSYNC_POLARITY_LOW
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 10
+
+
+ 170:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval none
+ 171:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+ 172:bsp/libraries/drivers/src/at32f435_437_dvp.c **** void dvp_hsync_polarity_set(dvp_hsp_type hsync_pol)
+ 173:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+ 366              		.loc 1 173 1 is_stmt 1 view -0
+ 367              		.cfi_startproc
+ 368              		@ args = 0, pretend = 0, frame = 0
+ 369              		@ frame_needed = 0, uses_anonymous_args = 0
+ 370              		@ link register save eliminated.
+ 174:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->ctrl_bit.hsp = hsync_pol;
+ 371              		.loc 1 174 3 view .LVU59
+ 372              		.loc 1 174 21 is_stmt 0 view .LVU60
+ 373 0000 024B     		ldr	r3, .L31
+ 374 0002 1A68     		ldr	r2, [r3]
+ 375 0004 60F38612 		bfi	r2, r0, #6, #1
+ 376 0008 1A60     		str	r2, [r3]
+ 175:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 377              		.loc 1 175 1 view .LVU61
+ 378 000a 7047     		bx	lr
+ 379              	.L32:
+ 380              		.align	2
+ 381              	.L31:
+ 382 000c 00000550 		.word	1342504960
+ 383              		.cfi_endproc
+ 384              	.LFE143:
+ 386              		.section	.text.dvp_vsync_polarity_set,"ax",%progbits
+ 387              		.align	1
+ 388              		.global	dvp_vsync_polarity_set
+ 389              		.syntax unified
+ 390              		.thumb
+ 391              		.thumb_func
+ 393              	dvp_vsync_polarity_set:
+ 394              	.LVL21:
+ 395              	.LFB144:
+ 176:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 177:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+ 178:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  set dvp vertical synchronization polarity
+ 179:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  vsync_pol
+ 180:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         this parameter can be one of the following values:
+ 181:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_VSYNC_POLARITY_LOW
+ 182:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_VSYNC_POLARITY_HIGH
+ 183:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval none
+ 184:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+ 185:bsp/libraries/drivers/src/at32f435_437_dvp.c **** void dvp_vsync_polarity_set(dvp_vsp_type vsync_pol)
+ 186:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+ 396              		.loc 1 186 1 is_stmt 1 view -0
+ 397              		.cfi_startproc
+ 398              		@ args = 0, pretend = 0, frame = 0
+ 399              		@ frame_needed = 0, uses_anonymous_args = 0
+ 400              		@ link register save eliminated.
+ 187:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->ctrl_bit.vsp = vsync_pol;
+ 401              		.loc 1 187 3 view .LVU63
+ 402              		.loc 1 187 21 is_stmt 0 view .LVU64
+ 403 0000 024B     		ldr	r3, .L34
+ 404 0002 1A68     		ldr	r2, [r3]
+ 405 0004 60F3C712 		bfi	r2, r0, #7, #1
+ 406 0008 1A60     		str	r2, [r3]
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 11
+
+
+ 188:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 407              		.loc 1 188 1 view .LVU65
+ 408 000a 7047     		bx	lr
+ 409              	.L35:
+ 410              		.align	2
+ 411              	.L34:
+ 412 000c 00000550 		.word	1342504960
+ 413              		.cfi_endproc
+ 414              	.LFE144:
+ 416              		.section	.text.dvp_basic_frame_rate_control_set,"ax",%progbits
+ 417              		.align	1
+ 418              		.global	dvp_basic_frame_rate_control_set
+ 419              		.syntax unified
+ 420              		.thumb
+ 421              		.thumb_func
+ 423              	dvp_basic_frame_rate_control_set:
+ 424              	.LVL22:
+ 425              	.LFB145:
+ 189:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 190:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+ 191:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  config dvp basic frame rate control
+ 192:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @note   this function only work in continuous fire mode(ctrl_bit.cfm = 0)
+ 193:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  dvp_bfrc
+ 194:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         this parameter can be one of the following values:
+ 195:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_BFRC_ALL
+ 196:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_BFRC_HALF
+ 197:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_BFRC_QUARTER
+ 198:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval none
+ 199:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+ 200:bsp/libraries/drivers/src/at32f435_437_dvp.c **** void dvp_basic_frame_rate_control_set(dvp_bfrc_type dvp_bfrc)
+ 201:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+ 426              		.loc 1 201 1 is_stmt 1 view -0
+ 427              		.cfi_startproc
+ 428              		@ args = 0, pretend = 0, frame = 0
+ 429              		@ frame_needed = 0, uses_anonymous_args = 0
+ 430              		@ link register save eliminated.
+ 202:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->ctrl_bit.bfrc = dvp_bfrc;
+ 431              		.loc 1 202 3 view .LVU67
+ 432              		.loc 1 202 22 is_stmt 0 view .LVU68
+ 433 0000 024B     		ldr	r3, .L37
+ 434 0002 1A68     		ldr	r2, [r3]
+ 435 0004 60F30922 		bfi	r2, r0, #8, #2
+ 436 0008 1A60     		str	r2, [r3]
+ 203:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 437              		.loc 1 203 1 view .LVU69
+ 438 000a 7047     		bx	lr
+ 439              	.L38:
+ 440              		.align	2
+ 441              	.L37:
+ 442 000c 00000550 		.word	1342504960
+ 443              		.cfi_endproc
+ 444              	.LFE145:
+ 446              		.section	.text.dvp_pixel_data_length_set,"ax",%progbits
+ 447              		.align	1
+ 448              		.global	dvp_pixel_data_length_set
+ 449              		.syntax unified
+ 450              		.thumb
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 12
+
+
+ 451              		.thumb_func
+ 453              	dvp_pixel_data_length_set:
+ 454              	.LVL23:
+ 455              	.LFB146:
+ 204:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 205:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+ 206:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  config dvp pixel data length
+ 207:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  dvp_pdl
+ 208:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         this parameter can be one of the following values:
+ 209:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_PIXEL_DATA_LENGTH_8
+ 210:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_PIXEL_DATA_LENGTH_10
+ 211:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_PIXEL_DATA_LENGTH_12
+ 212:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_PIXEL_DATA_LENGTH_14
+ 213:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval none
+ 214:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+ 215:bsp/libraries/drivers/src/at32f435_437_dvp.c **** void dvp_pixel_data_length_set(dvp_pdl_type dvp_pdl)
+ 216:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+ 456              		.loc 1 216 1 is_stmt 1 view -0
+ 457              		.cfi_startproc
+ 458              		@ args = 0, pretend = 0, frame = 0
+ 459              		@ frame_needed = 0, uses_anonymous_args = 0
+ 460              		@ link register save eliminated.
+ 217:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->ctrl_bit.pdl = dvp_pdl;
+ 461              		.loc 1 217 3 view .LVU71
+ 462              		.loc 1 217 21 is_stmt 0 view .LVU72
+ 463 0000 024B     		ldr	r3, .L40
+ 464 0002 1A68     		ldr	r2, [r3]
+ 465 0004 60F38B22 		bfi	r2, r0, #10, #2
+ 466 0008 1A60     		str	r2, [r3]
+ 218:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 467              		.loc 1 218 1 view .LVU73
+ 468 000a 7047     		bx	lr
+ 469              	.L41:
+ 470              		.align	2
+ 471              	.L40:
+ 472 000c 00000550 		.word	1342504960
+ 473              		.cfi_endproc
+ 474              	.LFE146:
+ 476              		.section	.text.dvp_enable,"ax",%progbits
+ 477              		.align	1
+ 478              		.global	dvp_enable
+ 479              		.syntax unified
+ 480              		.thumb
+ 481              		.thumb_func
+ 483              	dvp_enable:
+ 484              	.LVL24:
+ 485              	.LFB147:
+ 219:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 220:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+ 221:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  enable or disable dvp function
+ 222:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  new_state (TRUE or FALSE)
+ 223:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval none
+ 224:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+ 225:bsp/libraries/drivers/src/at32f435_437_dvp.c **** void dvp_enable(confirm_state new_state)
+ 226:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+ 486              		.loc 1 226 1 is_stmt 1 view -0
+ 487              		.cfi_startproc
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 13
+
+
+ 488              		@ args = 0, pretend = 0, frame = 0
+ 489              		@ frame_needed = 0, uses_anonymous_args = 0
+ 490              		@ link register save eliminated.
+ 227:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->ctrl_bit.ena = new_state;
+ 491              		.loc 1 227 3 view .LVU75
+ 492              		.loc 1 227 21 is_stmt 0 view .LVU76
+ 493 0000 024B     		ldr	r3, .L43
+ 494 0002 1A68     		ldr	r2, [r3]
+ 495 0004 60F38E32 		bfi	r2, r0, #14, #1
+ 496 0008 1A60     		str	r2, [r3]
+ 228:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 497              		.loc 1 228 1 view .LVU77
+ 498 000a 7047     		bx	lr
+ 499              	.L44:
+ 500              		.align	2
+ 501              	.L43:
+ 502 000c 00000550 		.word	1342504960
+ 503              		.cfi_endproc
+ 504              	.LFE147:
+ 506              		.section	.text.dvp_zoomout_select,"ax",%progbits
+ 507              		.align	1
+ 508              		.global	dvp_zoomout_select
+ 509              		.syntax unified
+ 510              		.thumb
+ 511              		.thumb_func
+ 513              	dvp_zoomout_select:
+ 514              	.LVL25:
+ 515              	.LFB148:
+ 229:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 230:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+ 231:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  set dvp zoomout select
+ 232:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  dvp_pcdes: pixel capture/drop selection extension (Only work when pcdc = 2)
+ 233:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         this parameter can be one of the following values:
+ 234:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_PCDES_CAP_FIRST
+ 235:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_PCDES_DROP_FIRST
+ 236:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval none
+ 237:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+ 238:bsp/libraries/drivers/src/at32f435_437_dvp.c **** void dvp_zoomout_select(dvp_pcdes_type dvp_pcdes)
+ 239:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+ 516              		.loc 1 239 1 is_stmt 1 view -0
+ 517              		.cfi_startproc
+ 518              		@ args = 0, pretend = 0, frame = 0
+ 519              		@ frame_needed = 0, uses_anonymous_args = 0
+ 520              		@ link register save eliminated.
+ 240:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->actrl_bit.pcdes = dvp_pcdes;
+ 521              		.loc 1 240 3 view .LVU79
+ 522              		.loc 1 240 24 is_stmt 0 view .LVU80
+ 523 0000 024B     		ldr	r3, .L46
+ 524 0002 1A6C     		ldr	r2, [r3, #64]
+ 525 0004 60F3C302 		bfi	r2, r0, #3, #1
+ 526 0008 1A64     		str	r2, [r3, #64]
+ 241:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 527              		.loc 1 241 1 view .LVU81
+ 528 000a 7047     		bx	lr
+ 529              	.L47:
+ 530              		.align	2
+ 531              	.L46:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 14
+
+
+ 532 000c 00000550 		.word	1342504960
+ 533              		.cfi_endproc
+ 534              	.LFE148:
+ 536              		.section	.text.dvp_zoomout_set,"ax",%progbits
+ 537              		.align	1
+ 538              		.global	dvp_zoomout_set
+ 539              		.syntax unified
+ 540              		.thumb
+ 541              		.thumb_func
+ 543              	dvp_zoomout_set:
+ 544              	.LVL26:
+ 545              	.LFB149:
+ 242:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 243:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+ 244:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  set dvp zoomout configuration
+ 245:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  dvp_pcdc: basic pixel capture/drop control
+ 246:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         this parameter can be one of the following values:
+ 247:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_PCDC_ALL
+ 248:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_PCDC_ONE_IN_TWO
+ 249:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_PCDC_ONE_IN_FOUR
+ 250:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_PCDC_TWO_IN_FOUR
+ 251:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  dvp_pcds: pixel capture/drop selection
+ 252:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         this parameter can be one of the following values:
+ 253:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_PCDS_CAP_FIRST
+ 254:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_PCDS_DROP_FIRST
+ 255:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  dvp_lcdc: line capture/drop control
+ 256:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         this parameter can be one of the following values:
+ 257:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_LCDC_ALL
+ 258:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_LCDC_ONE_IN_TWO
+ 259:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  dvp_lcds: line capture/drop selection
+ 260:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         this parameter can be one of the following values:
+ 261:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_LCDS_CAP_FIRST
+ 262:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_LCDS_DROP_FIRST
+ 263:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval none
+ 264:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+ 265:bsp/libraries/drivers/src/at32f435_437_dvp.c **** void dvp_zoomout_set(dvp_pcdc_type dvp_pcdc, dvp_pcds_type dvp_pcds, dvp_lcdc_type dvp_lcdc, dvp_lc
+ 266:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+ 546              		.loc 1 266 1 is_stmt 1 view -0
+ 547              		.cfi_startproc
+ 548              		@ args = 0, pretend = 0, frame = 0
+ 549              		@ frame_needed = 0, uses_anonymous_args = 0
+ 550              		@ link register save eliminated.
+ 551              		.loc 1 266 1 is_stmt 0 view .LVU83
+ 552 0000 30B4     		push	{r4, r5}
+ 553              	.LCFI1:
+ 554              		.cfi_def_cfa_offset 8
+ 555              		.cfi_offset 4, -8
+ 556              		.cfi_offset 5, -4
+ 267:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->ctrl_bit.pcdc = dvp_pcdc;
+ 557              		.loc 1 267 3 is_stmt 1 view .LVU84
+ 558              		.loc 1 267 22 is_stmt 0 view .LVU85
+ 559 0002 094C     		ldr	r4, .L50
+ 560 0004 2568     		ldr	r5, [r4]
+ 561 0006 60F31145 		bfi	r5, r0, #16, #2
+ 562 000a 2560     		str	r5, [r4]
+ 268:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->ctrl_bit.pcds = dvp_pcds;
+ 563              		.loc 1 268 3 is_stmt 1 view .LVU86
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 15
+
+
+ 564              		.loc 1 268 22 is_stmt 0 view .LVU87
+ 565 000c 2068     		ldr	r0, [r4]
+ 566              	.LVL27:
+ 567              		.loc 1 268 22 view .LVU88
+ 568 000e 61F39240 		bfi	r0, r1, #18, #1
+ 569 0012 2060     		str	r0, [r4]
+ 269:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->ctrl_bit.lcdc = dvp_lcdc;
+ 570              		.loc 1 269 3 is_stmt 1 view .LVU89
+ 571              		.loc 1 269 22 is_stmt 0 view .LVU90
+ 572 0014 2168     		ldr	r1, [r4]
+ 573              	.LVL28:
+ 574              		.loc 1 269 22 view .LVU91
+ 575 0016 62F3D341 		bfi	r1, r2, #19, #1
+ 576 001a 2160     		str	r1, [r4]
+ 270:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->ctrl_bit.lcds = dvp_lcds;
+ 577              		.loc 1 270 3 is_stmt 1 view .LVU92
+ 578              		.loc 1 270 22 is_stmt 0 view .LVU93
+ 579 001c 2268     		ldr	r2, [r4]
+ 580              	.LVL29:
+ 581              		.loc 1 270 22 view .LVU94
+ 582 001e 63F31452 		bfi	r2, r3, #20, #1
+ 583 0022 2260     		str	r2, [r4]
+ 271:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 584              		.loc 1 271 1 view .LVU95
+ 585 0024 30BC     		pop	{r4, r5}
+ 586              	.LCFI2:
+ 587              		.cfi_restore 5
+ 588              		.cfi_restore 4
+ 589              		.cfi_def_cfa_offset 0
+ 590 0026 7047     		bx	lr
+ 591              	.L51:
+ 592              		.align	2
+ 593              	.L50:
+ 594 0028 00000550 		.word	1342504960
+ 595              		.cfi_endproc
+ 596              	.LFE149:
+ 598              		.section	.text.dvp_basic_status_get,"ax",%progbits
+ 599              		.align	1
+ 600              		.global	dvp_basic_status_get
+ 601              		.syntax unified
+ 602              		.thumb
+ 603              		.thumb_func
+ 605              	dvp_basic_status_get:
+ 606              	.LVL30:
+ 607              	.LFB150:
+ 272:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 273:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+ 274:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  get dvp basic status
+ 275:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  dvp_status_basic_type:
+ 276:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         this parameter can be one of the following values:
+ 277:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_STATUS_HSYN
+ 278:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_STATUS_VSYN
+ 279:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_STATUS_OFNE
+ 280:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval flag_status (SET or RESET)
+ 281:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+ 282:bsp/libraries/drivers/src/at32f435_437_dvp.c **** flag_status dvp_basic_status_get(dvp_status_basic_type dvp_status_basic)
+ 283:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 16
+
+
+ 608              		.loc 1 283 1 is_stmt 1 view -0
+ 609              		.cfi_startproc
+ 610              		@ args = 0, pretend = 0, frame = 0
+ 611              		@ frame_needed = 0, uses_anonymous_args = 0
+ 612              		@ link register save eliminated.
+ 284:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   flag_status status = RESET;
+ 613              		.loc 1 284 3 view .LVU97
+ 285:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 286:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   if ((DVP->sts & (0x1 << dvp_status_basic)) != (uint16_t)RESET)
+ 614              		.loc 1 286 3 view .LVU98
+ 615              		.loc 1 286 11 is_stmt 0 view .LVU99
+ 616 0000 044B     		ldr	r3, .L55
+ 617 0002 5A68     		ldr	r2, [r3, #4]
+ 618              		.loc 1 286 24 view .LVU100
+ 619 0004 0123     		movs	r3, #1
+ 620 0006 8340     		lsls	r3, r3, r0
+ 621              		.loc 1 286 6 view .LVU101
+ 622 0008 1A42     		tst	r2, r3
+ 623 000a 01D0     		beq	.L54
+ 287:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   {
+ 288:bsp/libraries/drivers/src/at32f435_437_dvp.c ****     status = SET;
+ 624              		.loc 1 288 12 view .LVU102
+ 625 000c 0120     		movs	r0, #1
+ 626              	.LVL31:
+ 627              		.loc 1 288 12 view .LVU103
+ 628 000e 7047     		bx	lr
+ 629              	.LVL32:
+ 630              	.L54:
+ 289:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   }
+ 290:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   else
+ 291:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   {
+ 292:bsp/libraries/drivers/src/at32f435_437_dvp.c ****     status = RESET;
+ 631              		.loc 1 292 12 view .LVU104
+ 632 0010 0020     		movs	r0, #0
+ 633              	.LVL33:
+ 293:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   }
+ 294:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 295:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   return status;
+ 634              		.loc 1 295 3 is_stmt 1 view .LVU105
+ 296:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 635              		.loc 1 296 1 is_stmt 0 view .LVU106
+ 636 0012 7047     		bx	lr
+ 637              	.L56:
+ 638              		.align	2
+ 639              	.L55:
+ 640 0014 00000550 		.word	1342504960
+ 641              		.cfi_endproc
+ 642              	.LFE150:
+ 644              		.section	.text.dvp_interrupt_enable,"ax",%progbits
+ 645              		.align	1
+ 646              		.global	dvp_interrupt_enable
+ 647              		.syntax unified
+ 648              		.thumb
+ 649              		.thumb_func
+ 651              	dvp_interrupt_enable:
+ 652              	.LVL34:
+ 653              	.LFB151:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 17
+
+
+ 297:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 298:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+ 299:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  enable or disable dvp interrupt
+ 300:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  dvp_int:
+ 301:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         this parameter can be any combination of the following values:
+ 302:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_CFD_INT
+ 303:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_OVR_INT
+ 304:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_ESE_INT
+ 305:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_VS_INT
+ 306:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_HS_INT
+ 307:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  new_state (TRUE or FALSE)
+ 308:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval none
+ 309:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+ 310:bsp/libraries/drivers/src/at32f435_437_dvp.c **** void dvp_interrupt_enable(uint32_t dvp_int, confirm_state new_state)
+ 311:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+ 654              		.loc 1 311 1 is_stmt 1 view -0
+ 655              		.cfi_startproc
+ 656              		@ args = 0, pretend = 0, frame = 0
+ 657              		@ frame_needed = 0, uses_anonymous_args = 0
+ 658              		@ link register save eliminated.
+ 312:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   if(new_state == TRUE)
+ 659              		.loc 1 312 3 view .LVU108
+ 660              		.loc 1 312 5 is_stmt 0 view .LVU109
+ 661 0000 0129     		cmp	r1, #1
+ 662 0002 05D0     		beq	.L60
+ 313:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   {
+ 314:bsp/libraries/drivers/src/at32f435_437_dvp.c ****     DVP->ier |= dvp_int;
+ 315:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   }
+ 316:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   else
+ 317:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   {
+ 318:bsp/libraries/drivers/src/at32f435_437_dvp.c ****     DVP->ier &= ~dvp_int;
+ 663              		.loc 1 318 5 is_stmt 1 view .LVU110
+ 664              		.loc 1 318 14 is_stmt 0 view .LVU111
+ 665 0004 054A     		ldr	r2, .L61
+ 666 0006 D368     		ldr	r3, [r2, #12]
+ 667 0008 23EA0000 		bic	r0, r3, r0
+ 668              	.LVL35:
+ 669              		.loc 1 318 14 view .LVU112
+ 670 000c D060     		str	r0, [r2, #12]
+ 319:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   }
+ 320:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 671              		.loc 1 320 1 view .LVU113
+ 672 000e 7047     		bx	lr
+ 673              	.LVL36:
+ 674              	.L60:
+ 314:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   }
+ 675              		.loc 1 314 5 is_stmt 1 view .LVU114
+ 314:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   }
+ 676              		.loc 1 314 14 is_stmt 0 view .LVU115
+ 677 0010 024A     		ldr	r2, .L61
+ 678 0012 D368     		ldr	r3, [r2, #12]
+ 679 0014 1843     		orrs	r0, r0, r3
+ 680              	.LVL37:
+ 314:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   }
+ 681              		.loc 1 314 14 view .LVU116
+ 682 0016 D060     		str	r0, [r2, #12]
+ 683 0018 7047     		bx	lr
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 18
+
+
+ 684              	.L62:
+ 685 001a 00BF     		.align	2
+ 686              	.L61:
+ 687 001c 00000550 		.word	1342504960
+ 688              		.cfi_endproc
+ 689              	.LFE151:
+ 691              		.section	.text.dvp_interrupt_flag_get,"ax",%progbits
+ 692              		.align	1
+ 693              		.global	dvp_interrupt_flag_get
+ 694              		.syntax unified
+ 695              		.thumb
+ 696              		.thumb_func
+ 698              	dvp_interrupt_flag_get:
+ 699              	.LVL38:
+ 700              	.LFB152:
+ 321:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 322:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+ 323:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  get dvp interrupt flag status
+ 324:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  flag
+ 325:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         this parameter can be one of the following values:
+ 326:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_CFD_INT_FLAG
+ 327:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_OVR_INT_FLAG
+ 328:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_ESE_INT_FLAG
+ 329:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_VS_INT_FLAG
+ 330:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_HS_INT_FLAG
+ 331:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval flag_status (SET or RESET)
+ 332:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+ 333:bsp/libraries/drivers/src/at32f435_437_dvp.c **** flag_status dvp_interrupt_flag_get(uint32_t flag)
+ 334:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+ 701              		.loc 1 334 1 is_stmt 1 view -0
+ 702              		.cfi_startproc
+ 703              		@ args = 0, pretend = 0, frame = 0
+ 704              		@ frame_needed = 0, uses_anonymous_args = 0
+ 705              		@ link register save eliminated.
+ 335:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   flag_status status = RESET;
+ 706              		.loc 1 335 3 view .LVU118
+ 336:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 337:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   if((DVP->ists & flag) != RESET)
+ 707              		.loc 1 337 3 view .LVU119
+ 708              		.loc 1 337 10 is_stmt 0 view .LVU120
+ 709 0000 034B     		ldr	r3, .L66
+ 710 0002 1B69     		ldr	r3, [r3, #16]
+ 711              		.loc 1 337 5 view .LVU121
+ 712 0004 0342     		tst	r3, r0
+ 713 0006 01D0     		beq	.L65
+ 338:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   {
+ 339:bsp/libraries/drivers/src/at32f435_437_dvp.c ****     status = SET;
+ 714              		.loc 1 339 12 view .LVU122
+ 715 0008 0120     		movs	r0, #1
+ 716              	.LVL39:
+ 717              		.loc 1 339 12 view .LVU123
+ 718 000a 7047     		bx	lr
+ 719              	.LVL40:
+ 720              	.L65:
+ 340:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   }
+ 341:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   else
+ 342:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   {
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 19
+
+
+ 343:bsp/libraries/drivers/src/at32f435_437_dvp.c ****     status = RESET;
+ 721              		.loc 1 343 12 view .LVU124
+ 722 000c 0020     		movs	r0, #0
+ 723              	.LVL41:
+ 344:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   }
+ 345:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 346:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   return status;
+ 724              		.loc 1 346 3 is_stmt 1 view .LVU125
+ 347:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 725              		.loc 1 347 1 is_stmt 0 view .LVU126
+ 726 000e 7047     		bx	lr
+ 727              	.L67:
+ 728              		.align	2
+ 729              	.L66:
+ 730 0010 00000550 		.word	1342504960
+ 731              		.cfi_endproc
+ 732              	.LFE152:
+ 734              		.section	.text.dvp_flag_get,"ax",%progbits
+ 735              		.align	1
+ 736              		.global	dvp_flag_get
+ 737              		.syntax unified
+ 738              		.thumb
+ 739              		.thumb_func
+ 741              	dvp_flag_get:
+ 742              	.LVL42:
+ 743              	.LFB153:
+ 348:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 349:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+ 350:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  get dvp event flag status
+ 351:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  flag
+ 352:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         this parameter can be one of the following values:
+ 353:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_CFD_EVT_FLAG
+ 354:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_OVR_EVT_FLAG
+ 355:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_ESE_EVT_FLAG
+ 356:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_VS_EVT_FLAG
+ 357:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_HS_EVT_FLAG
+ 358:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval flag_status (SET or RESET)
+ 359:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+ 360:bsp/libraries/drivers/src/at32f435_437_dvp.c **** flag_status dvp_flag_get(uint32_t flag)
+ 361:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+ 744              		.loc 1 361 1 is_stmt 1 view -0
+ 745              		.cfi_startproc
+ 746              		@ args = 0, pretend = 0, frame = 0
+ 747              		@ frame_needed = 0, uses_anonymous_args = 0
+ 748              		@ link register save eliminated.
+ 362:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   flag_status status = RESET;
+ 749              		.loc 1 362 3 view .LVU128
+ 363:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   flag &= ~0x80000000;
+ 750              		.loc 1 363 3 view .LVU129
+ 751              		.loc 1 363 8 is_stmt 0 view .LVU130
+ 752 0000 20F00040 		bic	r0, r0, #-2147483648
+ 753              	.LVL43:
+ 364:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   
+ 365:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   if((DVP->ests & flag) != RESET)
+ 754              		.loc 1 365 3 is_stmt 1 view .LVU131
+ 755              		.loc 1 365 10 is_stmt 0 view .LVU132
+ 756 0004 034B     		ldr	r3, .L71
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 20
+
+
+ 757 0006 9B68     		ldr	r3, [r3, #8]
+ 758              		.loc 1 365 5 view .LVU133
+ 759 0008 0342     		tst	r3, r0
+ 760 000a 01D0     		beq	.L70
+ 366:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   {
+ 367:bsp/libraries/drivers/src/at32f435_437_dvp.c ****     status = SET;
+ 761              		.loc 1 367 12 view .LVU134
+ 762 000c 0120     		movs	r0, #1
+ 763              	.LVL44:
+ 764              		.loc 1 367 12 view .LVU135
+ 765 000e 7047     		bx	lr
+ 766              	.LVL45:
+ 767              	.L70:
+ 368:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   }
+ 369:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   else
+ 370:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   {
+ 371:bsp/libraries/drivers/src/at32f435_437_dvp.c ****     status = RESET;
+ 768              		.loc 1 371 12 view .LVU136
+ 769 0010 0020     		movs	r0, #0
+ 770              	.LVL46:
+ 372:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   }
+ 373:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   
+ 374:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   return status;
+ 771              		.loc 1 374 3 is_stmt 1 view .LVU137
+ 375:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 772              		.loc 1 375 1 is_stmt 0 view .LVU138
+ 773 0012 7047     		bx	lr
+ 774              	.L72:
+ 775              		.align	2
+ 776              	.L71:
+ 777 0014 00000550 		.word	1342504960
+ 778              		.cfi_endproc
+ 779              	.LFE153:
+ 781              		.section	.text.dvp_flag_clear,"ax",%progbits
+ 782              		.align	1
+ 783              		.global	dvp_flag_clear
+ 784              		.syntax unified
+ 785              		.thumb
+ 786              		.thumb_func
+ 788              	dvp_flag_clear:
+ 789              	.LVL47:
+ 790              	.LFB154:
+ 376:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 377:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+ 378:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  clear dvp's pending flags
+ 379:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  flag
+ 380:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         this parameter can be one of the following values:
+ 381:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         event flag:
+ 382:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_CFD_EVT_FLAG
+ 383:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_OVR_EVT_FLAG
+ 384:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_ESE_EVT_FLAG
+ 385:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_VS_EVT_FLAG
+ 386:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_HS_EVT_FLAG
+ 387:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         interrupt flag:
+ 388:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_CFD_INT_FLAG
+ 389:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_OVR_INT_FLAG
+ 390:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_ESE_INT_FLAG
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 21
+
+
+ 391:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_VS_INT_FLAG
+ 392:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_HS_INT_FLAG
+ 393:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval none
+ 394:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+ 395:bsp/libraries/drivers/src/at32f435_437_dvp.c **** void dvp_flag_clear(uint32_t flag)
+ 396:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+ 791              		.loc 1 396 1 is_stmt 1 view -0
+ 792              		.cfi_startproc
+ 793              		@ args = 0, pretend = 0, frame = 0
+ 794              		@ frame_needed = 0, uses_anonymous_args = 0
+ 795              		@ link register save eliminated.
+ 397:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   flag &= ~0x80000000;
+ 796              		.loc 1 397 3 view .LVU140
+ 797              		.loc 1 397 8 is_stmt 0 view .LVU141
+ 798 0000 20F00040 		bic	r0, r0, #-2147483648
+ 799              	.LVL48:
+ 398:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->iclr = flag;
+ 800              		.loc 1 398 3 is_stmt 1 view .LVU142
+ 801              		.loc 1 398 13 is_stmt 0 view .LVU143
+ 802 0004 014B     		ldr	r3, .L74
+ 803 0006 5861     		str	r0, [r3, #20]
+ 399:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 804              		.loc 1 399 1 view .LVU144
+ 805 0008 7047     		bx	lr
+ 806              	.L75:
+ 807 000a 00BF     		.align	2
+ 808              	.L74:
+ 809 000c 00000550 		.word	1342504960
+ 810              		.cfi_endproc
+ 811              	.LFE154:
+ 813              		.section	.text.dvp_enhanced_scaling_resize_enable,"ax",%progbits
+ 814              		.align	1
+ 815              		.global	dvp_enhanced_scaling_resize_enable
+ 816              		.syntax unified
+ 817              		.thumb
+ 818              		.thumb_func
+ 820              	dvp_enhanced_scaling_resize_enable:
+ 821              	.LVL49:
+ 822              	.LFB155:
+ 400:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 401:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+ 402:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  set dvp enhanced image scaling resize enable
+ 403:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  new_state (TRUE or FALSE)
+ 404:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval none
+ 405:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+ 406:bsp/libraries/drivers/src/at32f435_437_dvp.c **** void dvp_enhanced_scaling_resize_enable(confirm_state new_state)
+ 407:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+ 823              		.loc 1 407 1 is_stmt 1 view -0
+ 824              		.cfi_startproc
+ 825              		@ args = 0, pretend = 0, frame = 0
+ 826              		@ frame_needed = 0, uses_anonymous_args = 0
+ 827              		@ link register save eliminated.
+ 408:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->actrl_bit.eisre = new_state;
+ 828              		.loc 1 408 3 view .LVU146
+ 829              		.loc 1 408 24 is_stmt 0 view .LVU147
+ 830 0000 024B     		ldr	r3, .L77
+ 831 0002 1A6C     		ldr	r2, [r3, #64]
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 22
+
+
+ 832 0004 60F30002 		bfi	r2, r0, #0, #1
+ 833 0008 1A64     		str	r2, [r3, #64]
+ 409:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 834              		.loc 1 409 1 view .LVU148
+ 835 000a 7047     		bx	lr
+ 836              	.L78:
+ 837              		.align	2
+ 838              	.L77:
+ 839 000c 00000550 		.word	1342504960
+ 840              		.cfi_endproc
+ 841              	.LFE155:
+ 843              		.section	.text.dvp_enhanced_scaling_resize_set,"ax",%progbits
+ 844              		.align	1
+ 845              		.global	dvp_enhanced_scaling_resize_set
+ 846              		.syntax unified
+ 847              		.thumb
+ 848              		.thumb_func
+ 850              	dvp_enhanced_scaling_resize_set:
+ 851              	.LVL50:
+ 852              	.LFB156:
+ 410:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+ 411:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  set dvp enhanced image scaling resize configuration
+ 412:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  src_w(0x0001~0x1FFF): horizontal scaling resize source size (source image width)
+ 413:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  des_w(0x0001~0x1FFF): horizontal scaling resize target size (target image width)
+ 414:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  src_h(0x0001~0x1FFF): vertical scaling resize source size (source image height)
+ 415:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  des_h(0x0001~0x1FFF): vertical scaling resize target size (target image height)
+ 416:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval none
+ 417:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+ 418:bsp/libraries/drivers/src/at32f435_437_dvp.c **** void dvp_enhanced_scaling_resize_set(uint16_t src_w, uint16_t des_w, uint16_t src_h, uint16_t des_h
+ 419:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+ 853              		.loc 1 419 1 is_stmt 1 view -0
+ 854              		.cfi_startproc
+ 855              		@ args = 0, pretend = 0, frame = 0
+ 856              		@ frame_needed = 0, uses_anonymous_args = 0
+ 857              		@ link register save eliminated.
+ 858              		.loc 1 419 1 is_stmt 0 view .LVU150
+ 859 0000 10B4     		push	{r4}
+ 860              	.LCFI3:
+ 861              		.cfi_def_cfa_offset 4
+ 862              		.cfi_offset 4, -4
+ 420:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   if((!DVP->ctrl_bit.pcdc) && (!DVP->ctrl_bit.lcdc) && DVP->actrl_bit.efdf)
+ 863              		.loc 1 420 3 is_stmt 1 view .LVU151
+ 864              		.loc 1 420 21 is_stmt 0 view .LVU152
+ 865 0002 0C4C     		ldr	r4, .L82
+ 866 0004 2468     		ldr	r4, [r4]
+ 867              		.loc 1 420 5 view .LVU153
+ 868 0006 14F4403F 		tst	r4, #196608
+ 869 000a 10D1     		bne	.L79
+ 870              		.loc 1 420 46 discriminator 1 view .LVU154
+ 871 000c 094C     		ldr	r4, .L82
+ 872 000e 2468     		ldr	r4, [r4]
+ 873              		.loc 1 420 28 discriminator 1 view .LVU155
+ 874 0010 14F4002F 		tst	r4, #524288
+ 875 0014 0BD1     		bne	.L79
+ 876              		.loc 1 420 70 discriminator 2 view .LVU156
+ 877 0016 074C     		ldr	r4, .L82
+ 878 0018 246C     		ldr	r4, [r4, #64]
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 23
+
+
+ 879              		.loc 1 420 53 discriminator 2 view .LVU157
+ 880 001a 14F0700F 		tst	r4, #112
+ 881 001e 06D0     		beq	.L79
+ 421:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   {
+ 422:bsp/libraries/drivers/src/at32f435_437_dvp.c ****     DVP->hscf = (src_w | (des_w << 16));
+ 882              		.loc 1 422 5 is_stmt 1 view .LVU158
+ 883              		.loc 1 422 24 is_stmt 0 view .LVU159
+ 884 0020 40EA0141 		orr	r1, r0, r1, lsl #16
+ 885              	.LVL51:
+ 886              		.loc 1 422 15 view .LVU160
+ 887 0024 0348     		ldr	r0, .L82
+ 888              	.LVL52:
+ 889              		.loc 1 422 15 view .LVU161
+ 890 0026 8164     		str	r1, [r0, #72]
+ 423:bsp/libraries/drivers/src/at32f435_437_dvp.c ****     DVP->vscf = (src_h | (des_h << 16));
+ 891              		.loc 1 423 5 is_stmt 1 view .LVU162
+ 892              		.loc 1 423 24 is_stmt 0 view .LVU163
+ 893 0028 42EA0342 		orr	r2, r2, r3, lsl #16
+ 894              	.LVL53:
+ 895              		.loc 1 423 15 view .LVU164
+ 896 002c C264     		str	r2, [r0, #76]
+ 897              	.L79:
+ 424:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   }
+ 425:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 898              		.loc 1 425 1 view .LVU165
+ 899 002e 10BC     		pop	{r4}
+ 900              	.LCFI4:
+ 901              		.cfi_restore 4
+ 902              		.cfi_def_cfa_offset 0
+ 903 0030 7047     		bx	lr
+ 904              	.L83:
+ 905 0032 00BF     		.align	2
+ 906              	.L82:
+ 907 0034 00000550 		.word	1342504960
+ 908              		.cfi_endproc
+ 909              	.LFE156:
+ 911              		.section	.text.dvp_enhanced_framerate_set,"ax",%progbits
+ 912              		.align	1
+ 913              		.global	dvp_enhanced_framerate_set
+ 914              		.syntax unified
+ 915              		.thumb
+ 916              		.thumb_func
+ 918              	dvp_enhanced_framerate_set:
+ 919              	.LVL54:
+ 920              	.LFB157:
+ 426:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 427:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+ 428:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  set enhanced frame rate control configuration
+ 429:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  efrcsf(0x00~0x1F): original frame rate contorl factor
+ 430:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  efrctf(0x00~0x1F): enhanced frame rate contorl factor
+ 431:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  new_state (TRUE or FALSE)
+ 432:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval none
+ 433:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+ 434:bsp/libraries/drivers/src/at32f435_437_dvp.c **** void dvp_enhanced_framerate_set(uint16_t efrcsf, uint16_t efrctf, confirm_state new_state)
+ 435:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+ 921              		.loc 1 435 1 is_stmt 1 view -0
+ 922              		.cfi_startproc
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 24
+
+
+ 923              		@ args = 0, pretend = 0, frame = 0
+ 924              		@ frame_needed = 0, uses_anonymous_args = 0
+ 925              		@ link register save eliminated.
+ 436:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   if((!DVP->ctrl_bit.cfm) && (!DVP->ctrl_bit.bfrc) && (efrctf <= efrcsf))
+ 926              		.loc 1 436 3 view .LVU167
+ 927              		.loc 1 436 21 is_stmt 0 view .LVU168
+ 928 0000 0A4B     		ldr	r3, .L86
+ 929 0002 1B68     		ldr	r3, [r3]
+ 930              		.loc 1 436 5 view .LVU169
+ 931 0004 13F0020F 		tst	r3, #2
+ 932 0008 0AD1     		bne	.L85
+ 933              		.loc 1 436 45 discriminator 1 view .LVU170
+ 934 000a 084B     		ldr	r3, .L86
+ 935 000c 1B68     		ldr	r3, [r3]
+ 936              		.loc 1 436 27 discriminator 1 view .LVU171
+ 937 000e 13F4407F 		tst	r3, #768
+ 938 0012 05D1     		bne	.L85
+ 939              		.loc 1 436 52 discriminator 2 view .LVU172
+ 940 0014 8142     		cmp	r1, r0
+ 941 0016 03D8     		bhi	.L85
+ 437:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   {
+ 438:bsp/libraries/drivers/src/at32f435_437_dvp.c ****     DVP->frf = (efrcsf | (efrctf << 8));
+ 942              		.loc 1 438 5 is_stmt 1 view .LVU173
+ 943              		.loc 1 438 24 is_stmt 0 view .LVU174
+ 944 0018 40EA0120 		orr	r0, r0, r1, lsl #8
+ 945              	.LVL55:
+ 946              		.loc 1 438 14 view .LVU175
+ 947 001c 034B     		ldr	r3, .L86
+ 948 001e 1865     		str	r0, [r3, #80]
+ 949              	.L85:
+ 439:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   }
+ 440:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 441:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->actrl_bit.efrce = new_state;
+ 950              		.loc 1 441 3 is_stmt 1 view .LVU176
+ 951              		.loc 1 441 24 is_stmt 0 view .LVU177
+ 952 0020 024B     		ldr	r3, .L86
+ 953 0022 196C     		ldr	r1, [r3, #64]
+ 954              	.LVL56:
+ 955              		.loc 1 441 24 view .LVU178
+ 956 0024 62F34101 		bfi	r1, r2, #1, #1
+ 957 0028 1964     		str	r1, [r3, #64]
+ 442:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 958              		.loc 1 442 1 view .LVU179
+ 959 002a 7047     		bx	lr
+ 960              	.L87:
+ 961              		.align	2
+ 962              	.L86:
+ 963 002c 00000550 		.word	1342504960
+ 964              		.cfi_endproc
+ 965              	.LFE157:
+ 967              		.section	.text.dvp_monochrome_image_binarization_set,"ax",%progbits
+ 968              		.align	1
+ 969              		.global	dvp_monochrome_image_binarization_set
+ 970              		.syntax unified
+ 971              		.thumb
+ 972              		.thumb_func
+ 974              	dvp_monochrome_image_binarization_set:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 25
+
+
+ 975              	.LVL57:
+ 976              	.LFB158:
+ 443:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 444:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+ 445:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  set dvp monochrome image binarization configuration
+ 446:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  mibthd(0x00~0xFF): monochrome image binarization threshold
+ 447:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  new_state: (TRUE or FALSE)
+ 448:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval none
+ 449:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+ 450:bsp/libraries/drivers/src/at32f435_437_dvp.c **** void dvp_monochrome_image_binarization_set(uint8_t mibthd, confirm_state new_state)
+ 451:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+ 977              		.loc 1 451 1 is_stmt 1 view -0
+ 978              		.cfi_startproc
+ 979              		@ args = 0, pretend = 0, frame = 0
+ 980              		@ frame_needed = 0, uses_anonymous_args = 0
+ 981              		@ link register save eliminated.
+ 452:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->bth_bit.mibthd = mibthd;
+ 982              		.loc 1 452 3 view .LVU181
+ 983              		.loc 1 452 23 is_stmt 0 view .LVU182
+ 984 0000 044B     		ldr	r3, .L89
+ 985 0002 5A6D     		ldr	r2, [r3, #84]
+ 986              	.LVL58:
+ 987              		.loc 1 452 23 view .LVU183
+ 988 0004 60F30702 		bfi	r2, r0, #0, #8
+ 989 0008 5A65     		str	r2, [r3, #84]
+ 453:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->actrl_bit.mibe = new_state;
+ 990              		.loc 1 453 3 is_stmt 1 view .LVU184
+ 991              		.loc 1 453 23 is_stmt 0 view .LVU185
+ 992 000a 1A6C     		ldr	r2, [r3, #64]
+ 993 000c 61F38202 		bfi	r2, r1, #2, #1
+ 994 0010 1A64     		str	r2, [r3, #64]
+ 454:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 995              		.loc 1 454 1 view .LVU186
+ 996 0012 7047     		bx	lr
+ 997              	.L90:
+ 998              		.align	2
+ 999              	.L89:
+ 1000 0014 00000550 		.word	1342504960
+ 1001              		.cfi_endproc
+ 1002              	.LFE158:
+ 1004              		.section	.text.dvp_enhanced_data_format_set,"ax",%progbits
+ 1005              		.align	1
+ 1006              		.global	dvp_enhanced_data_format_set
+ 1007              		.syntax unified
+ 1008              		.thumb
+ 1009              		.thumb_func
+ 1011              	dvp_enhanced_data_format_set:
+ 1012              	.LVL59:
+ 1013              	.LFB159:
+ 455:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 456:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+ 457:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  set dvp enhanced function data format configuration
+ 458:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  dvp_efdf: enhanced function data format
+ 459:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         this parameter can be one of the following values:
+ 460:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_EFDF_BYPASS
+ 461:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_EFDF_YUV422_UYVY
+ 462:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_EFDF_YUV422_YUYV
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 26
+
+
+ 463:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_EFDF_RGB565_555
+ 464:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_EFDF_Y8
+ 465:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval none
+ 466:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+ 467:bsp/libraries/drivers/src/at32f435_437_dvp.c **** void dvp_enhanced_data_format_set(dvp_efdf_type dvp_efdf)
+ 468:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+ 1014              		.loc 1 468 1 is_stmt 1 view -0
+ 1015              		.cfi_startproc
+ 1016              		@ args = 0, pretend = 0, frame = 0
+ 1017              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1018              		@ link register save eliminated.
+ 469:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->actrl_bit.efdf = dvp_efdf;
+ 1019              		.loc 1 469 3 view .LVU188
+ 1020              		.loc 1 469 23 is_stmt 0 view .LVU189
+ 1021 0000 024B     		ldr	r3, .L92
+ 1022 0002 1A6C     		ldr	r2, [r3, #64]
+ 1023 0004 60F30612 		bfi	r2, r0, #4, #3
+ 1024 0008 1A64     		str	r2, [r3, #64]
+ 470:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 1025              		.loc 1 470 1 view .LVU190
+ 1026 000a 7047     		bx	lr
+ 1027              	.L93:
+ 1028              		.align	2
+ 1029              	.L92:
+ 1030 000c 00000550 		.word	1342504960
+ 1031              		.cfi_endproc
+ 1032              	.LFE159:
+ 1034              		.section	.text.dvp_input_data_unused_set,"ax",%progbits
+ 1035              		.align	1
+ 1036              		.global	dvp_input_data_unused_set
+ 1037              		.syntax unified
+ 1038              		.thumb
+ 1039              		.thumb_func
+ 1041              	dvp_input_data_unused_set:
+ 1042              	.LVL60:
+ 1043              	.LFB160:
+ 471:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 472:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+ 473:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  set dvp input data un-used condition/number configuration
+ 474:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  dvp_idus: input data un-used condition
+ 475:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         this parameter can be one of the following values:
+ 476:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_IDUS_MSB
+ 477:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_IDUS_LSB
+ 478:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  dvp_idun: input data un-used number
+ 479:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         this parameter can be one of the following values:
+ 480:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_IDUN_0
+ 481:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_IDUN_2
+ 482:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_IDUN_4
+ 483:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_IDUN_6
+ 484:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval none
+ 485:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+ 486:bsp/libraries/drivers/src/at32f435_437_dvp.c **** void dvp_input_data_unused_set(dvp_idus_type dvp_idus, dvp_idun_type dvp_idun)
+ 487:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+ 1044              		.loc 1 487 1 is_stmt 1 view -0
+ 1045              		.cfi_startproc
+ 1046              		@ args = 0, pretend = 0, frame = 0
+ 1047              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 27
+
+
+ 1048              		@ link register save eliminated.
+ 488:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->actrl_bit.idus = dvp_idus;
+ 1049              		.loc 1 488 3 view .LVU192
+ 1050              		.loc 1 488 23 is_stmt 0 view .LVU193
+ 1051 0000 044B     		ldr	r3, .L95
+ 1052 0002 1A6C     		ldr	r2, [r3, #64]
+ 1053 0004 60F38A22 		bfi	r2, r0, #10, #1
+ 1054 0008 1A64     		str	r2, [r3, #64]
+ 489:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->actrl_bit.idun = dvp_idun;
+ 1055              		.loc 1 489 3 is_stmt 1 view .LVU194
+ 1056              		.loc 1 489 23 is_stmt 0 view .LVU195
+ 1057 000a 1A6C     		ldr	r2, [r3, #64]
+ 1058 000c 61F30922 		bfi	r2, r1, #8, #2
+ 1059 0010 1A64     		str	r2, [r3, #64]
+ 490:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 1060              		.loc 1 490 1 view .LVU196
+ 1061 0012 7047     		bx	lr
+ 1062              	.L96:
+ 1063              		.align	2
+ 1064              	.L95:
+ 1065 0014 00000550 		.word	1342504960
+ 1066              		.cfi_endproc
+ 1067              	.LFE160:
+ 1069              		.section	.text.dvp_dma_burst_set,"ax",%progbits
+ 1070              		.align	1
+ 1071              		.global	dvp_dma_burst_set
+ 1072              		.syntax unified
+ 1073              		.thumb
+ 1074              		.thumb_func
+ 1076              	dvp_dma_burst_set:
+ 1077              	.LVL61:
+ 1078              	.LFB161:
+ 491:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 492:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+ 493:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  set dvp dma burst transfer configuration
+ 494:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  dvp_dmabt: dma burst transfer configuration
+ 495:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         this parameter can be one of the following values:
+ 496:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_DMABT_SINGLE
+ 497:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_DMABT_BURST
+ 498:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval none
+ 499:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+ 500:bsp/libraries/drivers/src/at32f435_437_dvp.c **** void dvp_dma_burst_set(dvp_dmabt_type dvp_dmabt)
+ 501:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+ 1079              		.loc 1 501 1 is_stmt 1 view -0
+ 1080              		.cfi_startproc
+ 1081              		@ args = 0, pretend = 0, frame = 0
+ 1082              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1083              		@ link register save eliminated.
+ 502:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->actrl_bit.dmabt = dvp_dmabt;
+ 1084              		.loc 1 502 3 view .LVU198
+ 1085              		.loc 1 502 24 is_stmt 0 view .LVU199
+ 1086 0000 024B     		ldr	r3, .L98
+ 1087 0002 1A6C     		ldr	r2, [r3, #64]
+ 1088 0004 60F30C32 		bfi	r2, r0, #12, #1
+ 1089 0008 1A64     		str	r2, [r3, #64]
+ 503:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 1090              		.loc 1 503 1 view .LVU200
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 28
+
+
+ 1091 000a 7047     		bx	lr
+ 1092              	.L99:
+ 1093              		.align	2
+ 1094              	.L98:
+ 1095 000c 00000550 		.word	1342504960
+ 1096              		.cfi_endproc
+ 1097              	.LFE161:
+ 1099              		.section	.text.dvp_sync_event_interrupt_set,"ax",%progbits
+ 1100              		.align	1
+ 1101              		.global	dvp_sync_event_interrupt_set
+ 1102              		.syntax unified
+ 1103              		.thumb
+ 1104              		.thumb_func
+ 1106              	dvp_sync_event_interrupt_set:
+ 1107              	.LVL62:
+ 1108              	.LFB162:
+ 504:bsp/libraries/drivers/src/at32f435_437_dvp.c **** 
+ 505:bsp/libraries/drivers/src/at32f435_437_dvp.c **** /**
+ 506:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @brief  set dvp hsync/vsync event interrupt strategy configuration
+ 507:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  dvp_hseid: hsync event interrupt strategy
+ 508:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         this parameter can be one of the following values:
+ 509:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_HSEID_LINE_END
+ 510:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_HSEID_LINE_START
+ 511:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @param  dvp_vseid: vsync event interrupt strategy
+ 512:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         this parameter can be one of the following values:
+ 513:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_VSEID_FRAME_END
+ 514:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   *         - DVP_VSEID_FRMAE_START
+ 515:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   * @retval none
+ 516:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   */
+ 517:bsp/libraries/drivers/src/at32f435_437_dvp.c **** void dvp_sync_event_interrupt_set(dvp_hseid_type dvp_hseid, dvp_vseid_type dvp_vseid)
+ 518:bsp/libraries/drivers/src/at32f435_437_dvp.c **** {
+ 1109              		.loc 1 518 1 is_stmt 1 view -0
+ 1110              		.cfi_startproc
+ 1111              		@ args = 0, pretend = 0, frame = 0
+ 1112              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1113              		@ link register save eliminated.
+ 519:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->actrl_bit.hseid = dvp_hseid;
+ 1114              		.loc 1 519 3 view .LVU202
+ 1115              		.loc 1 519 24 is_stmt 0 view .LVU203
+ 1116 0000 044B     		ldr	r3, .L101
+ 1117 0002 1A6C     		ldr	r2, [r3, #64]
+ 1118 0004 60F31042 		bfi	r2, r0, #16, #1
+ 1119 0008 1A64     		str	r2, [r3, #64]
+ 520:bsp/libraries/drivers/src/at32f435_437_dvp.c ****   DVP->actrl_bit.vseid = dvp_vseid;
+ 1120              		.loc 1 520 3 is_stmt 1 view .LVU204
+ 1121              		.loc 1 520 24 is_stmt 0 view .LVU205
+ 1122 000a 1A6C     		ldr	r2, [r3, #64]
+ 1123 000c 61F35142 		bfi	r2, r1, #17, #1
+ 1124 0010 1A64     		str	r2, [r3, #64]
+ 521:bsp/libraries/drivers/src/at32f435_437_dvp.c **** }
+ 1125              		.loc 1 521 1 view .LVU206
+ 1126 0012 7047     		bx	lr
+ 1127              	.L102:
+ 1128              		.align	2
+ 1129              	.L101:
+ 1130 0014 00000550 		.word	1342504960
+ 1131              		.cfi_endproc
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 29
+
+
+ 1132              	.LFE162:
+ 1134              		.text
+ 1135              	.Letext0:
+ 1136              		.file 2 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\mac
+ 1137              		.file 3 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\sys
+ 1138              		.file 4 "bsp/libraries/cmsis/cm4/device_support/at32f435_437.h"
+ 1139              		.file 5 "bsp/libraries/drivers/inc/at32f435_437_crm.h"
+ 1140              		.file 6 "bsp/libraries/drivers/inc/at32f435_437_dvp.h"
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 30
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 at32f435_437_dvp.c
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:18     .text.dvp_reset:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:24     .text.dvp_reset:00000000 dvp_reset
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:52     .text.dvp_capture_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:58     .text.dvp_capture_enable:00000000 dvp_capture_enable
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:77     .text.dvp_capture_enable:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:82     .text.dvp_capture_mode_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:88     .text.dvp_capture_mode_set:00000000 dvp_capture_mode_set
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:107    .text.dvp_capture_mode_set:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:112    .text.dvp_window_crop_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:118    .text.dvp_window_crop_enable:00000000 dvp_window_crop_enable
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:137    .text.dvp_window_crop_enable:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:142    .text.dvp_window_crop_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:148    .text.dvp_window_crop_set:00000000 dvp_window_crop_set
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:188    .text.dvp_window_crop_set:00000020 $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:193    .text.dvp_jpeg_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:199    .text.dvp_jpeg_enable:00000000 dvp_jpeg_enable
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:218    .text.dvp_jpeg_enable:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:223    .text.dvp_sync_mode_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:229    .text.dvp_sync_mode_set:00000000 dvp_sync_mode_set
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:248    .text.dvp_sync_mode_set:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:253    .text.dvp_sync_code_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:259    .text.dvp_sync_code_set:00000000 dvp_sync_code_set
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:285    .text.dvp_sync_code_set:00000014 $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:290    .text.dvp_sync_unmask_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:296    .text.dvp_sync_unmask_set:00000000 dvp_sync_unmask_set
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:322    .text.dvp_sync_unmask_set:00000014 $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:327    .text.dvp_pclk_polarity_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:333    .text.dvp_pclk_polarity_set:00000000 dvp_pclk_polarity_set
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:352    .text.dvp_pclk_polarity_set:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:357    .text.dvp_hsync_polarity_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:363    .text.dvp_hsync_polarity_set:00000000 dvp_hsync_polarity_set
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:382    .text.dvp_hsync_polarity_set:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:387    .text.dvp_vsync_polarity_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:393    .text.dvp_vsync_polarity_set:00000000 dvp_vsync_polarity_set
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:412    .text.dvp_vsync_polarity_set:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:417    .text.dvp_basic_frame_rate_control_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:423    .text.dvp_basic_frame_rate_control_set:00000000 dvp_basic_frame_rate_control_set
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:442    .text.dvp_basic_frame_rate_control_set:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:447    .text.dvp_pixel_data_length_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:453    .text.dvp_pixel_data_length_set:00000000 dvp_pixel_data_length_set
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:472    .text.dvp_pixel_data_length_set:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:477    .text.dvp_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:483    .text.dvp_enable:00000000 dvp_enable
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:502    .text.dvp_enable:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:507    .text.dvp_zoomout_select:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:513    .text.dvp_zoomout_select:00000000 dvp_zoomout_select
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:532    .text.dvp_zoomout_select:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:537    .text.dvp_zoomout_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:543    .text.dvp_zoomout_set:00000000 dvp_zoomout_set
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:594    .text.dvp_zoomout_set:00000028 $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:599    .text.dvp_basic_status_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:605    .text.dvp_basic_status_get:00000000 dvp_basic_status_get
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:640    .text.dvp_basic_status_get:00000014 $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:645    .text.dvp_interrupt_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:651    .text.dvp_interrupt_enable:00000000 dvp_interrupt_enable
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccWrg7N4.s 			page 31
+
+
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:687    .text.dvp_interrupt_enable:0000001c $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:692    .text.dvp_interrupt_flag_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:698    .text.dvp_interrupt_flag_get:00000000 dvp_interrupt_flag_get
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:730    .text.dvp_interrupt_flag_get:00000010 $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:735    .text.dvp_flag_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:741    .text.dvp_flag_get:00000000 dvp_flag_get
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:777    .text.dvp_flag_get:00000014 $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:782    .text.dvp_flag_clear:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:788    .text.dvp_flag_clear:00000000 dvp_flag_clear
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:809    .text.dvp_flag_clear:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:814    .text.dvp_enhanced_scaling_resize_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:820    .text.dvp_enhanced_scaling_resize_enable:00000000 dvp_enhanced_scaling_resize_enable
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:839    .text.dvp_enhanced_scaling_resize_enable:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:844    .text.dvp_enhanced_scaling_resize_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:850    .text.dvp_enhanced_scaling_resize_set:00000000 dvp_enhanced_scaling_resize_set
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:907    .text.dvp_enhanced_scaling_resize_set:00000034 $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:912    .text.dvp_enhanced_framerate_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:918    .text.dvp_enhanced_framerate_set:00000000 dvp_enhanced_framerate_set
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:963    .text.dvp_enhanced_framerate_set:0000002c $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:968    .text.dvp_monochrome_image_binarization_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:974    .text.dvp_monochrome_image_binarization_set:00000000 dvp_monochrome_image_binarization_set
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:1000   .text.dvp_monochrome_image_binarization_set:00000014 $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:1005   .text.dvp_enhanced_data_format_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:1011   .text.dvp_enhanced_data_format_set:00000000 dvp_enhanced_data_format_set
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:1030   .text.dvp_enhanced_data_format_set:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:1035   .text.dvp_input_data_unused_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:1041   .text.dvp_input_data_unused_set:00000000 dvp_input_data_unused_set
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:1065   .text.dvp_input_data_unused_set:00000014 $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:1070   .text.dvp_dma_burst_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:1076   .text.dvp_dma_burst_set:00000000 dvp_dma_burst_set
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:1095   .text.dvp_dma_burst_set:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:1100   .text.dvp_sync_event_interrupt_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:1106   .text.dvp_sync_event_interrupt_set:00000000 dvp_sync_event_interrupt_set
+C:\Users\user\AppData\Local\Temp\ccWrg7N4.s:1130   .text.dvp_sync_event_interrupt_set:00000014 $d
+
+UNDEFINED SYMBOLS
+crm_periph_reset

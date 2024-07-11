@@ -1,0 +1,319 @@
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccucDvje.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"at32f435_437_clock.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.system_clock_config,"ax",%progbits
+  18              		.align	1
+  19              		.global	system_clock_config
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	system_clock_config:
+  25              	.LFB133:
+  26              		.file 1 "src/at32f435_437_clock.c"
+   1:src/at32f435_437_clock.c **** /**
+   2:src/at32f435_437_clock.c ****   **************************************************************************
+   3:src/at32f435_437_clock.c ****   * @file     at32f435_437_clock.c
+   4:src/at32f435_437_clock.c ****   * @brief    system clock config program
+   5:src/at32f435_437_clock.c ****   **************************************************************************
+   6:src/at32f435_437_clock.c ****   *                       Copyright notice & Disclaimer
+   7:src/at32f435_437_clock.c ****   *
+   8:src/at32f435_437_clock.c ****   * The software Board Support Package (BSP) that is made available to
+   9:src/at32f435_437_clock.c ****   * download from Artery official website is the copyrighted work of Artery.
+  10:src/at32f435_437_clock.c ****   * Artery authorizes customers to use, copy, and distribute the BSP
+  11:src/at32f435_437_clock.c ****   * software and its related documentation for the purpose of design and
+  12:src/at32f435_437_clock.c ****   * development in conjunction with Artery microcontrollers. Use of the
+  13:src/at32f435_437_clock.c ****   * software is governed by this copyright notice and the following disclaimer.
+  14:src/at32f435_437_clock.c ****   *
+  15:src/at32f435_437_clock.c ****   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
+  16:src/at32f435_437_clock.c ****   * GUARANTEES OR REPRESENTATIONS OF ANY KIND. ARTERY EXPRESSLY DISCLAIMS,
+  17:src/at32f435_437_clock.c ****   * TO THE FULLEST EXTENT PERMITTED BY LAW, ALL EXPRESS, IMPLIED OR
+  18:src/at32f435_437_clock.c ****   * STATUTORY OR OTHER WARRANTIES, GUARANTEES OR REPRESENTATIONS,
+  19:src/at32f435_437_clock.c ****   * INCLUDING BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+  20:src/at32f435_437_clock.c ****   * FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
+  21:src/at32f435_437_clock.c ****   *
+  22:src/at32f435_437_clock.c ****   **************************************************************************
+  23:src/at32f435_437_clock.c ****   */
+  24:src/at32f435_437_clock.c **** 
+  25:src/at32f435_437_clock.c **** /* includes ------------------------------------------------------------------*/
+  26:src/at32f435_437_clock.c **** #include "at32f435_437_clock.h"
+  27:src/at32f435_437_clock.c **** 
+  28:src/at32f435_437_clock.c **** /** @addtogroup AT32F437_periph_template
+  29:src/at32f435_437_clock.c ****   * @{
+  30:src/at32f435_437_clock.c ****   */
+  31:src/at32f435_437_clock.c **** 
+  32:src/at32f435_437_clock.c **** /** @addtogroup 437_System_clock_configuration System_clock_configuration
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccucDvje.s 			page 2
+
+
+  33:src/at32f435_437_clock.c ****   * @{
+  34:src/at32f435_437_clock.c ****   */
+  35:src/at32f435_437_clock.c **** 
+  36:src/at32f435_437_clock.c **** /**
+  37:src/at32f435_437_clock.c ****   * @brief  system clock config program
+  38:src/at32f435_437_clock.c ****   * @note   the system clock is configured as follow:
+  39:src/at32f435_437_clock.c ****   *         system clock (sclk)   = (hext * pll_ns)/(pll_ms * pll_fr)
+  40:src/at32f435_437_clock.c ****   *         system clock source   = pll (hext)
+  41:src/at32f435_437_clock.c ****   *         - hext                = HEXT_VALUE
+  42:src/at32f435_437_clock.c ****   *         - sclk                = 288000000
+  43:src/at32f435_437_clock.c ****   *         - ahbdiv              = 1
+  44:src/at32f435_437_clock.c ****   *         - ahbclk              = 288000000
+  45:src/at32f435_437_clock.c ****   *         - apb2div             = 2
+  46:src/at32f435_437_clock.c ****   *         - apb2clk             = 144000000
+  47:src/at32f435_437_clock.c ****   *         - apb1div             = 2
+  48:src/at32f435_437_clock.c ****   *         - apb1clk             = 144000000
+  49:src/at32f435_437_clock.c ****   *         - pll_ns              = 144
+  50:src/at32f435_437_clock.c ****   *         - pll_ms              = 1
+  51:src/at32f435_437_clock.c ****   *         - pll_fr              = 4
+  52:src/at32f435_437_clock.c ****   * @param  none
+  53:src/at32f435_437_clock.c ****   * @retval none
+  54:src/at32f435_437_clock.c ****   */
+  55:src/at32f435_437_clock.c **** void system_clock_config(void)
+  56:src/at32f435_437_clock.c **** {
+  27              		.loc 1 56 1 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 08B5     		push	{r3, lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 3, -8
+  35              		.cfi_offset 14, -4
+  57:src/at32f435_437_clock.c ****   /* reset crm */
+  58:src/at32f435_437_clock.c ****   crm_reset();
+  36              		.loc 1 58 3 view .LVU1
+  37 0002 FFF7FEFF 		bl	crm_reset
+  38              	.LVL0:
+  59:src/at32f435_437_clock.c **** 
+  60:src/at32f435_437_clock.c ****   /* enable pwc periph clock */
+  61:src/at32f435_437_clock.c ****   crm_periph_clock_enable(CRM_PWC_PERIPH_CLOCK, TRUE);
+  39              		.loc 1 61 3 view .LVU2
+  40 0006 0121     		movs	r1, #1
+  41 0008 1E48     		ldr	r0, .L6
+  42 000a FFF7FEFF 		bl	crm_periph_clock_enable
+  43              	.LVL1:
+  62:src/at32f435_437_clock.c **** 
+  63:src/at32f435_437_clock.c ****   /* config ldo voltage */
+  64:src/at32f435_437_clock.c ****   pwc_ldo_output_voltage_set(PWC_LDO_OUTPUT_1V3);
+  44              		.loc 1 64 3 view .LVU3
+  45 000e 1E4B     		ldr	r3, .L6+4
+  46 0010 1A69     		ldr	r2, [r3, #16]
+  47 0012 0120     		movs	r0, #1
+  48 0014 60F30202 		bfi	r2, r0, #0, #3
+  49 0018 1A61     		str	r2, [r3, #16]
+  65:src/at32f435_437_clock.c **** 
+  66:src/at32f435_437_clock.c ****   /* set the flash clock divider */
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccucDvje.s 			page 3
+
+
+  67:src/at32f435_437_clock.c ****   flash_clock_divider_set(FLASH_CLOCK_DIV_3);
+  50              		.loc 1 67 3 view .LVU4
+  51 001a 03F5E633 		add	r3, r3, #117760
+  52 001e 1A6E     		ldr	r2, [r3, #96]
+  53 0020 60F30102 		bfi	r2, r0, #0, #2
+  54 0024 1A66     		str	r2, [r3, #96]
+  68:src/at32f435_437_clock.c **** 
+  69:src/at32f435_437_clock.c ****   crm_clock_source_enable(CRM_CLOCK_SOURCE_HEXT, TRUE);
+  55              		.loc 1 69 3 view .LVU5
+  56 0026 0146     		mov	r1, r0
+  57 0028 FFF7FEFF 		bl	crm_clock_source_enable
+  58              	.LVL2:
+  70:src/at32f435_437_clock.c **** 
+  71:src/at32f435_437_clock.c ****   /* wait till hext is ready */
+  72:src/at32f435_437_clock.c ****   while(crm_hext_stable_wait() == ERROR)
+  59              		.loc 1 72 3 view .LVU6
+  60              	.L2:
+  73:src/at32f435_437_clock.c ****   {
+  74:src/at32f435_437_clock.c ****   }
+  61              		.loc 1 74 3 discriminator 1 view .LVU7
+  72:src/at32f435_437_clock.c ****   {
+  62              		.loc 1 72 8 discriminator 1 view .LVU8
+  72:src/at32f435_437_clock.c ****   {
+  63              		.loc 1 72 9 is_stmt 0 discriminator 1 view .LVU9
+  64 002c FFF7FEFF 		bl	crm_hext_stable_wait
+  65              	.LVL3:
+  72:src/at32f435_437_clock.c ****   {
+  66              		.loc 1 72 8 discriminator 1 view .LVU10
+  67 0030 0028     		cmp	r0, #0
+  68 0032 FBD0     		beq	.L2
+  75:src/at32f435_437_clock.c **** 
+  76:src/at32f435_437_clock.c ****   /* config pll clock resource
+  77:src/at32f435_437_clock.c ****   common frequency config list: pll source selected  hick or hext(8mhz)
+  78:src/at32f435_437_clock.c ****   _________________________________________________________________________________________________
+  79:src/at32f435_437_clock.c ****   |        |         |         |         |         |         |         |         |        |        
+  80:src/at32f435_437_clock.c ****   |pll(mhz)|   288   |   252   |   216   |   192   |   180   |   144   |   108   |   72   |   36   
+  81:src/at32f435_437_clock.c ****   |________|_________|_________|_________|_________|_________|_________|_________|_________________
+  82:src/at32f435_437_clock.c ****   |        |         |         |         |         |         |         |         |        |        
+  83:src/at32f435_437_clock.c ****   |pll_ns  |   144   |   126   |   108   |   96    |   90    |   72    |   108   |   72   |   72   
+  84:src/at32f435_437_clock.c ****   |        |         |         |         |         |         |         |         |        |        
+  85:src/at32f435_437_clock.c ****   |pll_ms  |   1     |   1     |   1     |   1     |   1     |   1     |   1     |   1    |   1    
+  86:src/at32f435_437_clock.c ****   |        |         |         |         |         |         |         |         |        |        
+  87:src/at32f435_437_clock.c ****   |pll_fr  |   FR_4  |   FR_4  |   FR_4  |   FR_4  |   FR_4  |   FR_4  |   FR_8  |   FR_8 |   FR_16
+  88:src/at32f435_437_clock.c ****   |________|_________|_________|_________|_________|_________|_________|_________|________|________
+  89:src/at32f435_437_clock.c **** 
+  90:src/at32f435_437_clock.c ****   if pll clock source selects hext with other frequency values, or configure pll to other
+  91:src/at32f435_437_clock.c ****   frequency values, please use the at32 new clock  configuration tool for configuration.  */
+  92:src/at32f435_437_clock.c ****   crm_pll_config(CRM_PLL_SOURCE_HEXT, 144, 1, CRM_PLL_FR_4);
+  69              		.loc 1 92 3 is_stmt 1 view .LVU11
+  70 0034 0223     		movs	r3, #2
+  71 0036 0122     		movs	r2, #1
+  72 0038 9021     		movs	r1, #144
+  73 003a 1046     		mov	r0, r2
+  74 003c FFF7FEFF 		bl	crm_pll_config
+  75              	.LVL4:
+  93:src/at32f435_437_clock.c **** 
+  94:src/at32f435_437_clock.c ****   /* enable pll */
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccucDvje.s 			page 4
+
+
+  95:src/at32f435_437_clock.c ****   crm_clock_source_enable(CRM_CLOCK_SOURCE_PLL, TRUE);
+  76              		.loc 1 95 3 view .LVU12
+  77 0040 0121     		movs	r1, #1
+  78 0042 0220     		movs	r0, #2
+  79 0044 FFF7FEFF 		bl	crm_clock_source_enable
+  80              	.LVL5:
+  96:src/at32f435_437_clock.c **** 
+  97:src/at32f435_437_clock.c ****   /* wait till pll is ready */
+  98:src/at32f435_437_clock.c ****   while(crm_flag_get(CRM_PLL_STABLE_FLAG) != SET)
+  81              		.loc 1 98 3 view .LVU13
+  82              	.L3:
+  99:src/at32f435_437_clock.c ****   {
+ 100:src/at32f435_437_clock.c ****   }
+  83              		.loc 1 100 3 discriminator 1 view .LVU14
+  98:src/at32f435_437_clock.c ****   {
+  84              		.loc 1 98 8 discriminator 1 view .LVU15
+  98:src/at32f435_437_clock.c ****   {
+  85              		.loc 1 98 9 is_stmt 0 discriminator 1 view .LVU16
+  86 0048 1920     		movs	r0, #25
+  87 004a FFF7FEFF 		bl	crm_flag_get
+  88              	.LVL6:
+  98:src/at32f435_437_clock.c ****   {
+  89              		.loc 1 98 8 discriminator 1 view .LVU17
+  90 004e 0128     		cmp	r0, #1
+  91 0050 FAD1     		bne	.L3
+ 101:src/at32f435_437_clock.c **** 
+ 102:src/at32f435_437_clock.c ****   /* config ahbclk */
+ 103:src/at32f435_437_clock.c ****   crm_ahb_div_set(CRM_AHB_DIV_1);
+  92              		.loc 1 103 3 is_stmt 1 view .LVU18
+  93 0052 0020     		movs	r0, #0
+  94 0054 FFF7FEFF 		bl	crm_ahb_div_set
+  95              	.LVL7:
+ 104:src/at32f435_437_clock.c **** 
+ 105:src/at32f435_437_clock.c ****   /* config apb2clk, the maximum frequency of APB1/APB2 clock is 144 MHz  */
+ 106:src/at32f435_437_clock.c ****   crm_apb2_div_set(CRM_APB2_DIV_2);
+  96              		.loc 1 106 3 view .LVU19
+  97 0058 0420     		movs	r0, #4
+  98 005a FFF7FEFF 		bl	crm_apb2_div_set
+  99              	.LVL8:
+ 107:src/at32f435_437_clock.c **** 
+ 108:src/at32f435_437_clock.c ****   /* config apb1clk, the maximum frequency of APB1/APB2 clock is 144 MHz  */
+ 109:src/at32f435_437_clock.c ****   crm_apb1_div_set(CRM_APB1_DIV_2);
+ 100              		.loc 1 109 3 view .LVU20
+ 101 005e 0420     		movs	r0, #4
+ 102 0060 FFF7FEFF 		bl	crm_apb1_div_set
+ 103              	.LVL9:
+ 110:src/at32f435_437_clock.c **** 
+ 111:src/at32f435_437_clock.c ****   /* enable auto step mode */
+ 112:src/at32f435_437_clock.c ****   crm_auto_step_mode_enable(TRUE);
+ 104              		.loc 1 112 3 view .LVU21
+ 105 0064 0120     		movs	r0, #1
+ 106 0066 FFF7FEFF 		bl	crm_auto_step_mode_enable
+ 107              	.LVL10:
+ 113:src/at32f435_437_clock.c **** 
+ 114:src/at32f435_437_clock.c ****   /* select pll as system clock source */
+ 115:src/at32f435_437_clock.c ****   crm_sysclk_switch(CRM_SCLK_PLL);
+ 108              		.loc 1 115 3 view .LVU22
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccucDvje.s 			page 5
+
+
+ 109 006a 0220     		movs	r0, #2
+ 110 006c FFF7FEFF 		bl	crm_sysclk_switch
+ 111              	.LVL11:
+ 116:src/at32f435_437_clock.c **** 
+ 117:src/at32f435_437_clock.c ****   /* wait till pll is used as system clock source */
+ 118:src/at32f435_437_clock.c ****   while(crm_sysclk_switch_status_get() != CRM_SCLK_PLL)
+ 112              		.loc 1 118 3 view .LVU23
+ 113              	.L4:
+ 119:src/at32f435_437_clock.c ****   {
+ 120:src/at32f435_437_clock.c ****   }
+ 114              		.loc 1 120 3 discriminator 1 view .LVU24
+ 118:src/at32f435_437_clock.c ****   {
+ 115              		.loc 1 118 8 discriminator 1 view .LVU25
+ 118:src/at32f435_437_clock.c ****   {
+ 116              		.loc 1 118 9 is_stmt 0 discriminator 1 view .LVU26
+ 117 0070 FFF7FEFF 		bl	crm_sysclk_switch_status_get
+ 118              	.LVL12:
+ 118:src/at32f435_437_clock.c ****   {
+ 119              		.loc 1 118 8 discriminator 1 view .LVU27
+ 120 0074 0228     		cmp	r0, #2
+ 121 0076 FBD1     		bne	.L4
+ 121:src/at32f435_437_clock.c **** 
+ 122:src/at32f435_437_clock.c ****   /* disable auto step mode */
+ 123:src/at32f435_437_clock.c ****   crm_auto_step_mode_enable(FALSE);
+ 122              		.loc 1 123 3 is_stmt 1 view .LVU28
+ 123 0078 0020     		movs	r0, #0
+ 124 007a FFF7FEFF 		bl	crm_auto_step_mode_enable
+ 125              	.LVL13:
+ 124:src/at32f435_437_clock.c **** 
+ 125:src/at32f435_437_clock.c ****   /* update system_core_clock global variable */
+ 126:src/at32f435_437_clock.c ****   system_core_clock_update();
+ 126              		.loc 1 126 3 view .LVU29
+ 127 007e FFF7FEFF 		bl	system_core_clock_update
+ 128              	.LVL14:
+ 127:src/at32f435_437_clock.c **** }
+ 129              		.loc 1 127 1 is_stmt 0 view .LVU30
+ 130 0082 08BD     		pop	{r3, pc}
+ 131              	.L7:
+ 132              		.align	2
+ 133              	.L6:
+ 134 0084 1C004000 		.word	4194332
+ 135 0088 00700040 		.word	1073770496
+ 136              		.cfi_endproc
+ 137              	.LFE133:
+ 139              		.text
+ 140              	.Letext0:
+ 141              		.file 2 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\mac
+ 142              		.file 3 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\sys
+ 143              		.file 4 "bsp/libraries/cmsis/cm4/device_support/at32f435_437.h"
+ 144              		.file 5 "bsp/libraries/drivers/inc/at32f435_437_crm.h"
+ 145              		.file 6 "bsp/libraries/drivers/inc/at32f435_437_pwc.h"
+ 146              		.file 7 "bsp/libraries/drivers/inc/at32f435_437_flash.h"
+ 147              		.file 8 "bsp/libraries/cmsis/cm4/device_support/system_at32f435_437.h"
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccucDvje.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 at32f435_437_clock.c
+C:\Users\user\AppData\Local\Temp\ccucDvje.s:18     .text.system_clock_config:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccucDvje.s:24     .text.system_clock_config:00000000 system_clock_config
+C:\Users\user\AppData\Local\Temp\ccucDvje.s:134    .text.system_clock_config:00000084 $d
+
+UNDEFINED SYMBOLS
+crm_reset
+crm_periph_clock_enable
+crm_clock_source_enable
+crm_hext_stable_wait
+crm_pll_config
+crm_flag_get
+crm_ahb_div_set
+crm_apb2_div_set
+crm_apb1_div_set
+crm_auto_step_mode_enable
+crm_sysclk_switch
+crm_sysclk_switch_status_get
+system_core_clock_update

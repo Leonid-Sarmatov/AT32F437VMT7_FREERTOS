@@ -1,0 +1,424 @@
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccTlgvbk.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"at32f435_437_wdt.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.wdt_enable,"ax",%progbits
+  18              		.align	1
+  19              		.global	wdt_enable
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	wdt_enable:
+  25              	.LFB133:
+  26              		.file 1 "bsp/libraries/drivers/src/at32f435_437_wdt.c"
+   1:bsp/libraries/drivers/src/at32f435_437_wdt.c **** /**
+   2:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   **************************************************************************
+   3:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * @file     at32f435_437_wdt.c
+   4:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * @brief    contains all the functions for the wdt firmware library
+   5:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   **************************************************************************
+   6:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   *                       Copyright notice & Disclaimer
+   7:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   *
+   8:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * The software Board Support Package (BSP) that is made available to
+   9:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * download from Artery official website is the copyrighted work of Artery.
+  10:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * Artery authorizes customers to use, copy, and distribute the BSP
+  11:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * software and its related documentation for the purpose of design and
+  12:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * development in conjunction with Artery microcontrollers. Use of the
+  13:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * software is governed by this copyright notice and the following disclaimer.
+  14:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   *
+  15:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
+  16:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * GUARANTEES OR REPRESENTATIONS OF ANY KIND. ARTERY EXPRESSLY DISCLAIMS,
+  17:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * TO THE FULLEST EXTENT PERMITTED BY LAW, ALL EXPRESS, IMPLIED OR
+  18:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * STATUTORY OR OTHER WARRANTIES, GUARANTEES OR REPRESENTATIONS,
+  19:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * INCLUDING BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+  20:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
+  21:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   *
+  22:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   **************************************************************************
+  23:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   */
+  24:bsp/libraries/drivers/src/at32f435_437_wdt.c **** 
+  25:bsp/libraries/drivers/src/at32f435_437_wdt.c **** #include "at32f435_437_conf.h"
+  26:bsp/libraries/drivers/src/at32f435_437_wdt.c **** 
+  27:bsp/libraries/drivers/src/at32f435_437_wdt.c **** /** @addtogroup AT32F435_437_periph_driver
+  28:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * @{
+  29:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   */
+  30:bsp/libraries/drivers/src/at32f435_437_wdt.c **** 
+  31:bsp/libraries/drivers/src/at32f435_437_wdt.c **** /** @defgroup WDT
+  32:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * @brief WDT driver modules
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccTlgvbk.s 			page 2
+
+
+  33:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * @{
+  34:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   */
+  35:bsp/libraries/drivers/src/at32f435_437_wdt.c **** 
+  36:bsp/libraries/drivers/src/at32f435_437_wdt.c **** #ifdef WDT_MODULE_ENABLED
+  37:bsp/libraries/drivers/src/at32f435_437_wdt.c **** 
+  38:bsp/libraries/drivers/src/at32f435_437_wdt.c **** /** @defgroup WDT_private_functions
+  39:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * @{
+  40:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   */
+  41:bsp/libraries/drivers/src/at32f435_437_wdt.c **** 
+  42:bsp/libraries/drivers/src/at32f435_437_wdt.c **** /**
+  43:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * @brief  wdt enable ,the reload value will be sent to the counter
+  44:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * @param  none
+  45:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * @retval none
+  46:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   */
+  47:bsp/libraries/drivers/src/at32f435_437_wdt.c **** void wdt_enable(void)
+  48:bsp/libraries/drivers/src/at32f435_437_wdt.c **** {
+  27              		.loc 1 48 1 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  49:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   WDT->cmd = WDT_CMD_ENABLE;
+  32              		.loc 1 49 3 view .LVU1
+  33              		.loc 1 49 12 is_stmt 0 view .LVU2
+  34 0000 024B     		ldr	r3, .L2
+  35 0002 4CF6CC42 		movw	r2, #52428
+  36 0006 1A60     		str	r2, [r3]
+  50:bsp/libraries/drivers/src/at32f435_437_wdt.c **** }
+  37              		.loc 1 50 1 view .LVU3
+  38 0008 7047     		bx	lr
+  39              	.L3:
+  40 000a 00BF     		.align	2
+  41              	.L2:
+  42 000c 00300040 		.word	1073754112
+  43              		.cfi_endproc
+  44              	.LFE133:
+  46              		.section	.text.wdt_counter_reload,"ax",%progbits
+  47              		.align	1
+  48              		.global	wdt_counter_reload
+  49              		.syntax unified
+  50              		.thumb
+  51              		.thumb_func
+  53              	wdt_counter_reload:
+  54              	.LFB134:
+  51:bsp/libraries/drivers/src/at32f435_437_wdt.c **** 
+  52:bsp/libraries/drivers/src/at32f435_437_wdt.c **** /**
+  53:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * @brief  reload wdt counter
+  54:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * @param  none
+  55:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * @retval none
+  56:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   */
+  57:bsp/libraries/drivers/src/at32f435_437_wdt.c **** void wdt_counter_reload(void)
+  58:bsp/libraries/drivers/src/at32f435_437_wdt.c **** {
+  55              		.loc 1 58 1 is_stmt 1 view -0
+  56              		.cfi_startproc
+  57              		@ args = 0, pretend = 0, frame = 0
+  58              		@ frame_needed = 0, uses_anonymous_args = 0
+  59              		@ link register save eliminated.
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccTlgvbk.s 			page 3
+
+
+  59:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   WDT->cmd = WDT_CMD_RELOAD;
+  60              		.loc 1 59 3 view .LVU5
+  61              		.loc 1 59 12 is_stmt 0 view .LVU6
+  62 0000 024B     		ldr	r3, .L5
+  63 0002 4AF6AA22 		movw	r2, #43690
+  64 0006 1A60     		str	r2, [r3]
+  60:bsp/libraries/drivers/src/at32f435_437_wdt.c **** }
+  65              		.loc 1 60 1 view .LVU7
+  66 0008 7047     		bx	lr
+  67              	.L6:
+  68 000a 00BF     		.align	2
+  69              	.L5:
+  70 000c 00300040 		.word	1073754112
+  71              		.cfi_endproc
+  72              	.LFE134:
+  74              		.section	.text.wdt_reload_value_set,"ax",%progbits
+  75              		.align	1
+  76              		.global	wdt_reload_value_set
+  77              		.syntax unified
+  78              		.thumb
+  79              		.thumb_func
+  81              	wdt_reload_value_set:
+  82              	.LVL0:
+  83              	.LFB135:
+  61:bsp/libraries/drivers/src/at32f435_437_wdt.c **** 
+  62:bsp/libraries/drivers/src/at32f435_437_wdt.c **** /**
+  63:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * @brief  set wdt counter reload value
+  64:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * @param  reload_value (0x0000~0x0FFF)
+  65:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * @retval none
+  66:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   */
+  67:bsp/libraries/drivers/src/at32f435_437_wdt.c **** void wdt_reload_value_set(uint16_t reload_value)
+  68:bsp/libraries/drivers/src/at32f435_437_wdt.c **** {
+  84              		.loc 1 68 1 is_stmt 1 view -0
+  85              		.cfi_startproc
+  86              		@ args = 0, pretend = 0, frame = 0
+  87              		@ frame_needed = 0, uses_anonymous_args = 0
+  88              		@ link register save eliminated.
+  69:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   WDT->rld = reload_value;
+  89              		.loc 1 69 3 view .LVU9
+  90              		.loc 1 69 12 is_stmt 0 view .LVU10
+  91 0000 014B     		ldr	r3, .L8
+  92 0002 9860     		str	r0, [r3, #8]
+  70:bsp/libraries/drivers/src/at32f435_437_wdt.c **** }
+  93              		.loc 1 70 1 view .LVU11
+  94 0004 7047     		bx	lr
+  95              	.L9:
+  96 0006 00BF     		.align	2
+  97              	.L8:
+  98 0008 00300040 		.word	1073754112
+  99              		.cfi_endproc
+ 100              	.LFE135:
+ 102              		.section	.text.wdt_divider_set,"ax",%progbits
+ 103              		.align	1
+ 104              		.global	wdt_divider_set
+ 105              		.syntax unified
+ 106              		.thumb
+ 107              		.thumb_func
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccTlgvbk.s 			page 4
+
+
+ 109              	wdt_divider_set:
+ 110              	.LVL1:
+ 111              	.LFB136:
+  71:bsp/libraries/drivers/src/at32f435_437_wdt.c **** 
+  72:bsp/libraries/drivers/src/at32f435_437_wdt.c **** /**
+  73:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * @brief  set wdt division divider
+  74:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * @param  division
+  75:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   *         this parameter can be one of the following values:
+  76:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   *         - WDT_CLK_DIV_4
+  77:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   *         - WDT_CLK_DIV_8
+  78:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   *         - WDT_CLK_DIV_16
+  79:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   *         - WDT_CLK_DIV_32
+  80:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   *         - WDT_CLK_DIV_64
+  81:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   *         - WDT_CLK_DIV_128
+  82:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   *         - WDT_CLK_DIV_256
+  83:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * @retval none
+  84:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   */
+  85:bsp/libraries/drivers/src/at32f435_437_wdt.c **** void wdt_divider_set(wdt_division_type division)
+  86:bsp/libraries/drivers/src/at32f435_437_wdt.c **** {
+ 112              		.loc 1 86 1 is_stmt 1 view -0
+ 113              		.cfi_startproc
+ 114              		@ args = 0, pretend = 0, frame = 0
+ 115              		@ frame_needed = 0, uses_anonymous_args = 0
+ 116              		@ link register save eliminated.
+  87:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   WDT->div_bit.div = division;
+ 117              		.loc 1 87 3 view .LVU13
+ 118              		.loc 1 87 20 is_stmt 0 view .LVU14
+ 119 0000 024B     		ldr	r3, .L11
+ 120 0002 5A68     		ldr	r2, [r3, #4]
+ 121 0004 60F30202 		bfi	r2, r0, #0, #3
+ 122 0008 5A60     		str	r2, [r3, #4]
+  88:bsp/libraries/drivers/src/at32f435_437_wdt.c **** }
+ 123              		.loc 1 88 1 view .LVU15
+ 124 000a 7047     		bx	lr
+ 125              	.L12:
+ 126              		.align	2
+ 127              	.L11:
+ 128 000c 00300040 		.word	1073754112
+ 129              		.cfi_endproc
+ 130              	.LFE136:
+ 132              		.section	.text.wdt_register_write_enable,"ax",%progbits
+ 133              		.align	1
+ 134              		.global	wdt_register_write_enable
+ 135              		.syntax unified
+ 136              		.thumb
+ 137              		.thumb_func
+ 139              	wdt_register_write_enable:
+ 140              	.LVL2:
+ 141              	.LFB137:
+  89:bsp/libraries/drivers/src/at32f435_437_wdt.c **** 
+  90:bsp/libraries/drivers/src/at32f435_437_wdt.c **** /**
+  91:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * @brief  enable or disable wdt cmd register write
+  92:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * @param  new_state (TRUE or FALSE)
+  93:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * @retval none
+  94:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   */
+  95:bsp/libraries/drivers/src/at32f435_437_wdt.c **** void wdt_register_write_enable( confirm_state new_state)
+  96:bsp/libraries/drivers/src/at32f435_437_wdt.c **** {
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccTlgvbk.s 			page 5
+
+
+ 142              		.loc 1 96 1 is_stmt 1 view -0
+ 143              		.cfi_startproc
+ 144              		@ args = 0, pretend = 0, frame = 0
+ 145              		@ frame_needed = 0, uses_anonymous_args = 0
+ 146              		@ link register save eliminated.
+  97:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   if(new_state == FALSE)
+ 147              		.loc 1 97 3 view .LVU17
+ 148              		.loc 1 97 5 is_stmt 0 view .LVU18
+ 149 0000 18B9     		cbnz	r0, .L14
+  98:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   {
+  99:bsp/libraries/drivers/src/at32f435_437_wdt.c ****     WDT->cmd = WDT_CMD_LOCK;
+ 150              		.loc 1 99 5 is_stmt 1 view .LVU19
+ 151              		.loc 1 99 14 is_stmt 0 view .LVU20
+ 152 0002 044B     		ldr	r3, .L16
+ 153 0004 0022     		movs	r2, #0
+ 154 0006 1A60     		str	r2, [r3]
+ 155 0008 7047     		bx	lr
+ 156              	.L14:
+ 100:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   }
+ 101:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   else
+ 102:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   {
+ 103:bsp/libraries/drivers/src/at32f435_437_wdt.c ****     WDT->cmd = WDT_CMD_UNLOCK;
+ 157              		.loc 1 103 5 is_stmt 1 view .LVU21
+ 158              		.loc 1 103 14 is_stmt 0 view .LVU22
+ 159 000a 024B     		ldr	r3, .L16
+ 160 000c 45F25552 		movw	r2, #21845
+ 161 0010 1A60     		str	r2, [r3]
+ 104:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   }
+ 105:bsp/libraries/drivers/src/at32f435_437_wdt.c **** }
+ 162              		.loc 1 105 1 view .LVU23
+ 163 0012 7047     		bx	lr
+ 164              	.L17:
+ 165              		.align	2
+ 166              	.L16:
+ 167 0014 00300040 		.word	1073754112
+ 168              		.cfi_endproc
+ 169              	.LFE137:
+ 171              		.section	.text.wdt_flag_get,"ax",%progbits
+ 172              		.align	1
+ 173              		.global	wdt_flag_get
+ 174              		.syntax unified
+ 175              		.thumb
+ 176              		.thumb_func
+ 178              	wdt_flag_get:
+ 179              	.LVL3:
+ 180              	.LFB138:
+ 106:bsp/libraries/drivers/src/at32f435_437_wdt.c **** 
+ 107:bsp/libraries/drivers/src/at32f435_437_wdt.c **** /**
+ 108:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * @brief  get wdt flag
+ 109:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * @param  wdt_flag
+ 110:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   *         this parameter can be one of the following values:
+ 111:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   *         - WDT_DIVF_UPDATE_FLAG: division value update complete flag.
+ 112:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   *         - WDT_RLDF_UPDATE_FLAG: reload value update complete flag.
+ 113:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   *         - WDT_WINF_UPDATE_FLAG: window value update complete flag.
+ 114:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * @retval state of wdt flag
+ 115:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   */
+ 116:bsp/libraries/drivers/src/at32f435_437_wdt.c **** flag_status wdt_flag_get(uint16_t wdt_flag)
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccTlgvbk.s 			page 6
+
+
+ 117:bsp/libraries/drivers/src/at32f435_437_wdt.c **** {
+ 181              		.loc 1 117 1 is_stmt 1 view -0
+ 182              		.cfi_startproc
+ 183              		@ args = 0, pretend = 0, frame = 0
+ 184              		@ frame_needed = 0, uses_anonymous_args = 0
+ 185              		@ link register save eliminated.
+ 118:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   flag_status status = RESET;
+ 186              		.loc 1 118 3 view .LVU25
+ 119:bsp/libraries/drivers/src/at32f435_437_wdt.c **** 
+ 120:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   if ((WDT->sts & wdt_flag) != (uint16_t)RESET)
+ 187              		.loc 1 120 3 view .LVU26
+ 188              		.loc 1 120 11 is_stmt 0 view .LVU27
+ 189 0000 034B     		ldr	r3, .L21
+ 190 0002 DB68     		ldr	r3, [r3, #12]
+ 191              		.loc 1 120 6 view .LVU28
+ 192 0004 1842     		tst	r0, r3
+ 193 0006 01D0     		beq	.L20
+ 121:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   {
+ 122:bsp/libraries/drivers/src/at32f435_437_wdt.c ****     status = SET;
+ 194              		.loc 1 122 12 view .LVU29
+ 195 0008 0120     		movs	r0, #1
+ 196              	.LVL4:
+ 197              		.loc 1 122 12 view .LVU30
+ 198 000a 7047     		bx	lr
+ 199              	.LVL5:
+ 200              	.L20:
+ 123:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   }
+ 124:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   else
+ 125:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   {
+ 126:bsp/libraries/drivers/src/at32f435_437_wdt.c ****     status = RESET;
+ 201              		.loc 1 126 12 view .LVU31
+ 202 000c 0020     		movs	r0, #0
+ 203              	.LVL6:
+ 127:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   }
+ 128:bsp/libraries/drivers/src/at32f435_437_wdt.c **** 
+ 129:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   return status;
+ 204              		.loc 1 129 3 is_stmt 1 view .LVU32
+ 130:bsp/libraries/drivers/src/at32f435_437_wdt.c **** }
+ 205              		.loc 1 130 1 is_stmt 0 view .LVU33
+ 206 000e 7047     		bx	lr
+ 207              	.L22:
+ 208              		.align	2
+ 209              	.L21:
+ 210 0010 00300040 		.word	1073754112
+ 211              		.cfi_endproc
+ 212              	.LFE138:
+ 214              		.section	.text.wdt_window_counter_set,"ax",%progbits
+ 215              		.align	1
+ 216              		.global	wdt_window_counter_set
+ 217              		.syntax unified
+ 218              		.thumb
+ 219              		.thumb_func
+ 221              	wdt_window_counter_set:
+ 222              	.LVL7:
+ 223              	.LFB139:
+ 131:bsp/libraries/drivers/src/at32f435_437_wdt.c **** 
+ 132:bsp/libraries/drivers/src/at32f435_437_wdt.c **** /**
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccTlgvbk.s 			page 7
+
+
+ 133:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * @brief  wdt window counter value set
+ 134:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * @param  window_cnt (0x0000~0x0FFF)
+ 135:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   * @retval none
+ 136:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   */
+ 137:bsp/libraries/drivers/src/at32f435_437_wdt.c **** void wdt_window_counter_set(uint16_t window_cnt)
+ 138:bsp/libraries/drivers/src/at32f435_437_wdt.c **** {
+ 224              		.loc 1 138 1 is_stmt 1 view -0
+ 225              		.cfi_startproc
+ 226              		@ args = 0, pretend = 0, frame = 0
+ 227              		@ frame_needed = 0, uses_anonymous_args = 0
+ 228              		@ link register save eliminated.
+ 139:bsp/libraries/drivers/src/at32f435_437_wdt.c ****   WDT->win_bit.win = window_cnt;
+ 229              		.loc 1 139 3 view .LVU35
+ 230              		.loc 1 139 20 is_stmt 0 view .LVU36
+ 231 0000 024B     		ldr	r3, .L24
+ 232 0002 1A69     		ldr	r2, [r3, #16]
+ 233 0004 60F30B02 		bfi	r2, r0, #0, #12
+ 234 0008 1A61     		str	r2, [r3, #16]
+ 140:bsp/libraries/drivers/src/at32f435_437_wdt.c **** }
+ 235              		.loc 1 140 1 view .LVU37
+ 236 000a 7047     		bx	lr
+ 237              	.L25:
+ 238              		.align	2
+ 239              	.L24:
+ 240 000c 00300040 		.word	1073754112
+ 241              		.cfi_endproc
+ 242              	.LFE139:
+ 244              		.text
+ 245              	.Letext0:
+ 246              		.file 2 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\mac
+ 247              		.file 3 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\sys
+ 248              		.file 4 "bsp/libraries/cmsis/cm4/device_support/at32f435_437.h"
+ 249              		.file 5 "bsp/libraries/drivers/inc/at32f435_437_wdt.h"
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccTlgvbk.s 			page 8
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 at32f435_437_wdt.c
+C:\Users\user\AppData\Local\Temp\ccTlgvbk.s:18     .text.wdt_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccTlgvbk.s:24     .text.wdt_enable:00000000 wdt_enable
+C:\Users\user\AppData\Local\Temp\ccTlgvbk.s:42     .text.wdt_enable:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccTlgvbk.s:47     .text.wdt_counter_reload:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccTlgvbk.s:53     .text.wdt_counter_reload:00000000 wdt_counter_reload
+C:\Users\user\AppData\Local\Temp\ccTlgvbk.s:70     .text.wdt_counter_reload:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccTlgvbk.s:75     .text.wdt_reload_value_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccTlgvbk.s:81     .text.wdt_reload_value_set:00000000 wdt_reload_value_set
+C:\Users\user\AppData\Local\Temp\ccTlgvbk.s:98     .text.wdt_reload_value_set:00000008 $d
+C:\Users\user\AppData\Local\Temp\ccTlgvbk.s:103    .text.wdt_divider_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccTlgvbk.s:109    .text.wdt_divider_set:00000000 wdt_divider_set
+C:\Users\user\AppData\Local\Temp\ccTlgvbk.s:128    .text.wdt_divider_set:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccTlgvbk.s:133    .text.wdt_register_write_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccTlgvbk.s:139    .text.wdt_register_write_enable:00000000 wdt_register_write_enable
+C:\Users\user\AppData\Local\Temp\ccTlgvbk.s:167    .text.wdt_register_write_enable:00000014 $d
+C:\Users\user\AppData\Local\Temp\ccTlgvbk.s:172    .text.wdt_flag_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccTlgvbk.s:178    .text.wdt_flag_get:00000000 wdt_flag_get
+C:\Users\user\AppData\Local\Temp\ccTlgvbk.s:210    .text.wdt_flag_get:00000010 $d
+C:\Users\user\AppData\Local\Temp\ccTlgvbk.s:215    .text.wdt_window_counter_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccTlgvbk.s:221    .text.wdt_window_counter_set:00000000 wdt_window_counter_set
+C:\Users\user\AppData\Local\Temp\ccTlgvbk.s:240    .text.wdt_window_counter_set:0000000c $d
+
+NO UNDEFINED SYMBOLS

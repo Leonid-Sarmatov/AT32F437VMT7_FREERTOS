@@ -1,0 +1,806 @@
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"at32f435_437_exint.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.exint_reset,"ax",%progbits
+  18              		.align	1
+  19              		.global	exint_reset
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	exint_reset:
+  25              	.LFB133:
+  26              		.file 1 "bsp/libraries/drivers/src/at32f435_437_exint.c"
+   1:bsp/libraries/drivers/src/at32f435_437_exint.c **** /**
+   2:bsp/libraries/drivers/src/at32f435_437_exint.c ****   **************************************************************************
+   3:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @file     at32f435_437_exint.c
+   4:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @brief    contains all the functions for the exint firmware library
+   5:bsp/libraries/drivers/src/at32f435_437_exint.c ****   **************************************************************************
+   6:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *                       Copyright notice & Disclaimer
+   7:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *
+   8:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * The software Board Support Package (BSP) that is made available to
+   9:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * download from Artery official website is the copyrighted work of Artery.
+  10:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * Artery authorizes customers to use, copy, and distribute the BSP
+  11:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * software and its related documentation for the purpose of design and
+  12:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * development in conjunction with Artery microcontrollers. Use of the
+  13:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * software is governed by this copyright notice and the following disclaimer.
+  14:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *
+  15:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
+  16:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * GUARANTEES OR REPRESENTATIONS OF ANY KIND. ARTERY EXPRESSLY DISCLAIMS,
+  17:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * TO THE FULLEST EXTENT PERMITTED BY LAW, ALL EXPRESS, IMPLIED OR
+  18:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * STATUTORY OR OTHER WARRANTIES, GUARANTEES OR REPRESENTATIONS,
+  19:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * INCLUDING BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+  20:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
+  21:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *
+  22:bsp/libraries/drivers/src/at32f435_437_exint.c ****   **************************************************************************
+  23:bsp/libraries/drivers/src/at32f435_437_exint.c ****   */
+  24:bsp/libraries/drivers/src/at32f435_437_exint.c **** 
+  25:bsp/libraries/drivers/src/at32f435_437_exint.c **** #include "at32f435_437_conf.h"
+  26:bsp/libraries/drivers/src/at32f435_437_exint.c **** 
+  27:bsp/libraries/drivers/src/at32f435_437_exint.c **** /** @addtogroup AT32F435_437_periph_driver
+  28:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @{
+  29:bsp/libraries/drivers/src/at32f435_437_exint.c ****   */
+  30:bsp/libraries/drivers/src/at32f435_437_exint.c **** 
+  31:bsp/libraries/drivers/src/at32f435_437_exint.c **** /** @defgroup EXINT
+  32:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @brief EXINT driver modules
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s 			page 2
+
+
+  33:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @{
+  34:bsp/libraries/drivers/src/at32f435_437_exint.c ****   */
+  35:bsp/libraries/drivers/src/at32f435_437_exint.c **** 
+  36:bsp/libraries/drivers/src/at32f435_437_exint.c **** #ifdef EXINT_MODULE_ENABLED
+  37:bsp/libraries/drivers/src/at32f435_437_exint.c **** 
+  38:bsp/libraries/drivers/src/at32f435_437_exint.c **** /** @defgroup EXINT_private_functions
+  39:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @{
+  40:bsp/libraries/drivers/src/at32f435_437_exint.c ****   */
+  41:bsp/libraries/drivers/src/at32f435_437_exint.c **** 
+  42:bsp/libraries/drivers/src/at32f435_437_exint.c **** /**
+  43:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @brief  exint reset
+  44:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @param  none
+  45:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @retval none
+  46:bsp/libraries/drivers/src/at32f435_437_exint.c ****   */
+  47:bsp/libraries/drivers/src/at32f435_437_exint.c **** void exint_reset(void)
+  48:bsp/libraries/drivers/src/at32f435_437_exint.c **** {
+  27              		.loc 1 48 1 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  49:bsp/libraries/drivers/src/at32f435_437_exint.c ****   EXINT->inten = 0x00000000;
+  32              		.loc 1 49 3 view .LVU1
+  33              		.loc 1 49 16 is_stmt 0 view .LVU2
+  34 0000 044B     		ldr	r3, .L2
+  35 0002 0022     		movs	r2, #0
+  36 0004 1A60     		str	r2, [r3]
+  50:bsp/libraries/drivers/src/at32f435_437_exint.c ****   EXINT->polcfg1 = 0x00000000;
+  37              		.loc 1 50 3 is_stmt 1 view .LVU3
+  38              		.loc 1 50 18 is_stmt 0 view .LVU4
+  39 0006 9A60     		str	r2, [r3, #8]
+  51:bsp/libraries/drivers/src/at32f435_437_exint.c ****   EXINT->polcfg2 = 0x00000000;
+  40              		.loc 1 51 3 is_stmt 1 view .LVU5
+  41              		.loc 1 51 18 is_stmt 0 view .LVU6
+  42 0008 DA60     		str	r2, [r3, #12]
+  52:bsp/libraries/drivers/src/at32f435_437_exint.c ****   EXINT->evten = 0x00000000;
+  43              		.loc 1 52 3 is_stmt 1 view .LVU7
+  44              		.loc 1 52 16 is_stmt 0 view .LVU8
+  45 000a 5A60     		str	r2, [r3, #4]
+  53:bsp/libraries/drivers/src/at32f435_437_exint.c ****   EXINT->intsts = 0x007FFFFF;
+  46              		.loc 1 53 3 is_stmt 1 view .LVU9
+  47              		.loc 1 53 17 is_stmt 0 view .LVU10
+  48 000c 024A     		ldr	r2, .L2+4
+  49 000e 5A61     		str	r2, [r3, #20]
+  54:bsp/libraries/drivers/src/at32f435_437_exint.c **** }
+  50              		.loc 1 54 1 view .LVU11
+  51 0010 7047     		bx	lr
+  52              	.L3:
+  53 0012 00BF     		.align	2
+  54              	.L2:
+  55 0014 003C0140 		.word	1073822720
+  56 0018 FFFF7F00 		.word	8388607
+  57              		.cfi_endproc
+  58              	.LFE133:
+  60              		.section	.text.exint_default_para_init,"ax",%progbits
+  61              		.align	1
+  62              		.global	exint_default_para_init
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s 			page 3
+
+
+  63              		.syntax unified
+  64              		.thumb
+  65              		.thumb_func
+  67              	exint_default_para_init:
+  68              	.LVL0:
+  69              	.LFB134:
+  55:bsp/libraries/drivers/src/at32f435_437_exint.c **** 
+  56:bsp/libraries/drivers/src/at32f435_437_exint.c **** /**
+  57:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @brief  exint default para init
+  58:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @param  exint_struct
+  59:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         - to the structure of exint_init_type
+  60:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @retval none
+  61:bsp/libraries/drivers/src/at32f435_437_exint.c ****   */
+  62:bsp/libraries/drivers/src/at32f435_437_exint.c **** void exint_default_para_init(exint_init_type *exint_struct)
+  63:bsp/libraries/drivers/src/at32f435_437_exint.c **** {
+  70              		.loc 1 63 1 is_stmt 1 view -0
+  71              		.cfi_startproc
+  72              		@ args = 0, pretend = 0, frame = 0
+  73              		@ frame_needed = 0, uses_anonymous_args = 0
+  74              		@ link register save eliminated.
+  64:bsp/libraries/drivers/src/at32f435_437_exint.c ****   exint_struct->line_enable = FALSE;
+  75              		.loc 1 64 3 view .LVU13
+  76              		.loc 1 64 29 is_stmt 0 view .LVU14
+  77 0000 0023     		movs	r3, #0
+  78 0002 4372     		strb	r3, [r0, #9]
+  65:bsp/libraries/drivers/src/at32f435_437_exint.c ****   exint_struct->line_select = EXINT_LINE_NONE;
+  79              		.loc 1 65 3 is_stmt 1 view .LVU15
+  80              		.loc 1 65 29 is_stmt 0 view .LVU16
+  81 0004 4360     		str	r3, [r0, #4]
+  66:bsp/libraries/drivers/src/at32f435_437_exint.c ****   exint_struct->line_polarity = EXINT_TRIGGER_FALLING_EDGE;
+  82              		.loc 1 66 3 is_stmt 1 view .LVU17
+  83              		.loc 1 66 31 is_stmt 0 view .LVU18
+  84 0006 0123     		movs	r3, #1
+  85 0008 0372     		strb	r3, [r0, #8]
+  67:bsp/libraries/drivers/src/at32f435_437_exint.c ****   exint_struct->line_mode = EXINT_LINE_EVENT;
+  86              		.loc 1 67 3 is_stmt 1 view .LVU19
+  87              		.loc 1 67 27 is_stmt 0 view .LVU20
+  88 000a 0370     		strb	r3, [r0]
+  68:bsp/libraries/drivers/src/at32f435_437_exint.c **** }
+  89              		.loc 1 68 1 view .LVU21
+  90 000c 7047     		bx	lr
+  91              		.cfi_endproc
+  92              	.LFE134:
+  94              		.section	.text.exint_init,"ax",%progbits
+  95              		.align	1
+  96              		.global	exint_init
+  97              		.syntax unified
+  98              		.thumb
+  99              		.thumb_func
+ 101              	exint_init:
+ 102              	.LVL1:
+ 103              	.LFB135:
+  69:bsp/libraries/drivers/src/at32f435_437_exint.c **** 
+  70:bsp/libraries/drivers/src/at32f435_437_exint.c **** /**
+  71:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @brief  exint init
+  72:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @param  exint_struct
+  73:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         - to the structure of exint_init_type
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s 			page 4
+
+
+  74:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @retval none
+  75:bsp/libraries/drivers/src/at32f435_437_exint.c ****   */
+  76:bsp/libraries/drivers/src/at32f435_437_exint.c **** void exint_init(exint_init_type *exint_struct)
+  77:bsp/libraries/drivers/src/at32f435_437_exint.c **** {
+ 104              		.loc 1 77 1 is_stmt 1 view -0
+ 105              		.cfi_startproc
+ 106              		@ args = 0, pretend = 0, frame = 0
+ 107              		@ frame_needed = 0, uses_anonymous_args = 0
+ 108              		@ link register save eliminated.
+ 109              		.loc 1 77 1 is_stmt 0 view .LVU23
+ 110 0000 10B4     		push	{r4}
+ 111              	.LCFI0:
+ 112              		.cfi_def_cfa_offset 4
+ 113              		.cfi_offset 4, -4
+  78:bsp/libraries/drivers/src/at32f435_437_exint.c ****   uint32_t line_index = 0;
+ 114              		.loc 1 78 3 is_stmt 1 view .LVU24
+ 115              	.LVL2:
+  79:bsp/libraries/drivers/src/at32f435_437_exint.c ****   line_index = exint_struct->line_select;
+ 116              		.loc 1 79 3 view .LVU25
+ 117              		.loc 1 79 14 is_stmt 0 view .LVU26
+ 118 0002 4468     		ldr	r4, [r0, #4]
+ 119              	.LVL3:
+  80:bsp/libraries/drivers/src/at32f435_437_exint.c **** 
+  81:bsp/libraries/drivers/src/at32f435_437_exint.c ****   EXINT->inten &= ~line_index;
+ 120              		.loc 1 81 3 is_stmt 1 view .LVU27
+ 121              		.loc 1 81 16 is_stmt 0 view .LVU28
+ 122 0004 1A4B     		ldr	r3, .L13
+ 123 0006 1A68     		ldr	r2, [r3]
+ 124 0008 22EA0402 		bic	r2, r2, r4
+ 125 000c 1A60     		str	r2, [r3]
+  82:bsp/libraries/drivers/src/at32f435_437_exint.c ****   EXINT->evten &= ~line_index;
+ 126              		.loc 1 82 3 is_stmt 1 view .LVU29
+ 127              		.loc 1 82 16 is_stmt 0 view .LVU30
+ 128 000e 5A68     		ldr	r2, [r3, #4]
+ 129 0010 22EA0402 		bic	r2, r2, r4
+ 130 0014 5A60     		str	r2, [r3, #4]
+  83:bsp/libraries/drivers/src/at32f435_437_exint.c **** 
+  84:bsp/libraries/drivers/src/at32f435_437_exint.c ****   if(exint_struct->line_enable != FALSE)
+ 131              		.loc 1 84 3 is_stmt 1 view .LVU31
+ 132              		.loc 1 84 18 is_stmt 0 view .LVU32
+ 133 0016 437A     		ldrb	r3, [r0, #9]	@ zero_extendqisi2
+ 134              		.loc 1 84 5 view .LVU33
+ 135 0018 9BB1     		cbz	r3, .L5
+ 136 001a E143     		mvns	r1, r4
+  85:bsp/libraries/drivers/src/at32f435_437_exint.c ****   {
+  86:bsp/libraries/drivers/src/at32f435_437_exint.c ****     if(exint_struct->line_mode == EXINT_LINE_INTERRUPUT)
+ 137              		.loc 1 86 5 is_stmt 1 view .LVU34
+ 138              		.loc 1 86 20 is_stmt 0 view .LVU35
+ 139 001c 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 140              		.loc 1 86 7 view .LVU36
+ 141 001e 93B9     		cbnz	r3, .L7
+  87:bsp/libraries/drivers/src/at32f435_437_exint.c ****     {
+  88:bsp/libraries/drivers/src/at32f435_437_exint.c ****       EXINT->inten |= line_index;
+ 142              		.loc 1 88 7 is_stmt 1 view .LVU37
+ 143              		.loc 1 88 20 is_stmt 0 view .LVU38
+ 144 0020 134A     		ldr	r2, .L13
+ 145 0022 1368     		ldr	r3, [r2]
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s 			page 5
+
+
+ 146 0024 2343     		orrs	r3, r3, r4
+ 147 0026 1360     		str	r3, [r2]
+ 148              	.L8:
+  89:bsp/libraries/drivers/src/at32f435_437_exint.c ****     }
+  90:bsp/libraries/drivers/src/at32f435_437_exint.c ****     else
+  91:bsp/libraries/drivers/src/at32f435_437_exint.c ****     {
+  92:bsp/libraries/drivers/src/at32f435_437_exint.c ****       EXINT->evten |= line_index;
+  93:bsp/libraries/drivers/src/at32f435_437_exint.c ****     }
+  94:bsp/libraries/drivers/src/at32f435_437_exint.c **** 
+  95:bsp/libraries/drivers/src/at32f435_437_exint.c ****     EXINT->polcfg1 &= ~line_index;
+ 149              		.loc 1 95 5 is_stmt 1 view .LVU39
+ 150              		.loc 1 95 20 is_stmt 0 view .LVU40
+ 151 0028 114B     		ldr	r3, .L13
+ 152 002a 9A68     		ldr	r2, [r3, #8]
+ 153 002c 0A40     		ands	r2, r2, r1
+ 154 002e 9A60     		str	r2, [r3, #8]
+  96:bsp/libraries/drivers/src/at32f435_437_exint.c ****     EXINT->polcfg2 &= ~line_index;
+ 155              		.loc 1 96 5 is_stmt 1 view .LVU41
+ 156              		.loc 1 96 20 is_stmt 0 view .LVU42
+ 157 0030 DA68     		ldr	r2, [r3, #12]
+ 158 0032 1140     		ands	r1, r1, r2
+ 159 0034 D960     		str	r1, [r3, #12]
+  97:bsp/libraries/drivers/src/at32f435_437_exint.c ****     if(exint_struct->line_polarity == EXINT_TRIGGER_RISING_EDGE)
+ 160              		.loc 1 97 5 is_stmt 1 view .LVU43
+ 161              		.loc 1 97 20 is_stmt 0 view .LVU44
+ 162 0036 037A     		ldrb	r3, [r0, #8]	@ zero_extendqisi2
+ 163              		.loc 1 97 7 view .LVU45
+ 164 0038 53B9     		cbnz	r3, .L9
+  98:bsp/libraries/drivers/src/at32f435_437_exint.c ****     {
+  99:bsp/libraries/drivers/src/at32f435_437_exint.c ****       EXINT->polcfg1 |= line_index;
+ 165              		.loc 1 99 7 is_stmt 1 view .LVU46
+ 166              		.loc 1 99 22 is_stmt 0 view .LVU47
+ 167 003a 0D4A     		ldr	r2, .L13
+ 168 003c 9368     		ldr	r3, [r2, #8]
+ 169 003e 1C43     		orrs	r4, r4, r3
+ 170              	.LVL4:
+ 171              		.loc 1 99 22 view .LVU48
+ 172 0040 9460     		str	r4, [r2, #8]
+ 173              	.L5:
+ 100:bsp/libraries/drivers/src/at32f435_437_exint.c ****     }
+ 101:bsp/libraries/drivers/src/at32f435_437_exint.c ****     else if(exint_struct->line_polarity == EXINT_TRIGGER_FALLING_EDGE)
+ 102:bsp/libraries/drivers/src/at32f435_437_exint.c ****     {
+ 103:bsp/libraries/drivers/src/at32f435_437_exint.c ****       EXINT->polcfg2 |= line_index;
+ 104:bsp/libraries/drivers/src/at32f435_437_exint.c ****     }
+ 105:bsp/libraries/drivers/src/at32f435_437_exint.c ****     else
+ 106:bsp/libraries/drivers/src/at32f435_437_exint.c ****     {
+ 107:bsp/libraries/drivers/src/at32f435_437_exint.c ****       EXINT->polcfg1 |= line_index;
+ 108:bsp/libraries/drivers/src/at32f435_437_exint.c ****       EXINT->polcfg2 |= line_index;
+ 109:bsp/libraries/drivers/src/at32f435_437_exint.c ****     }
+ 110:bsp/libraries/drivers/src/at32f435_437_exint.c ****   }
+ 111:bsp/libraries/drivers/src/at32f435_437_exint.c **** }
+ 174              		.loc 1 111 1 view .LVU49
+ 175 0042 10BC     		pop	{r4}
+ 176              	.LCFI1:
+ 177              		.cfi_remember_state
+ 178              		.cfi_restore 4
+ 179              		.cfi_def_cfa_offset 0
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s 			page 6
+
+
+ 180 0044 7047     		bx	lr
+ 181              	.LVL5:
+ 182              	.L7:
+ 183              	.LCFI2:
+ 184              		.cfi_restore_state
+  92:bsp/libraries/drivers/src/at32f435_437_exint.c ****     }
+ 185              		.loc 1 92 7 is_stmt 1 view .LVU50
+  92:bsp/libraries/drivers/src/at32f435_437_exint.c ****     }
+ 186              		.loc 1 92 20 is_stmt 0 view .LVU51
+ 187 0046 0A4A     		ldr	r2, .L13
+ 188 0048 5368     		ldr	r3, [r2, #4]
+ 189 004a 2343     		orrs	r3, r3, r4
+ 190 004c 5360     		str	r3, [r2, #4]
+ 191 004e EBE7     		b	.L8
+ 192              	.L9:
+ 101:bsp/libraries/drivers/src/at32f435_437_exint.c ****     {
+ 193              		.loc 1 101 10 is_stmt 1 view .LVU52
+ 101:bsp/libraries/drivers/src/at32f435_437_exint.c ****     {
+ 194              		.loc 1 101 12 is_stmt 0 view .LVU53
+ 195 0050 012B     		cmp	r3, #1
+ 196 0052 07D0     		beq	.L12
+ 107:bsp/libraries/drivers/src/at32f435_437_exint.c ****       EXINT->polcfg2 |= line_index;
+ 197              		.loc 1 107 7 is_stmt 1 view .LVU54
+ 107:bsp/libraries/drivers/src/at32f435_437_exint.c ****       EXINT->polcfg2 |= line_index;
+ 198              		.loc 1 107 22 is_stmt 0 view .LVU55
+ 199 0054 064B     		ldr	r3, .L13
+ 200 0056 9A68     		ldr	r2, [r3, #8]
+ 201 0058 2243     		orrs	r2, r2, r4
+ 202 005a 9A60     		str	r2, [r3, #8]
+ 108:bsp/libraries/drivers/src/at32f435_437_exint.c ****     }
+ 203              		.loc 1 108 7 is_stmt 1 view .LVU56
+ 108:bsp/libraries/drivers/src/at32f435_437_exint.c ****     }
+ 204              		.loc 1 108 22 is_stmt 0 view .LVU57
+ 205 005c DA68     		ldr	r2, [r3, #12]
+ 206 005e 1443     		orrs	r4, r4, r2
+ 207              	.LVL6:
+ 108:bsp/libraries/drivers/src/at32f435_437_exint.c ****     }
+ 208              		.loc 1 108 22 view .LVU58
+ 209 0060 DC60     		str	r4, [r3, #12]
+ 210              		.loc 1 111 1 view .LVU59
+ 211 0062 EEE7     		b	.L5
+ 212              	.LVL7:
+ 213              	.L12:
+ 103:bsp/libraries/drivers/src/at32f435_437_exint.c ****     }
+ 214              		.loc 1 103 7 is_stmt 1 view .LVU60
+ 103:bsp/libraries/drivers/src/at32f435_437_exint.c ****     }
+ 215              		.loc 1 103 22 is_stmt 0 view .LVU61
+ 216 0064 024A     		ldr	r2, .L13
+ 217 0066 D368     		ldr	r3, [r2, #12]
+ 218 0068 1C43     		orrs	r4, r4, r3
+ 219              	.LVL8:
+ 103:bsp/libraries/drivers/src/at32f435_437_exint.c ****     }
+ 220              		.loc 1 103 22 view .LVU62
+ 221 006a D460     		str	r4, [r2, #12]
+ 222 006c E9E7     		b	.L5
+ 223              	.L14:
+ 224 006e 00BF     		.align	2
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s 			page 7
+
+
+ 225              	.L13:
+ 226 0070 003C0140 		.word	1073822720
+ 227              		.cfi_endproc
+ 228              	.LFE135:
+ 230              		.section	.text.exint_flag_clear,"ax",%progbits
+ 231              		.align	1
+ 232              		.global	exint_flag_clear
+ 233              		.syntax unified
+ 234              		.thumb
+ 235              		.thumb_func
+ 237              	exint_flag_clear:
+ 238              	.LVL9:
+ 239              	.LFB136:
+ 112:bsp/libraries/drivers/src/at32f435_437_exint.c **** 
+ 113:bsp/libraries/drivers/src/at32f435_437_exint.c **** /**
+ 114:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @brief  clear exint flag
+ 115:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @param  exint_line
+ 116:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         this parameter can be any combination of the following values:
+ 117:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         - EXINT_LINE_0
+ 118:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         - EXINT_LINE_1
+ 119:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         ...
+ 120:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         - EXINT_LINE_21
+ 121:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         - EXINT_LINE_22
+ 122:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @retval none
+ 123:bsp/libraries/drivers/src/at32f435_437_exint.c ****   */
+ 124:bsp/libraries/drivers/src/at32f435_437_exint.c **** void exint_flag_clear(uint32_t exint_line)
+ 125:bsp/libraries/drivers/src/at32f435_437_exint.c **** {
+ 240              		.loc 1 125 1 is_stmt 1 view -0
+ 241              		.cfi_startproc
+ 242              		@ args = 0, pretend = 0, frame = 0
+ 243              		@ frame_needed = 0, uses_anonymous_args = 0
+ 244              		@ link register save eliminated.
+ 126:bsp/libraries/drivers/src/at32f435_437_exint.c ****   EXINT->intsts = exint_line;
+ 245              		.loc 1 126 3 view .LVU64
+ 246              		.loc 1 126 17 is_stmt 0 view .LVU65
+ 247 0000 014B     		ldr	r3, .L16
+ 248 0002 5861     		str	r0, [r3, #20]
+ 127:bsp/libraries/drivers/src/at32f435_437_exint.c **** }
+ 249              		.loc 1 127 1 view .LVU66
+ 250 0004 7047     		bx	lr
+ 251              	.L17:
+ 252 0006 00BF     		.align	2
+ 253              	.L16:
+ 254 0008 003C0140 		.word	1073822720
+ 255              		.cfi_endproc
+ 256              	.LFE136:
+ 258              		.section	.text.exint_flag_get,"ax",%progbits
+ 259              		.align	1
+ 260              		.global	exint_flag_get
+ 261              		.syntax unified
+ 262              		.thumb
+ 263              		.thumb_func
+ 265              	exint_flag_get:
+ 266              	.LVL10:
+ 267              	.LFB137:
+ 128:bsp/libraries/drivers/src/at32f435_437_exint.c **** 
+ 129:bsp/libraries/drivers/src/at32f435_437_exint.c **** /**
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s 			page 8
+
+
+ 130:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @brief  get exint flag
+ 131:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @param  exint_line
+ 132:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         this parameter can be one of the following values:
+ 133:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         - EXINT_LINE_0
+ 134:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         - EXINT_LINE_1
+ 135:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         ...
+ 136:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         - EXINT_LINE_21
+ 137:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         - EXINT_LINE_22
+ 138:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @retval the new state of exint flag(SET or RESET).
+ 139:bsp/libraries/drivers/src/at32f435_437_exint.c ****   */
+ 140:bsp/libraries/drivers/src/at32f435_437_exint.c **** flag_status exint_flag_get(uint32_t exint_line)
+ 141:bsp/libraries/drivers/src/at32f435_437_exint.c **** {
+ 268              		.loc 1 141 1 is_stmt 1 view -0
+ 269              		.cfi_startproc
+ 270              		@ args = 0, pretend = 0, frame = 0
+ 271              		@ frame_needed = 0, uses_anonymous_args = 0
+ 272              		@ link register save eliminated.
+ 142:bsp/libraries/drivers/src/at32f435_437_exint.c ****   flag_status status = RESET;
+ 273              		.loc 1 142 3 view .LVU68
+ 143:bsp/libraries/drivers/src/at32f435_437_exint.c ****   uint32_t exint_flag =0;
+ 274              		.loc 1 143 3 view .LVU69
+ 144:bsp/libraries/drivers/src/at32f435_437_exint.c ****   exint_flag = EXINT->intsts & exint_line;
+ 275              		.loc 1 144 3 view .LVU70
+ 276              		.loc 1 144 21 is_stmt 0 view .LVU71
+ 277 0000 034B     		ldr	r3, .L21
+ 278 0002 5B69     		ldr	r3, [r3, #20]
+ 279              	.LVL11:
+ 145:bsp/libraries/drivers/src/at32f435_437_exint.c ****   if((exint_flag != (uint16_t)RESET))
+ 280              		.loc 1 145 3 is_stmt 1 view .LVU72
+ 281              		.loc 1 145 5 is_stmt 0 view .LVU73
+ 282 0004 0342     		tst	r3, r0
+ 283 0006 01D0     		beq	.L20
+ 146:bsp/libraries/drivers/src/at32f435_437_exint.c ****   {
+ 147:bsp/libraries/drivers/src/at32f435_437_exint.c ****     status = SET;
+ 284              		.loc 1 147 12 view .LVU74
+ 285 0008 0120     		movs	r0, #1
+ 286              	.LVL12:
+ 287              		.loc 1 147 12 view .LVU75
+ 288 000a 7047     		bx	lr
+ 289              	.LVL13:
+ 290              	.L20:
+ 148:bsp/libraries/drivers/src/at32f435_437_exint.c ****   }
+ 149:bsp/libraries/drivers/src/at32f435_437_exint.c ****   else
+ 150:bsp/libraries/drivers/src/at32f435_437_exint.c ****   {
+ 151:bsp/libraries/drivers/src/at32f435_437_exint.c ****     status = RESET;
+ 291              		.loc 1 151 12 view .LVU76
+ 292 000c 0020     		movs	r0, #0
+ 293              	.LVL14:
+ 152:bsp/libraries/drivers/src/at32f435_437_exint.c ****   }
+ 153:bsp/libraries/drivers/src/at32f435_437_exint.c ****   return status;
+ 294              		.loc 1 153 3 is_stmt 1 view .LVU77
+ 154:bsp/libraries/drivers/src/at32f435_437_exint.c **** }
+ 295              		.loc 1 154 1 is_stmt 0 view .LVU78
+ 296 000e 7047     		bx	lr
+ 297              	.L22:
+ 298              		.align	2
+ 299              	.L21:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s 			page 9
+
+
+ 300 0010 003C0140 		.word	1073822720
+ 301              		.cfi_endproc
+ 302              	.LFE137:
+ 304              		.section	.text.exint_interrupt_flag_get,"ax",%progbits
+ 305              		.align	1
+ 306              		.global	exint_interrupt_flag_get
+ 307              		.syntax unified
+ 308              		.thumb
+ 309              		.thumb_func
+ 311              	exint_interrupt_flag_get:
+ 312              	.LVL15:
+ 313              	.LFB138:
+ 155:bsp/libraries/drivers/src/at32f435_437_exint.c **** 
+ 156:bsp/libraries/drivers/src/at32f435_437_exint.c **** /**
+ 157:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @brief  get exint interrupt flag
+ 158:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @param  exint_line
+ 159:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         this parameter can be one of the following values:
+ 160:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         - EXINT_LINE_0
+ 161:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         - EXINT_LINE_1
+ 162:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         ...
+ 163:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         - EXINT_LINE_21
+ 164:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         - EXINT_LINE_22
+ 165:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @retval the new state of exint flag(SET or RESET).
+ 166:bsp/libraries/drivers/src/at32f435_437_exint.c ****   */
+ 167:bsp/libraries/drivers/src/at32f435_437_exint.c **** flag_status exint_interrupt_flag_get(uint32_t exint_line)
+ 168:bsp/libraries/drivers/src/at32f435_437_exint.c **** {
+ 314              		.loc 1 168 1 is_stmt 1 view -0
+ 315              		.cfi_startproc
+ 316              		@ args = 0, pretend = 0, frame = 0
+ 317              		@ frame_needed = 0, uses_anonymous_args = 0
+ 318              		@ link register save eliminated.
+ 169:bsp/libraries/drivers/src/at32f435_437_exint.c ****   flag_status status = RESET;
+ 319              		.loc 1 169 3 view .LVU80
+ 170:bsp/libraries/drivers/src/at32f435_437_exint.c ****   uint32_t exint_flag = 0;
+ 320              		.loc 1 170 3 view .LVU81
+ 171:bsp/libraries/drivers/src/at32f435_437_exint.c ****   exint_flag = EXINT->intsts & exint_line;
+ 321              		.loc 1 171 3 view .LVU82
+ 322              		.loc 1 171 21 is_stmt 0 view .LVU83
+ 323 0000 044A     		ldr	r2, .L26
+ 324 0002 5369     		ldr	r3, [r2, #20]
+ 325              		.loc 1 171 14 view .LVU84
+ 326 0004 0340     		ands	r3, r3, r0
+ 327              	.LVL16:
+ 172:bsp/libraries/drivers/src/at32f435_437_exint.c ****   exint_flag = exint_flag & EXINT->inten;
+ 328              		.loc 1 172 3 is_stmt 1 view .LVU85
+ 329              		.loc 1 172 34 is_stmt 0 view .LVU86
+ 330 0006 1268     		ldr	r2, [r2]
+ 331              	.LVL17:
+ 173:bsp/libraries/drivers/src/at32f435_437_exint.c **** 
+ 174:bsp/libraries/drivers/src/at32f435_437_exint.c ****   if((exint_flag != (uint16_t)RESET))
+ 332              		.loc 1 174 3 is_stmt 1 view .LVU87
+ 333              		.loc 1 174 5 is_stmt 0 view .LVU88
+ 334 0008 1A42     		tst	r2, r3
+ 335 000a 01D0     		beq	.L25
+ 175:bsp/libraries/drivers/src/at32f435_437_exint.c ****   {
+ 176:bsp/libraries/drivers/src/at32f435_437_exint.c ****     status = SET;
+ 336              		.loc 1 176 12 view .LVU89
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s 			page 10
+
+
+ 337 000c 0120     		movs	r0, #1
+ 338              	.LVL18:
+ 339              		.loc 1 176 12 view .LVU90
+ 340 000e 7047     		bx	lr
+ 341              	.LVL19:
+ 342              	.L25:
+ 177:bsp/libraries/drivers/src/at32f435_437_exint.c ****   }
+ 178:bsp/libraries/drivers/src/at32f435_437_exint.c ****   else
+ 179:bsp/libraries/drivers/src/at32f435_437_exint.c ****   {
+ 180:bsp/libraries/drivers/src/at32f435_437_exint.c ****     status = RESET;
+ 343              		.loc 1 180 12 view .LVU91
+ 344 0010 0020     		movs	r0, #0
+ 345              	.LVL20:
+ 181:bsp/libraries/drivers/src/at32f435_437_exint.c ****   }
+ 182:bsp/libraries/drivers/src/at32f435_437_exint.c ****   return status;
+ 346              		.loc 1 182 3 is_stmt 1 view .LVU92
+ 183:bsp/libraries/drivers/src/at32f435_437_exint.c **** }
+ 347              		.loc 1 183 1 is_stmt 0 view .LVU93
+ 348 0012 7047     		bx	lr
+ 349              	.L27:
+ 350              		.align	2
+ 351              	.L26:
+ 352 0014 003C0140 		.word	1073822720
+ 353              		.cfi_endproc
+ 354              	.LFE138:
+ 356              		.section	.text.exint_software_interrupt_event_generate,"ax",%progbits
+ 357              		.align	1
+ 358              		.global	exint_software_interrupt_event_generate
+ 359              		.syntax unified
+ 360              		.thumb
+ 361              		.thumb_func
+ 363              	exint_software_interrupt_event_generate:
+ 364              	.LVL21:
+ 365              	.LFB139:
+ 184:bsp/libraries/drivers/src/at32f435_437_exint.c **** 
+ 185:bsp/libraries/drivers/src/at32f435_437_exint.c **** /**
+ 186:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @brief  generate exint software interrupt event
+ 187:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @param  exint_line
+ 188:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         this parameter can be one of the following values:
+ 189:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         - EXINT_LINE_0
+ 190:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         - EXINT_LINE_1
+ 191:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         ...
+ 192:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         - EXINT_LINE_21
+ 193:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         - EXINT_LINE_22
+ 194:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @retval none
+ 195:bsp/libraries/drivers/src/at32f435_437_exint.c ****   */
+ 196:bsp/libraries/drivers/src/at32f435_437_exint.c **** void exint_software_interrupt_event_generate(uint32_t exint_line)
+ 197:bsp/libraries/drivers/src/at32f435_437_exint.c **** {
+ 366              		.loc 1 197 1 is_stmt 1 view -0
+ 367              		.cfi_startproc
+ 368              		@ args = 0, pretend = 0, frame = 0
+ 369              		@ frame_needed = 0, uses_anonymous_args = 0
+ 370              		@ link register save eliminated.
+ 198:bsp/libraries/drivers/src/at32f435_437_exint.c ****   EXINT->swtrg |= exint_line;
+ 371              		.loc 1 198 3 view .LVU95
+ 372              		.loc 1 198 16 is_stmt 0 view .LVU96
+ 373 0000 024A     		ldr	r2, .L29
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s 			page 11
+
+
+ 374 0002 1369     		ldr	r3, [r2, #16]
+ 375 0004 0343     		orrs	r3, r3, r0
+ 376 0006 1361     		str	r3, [r2, #16]
+ 199:bsp/libraries/drivers/src/at32f435_437_exint.c **** }
+ 377              		.loc 1 199 1 view .LVU97
+ 378 0008 7047     		bx	lr
+ 379              	.L30:
+ 380 000a 00BF     		.align	2
+ 381              	.L29:
+ 382 000c 003C0140 		.word	1073822720
+ 383              		.cfi_endproc
+ 384              	.LFE139:
+ 386              		.section	.text.exint_interrupt_enable,"ax",%progbits
+ 387              		.align	1
+ 388              		.global	exint_interrupt_enable
+ 389              		.syntax unified
+ 390              		.thumb
+ 391              		.thumb_func
+ 393              	exint_interrupt_enable:
+ 394              	.LVL22:
+ 395              	.LFB140:
+ 200:bsp/libraries/drivers/src/at32f435_437_exint.c **** 
+ 201:bsp/libraries/drivers/src/at32f435_437_exint.c **** /**
+ 202:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @brief  enable or disable exint interrupt
+ 203:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @param  exint_line
+ 204:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         this parameter can be any combination of the following values:
+ 205:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         - EXINT_LINE_0
+ 206:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         - EXINT_LINE_1
+ 207:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         ...
+ 208:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         - EXINT_LINE_21
+ 209:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         - EXINT_LINE_22
+ 210:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @param  new_state: new state of exint interrupt.
+ 211:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         this parameter can be: TRUE or FALSE.
+ 212:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @retval none
+ 213:bsp/libraries/drivers/src/at32f435_437_exint.c ****   */
+ 214:bsp/libraries/drivers/src/at32f435_437_exint.c **** void exint_interrupt_enable(uint32_t exint_line, confirm_state new_state)
+ 215:bsp/libraries/drivers/src/at32f435_437_exint.c **** {
+ 396              		.loc 1 215 1 is_stmt 1 view -0
+ 397              		.cfi_startproc
+ 398              		@ args = 0, pretend = 0, frame = 0
+ 399              		@ frame_needed = 0, uses_anonymous_args = 0
+ 400              		@ link register save eliminated.
+ 216:bsp/libraries/drivers/src/at32f435_437_exint.c ****   if(new_state == TRUE)
+ 401              		.loc 1 216 3 view .LVU99
+ 402              		.loc 1 216 5 is_stmt 0 view .LVU100
+ 403 0000 0129     		cmp	r1, #1
+ 404 0002 05D0     		beq	.L34
+ 217:bsp/libraries/drivers/src/at32f435_437_exint.c ****   {
+ 218:bsp/libraries/drivers/src/at32f435_437_exint.c ****     EXINT->inten |= exint_line;
+ 219:bsp/libraries/drivers/src/at32f435_437_exint.c ****   }
+ 220:bsp/libraries/drivers/src/at32f435_437_exint.c ****   else
+ 221:bsp/libraries/drivers/src/at32f435_437_exint.c ****   {
+ 222:bsp/libraries/drivers/src/at32f435_437_exint.c ****     EXINT->inten &= ~exint_line;
+ 405              		.loc 1 222 5 is_stmt 1 view .LVU101
+ 406              		.loc 1 222 18 is_stmt 0 view .LVU102
+ 407 0004 054A     		ldr	r2, .L35
+ 408 0006 1368     		ldr	r3, [r2]
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s 			page 12
+
+
+ 409 0008 23EA0000 		bic	r0, r3, r0
+ 410              	.LVL23:
+ 411              		.loc 1 222 18 view .LVU103
+ 412 000c 1060     		str	r0, [r2]
+ 223:bsp/libraries/drivers/src/at32f435_437_exint.c ****   }
+ 224:bsp/libraries/drivers/src/at32f435_437_exint.c **** }
+ 413              		.loc 1 224 1 view .LVU104
+ 414 000e 7047     		bx	lr
+ 415              	.LVL24:
+ 416              	.L34:
+ 218:bsp/libraries/drivers/src/at32f435_437_exint.c ****   }
+ 417              		.loc 1 218 5 is_stmt 1 view .LVU105
+ 218:bsp/libraries/drivers/src/at32f435_437_exint.c ****   }
+ 418              		.loc 1 218 18 is_stmt 0 view .LVU106
+ 419 0010 024A     		ldr	r2, .L35
+ 420 0012 1368     		ldr	r3, [r2]
+ 421 0014 1843     		orrs	r0, r0, r3
+ 422              	.LVL25:
+ 218:bsp/libraries/drivers/src/at32f435_437_exint.c ****   }
+ 423              		.loc 1 218 18 view .LVU107
+ 424 0016 1060     		str	r0, [r2]
+ 425 0018 7047     		bx	lr
+ 426              	.L36:
+ 427 001a 00BF     		.align	2
+ 428              	.L35:
+ 429 001c 003C0140 		.word	1073822720
+ 430              		.cfi_endproc
+ 431              	.LFE140:
+ 433              		.section	.text.exint_event_enable,"ax",%progbits
+ 434              		.align	1
+ 435              		.global	exint_event_enable
+ 436              		.syntax unified
+ 437              		.thumb
+ 438              		.thumb_func
+ 440              	exint_event_enable:
+ 441              	.LVL26:
+ 442              	.LFB141:
+ 225:bsp/libraries/drivers/src/at32f435_437_exint.c **** 
+ 226:bsp/libraries/drivers/src/at32f435_437_exint.c **** /**
+ 227:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @brief  enable or disable exint event
+ 228:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @param  exint_line
+ 229:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         this parameter can be any combination of the following values:
+ 230:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         - EXINT_LINE_0
+ 231:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         - EXINT_LINE_1
+ 232:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         ...
+ 233:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         - EXINT_LINE_21
+ 234:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         - EXINT_LINE_22
+ 235:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @param  new_state: new state of exint event.
+ 236:bsp/libraries/drivers/src/at32f435_437_exint.c ****   *         this parameter can be: TRUE or FALSE.
+ 237:bsp/libraries/drivers/src/at32f435_437_exint.c ****   * @retval none
+ 238:bsp/libraries/drivers/src/at32f435_437_exint.c ****   */
+ 239:bsp/libraries/drivers/src/at32f435_437_exint.c **** void exint_event_enable(uint32_t exint_line, confirm_state new_state)
+ 240:bsp/libraries/drivers/src/at32f435_437_exint.c **** {
+ 443              		.loc 1 240 1 is_stmt 1 view -0
+ 444              		.cfi_startproc
+ 445              		@ args = 0, pretend = 0, frame = 0
+ 446              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s 			page 13
+
+
+ 447              		@ link register save eliminated.
+ 241:bsp/libraries/drivers/src/at32f435_437_exint.c ****   if(new_state == TRUE)
+ 448              		.loc 1 241 3 view .LVU109
+ 449              		.loc 1 241 5 is_stmt 0 view .LVU110
+ 450 0000 0129     		cmp	r1, #1
+ 451 0002 05D0     		beq	.L40
+ 242:bsp/libraries/drivers/src/at32f435_437_exint.c ****   {
+ 243:bsp/libraries/drivers/src/at32f435_437_exint.c ****     EXINT->evten |= exint_line;
+ 244:bsp/libraries/drivers/src/at32f435_437_exint.c ****   }
+ 245:bsp/libraries/drivers/src/at32f435_437_exint.c ****   else
+ 246:bsp/libraries/drivers/src/at32f435_437_exint.c ****   {
+ 247:bsp/libraries/drivers/src/at32f435_437_exint.c ****     EXINT->evten &= ~exint_line;
+ 452              		.loc 1 247 5 is_stmt 1 view .LVU111
+ 453              		.loc 1 247 18 is_stmt 0 view .LVU112
+ 454 0004 054A     		ldr	r2, .L41
+ 455 0006 5368     		ldr	r3, [r2, #4]
+ 456 0008 23EA0000 		bic	r0, r3, r0
+ 457              	.LVL27:
+ 458              		.loc 1 247 18 view .LVU113
+ 459 000c 5060     		str	r0, [r2, #4]
+ 248:bsp/libraries/drivers/src/at32f435_437_exint.c ****   }
+ 249:bsp/libraries/drivers/src/at32f435_437_exint.c **** }
+ 460              		.loc 1 249 1 view .LVU114
+ 461 000e 7047     		bx	lr
+ 462              	.LVL28:
+ 463              	.L40:
+ 243:bsp/libraries/drivers/src/at32f435_437_exint.c ****   }
+ 464              		.loc 1 243 5 is_stmt 1 view .LVU115
+ 243:bsp/libraries/drivers/src/at32f435_437_exint.c ****   }
+ 465              		.loc 1 243 18 is_stmt 0 view .LVU116
+ 466 0010 024A     		ldr	r2, .L41
+ 467 0012 5368     		ldr	r3, [r2, #4]
+ 468 0014 1843     		orrs	r0, r0, r3
+ 469              	.LVL29:
+ 243:bsp/libraries/drivers/src/at32f435_437_exint.c ****   }
+ 470              		.loc 1 243 18 view .LVU117
+ 471 0016 5060     		str	r0, [r2, #4]
+ 472 0018 7047     		bx	lr
+ 473              	.L42:
+ 474 001a 00BF     		.align	2
+ 475              	.L41:
+ 476 001c 003C0140 		.word	1073822720
+ 477              		.cfi_endproc
+ 478              	.LFE141:
+ 480              		.text
+ 481              	.Letext0:
+ 482              		.file 2 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\mac
+ 483              		.file 3 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\sys
+ 484              		.file 4 "bsp/libraries/cmsis/cm4/device_support/at32f435_437.h"
+ 485              		.file 5 "bsp/libraries/drivers/inc/at32f435_437_exint.h"
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s 			page 14
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 at32f435_437_exint.c
+C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s:18     .text.exint_reset:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s:24     .text.exint_reset:00000000 exint_reset
+C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s:55     .text.exint_reset:00000014 $d
+C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s:61     .text.exint_default_para_init:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s:67     .text.exint_default_para_init:00000000 exint_default_para_init
+C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s:95     .text.exint_init:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s:101    .text.exint_init:00000000 exint_init
+C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s:226    .text.exint_init:00000070 $d
+C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s:231    .text.exint_flag_clear:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s:237    .text.exint_flag_clear:00000000 exint_flag_clear
+C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s:254    .text.exint_flag_clear:00000008 $d
+C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s:259    .text.exint_flag_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s:265    .text.exint_flag_get:00000000 exint_flag_get
+C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s:300    .text.exint_flag_get:00000010 $d
+C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s:305    .text.exint_interrupt_flag_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s:311    .text.exint_interrupt_flag_get:00000000 exint_interrupt_flag_get
+C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s:352    .text.exint_interrupt_flag_get:00000014 $d
+C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s:357    .text.exint_software_interrupt_event_generate:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s:363    .text.exint_software_interrupt_event_generate:00000000 exint_software_interrupt_event_generate
+C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s:382    .text.exint_software_interrupt_event_generate:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s:387    .text.exint_interrupt_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s:393    .text.exint_interrupt_enable:00000000 exint_interrupt_enable
+C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s:429    .text.exint_interrupt_enable:0000001c $d
+C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s:434    .text.exint_event_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s:440    .text.exint_event_enable:00000000 exint_event_enable
+C:\Users\user\AppData\Local\Temp\ccGG8Fsy.s:476    .text.exint_event_enable:0000001c $d
+
+NO UNDEFINED SYMBOLS

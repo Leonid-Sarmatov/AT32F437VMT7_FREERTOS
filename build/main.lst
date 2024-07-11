@@ -1,0 +1,104 @@
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccUFqNkF.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"main.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.main,"ax",%progbits
+  18              		.align	1
+  19              		.global	main
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	main:
+  25              	.LFB133:
+  26              		.file 1 "src/main.c"
+   1:src/main.c    **** /**
+   2:src/main.c    ****   **************************************************************************
+   3:src/main.c    ****   * @file     main.c
+   4:src/main.c    ****   * @brief    main program
+   5:src/main.c    ****   **************************************************************************
+   6:src/main.c    ****   *                       Copyright notice & Disclaimer
+   7:src/main.c    ****   *
+   8:src/main.c    ****   * The software Board Support Package (BSP) that is made available to
+   9:src/main.c    ****   * download from Artery official website is the copyrighted work of Artery.
+  10:src/main.c    ****   * Artery authorizes customers to use, copy, and distribute the BSP
+  11:src/main.c    ****   * software and its related documentation for the purpose of design and
+  12:src/main.c    ****   * development in conjunction with Artery microcontrollers. Use of the
+  13:src/main.c    ****   * software is governed by this copyright notice and the following disclaimer.
+  14:src/main.c    ****   *
+  15:src/main.c    ****   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
+  16:src/main.c    ****   * GUARANTEES OR REPRESENTATIONS OF ANY KIND. ARTERY EXPRESSLY DISCLAIMS,
+  17:src/main.c    ****   * TO THE FULLEST EXTENT PERMITTED BY LAW, ALL EXPRESS, IMPLIED OR
+  18:src/main.c    ****   * STATUTORY OR OTHER WARRANTIES, GUARANTEES OR REPRESENTATIONS,
+  19:src/main.c    ****   * INCLUDING BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+  20:src/main.c    ****   * FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
+  21:src/main.c    ****   *
+  22:src/main.c    ****   **************************************************************************
+  23:src/main.c    ****   */
+  24:src/main.c    **** 
+  25:src/main.c    **** #include "at32f435_437_clock.h"
+  26:src/main.c    **** 
+  27:src/main.c    **** /**
+  28:src/main.c    ****   * @brief  main function.
+  29:src/main.c    ****   * @param  none
+  30:src/main.c    ****   * @retval none
+  31:src/main.c    ****   */
+  32:src/main.c    **** int main(void)
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccUFqNkF.s 			page 2
+
+
+  33:src/main.c    **** {
+  27              		.loc 1 33 1 view -0
+  28              		.cfi_startproc
+  29              		@ Volatile: function does not return.
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 08B5     		push	{r3, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 3, -8
+  36              		.cfi_offset 14, -4
+  34:src/main.c    ****   system_clock_config();
+  37              		.loc 1 34 3 view .LVU1
+  38 0002 FFF7FEFF 		bl	system_clock_config
+  39              	.LVL0:
+  40              	.L2:
+  35:src/main.c    **** 
+  36:src/main.c    ****   while(1)
+  41              		.loc 1 36 3 discriminator 1 view .LVU2
+  37:src/main.c    ****   {
+  38:src/main.c    **** 
+  39:src/main.c    ****   }
+  42              		.loc 1 39 3 discriminator 1 view .LVU3
+  36:src/main.c    ****   {
+  43              		.loc 1 36 8 discriminator 1 view .LVU4
+  44 0006 FEE7     		b	.L2
+  45              		.cfi_endproc
+  46              	.LFE133:
+  48              		.text
+  49              	.Letext0:
+  50              		.file 2 "inc/at32f435_437_clock.h"
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccUFqNkF.s 			page 3
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\Users\user\AppData\Local\Temp\ccUFqNkF.s:18     .text.main:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccUFqNkF.s:24     .text.main:00000000 main
+
+UNDEFINED SYMBOLS
+system_clock_config

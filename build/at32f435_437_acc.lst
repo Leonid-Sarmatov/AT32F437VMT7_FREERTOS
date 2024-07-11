@@ -1,0 +1,890 @@
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccjm6Feh.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"at32f435_437_acc.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.acc_calibration_mode_enable,"ax",%progbits
+  18              		.align	1
+  19              		.global	acc_calibration_mode_enable
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	acc_calibration_mode_enable:
+  25              	.LVL0:
+  26              	.LFB133:
+  27              		.file 1 "bsp/libraries/drivers/src/at32f435_437_acc.c"
+   1:bsp/libraries/drivers/src/at32f435_437_acc.c **** /**
+   2:bsp/libraries/drivers/src/at32f435_437_acc.c ****   **************************************************************************
+   3:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @file     at32f435_437_acc.c
+   4:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @brief    contains all the functions for the acc firmware library
+   5:bsp/libraries/drivers/src/at32f435_437_acc.c ****   **************************************************************************
+   6:bsp/libraries/drivers/src/at32f435_437_acc.c ****   *                       Copyright notice & Disclaimer
+   7:bsp/libraries/drivers/src/at32f435_437_acc.c ****   *
+   8:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * The software Board Support Package (BSP) that is made available to
+   9:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * download from Artery official website is the copyrighted work of Artery.
+  10:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * Artery authorizes customers to use, copy, and distribute the BSP
+  11:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * software and its related documentation for the purpose of design and
+  12:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * development in conjunction with Artery microcontrollers. Use of the
+  13:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * software is governed by this copyright notice and the following disclaimer.
+  14:bsp/libraries/drivers/src/at32f435_437_acc.c ****   *
+  15:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
+  16:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * GUARANTEES OR REPRESENTATIONS OF ANY KIND. ARTERY EXPRESSLY DISCLAIMS,
+  17:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * TO THE FULLEST EXTENT PERMITTED BY LAW, ALL EXPRESS, IMPLIED OR
+  18:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * STATUTORY OR OTHER WARRANTIES, GUARANTEES OR REPRESENTATIONS,
+  19:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * INCLUDING BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+  20:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
+  21:bsp/libraries/drivers/src/at32f435_437_acc.c ****   *
+  22:bsp/libraries/drivers/src/at32f435_437_acc.c ****   **************************************************************************
+  23:bsp/libraries/drivers/src/at32f435_437_acc.c ****   */
+  24:bsp/libraries/drivers/src/at32f435_437_acc.c **** 
+  25:bsp/libraries/drivers/src/at32f435_437_acc.c **** #include "at32f435_437_conf.h"
+  26:bsp/libraries/drivers/src/at32f435_437_acc.c **** 
+  27:bsp/libraries/drivers/src/at32f435_437_acc.c **** /** @addtogroup AT32F435_437_periph_driver
+  28:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @{
+  29:bsp/libraries/drivers/src/at32f435_437_acc.c ****   */
+  30:bsp/libraries/drivers/src/at32f435_437_acc.c **** 
+  31:bsp/libraries/drivers/src/at32f435_437_acc.c **** /** @defgroup ACC
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccjm6Feh.s 			page 2
+
+
+  32:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @brief ACC driver modules
+  33:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @{
+  34:bsp/libraries/drivers/src/at32f435_437_acc.c ****   */
+  35:bsp/libraries/drivers/src/at32f435_437_acc.c **** 
+  36:bsp/libraries/drivers/src/at32f435_437_acc.c **** #ifdef ACC_MODULE_ENABLED
+  37:bsp/libraries/drivers/src/at32f435_437_acc.c **** 
+  38:bsp/libraries/drivers/src/at32f435_437_acc.c **** /** @defgroup ACC_private_functions
+  39:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @{
+  40:bsp/libraries/drivers/src/at32f435_437_acc.c ****   */
+  41:bsp/libraries/drivers/src/at32f435_437_acc.c **** 
+  42:bsp/libraries/drivers/src/at32f435_437_acc.c **** /**
+  43:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @brief  enable or disable the acc calibration mode.
+  44:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @param  acc_trim: specifies the acc calibration type.
+  45:bsp/libraries/drivers/src/at32f435_437_acc.c ****   *         this parameter can be one of the following values:
+  46:bsp/libraries/drivers/src/at32f435_437_acc.c ****   *         - ACC_CAL_HICKCAL
+  47:bsp/libraries/drivers/src/at32f435_437_acc.c ****   *         - ACC_CAL_HICKTRIM
+  48:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @param  new_state: specifies the acc calibration to be enabled or disabled.(TRUE or FALSE)
+  49:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @retval none
+  50:bsp/libraries/drivers/src/at32f435_437_acc.c ****   */
+  51:bsp/libraries/drivers/src/at32f435_437_acc.c **** void acc_calibration_mode_enable(uint16_t acc_trim, confirm_state new_state)
+  52:bsp/libraries/drivers/src/at32f435_437_acc.c **** {
+  28              		.loc 1 52 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  53:bsp/libraries/drivers/src/at32f435_437_acc.c ****   if(acc_trim == ACC_CAL_HICKCAL)
+  33              		.loc 1 53 3 view .LVU1
+  34              		.loc 1 53 5 is_stmt 0 view .LVU2
+  35 0000 50B9     		cbnz	r0, .L2
+  54:bsp/libraries/drivers/src/at32f435_437_acc.c ****   {
+  55:bsp/libraries/drivers/src/at32f435_437_acc.c ****     ACC->ctrl1_bit.entrim = FALSE;
+  36              		.loc 1 55 5 is_stmt 1 view .LVU3
+  37              		.loc 1 55 27 is_stmt 0 view .LVU4
+  38 0002 084B     		ldr	r3, .L4
+  39 0004 5A68     		ldr	r2, [r3, #4]
+  40 0006 6FF34102 		bfc	r2, #1, #1
+  41 000a 5A60     		str	r2, [r3, #4]
+  42              	.L3:
+  56:bsp/libraries/drivers/src/at32f435_437_acc.c ****   }
+  57:bsp/libraries/drivers/src/at32f435_437_acc.c ****   else
+  58:bsp/libraries/drivers/src/at32f435_437_acc.c ****   {
+  59:bsp/libraries/drivers/src/at32f435_437_acc.c ****     ACC->ctrl1_bit.entrim = TRUE;
+  60:bsp/libraries/drivers/src/at32f435_437_acc.c ****   }
+  61:bsp/libraries/drivers/src/at32f435_437_acc.c ****   ACC->ctrl1_bit.calon = new_state;
+  43              		.loc 1 61 3 is_stmt 1 view .LVU5
+  44              		.loc 1 61 24 is_stmt 0 view .LVU6
+  45 000c 054B     		ldr	r3, .L4
+  46 000e 5A68     		ldr	r2, [r3, #4]
+  47 0010 61F30002 		bfi	r2, r1, #0, #1
+  48 0014 5A60     		str	r2, [r3, #4]
+  62:bsp/libraries/drivers/src/at32f435_437_acc.c **** }
+  49              		.loc 1 62 1 view .LVU7
+  50 0016 7047     		bx	lr
+  51              	.L2:
+  59:bsp/libraries/drivers/src/at32f435_437_acc.c ****   }
+  52              		.loc 1 59 5 is_stmt 1 view .LVU8
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccjm6Feh.s 			page 3
+
+
+  59:bsp/libraries/drivers/src/at32f435_437_acc.c ****   }
+  53              		.loc 1 59 27 is_stmt 0 view .LVU9
+  54 0018 024A     		ldr	r2, .L4
+  55 001a 5368     		ldr	r3, [r2, #4]
+  56 001c 43F00203 		orr	r3, r3, #2
+  57 0020 5360     		str	r3, [r2, #4]
+  58 0022 F3E7     		b	.L3
+  59              	.L5:
+  60              		.align	2
+  61              	.L4:
+  62 0024 00740140 		.word	1073837056
+  63              		.cfi_endproc
+  64              	.LFE133:
+  66              		.section	.text.acc_step_set,"ax",%progbits
+  67              		.align	1
+  68              		.global	acc_step_set
+  69              		.syntax unified
+  70              		.thumb
+  71              		.thumb_func
+  73              	acc_step_set:
+  74              	.LVL1:
+  75              	.LFB134:
+  63:bsp/libraries/drivers/src/at32f435_437_acc.c **** 
+  64:bsp/libraries/drivers/src/at32f435_437_acc.c **** /**
+  65:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @brief  store calibration step data in acc's ctrl1 register.
+  66:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @param  step_value:  value to be stored in the acc's ctrl1 register
+  67:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @retval none
+  68:bsp/libraries/drivers/src/at32f435_437_acc.c ****   */
+  69:bsp/libraries/drivers/src/at32f435_437_acc.c **** void acc_step_set(uint8_t step_value)
+  70:bsp/libraries/drivers/src/at32f435_437_acc.c **** {
+  76              		.loc 1 70 1 is_stmt 1 view -0
+  77              		.cfi_startproc
+  78              		@ args = 0, pretend = 0, frame = 0
+  79              		@ frame_needed = 0, uses_anonymous_args = 0
+  80              		@ link register save eliminated.
+  71:bsp/libraries/drivers/src/at32f435_437_acc.c ****   ACC->ctrl1_bit.step = step_value;
+  81              		.loc 1 71 3 view .LVU11
+  82              		.loc 1 71 23 is_stmt 0 view .LVU12
+  83 0000 024B     		ldr	r3, .L7
+  84 0002 5A68     		ldr	r2, [r3, #4]
+  85 0004 60F30B22 		bfi	r2, r0, #8, #4
+  86 0008 5A60     		str	r2, [r3, #4]
+  72:bsp/libraries/drivers/src/at32f435_437_acc.c **** }
+  87              		.loc 1 72 1 view .LVU13
+  88 000a 7047     		bx	lr
+  89              	.L8:
+  90              		.align	2
+  91              	.L7:
+  92 000c 00740140 		.word	1073837056
+  93              		.cfi_endproc
+  94              	.LFE134:
+  96              		.section	.text.acc_sof_select,"ax",%progbits
+  97              		.align	1
+  98              		.global	acc_sof_select
+  99              		.syntax unified
+ 100              		.thumb
+ 101              		.thumb_func
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccjm6Feh.s 			page 4
+
+
+ 103              	acc_sof_select:
+ 104              	.LVL2:
+ 105              	.LFB135:
+  73:bsp/libraries/drivers/src/at32f435_437_acc.c **** 
+  74:bsp/libraries/drivers/src/at32f435_437_acc.c **** /**
+  75:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @brief  select sof sourse for acc in acc's ctrl1 register.
+  76:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @param  sof_sel:  value to be stored in the acc's ctrl1 register
+  77:bsp/libraries/drivers/src/at32f435_437_acc.c ****   *         this parameter can be one of the following values:
+  78:bsp/libraries/drivers/src/at32f435_437_acc.c ****   *         @arg ACC_SOF_OTG1
+  79:bsp/libraries/drivers/src/at32f435_437_acc.c ****   *         @arg ACC_SOF_OTG2
+  80:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @retval none
+  81:bsp/libraries/drivers/src/at32f435_437_acc.c ****   */
+  82:bsp/libraries/drivers/src/at32f435_437_acc.c **** void acc_sof_select(uint16_t sof_sel)
+  83:bsp/libraries/drivers/src/at32f435_437_acc.c **** {
+ 106              		.loc 1 83 1 is_stmt 1 view -0
+ 107              		.cfi_startproc
+ 108              		@ args = 0, pretend = 0, frame = 0
+ 109              		@ frame_needed = 0, uses_anonymous_args = 0
+ 110              		@ link register save eliminated.
+  84:bsp/libraries/drivers/src/at32f435_437_acc.c ****   ACC->ctrl1 |= sof_sel;
+ 111              		.loc 1 84 3 view .LVU15
+ 112              		.loc 1 84 14 is_stmt 0 view .LVU16
+ 113 0000 024B     		ldr	r3, .L10
+ 114 0002 5A68     		ldr	r2, [r3, #4]
+ 115 0004 1043     		orrs	r0, r0, r2
+ 116              	.LVL3:
+ 117              		.loc 1 84 14 view .LVU17
+ 118 0006 5860     		str	r0, [r3, #4]
+  85:bsp/libraries/drivers/src/at32f435_437_acc.c **** }
+ 119              		.loc 1 85 1 view .LVU18
+ 120 0008 7047     		bx	lr
+ 121              	.L11:
+ 122 000a 00BF     		.align	2
+ 123              	.L10:
+ 124 000c 00740140 		.word	1073837056
+ 125              		.cfi_endproc
+ 126              	.LFE135:
+ 128              		.section	.text.acc_interrupt_enable,"ax",%progbits
+ 129              		.align	1
+ 130              		.global	acc_interrupt_enable
+ 131              		.syntax unified
+ 132              		.thumb
+ 133              		.thumb_func
+ 135              	acc_interrupt_enable:
+ 136              	.LVL4:
+ 137              	.LFB136:
+  86:bsp/libraries/drivers/src/at32f435_437_acc.c **** 
+  87:bsp/libraries/drivers/src/at32f435_437_acc.c **** /**
+  88:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @brief  enable or disable the specified acc interrupts.
+  89:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @param  acc_int: specifies the acc interrupt sources to be enabled or disabled.
+  90:bsp/libraries/drivers/src/at32f435_437_acc.c ****   *         this parameter can be one of the following values:
+  91:bsp/libraries/drivers/src/at32f435_437_acc.c ****   *         - ACC_CALRDYIEN_INT
+  92:bsp/libraries/drivers/src/at32f435_437_acc.c ****   *         - ACC_EIEN_INT
+  93:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @param  new_state (TRUE or FALSE)
+  94:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @retval none
+  95:bsp/libraries/drivers/src/at32f435_437_acc.c ****   */
+  96:bsp/libraries/drivers/src/at32f435_437_acc.c **** void acc_interrupt_enable(uint16_t acc_int, confirm_state new_state)
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccjm6Feh.s 			page 5
+
+
+  97:bsp/libraries/drivers/src/at32f435_437_acc.c **** {
+ 138              		.loc 1 97 1 is_stmt 1 view -0
+ 139              		.cfi_startproc
+ 140              		@ args = 0, pretend = 0, frame = 0
+ 141              		@ frame_needed = 0, uses_anonymous_args = 0
+ 142              		@ link register save eliminated.
+  98:bsp/libraries/drivers/src/at32f435_437_acc.c ****   if(acc_int == ACC_CALRDYIEN_INT)
+ 143              		.loc 1 98 3 view .LVU20
+ 144              		.loc 1 98 5 is_stmt 0 view .LVU21
+ 145 0000 2028     		cmp	r0, #32
+ 146 0002 05D0     		beq	.L15
+  99:bsp/libraries/drivers/src/at32f435_437_acc.c ****   {
+ 100:bsp/libraries/drivers/src/at32f435_437_acc.c ****     ACC->ctrl1_bit.calrdyien = new_state;
+ 101:bsp/libraries/drivers/src/at32f435_437_acc.c ****   }
+ 102:bsp/libraries/drivers/src/at32f435_437_acc.c ****   else
+ 103:bsp/libraries/drivers/src/at32f435_437_acc.c ****   {
+ 104:bsp/libraries/drivers/src/at32f435_437_acc.c ****     ACC->ctrl1_bit.eien = new_state;
+ 147              		.loc 1 104 5 is_stmt 1 view .LVU22
+ 148              		.loc 1 104 25 is_stmt 0 view .LVU23
+ 149 0004 054B     		ldr	r3, .L16
+ 150 0006 5A68     		ldr	r2, [r3, #4]
+ 151 0008 61F30412 		bfi	r2, r1, #4, #1
+ 152 000c 5A60     		str	r2, [r3, #4]
+ 105:bsp/libraries/drivers/src/at32f435_437_acc.c ****   }
+ 106:bsp/libraries/drivers/src/at32f435_437_acc.c **** }
+ 153              		.loc 1 106 1 view .LVU24
+ 154 000e 7047     		bx	lr
+ 155              	.L15:
+ 100:bsp/libraries/drivers/src/at32f435_437_acc.c ****   }
+ 156              		.loc 1 100 5 is_stmt 1 view .LVU25
+ 100:bsp/libraries/drivers/src/at32f435_437_acc.c ****   }
+ 157              		.loc 1 100 30 is_stmt 0 view .LVU26
+ 158 0010 024B     		ldr	r3, .L16
+ 159 0012 5A68     		ldr	r2, [r3, #4]
+ 160 0014 61F34512 		bfi	r2, r1, #5, #1
+ 161 0018 5A60     		str	r2, [r3, #4]
+ 162 001a 7047     		bx	lr
+ 163              	.L17:
+ 164              		.align	2
+ 165              	.L16:
+ 166 001c 00740140 		.word	1073837056
+ 167              		.cfi_endproc
+ 168              	.LFE136:
+ 170              		.section	.text.acc_hicktrim_get,"ax",%progbits
+ 171              		.align	1
+ 172              		.global	acc_hicktrim_get
+ 173              		.syntax unified
+ 174              		.thumb
+ 175              		.thumb_func
+ 177              	acc_hicktrim_get:
+ 178              	.LFB137:
+ 107:bsp/libraries/drivers/src/at32f435_437_acc.c **** 
+ 108:bsp/libraries/drivers/src/at32f435_437_acc.c **** /**
+ 109:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @brief  return the current acc hicktrim value.
+ 110:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @param  none
+ 111:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @retval 8-bit hicktrim value.
+ 112:bsp/libraries/drivers/src/at32f435_437_acc.c ****   */
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccjm6Feh.s 			page 6
+
+
+ 113:bsp/libraries/drivers/src/at32f435_437_acc.c **** uint8_t acc_hicktrim_get(void)
+ 114:bsp/libraries/drivers/src/at32f435_437_acc.c **** {
+ 179              		.loc 1 114 1 is_stmt 1 view -0
+ 180              		.cfi_startproc
+ 181              		@ args = 0, pretend = 0, frame = 0
+ 182              		@ frame_needed = 0, uses_anonymous_args = 0
+ 183              		@ link register save eliminated.
+ 115:bsp/libraries/drivers/src/at32f435_437_acc.c ****   return ((uint8_t)(ACC->ctrl2_bit.hicktrim));
+ 184              		.loc 1 115 3 view .LVU28
+ 185              		.loc 1 115 35 is_stmt 0 view .LVU29
+ 186 0000 024B     		ldr	r3, .L19
+ 187 0002 9868     		ldr	r0, [r3, #8]
+ 116:bsp/libraries/drivers/src/at32f435_437_acc.c **** }
+ 188              		.loc 1 116 1 view .LVU30
+ 189 0004 C0F30520 		ubfx	r0, r0, #8, #6
+ 190 0008 7047     		bx	lr
+ 191              	.L20:
+ 192 000a 00BF     		.align	2
+ 193              	.L19:
+ 194 000c 00740140 		.word	1073837056
+ 195              		.cfi_endproc
+ 196              	.LFE137:
+ 198              		.section	.text.acc_hickcal_get,"ax",%progbits
+ 199              		.align	1
+ 200              		.global	acc_hickcal_get
+ 201              		.syntax unified
+ 202              		.thumb
+ 203              		.thumb_func
+ 205              	acc_hickcal_get:
+ 206              	.LFB138:
+ 117:bsp/libraries/drivers/src/at32f435_437_acc.c **** 
+ 118:bsp/libraries/drivers/src/at32f435_437_acc.c **** /**
+ 119:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @brief  return the current acc hickcal value.
+ 120:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @param  none
+ 121:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @retval 8-bit hicktrim value.
+ 122:bsp/libraries/drivers/src/at32f435_437_acc.c ****   */
+ 123:bsp/libraries/drivers/src/at32f435_437_acc.c **** uint8_t acc_hickcal_get(void)
+ 124:bsp/libraries/drivers/src/at32f435_437_acc.c **** {
+ 207              		.loc 1 124 1 is_stmt 1 view -0
+ 208              		.cfi_startproc
+ 209              		@ args = 0, pretend = 0, frame = 0
+ 210              		@ frame_needed = 0, uses_anonymous_args = 0
+ 211              		@ link register save eliminated.
+ 125:bsp/libraries/drivers/src/at32f435_437_acc.c ****   return ((uint8_t)(ACC->ctrl2_bit.hickcal));
+ 212              		.loc 1 125 3 view .LVU32
+ 213              		.loc 1 125 11 is_stmt 0 view .LVU33
+ 214 0000 014B     		ldr	r3, .L22
+ 215 0002 9868     		ldr	r0, [r3, #8]
+ 126:bsp/libraries/drivers/src/at32f435_437_acc.c **** }
+ 216              		.loc 1 126 1 view .LVU34
+ 217 0004 C0B2     		uxtb	r0, r0
+ 218 0006 7047     		bx	lr
+ 219              	.L23:
+ 220              		.align	2
+ 221              	.L22:
+ 222 0008 00740140 		.word	1073837056
+ 223              		.cfi_endproc
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccjm6Feh.s 			page 7
+
+
+ 224              	.LFE138:
+ 226              		.section	.text.acc_write_c1,"ax",%progbits
+ 227              		.align	1
+ 228              		.global	acc_write_c1
+ 229              		.syntax unified
+ 230              		.thumb
+ 231              		.thumb_func
+ 233              	acc_write_c1:
+ 234              	.LVL5:
+ 235              	.LFB139:
+ 127:bsp/libraries/drivers/src/at32f435_437_acc.c **** 
+ 128:bsp/libraries/drivers/src/at32f435_437_acc.c **** /**
+ 129:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @brief  wtire the value to  acc c1 register.
+ 130:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @param  acc_c1_value
+ 131:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @retval none.
+ 132:bsp/libraries/drivers/src/at32f435_437_acc.c ****   */
+ 133:bsp/libraries/drivers/src/at32f435_437_acc.c **** void acc_write_c1(uint16_t acc_c1_value)
+ 134:bsp/libraries/drivers/src/at32f435_437_acc.c **** {
+ 236              		.loc 1 134 1 is_stmt 1 view -0
+ 237              		.cfi_startproc
+ 238              		@ args = 0, pretend = 0, frame = 0
+ 239              		@ frame_needed = 0, uses_anonymous_args = 0
+ 240              		@ link register save eliminated.
+ 135:bsp/libraries/drivers/src/at32f435_437_acc.c ****   ACC->c1 = acc_c1_value;
+ 241              		.loc 1 135 3 view .LVU36
+ 242              		.loc 1 135 11 is_stmt 0 view .LVU37
+ 243 0000 014B     		ldr	r3, .L25
+ 244 0002 D860     		str	r0, [r3, #12]
+ 136:bsp/libraries/drivers/src/at32f435_437_acc.c **** }
+ 245              		.loc 1 136 1 view .LVU38
+ 246 0004 7047     		bx	lr
+ 247              	.L26:
+ 248 0006 00BF     		.align	2
+ 249              	.L25:
+ 250 0008 00740140 		.word	1073837056
+ 251              		.cfi_endproc
+ 252              	.LFE139:
+ 254              		.section	.text.acc_write_c2,"ax",%progbits
+ 255              		.align	1
+ 256              		.global	acc_write_c2
+ 257              		.syntax unified
+ 258              		.thumb
+ 259              		.thumb_func
+ 261              	acc_write_c2:
+ 262              	.LVL6:
+ 263              	.LFB140:
+ 137:bsp/libraries/drivers/src/at32f435_437_acc.c **** 
+ 138:bsp/libraries/drivers/src/at32f435_437_acc.c **** /**
+ 139:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @brief  wtire the value to  acc c2 register.
+ 140:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @param  acc_c2_value
+ 141:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @retval none.
+ 142:bsp/libraries/drivers/src/at32f435_437_acc.c ****   */
+ 143:bsp/libraries/drivers/src/at32f435_437_acc.c **** void acc_write_c2(uint16_t acc_c2_value)
+ 144:bsp/libraries/drivers/src/at32f435_437_acc.c **** {
+ 264              		.loc 1 144 1 is_stmt 1 view -0
+ 265              		.cfi_startproc
+ 266              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccjm6Feh.s 			page 8
+
+
+ 267              		@ frame_needed = 0, uses_anonymous_args = 0
+ 268              		@ link register save eliminated.
+ 145:bsp/libraries/drivers/src/at32f435_437_acc.c ****   ACC->c2 = acc_c2_value;
+ 269              		.loc 1 145 3 view .LVU40
+ 270              		.loc 1 145 11 is_stmt 0 view .LVU41
+ 271 0000 014B     		ldr	r3, .L28
+ 272 0002 1861     		str	r0, [r3, #16]
+ 146:bsp/libraries/drivers/src/at32f435_437_acc.c **** }
+ 273              		.loc 1 146 1 view .LVU42
+ 274 0004 7047     		bx	lr
+ 275              	.L29:
+ 276 0006 00BF     		.align	2
+ 277              	.L28:
+ 278 0008 00740140 		.word	1073837056
+ 279              		.cfi_endproc
+ 280              	.LFE140:
+ 282              		.section	.text.acc_write_c3,"ax",%progbits
+ 283              		.align	1
+ 284              		.global	acc_write_c3
+ 285              		.syntax unified
+ 286              		.thumb
+ 287              		.thumb_func
+ 289              	acc_write_c3:
+ 290              	.LVL7:
+ 291              	.LFB141:
+ 147:bsp/libraries/drivers/src/at32f435_437_acc.c **** 
+ 148:bsp/libraries/drivers/src/at32f435_437_acc.c **** /**
+ 149:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @brief  wtire the value to  acc c3 register.
+ 150:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @param  acc_c3_value
+ 151:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @retval none.
+ 152:bsp/libraries/drivers/src/at32f435_437_acc.c ****   */
+ 153:bsp/libraries/drivers/src/at32f435_437_acc.c **** void acc_write_c3(uint16_t acc_c3_value)
+ 154:bsp/libraries/drivers/src/at32f435_437_acc.c **** {
+ 292              		.loc 1 154 1 is_stmt 1 view -0
+ 293              		.cfi_startproc
+ 294              		@ args = 0, pretend = 0, frame = 0
+ 295              		@ frame_needed = 0, uses_anonymous_args = 0
+ 296              		@ link register save eliminated.
+ 155:bsp/libraries/drivers/src/at32f435_437_acc.c ****   ACC->c3 = acc_c3_value;
+ 297              		.loc 1 155 3 view .LVU44
+ 298              		.loc 1 155 11 is_stmt 0 view .LVU45
+ 299 0000 014B     		ldr	r3, .L31
+ 300 0002 5861     		str	r0, [r3, #20]
+ 156:bsp/libraries/drivers/src/at32f435_437_acc.c **** }
+ 301              		.loc 1 156 1 view .LVU46
+ 302 0004 7047     		bx	lr
+ 303              	.L32:
+ 304 0006 00BF     		.align	2
+ 305              	.L31:
+ 306 0008 00740140 		.word	1073837056
+ 307              		.cfi_endproc
+ 308              	.LFE141:
+ 310              		.section	.text.acc_read_c1,"ax",%progbits
+ 311              		.align	1
+ 312              		.global	acc_read_c1
+ 313              		.syntax unified
+ 314              		.thumb
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccjm6Feh.s 			page 9
+
+
+ 315              		.thumb_func
+ 317              	acc_read_c1:
+ 318              	.LFB142:
+ 157:bsp/libraries/drivers/src/at32f435_437_acc.c **** 
+ 158:bsp/libraries/drivers/src/at32f435_437_acc.c **** /**
+ 159:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @brief  return the current acc c1 value.
+ 160:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @param  none
+ 161:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @retval 16-bit c1 value.
+ 162:bsp/libraries/drivers/src/at32f435_437_acc.c ****   */
+ 163:bsp/libraries/drivers/src/at32f435_437_acc.c **** uint16_t acc_read_c1(void)
+ 164:bsp/libraries/drivers/src/at32f435_437_acc.c **** {
+ 319              		.loc 1 164 1 is_stmt 1 view -0
+ 320              		.cfi_startproc
+ 321              		@ args = 0, pretend = 0, frame = 0
+ 322              		@ frame_needed = 0, uses_anonymous_args = 0
+ 323              		@ link register save eliminated.
+ 165:bsp/libraries/drivers/src/at32f435_437_acc.c ****   return ((uint16_t)(ACC->c1));
+ 324              		.loc 1 165 3 view .LVU48
+ 325              		.loc 1 165 25 is_stmt 0 view .LVU49
+ 326 0000 014B     		ldr	r3, .L34
+ 327 0002 D868     		ldr	r0, [r3, #12]
+ 166:bsp/libraries/drivers/src/at32f435_437_acc.c **** }
+ 328              		.loc 1 166 1 view .LVU50
+ 329 0004 80B2     		uxth	r0, r0
+ 330 0006 7047     		bx	lr
+ 331              	.L35:
+ 332              		.align	2
+ 333              	.L34:
+ 334 0008 00740140 		.word	1073837056
+ 335              		.cfi_endproc
+ 336              	.LFE142:
+ 338              		.section	.text.acc_read_c2,"ax",%progbits
+ 339              		.align	1
+ 340              		.global	acc_read_c2
+ 341              		.syntax unified
+ 342              		.thumb
+ 343              		.thumb_func
+ 345              	acc_read_c2:
+ 346              	.LFB143:
+ 167:bsp/libraries/drivers/src/at32f435_437_acc.c **** 
+ 168:bsp/libraries/drivers/src/at32f435_437_acc.c **** /**
+ 169:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @brief  return the current acc c2 value.
+ 170:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @param  none
+ 171:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @retval 16-bit c2 value.
+ 172:bsp/libraries/drivers/src/at32f435_437_acc.c ****   */
+ 173:bsp/libraries/drivers/src/at32f435_437_acc.c **** uint16_t acc_read_c2(void)
+ 174:bsp/libraries/drivers/src/at32f435_437_acc.c **** {
+ 347              		.loc 1 174 1 is_stmt 1 view -0
+ 348              		.cfi_startproc
+ 349              		@ args = 0, pretend = 0, frame = 0
+ 350              		@ frame_needed = 0, uses_anonymous_args = 0
+ 351              		@ link register save eliminated.
+ 175:bsp/libraries/drivers/src/at32f435_437_acc.c ****   return ((uint16_t)(ACC->c2));
+ 352              		.loc 1 175 3 view .LVU52
+ 353              		.loc 1 175 25 is_stmt 0 view .LVU53
+ 354 0000 014B     		ldr	r3, .L37
+ 355 0002 1869     		ldr	r0, [r3, #16]
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccjm6Feh.s 			page 10
+
+
+ 176:bsp/libraries/drivers/src/at32f435_437_acc.c **** }
+ 356              		.loc 1 176 1 view .LVU54
+ 357 0004 80B2     		uxth	r0, r0
+ 358 0006 7047     		bx	lr
+ 359              	.L38:
+ 360              		.align	2
+ 361              	.L37:
+ 362 0008 00740140 		.word	1073837056
+ 363              		.cfi_endproc
+ 364              	.LFE143:
+ 366              		.section	.text.acc_read_c3,"ax",%progbits
+ 367              		.align	1
+ 368              		.global	acc_read_c3
+ 369              		.syntax unified
+ 370              		.thumb
+ 371              		.thumb_func
+ 373              	acc_read_c3:
+ 374              	.LFB144:
+ 177:bsp/libraries/drivers/src/at32f435_437_acc.c **** 
+ 178:bsp/libraries/drivers/src/at32f435_437_acc.c **** /**
+ 179:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @brief  return the current acc c3 value.
+ 180:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @param  none
+ 181:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @retval 16-bit c3 value.
+ 182:bsp/libraries/drivers/src/at32f435_437_acc.c ****   */
+ 183:bsp/libraries/drivers/src/at32f435_437_acc.c **** uint16_t acc_read_c3(void)
+ 184:bsp/libraries/drivers/src/at32f435_437_acc.c **** {
+ 375              		.loc 1 184 1 is_stmt 1 view -0
+ 376              		.cfi_startproc
+ 377              		@ args = 0, pretend = 0, frame = 0
+ 378              		@ frame_needed = 0, uses_anonymous_args = 0
+ 379              		@ link register save eliminated.
+ 185:bsp/libraries/drivers/src/at32f435_437_acc.c ****   return ((uint16_t)(ACC->c3));
+ 380              		.loc 1 185 3 view .LVU56
+ 381              		.loc 1 185 25 is_stmt 0 view .LVU57
+ 382 0000 014B     		ldr	r3, .L40
+ 383 0002 5869     		ldr	r0, [r3, #20]
+ 186:bsp/libraries/drivers/src/at32f435_437_acc.c **** }
+ 384              		.loc 1 186 1 view .LVU58
+ 385 0004 80B2     		uxth	r0, r0
+ 386 0006 7047     		bx	lr
+ 387              	.L41:
+ 388              		.align	2
+ 389              	.L40:
+ 390 0008 00740140 		.word	1073837056
+ 391              		.cfi_endproc
+ 392              	.LFE144:
+ 394              		.section	.text.acc_flag_get,"ax",%progbits
+ 395              		.align	1
+ 396              		.global	acc_flag_get
+ 397              		.syntax unified
+ 398              		.thumb
+ 399              		.thumb_func
+ 401              	acc_flag_get:
+ 402              	.LVL8:
+ 403              	.LFB145:
+ 187:bsp/libraries/drivers/src/at32f435_437_acc.c **** 
+ 188:bsp/libraries/drivers/src/at32f435_437_acc.c **** /**
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccjm6Feh.s 			page 11
+
+
+ 189:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @brief  check whether the specified acc flag is set or not.
+ 190:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @param  acc_flag: specifies the flag to check.
+ 191:bsp/libraries/drivers/src/at32f435_437_acc.c ****   *         this parameter can be one of the following values:
+ 192:bsp/libraries/drivers/src/at32f435_437_acc.c ****   *         - ACC_RSLOST_FLAG
+ 193:bsp/libraries/drivers/src/at32f435_437_acc.c ****   *         - ACC_CALRDY_FLAG
+ 194:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @retval  flag_status (SET or RESET)
+ 195:bsp/libraries/drivers/src/at32f435_437_acc.c ****   */
+ 196:bsp/libraries/drivers/src/at32f435_437_acc.c **** flag_status acc_flag_get(uint16_t acc_flag)
+ 197:bsp/libraries/drivers/src/at32f435_437_acc.c **** {
+ 404              		.loc 1 197 1 is_stmt 1 view -0
+ 405              		.cfi_startproc
+ 406              		@ args = 0, pretend = 0, frame = 0
+ 407              		@ frame_needed = 0, uses_anonymous_args = 0
+ 408              		@ link register save eliminated.
+ 198:bsp/libraries/drivers/src/at32f435_437_acc.c ****   if(acc_flag == ACC_CALRDY_FLAG)
+ 409              		.loc 1 198 3 view .LVU60
+ 410              		.loc 1 198 5 is_stmt 0 view .LVU61
+ 411 0000 0128     		cmp	r0, #1
+ 412 0002 04D0     		beq	.L45
+ 199:bsp/libraries/drivers/src/at32f435_437_acc.c ****     return (flag_status)(ACC->sts_bit.calrdy);
+ 200:bsp/libraries/drivers/src/at32f435_437_acc.c ****   else
+ 201:bsp/libraries/drivers/src/at32f435_437_acc.c ****     return (flag_status)(ACC->sts_bit.rslost);
+ 413              		.loc 1 201 5 is_stmt 1 view .LVU62
+ 414              		.loc 1 201 38 is_stmt 0 view .LVU63
+ 415 0004 044B     		ldr	r3, .L46
+ 416 0006 1868     		ldr	r0, [r3]
+ 417              	.LVL9:
+ 418              		.loc 1 201 38 view .LVU64
+ 419 0008 C0F34000 		ubfx	r0, r0, #1, #1
+ 202:bsp/libraries/drivers/src/at32f435_437_acc.c **** }
+ 420              		.loc 1 202 1 view .LVU65
+ 421 000c 7047     		bx	lr
+ 422              	.LVL10:
+ 423              	.L45:
+ 199:bsp/libraries/drivers/src/at32f435_437_acc.c ****     return (flag_status)(ACC->sts_bit.calrdy);
+ 424              		.loc 1 199 5 is_stmt 1 view .LVU66
+ 199:bsp/libraries/drivers/src/at32f435_437_acc.c ****     return (flag_status)(ACC->sts_bit.calrdy);
+ 425              		.loc 1 199 38 is_stmt 0 view .LVU67
+ 426 000e 024B     		ldr	r3, .L46
+ 427 0010 1868     		ldr	r0, [r3]
+ 428              	.LVL11:
+ 199:bsp/libraries/drivers/src/at32f435_437_acc.c ****     return (flag_status)(ACC->sts_bit.calrdy);
+ 429              		.loc 1 199 38 view .LVU68
+ 430 0012 00F00100 		and	r0, r0, #1
+ 199:bsp/libraries/drivers/src/at32f435_437_acc.c ****     return (flag_status)(ACC->sts_bit.calrdy);
+ 431              		.loc 1 199 12 view .LVU69
+ 432 0016 7047     		bx	lr
+ 433              	.L47:
+ 434              		.align	2
+ 435              	.L46:
+ 436 0018 00740140 		.word	1073837056
+ 437              		.cfi_endproc
+ 438              	.LFE145:
+ 440              		.section	.text.acc_interrupt_flag_get,"ax",%progbits
+ 441              		.align	1
+ 442              		.global	acc_interrupt_flag_get
+ 443              		.syntax unified
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccjm6Feh.s 			page 12
+
+
+ 444              		.thumb
+ 445              		.thumb_func
+ 447              	acc_interrupt_flag_get:
+ 448              	.LVL12:
+ 449              	.LFB146:
+ 203:bsp/libraries/drivers/src/at32f435_437_acc.c **** 
+ 204:bsp/libraries/drivers/src/at32f435_437_acc.c **** /**
+ 205:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @brief  check whether the specified acc interrupt flag is set or not.
+ 206:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @param  acc_flag: specifies the flag to check.
+ 207:bsp/libraries/drivers/src/at32f435_437_acc.c ****   *         this parameter can be one of the following values:
+ 208:bsp/libraries/drivers/src/at32f435_437_acc.c ****   *         - ACC_RSLOST_FLAG
+ 209:bsp/libraries/drivers/src/at32f435_437_acc.c ****   *         - ACC_CALRDY_FLAG
+ 210:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @retval  flag_status (SET or RESET)
+ 211:bsp/libraries/drivers/src/at32f435_437_acc.c ****   */
+ 212:bsp/libraries/drivers/src/at32f435_437_acc.c **** flag_status acc_interrupt_flag_get(uint16_t acc_flag)
+ 213:bsp/libraries/drivers/src/at32f435_437_acc.c **** {
+ 450              		.loc 1 213 1 is_stmt 1 view -0
+ 451              		.cfi_startproc
+ 452              		@ args = 0, pretend = 0, frame = 0
+ 453              		@ frame_needed = 0, uses_anonymous_args = 0
+ 454              		@ link register save eliminated.
+ 214:bsp/libraries/drivers/src/at32f435_437_acc.c ****   if(acc_flag == ACC_CALRDY_FLAG)
+ 455              		.loc 1 214 3 view .LVU71
+ 456              		.loc 1 214 5 is_stmt 0 view .LVU72
+ 457 0000 0128     		cmp	r0, #1
+ 458 0002 0BD0     		beq	.L57
+ 215:bsp/libraries/drivers/src/at32f435_437_acc.c ****     return (flag_status)(ACC->sts_bit.calrdy && ACC->ctrl1_bit.calrdyien);
+ 216:bsp/libraries/drivers/src/at32f435_437_acc.c ****   else
+ 217:bsp/libraries/drivers/src/at32f435_437_acc.c ****     return (flag_status)(ACC->sts_bit.rslost && ACC->ctrl1_bit.eien);
+ 459              		.loc 1 217 5 is_stmt 1 view .LVU73
+ 460              		.loc 1 217 38 is_stmt 0 view .LVU74
+ 461 0004 104B     		ldr	r3, .L58
+ 462 0006 1B68     		ldr	r3, [r3]
+ 463              		.loc 1 217 46 view .LVU75
+ 464 0008 13F0020F 		tst	r3, #2
+ 465 000c 17D0     		beq	.L55
+ 466              		.loc 1 217 63 discriminator 1 view .LVU76
+ 467 000e 0E4B     		ldr	r3, .L58
+ 468 0010 5B68     		ldr	r3, [r3, #4]
+ 469              		.loc 1 217 46 discriminator 1 view .LVU77
+ 470 0012 13F0100F 		tst	r3, #16
+ 471 0016 15D1     		bne	.L56
+ 472              		.loc 1 217 46 view .LVU78
+ 473 0018 0020     		movs	r0, #0
+ 474              	.LVL13:
+ 475              		.loc 1 217 46 view .LVU79
+ 476 001a 11E0     		b	.L52
+ 477              	.LVL14:
+ 478              	.L57:
+ 215:bsp/libraries/drivers/src/at32f435_437_acc.c ****     return (flag_status)(ACC->sts_bit.calrdy && ACC->ctrl1_bit.calrdyien);
+ 479              		.loc 1 215 5 is_stmt 1 view .LVU80
+ 215:bsp/libraries/drivers/src/at32f435_437_acc.c ****     return (flag_status)(ACC->sts_bit.calrdy && ACC->ctrl1_bit.calrdyien);
+ 480              		.loc 1 215 38 is_stmt 0 view .LVU81
+ 481 001c 0A4B     		ldr	r3, .L58
+ 482 001e 1B68     		ldr	r3, [r3]
+ 215:bsp/libraries/drivers/src/at32f435_437_acc.c ****     return (flag_status)(ACC->sts_bit.calrdy && ACC->ctrl1_bit.calrdyien);
+ 483              		.loc 1 215 46 view .LVU82
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccjm6Feh.s 			page 13
+
+
+ 484 0020 13F0010F 		tst	r3, #1
+ 485 0024 06D0     		beq	.L53
+ 215:bsp/libraries/drivers/src/at32f435_437_acc.c ****     return (flag_status)(ACC->sts_bit.calrdy && ACC->ctrl1_bit.calrdyien);
+ 486              		.loc 1 215 63 discriminator 1 view .LVU83
+ 487 0026 084B     		ldr	r3, .L58
+ 488 0028 5B68     		ldr	r3, [r3, #4]
+ 215:bsp/libraries/drivers/src/at32f435_437_acc.c ****     return (flag_status)(ACC->sts_bit.calrdy && ACC->ctrl1_bit.calrdyien);
+ 489              		.loc 1 215 46 discriminator 1 view .LVU84
+ 490 002a 13F0200F 		tst	r3, #32
+ 491 002e 04D1     		bne	.L54
+ 215:bsp/libraries/drivers/src/at32f435_437_acc.c ****     return (flag_status)(ACC->sts_bit.calrdy && ACC->ctrl1_bit.calrdyien);
+ 492              		.loc 1 215 46 view .LVU85
+ 493 0030 0020     		movs	r0, #0
+ 494              	.LVL15:
+ 215:bsp/libraries/drivers/src/at32f435_437_acc.c ****     return (flag_status)(ACC->sts_bit.calrdy && ACC->ctrl1_bit.calrdyien);
+ 495              		.loc 1 215 46 view .LVU86
+ 496 0032 00E0     		b	.L50
+ 497              	.LVL16:
+ 498              	.L53:
+ 215:bsp/libraries/drivers/src/at32f435_437_acc.c ****     return (flag_status)(ACC->sts_bit.calrdy && ACC->ctrl1_bit.calrdyien);
+ 499              		.loc 1 215 46 view .LVU87
+ 500 0034 0020     		movs	r0, #0
+ 501              	.LVL17:
+ 502              	.L50:
+ 215:bsp/libraries/drivers/src/at32f435_437_acc.c ****     return (flag_status)(ACC->sts_bit.calrdy && ACC->ctrl1_bit.calrdyien);
+ 503              		.loc 1 215 12 discriminator 6 view .LVU88
+ 504 0036 C0B2     		uxtb	r0, r0
+ 505 0038 7047     		bx	lr
+ 506              	.LVL18:
+ 507              	.L54:
+ 215:bsp/libraries/drivers/src/at32f435_437_acc.c ****     return (flag_status)(ACC->sts_bit.calrdy && ACC->ctrl1_bit.calrdyien);
+ 508              		.loc 1 215 46 view .LVU89
+ 509 003a 0120     		movs	r0, #1
+ 510              	.LVL19:
+ 215:bsp/libraries/drivers/src/at32f435_437_acc.c ****     return (flag_status)(ACC->sts_bit.calrdy && ACC->ctrl1_bit.calrdyien);
+ 511              		.loc 1 215 46 view .LVU90
+ 512 003c FBE7     		b	.L50
+ 513              	.LVL20:
+ 514              	.L55:
+ 515              		.loc 1 217 46 view .LVU91
+ 516 003e 0020     		movs	r0, #0
+ 517              	.LVL21:
+ 518              	.L52:
+ 519              		.loc 1 217 12 discriminator 6 view .LVU92
+ 520 0040 C0B2     		uxtb	r0, r0
+ 218:bsp/libraries/drivers/src/at32f435_437_acc.c **** }
+ 521              		.loc 1 218 1 discriminator 6 view .LVU93
+ 522 0042 7047     		bx	lr
+ 523              	.LVL22:
+ 524              	.L56:
+ 217:bsp/libraries/drivers/src/at32f435_437_acc.c **** }
+ 525              		.loc 1 217 46 view .LVU94
+ 526 0044 0120     		movs	r0, #1
+ 527              	.LVL23:
+ 217:bsp/libraries/drivers/src/at32f435_437_acc.c **** }
+ 528              		.loc 1 217 46 view .LVU95
+ 529 0046 FBE7     		b	.L52
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccjm6Feh.s 			page 14
+
+
+ 530              	.L59:
+ 531              		.align	2
+ 532              	.L58:
+ 533 0048 00740140 		.word	1073837056
+ 534              		.cfi_endproc
+ 535              	.LFE146:
+ 537              		.section	.text.acc_flag_clear,"ax",%progbits
+ 538              		.align	1
+ 539              		.global	acc_flag_clear
+ 540              		.syntax unified
+ 541              		.thumb
+ 542              		.thumb_func
+ 544              	acc_flag_clear:
+ 545              	.LVL24:
+ 546              	.LFB147:
+ 219:bsp/libraries/drivers/src/at32f435_437_acc.c **** 
+ 220:bsp/libraries/drivers/src/at32f435_437_acc.c **** 
+ 221:bsp/libraries/drivers/src/at32f435_437_acc.c **** /**
+ 222:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @brief  clear the specified acc flag is set or not.
+ 223:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @param  acc_flag: specifies the flag to check.
+ 224:bsp/libraries/drivers/src/at32f435_437_acc.c ****   *         this parameter can be any combination of the following values:
+ 225:bsp/libraries/drivers/src/at32f435_437_acc.c ****   *         - ACC_RSLOST_FLAG
+ 226:bsp/libraries/drivers/src/at32f435_437_acc.c ****   *         - ACC_CALRDY_FLAG
+ 227:bsp/libraries/drivers/src/at32f435_437_acc.c ****   * @retval  none
+ 228:bsp/libraries/drivers/src/at32f435_437_acc.c ****   */
+ 229:bsp/libraries/drivers/src/at32f435_437_acc.c **** void acc_flag_clear(uint16_t acc_flag)
+ 230:bsp/libraries/drivers/src/at32f435_437_acc.c **** {
+ 547              		.loc 1 230 1 is_stmt 1 view -0
+ 548              		.cfi_startproc
+ 549              		@ args = 0, pretend = 0, frame = 0
+ 550              		@ frame_needed = 0, uses_anonymous_args = 0
+ 551              		@ link register save eliminated.
+ 231:bsp/libraries/drivers/src/at32f435_437_acc.c ****   ACC->sts = ~acc_flag;
+ 552              		.loc 1 231 3 view .LVU97
+ 553              		.loc 1 231 14 is_stmt 0 view .LVU98
+ 554 0000 C043     		mvns	r0, r0
+ 555              	.LVL25:
+ 556              		.loc 1 231 12 view .LVU99
+ 557 0002 014B     		ldr	r3, .L61
+ 558 0004 1860     		str	r0, [r3]
+ 232:bsp/libraries/drivers/src/at32f435_437_acc.c **** }
+ 559              		.loc 1 232 1 view .LVU100
+ 560 0006 7047     		bx	lr
+ 561              	.L62:
+ 562              		.align	2
+ 563              	.L61:
+ 564 0008 00740140 		.word	1073837056
+ 565              		.cfi_endproc
+ 566              	.LFE147:
+ 568              		.text
+ 569              	.Letext0:
+ 570              		.file 2 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\mac
+ 571              		.file 3 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\sys
+ 572              		.file 4 "bsp/libraries/cmsis/cm4/device_support/at32f435_437.h"
+ 573              		.file 5 "bsp/libraries/drivers/inc/at32f435_437_acc.h"
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccjm6Feh.s 			page 15
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 at32f435_437_acc.c
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:18     .text.acc_calibration_mode_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:24     .text.acc_calibration_mode_enable:00000000 acc_calibration_mode_enable
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:62     .text.acc_calibration_mode_enable:00000024 $d
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:67     .text.acc_step_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:73     .text.acc_step_set:00000000 acc_step_set
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:92     .text.acc_step_set:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:97     .text.acc_sof_select:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:103    .text.acc_sof_select:00000000 acc_sof_select
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:124    .text.acc_sof_select:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:129    .text.acc_interrupt_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:135    .text.acc_interrupt_enable:00000000 acc_interrupt_enable
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:166    .text.acc_interrupt_enable:0000001c $d
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:171    .text.acc_hicktrim_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:177    .text.acc_hicktrim_get:00000000 acc_hicktrim_get
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:194    .text.acc_hicktrim_get:0000000c $d
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:199    .text.acc_hickcal_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:205    .text.acc_hickcal_get:00000000 acc_hickcal_get
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:222    .text.acc_hickcal_get:00000008 $d
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:227    .text.acc_write_c1:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:233    .text.acc_write_c1:00000000 acc_write_c1
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:250    .text.acc_write_c1:00000008 $d
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:255    .text.acc_write_c2:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:261    .text.acc_write_c2:00000000 acc_write_c2
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:278    .text.acc_write_c2:00000008 $d
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:283    .text.acc_write_c3:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:289    .text.acc_write_c3:00000000 acc_write_c3
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:306    .text.acc_write_c3:00000008 $d
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:311    .text.acc_read_c1:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:317    .text.acc_read_c1:00000000 acc_read_c1
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:334    .text.acc_read_c1:00000008 $d
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:339    .text.acc_read_c2:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:345    .text.acc_read_c2:00000000 acc_read_c2
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:362    .text.acc_read_c2:00000008 $d
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:367    .text.acc_read_c3:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:373    .text.acc_read_c3:00000000 acc_read_c3
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:390    .text.acc_read_c3:00000008 $d
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:395    .text.acc_flag_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:401    .text.acc_flag_get:00000000 acc_flag_get
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:436    .text.acc_flag_get:00000018 $d
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:441    .text.acc_interrupt_flag_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:447    .text.acc_interrupt_flag_get:00000000 acc_interrupt_flag_get
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:533    .text.acc_interrupt_flag_get:00000048 $d
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:538    .text.acc_flag_clear:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:544    .text.acc_flag_clear:00000000 acc_flag_clear
+C:\Users\user\AppData\Local\Temp\ccjm6Feh.s:564    .text.acc_flag_clear:00000008 $d
+
+NO UNDEFINED SYMBOLS

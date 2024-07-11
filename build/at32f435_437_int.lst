@@ -1,0 +1,366 @@
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccqCluvu.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"at32f435_437_int.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.NMI_Handler,"ax",%progbits
+  18              		.align	1
+  19              		.global	NMI_Handler
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	NMI_Handler:
+  25              	.LFB133:
+  26              		.file 1 "src/at32f435_437_int.c"
+   1:src/at32f435_437_int.c **** /**
+   2:src/at32f435_437_int.c ****   **************************************************************************
+   3:src/at32f435_437_int.c ****   * @file     at32f435_437_int.c
+   4:src/at32f435_437_int.c ****   * @brief    main interrupt service routines.
+   5:src/at32f435_437_int.c ****   **************************************************************************
+   6:src/at32f435_437_int.c ****   *                       Copyright notice & Disclaimer
+   7:src/at32f435_437_int.c ****   *
+   8:src/at32f435_437_int.c ****   * The software Board Support Package (BSP) that is made available to
+   9:src/at32f435_437_int.c ****   * download from Artery official website is the copyrighted work of Artery.
+  10:src/at32f435_437_int.c ****   * Artery authorizes customers to use, copy, and distribute the BSP
+  11:src/at32f435_437_int.c ****   * software and its related documentation for the purpose of design and
+  12:src/at32f435_437_int.c ****   * development in conjunction with Artery microcontrollers. Use of the
+  13:src/at32f435_437_int.c ****   * software is governed by this copyright notice and the following disclaimer.
+  14:src/at32f435_437_int.c ****   *
+  15:src/at32f435_437_int.c ****   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
+  16:src/at32f435_437_int.c ****   * GUARANTEES OR REPRESENTATIONS OF ANY KIND. ARTERY EXPRESSLY DISCLAIMS,
+  17:src/at32f435_437_int.c ****   * TO THE FULLEST EXTENT PERMITTED BY LAW, ALL EXPRESS, IMPLIED OR
+  18:src/at32f435_437_int.c ****   * STATUTORY OR OTHER WARRANTIES, GUARANTEES OR REPRESENTATIONS,
+  19:src/at32f435_437_int.c ****   * INCLUDING BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+  20:src/at32f435_437_int.c ****   * FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
+  21:src/at32f435_437_int.c ****   *
+  22:src/at32f435_437_int.c ****   **************************************************************************
+  23:src/at32f435_437_int.c ****   */
+  24:src/at32f435_437_int.c **** 
+  25:src/at32f435_437_int.c **** /* includes ------------------------------------------------------------------*/
+  26:src/at32f435_437_int.c **** #include "at32f435_437_int.h"
+  27:src/at32f435_437_int.c **** 
+  28:src/at32f435_437_int.c **** /** @addtogroup AT32F437_periph_template
+  29:src/at32f435_437_int.c ****   * @{
+  30:src/at32f435_437_int.c ****   */
+  31:src/at32f435_437_int.c **** 
+  32:src/at32f435_437_int.c **** /** @addtogroup 437_LED_toggle
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccqCluvu.s 			page 2
+
+
+  33:src/at32f435_437_int.c ****   * @{
+  34:src/at32f435_437_int.c ****   */
+  35:src/at32f435_437_int.c **** 
+  36:src/at32f435_437_int.c **** /**
+  37:src/at32f435_437_int.c ****   * @brief  this function handles nmi exception.
+  38:src/at32f435_437_int.c ****   * @param  none
+  39:src/at32f435_437_int.c ****   * @retval none
+  40:src/at32f435_437_int.c ****   */
+  41:src/at32f435_437_int.c **** void NMI_Handler(void)
+  42:src/at32f435_437_int.c **** {
+  27              		.loc 1 42 1 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  43:src/at32f435_437_int.c **** }
+  32              		.loc 1 43 1 view .LVU1
+  33 0000 7047     		bx	lr
+  34              		.cfi_endproc
+  35              	.LFE133:
+  37              		.section	.text.HardFault_Handler,"ax",%progbits
+  38              		.align	1
+  39              		.global	HardFault_Handler
+  40              		.syntax unified
+  41              		.thumb
+  42              		.thumb_func
+  44              	HardFault_Handler:
+  45              	.LFB134:
+  44:src/at32f435_437_int.c **** 
+  45:src/at32f435_437_int.c **** /**
+  46:src/at32f435_437_int.c ****   * @brief  this function handles hard fault exception.
+  47:src/at32f435_437_int.c ****   * @param  none
+  48:src/at32f435_437_int.c ****   * @retval none
+  49:src/at32f435_437_int.c ****   */
+  50:src/at32f435_437_int.c **** void HardFault_Handler(void)
+  51:src/at32f435_437_int.c **** {
+  46              		.loc 1 51 1 view -0
+  47              		.cfi_startproc
+  48              		@ Volatile: function does not return.
+  49              		@ args = 0, pretend = 0, frame = 0
+  50              		@ frame_needed = 0, uses_anonymous_args = 0
+  51              		@ link register save eliminated.
+  52              	.L3:
+  52:src/at32f435_437_int.c ****   /* go to infinite loop when hard fault exception occurs */
+  53:src/at32f435_437_int.c ****   while(1)
+  53              		.loc 1 53 3 discriminator 1 view .LVU3
+  54:src/at32f435_437_int.c ****   {
+  55:src/at32f435_437_int.c ****   }
+  54              		.loc 1 55 3 discriminator 1 view .LVU4
+  53:src/at32f435_437_int.c ****   {
+  55              		.loc 1 53 8 discriminator 1 view .LVU5
+  56 0000 FEE7     		b	.L3
+  57              		.cfi_endproc
+  58              	.LFE134:
+  60              		.section	.text.MemManage_Handler,"ax",%progbits
+  61              		.align	1
+  62              		.global	MemManage_Handler
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccqCluvu.s 			page 3
+
+
+  63              		.syntax unified
+  64              		.thumb
+  65              		.thumb_func
+  67              	MemManage_Handler:
+  68              	.LFB135:
+  56:src/at32f435_437_int.c **** }
+  57:src/at32f435_437_int.c **** 
+  58:src/at32f435_437_int.c **** /**
+  59:src/at32f435_437_int.c ****   * @brief  this function handles memory manage exception.
+  60:src/at32f435_437_int.c ****   * @param  none
+  61:src/at32f435_437_int.c ****   * @retval none
+  62:src/at32f435_437_int.c ****   */
+  63:src/at32f435_437_int.c **** void MemManage_Handler(void)
+  64:src/at32f435_437_int.c **** {
+  69              		.loc 1 64 1 view -0
+  70              		.cfi_startproc
+  71              		@ Volatile: function does not return.
+  72              		@ args = 0, pretend = 0, frame = 0
+  73              		@ frame_needed = 0, uses_anonymous_args = 0
+  74              		@ link register save eliminated.
+  75              	.L5:
+  65:src/at32f435_437_int.c ****   /* go to infinite loop when memory manage exception occurs */
+  66:src/at32f435_437_int.c ****   while(1)
+  76              		.loc 1 66 3 discriminator 1 view .LVU7
+  67:src/at32f435_437_int.c ****   {
+  68:src/at32f435_437_int.c ****   }
+  77              		.loc 1 68 3 discriminator 1 view .LVU8
+  66:src/at32f435_437_int.c ****   {
+  78              		.loc 1 66 8 discriminator 1 view .LVU9
+  79 0000 FEE7     		b	.L5
+  80              		.cfi_endproc
+  81              	.LFE135:
+  83              		.section	.text.BusFault_Handler,"ax",%progbits
+  84              		.align	1
+  85              		.global	BusFault_Handler
+  86              		.syntax unified
+  87              		.thumb
+  88              		.thumb_func
+  90              	BusFault_Handler:
+  91              	.LFB136:
+  69:src/at32f435_437_int.c **** }
+  70:src/at32f435_437_int.c **** 
+  71:src/at32f435_437_int.c **** /**
+  72:src/at32f435_437_int.c ****   * @brief  this function handles bus fault exception.
+  73:src/at32f435_437_int.c ****   * @param  none
+  74:src/at32f435_437_int.c ****   * @retval none
+  75:src/at32f435_437_int.c ****   */
+  76:src/at32f435_437_int.c **** void BusFault_Handler(void)
+  77:src/at32f435_437_int.c **** {
+  92              		.loc 1 77 1 view -0
+  93              		.cfi_startproc
+  94              		@ Volatile: function does not return.
+  95              		@ args = 0, pretend = 0, frame = 0
+  96              		@ frame_needed = 0, uses_anonymous_args = 0
+  97              		@ link register save eliminated.
+  98              	.L7:
+  78:src/at32f435_437_int.c ****   /* go to infinite loop when bus fault exception occurs */
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccqCluvu.s 			page 4
+
+
+  79:src/at32f435_437_int.c ****   while(1)
+  99              		.loc 1 79 3 discriminator 1 view .LVU11
+  80:src/at32f435_437_int.c ****   {
+  81:src/at32f435_437_int.c ****   }
+ 100              		.loc 1 81 3 discriminator 1 view .LVU12
+  79:src/at32f435_437_int.c ****   {
+ 101              		.loc 1 79 8 discriminator 1 view .LVU13
+ 102 0000 FEE7     		b	.L7
+ 103              		.cfi_endproc
+ 104              	.LFE136:
+ 106              		.section	.text.UsageFault_Handler,"ax",%progbits
+ 107              		.align	1
+ 108              		.global	UsageFault_Handler
+ 109              		.syntax unified
+ 110              		.thumb
+ 111              		.thumb_func
+ 113              	UsageFault_Handler:
+ 114              	.LFB137:
+  82:src/at32f435_437_int.c **** }
+  83:src/at32f435_437_int.c **** 
+  84:src/at32f435_437_int.c **** /**
+  85:src/at32f435_437_int.c ****   * @brief  this function handles usage fault exception.
+  86:src/at32f435_437_int.c ****   * @param  none
+  87:src/at32f435_437_int.c ****   * @retval none
+  88:src/at32f435_437_int.c ****   */
+  89:src/at32f435_437_int.c **** void UsageFault_Handler(void)
+  90:src/at32f435_437_int.c **** {
+ 115              		.loc 1 90 1 view -0
+ 116              		.cfi_startproc
+ 117              		@ Volatile: function does not return.
+ 118              		@ args = 0, pretend = 0, frame = 0
+ 119              		@ frame_needed = 0, uses_anonymous_args = 0
+ 120              		@ link register save eliminated.
+ 121              	.L9:
+  91:src/at32f435_437_int.c ****   /* go to infinite loop when usage fault exception occurs */
+  92:src/at32f435_437_int.c ****   while(1)
+ 122              		.loc 1 92 3 discriminator 1 view .LVU15
+  93:src/at32f435_437_int.c ****   {
+  94:src/at32f435_437_int.c ****   }
+ 123              		.loc 1 94 3 discriminator 1 view .LVU16
+  92:src/at32f435_437_int.c ****   {
+ 124              		.loc 1 92 8 discriminator 1 view .LVU17
+ 125 0000 FEE7     		b	.L9
+ 126              		.cfi_endproc
+ 127              	.LFE137:
+ 129              		.section	.text.SVC_Handler,"ax",%progbits
+ 130              		.align	1
+ 131              		.global	SVC_Handler
+ 132              		.syntax unified
+ 133              		.thumb
+ 134              		.thumb_func
+ 136              	SVC_Handler:
+ 137              	.LFB138:
+  95:src/at32f435_437_int.c **** }
+  96:src/at32f435_437_int.c **** 
+  97:src/at32f435_437_int.c **** /**
+  98:src/at32f435_437_int.c ****   * @brief  this function handles svcall exception.
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccqCluvu.s 			page 5
+
+
+  99:src/at32f435_437_int.c ****   * @param  none
+ 100:src/at32f435_437_int.c ****   * @retval none
+ 101:src/at32f435_437_int.c ****   */
+ 102:src/at32f435_437_int.c **** void SVC_Handler(void)
+ 103:src/at32f435_437_int.c **** {
+ 138              		.loc 1 103 1 view -0
+ 139              		.cfi_startproc
+ 140              		@ args = 0, pretend = 0, frame = 0
+ 141              		@ frame_needed = 0, uses_anonymous_args = 0
+ 142              		@ link register save eliminated.
+ 104:src/at32f435_437_int.c **** }
+ 143              		.loc 1 104 1 view .LVU19
+ 144 0000 7047     		bx	lr
+ 145              		.cfi_endproc
+ 146              	.LFE138:
+ 148              		.section	.text.DebugMon_Handler,"ax",%progbits
+ 149              		.align	1
+ 150              		.global	DebugMon_Handler
+ 151              		.syntax unified
+ 152              		.thumb
+ 153              		.thumb_func
+ 155              	DebugMon_Handler:
+ 156              	.LFB139:
+ 105:src/at32f435_437_int.c **** 
+ 106:src/at32f435_437_int.c **** /**
+ 107:src/at32f435_437_int.c ****   * @brief  this function handles debug monitor exception.
+ 108:src/at32f435_437_int.c ****   * @param  none
+ 109:src/at32f435_437_int.c ****   * @retval none
+ 110:src/at32f435_437_int.c ****   */
+ 111:src/at32f435_437_int.c **** void DebugMon_Handler(void)
+ 112:src/at32f435_437_int.c **** {
+ 157              		.loc 1 112 1 view -0
+ 158              		.cfi_startproc
+ 159              		@ args = 0, pretend = 0, frame = 0
+ 160              		@ frame_needed = 0, uses_anonymous_args = 0
+ 161              		@ link register save eliminated.
+ 113:src/at32f435_437_int.c **** }
+ 162              		.loc 1 113 1 view .LVU21
+ 163 0000 7047     		bx	lr
+ 164              		.cfi_endproc
+ 165              	.LFE139:
+ 167              		.section	.text.PendSV_Handler,"ax",%progbits
+ 168              		.align	1
+ 169              		.global	PendSV_Handler
+ 170              		.syntax unified
+ 171              		.thumb
+ 172              		.thumb_func
+ 174              	PendSV_Handler:
+ 175              	.LFB140:
+ 114:src/at32f435_437_int.c **** 
+ 115:src/at32f435_437_int.c **** /**
+ 116:src/at32f435_437_int.c ****   * @brief  this function handles pendsv_handler exception.
+ 117:src/at32f435_437_int.c ****   * @param  none
+ 118:src/at32f435_437_int.c ****   * @retval none
+ 119:src/at32f435_437_int.c ****   */
+ 120:src/at32f435_437_int.c **** void PendSV_Handler(void)
+ 121:src/at32f435_437_int.c **** {
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccqCluvu.s 			page 6
+
+
+ 176              		.loc 1 121 1 view -0
+ 177              		.cfi_startproc
+ 178              		@ args = 0, pretend = 0, frame = 0
+ 179              		@ frame_needed = 0, uses_anonymous_args = 0
+ 180              		@ link register save eliminated.
+ 122:src/at32f435_437_int.c **** }
+ 181              		.loc 1 122 1 view .LVU23
+ 182 0000 7047     		bx	lr
+ 183              		.cfi_endproc
+ 184              	.LFE140:
+ 186              		.section	.text.SysTick_Handler,"ax",%progbits
+ 187              		.align	1
+ 188              		.global	SysTick_Handler
+ 189              		.syntax unified
+ 190              		.thumb
+ 191              		.thumb_func
+ 193              	SysTick_Handler:
+ 194              	.LFB141:
+ 123:src/at32f435_437_int.c **** 
+ 124:src/at32f435_437_int.c **** /**
+ 125:src/at32f435_437_int.c ****   * @brief  this function handles systick handler.
+ 126:src/at32f435_437_int.c ****   * @param  none
+ 127:src/at32f435_437_int.c ****   * @retval none
+ 128:src/at32f435_437_int.c ****   */
+ 129:src/at32f435_437_int.c **** void SysTick_Handler(void)
+ 130:src/at32f435_437_int.c **** {
+ 195              		.loc 1 130 1 view -0
+ 196              		.cfi_startproc
+ 197              		@ args = 0, pretend = 0, frame = 0
+ 198              		@ frame_needed = 0, uses_anonymous_args = 0
+ 199              		@ link register save eliminated.
+ 131:src/at32f435_437_int.c **** }
+ 200              		.loc 1 131 1 view .LVU25
+ 201 0000 7047     		bx	lr
+ 202              		.cfi_endproc
+ 203              	.LFE141:
+ 205              		.text
+ 206              	.Letext0:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccqCluvu.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 at32f435_437_int.c
+C:\Users\user\AppData\Local\Temp\ccqCluvu.s:18     .text.NMI_Handler:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccqCluvu.s:24     .text.NMI_Handler:00000000 NMI_Handler
+C:\Users\user\AppData\Local\Temp\ccqCluvu.s:38     .text.HardFault_Handler:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccqCluvu.s:44     .text.HardFault_Handler:00000000 HardFault_Handler
+C:\Users\user\AppData\Local\Temp\ccqCluvu.s:61     .text.MemManage_Handler:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccqCluvu.s:67     .text.MemManage_Handler:00000000 MemManage_Handler
+C:\Users\user\AppData\Local\Temp\ccqCluvu.s:84     .text.BusFault_Handler:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccqCluvu.s:90     .text.BusFault_Handler:00000000 BusFault_Handler
+C:\Users\user\AppData\Local\Temp\ccqCluvu.s:107    .text.UsageFault_Handler:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccqCluvu.s:113    .text.UsageFault_Handler:00000000 UsageFault_Handler
+C:\Users\user\AppData\Local\Temp\ccqCluvu.s:130    .text.SVC_Handler:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccqCluvu.s:136    .text.SVC_Handler:00000000 SVC_Handler
+C:\Users\user\AppData\Local\Temp\ccqCluvu.s:149    .text.DebugMon_Handler:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccqCluvu.s:155    .text.DebugMon_Handler:00000000 DebugMon_Handler
+C:\Users\user\AppData\Local\Temp\ccqCluvu.s:168    .text.PendSV_Handler:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccqCluvu.s:174    .text.PendSV_Handler:00000000 PendSV_Handler
+C:\Users\user\AppData\Local\Temp\ccqCluvu.s:187    .text.SysTick_Handler:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccqCluvu.s:193    .text.SysTick_Handler:00000000 SysTick_Handler
+
+NO UNDEFINED SYMBOLS

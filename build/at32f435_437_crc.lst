@@ -1,0 +1,675 @@
+ARM GAS  C:\Users\user\AppData\Local\Temp\cclf5BE3.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"at32f435_437_crc.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.crc_data_reset,"ax",%progbits
+  18              		.align	1
+  19              		.global	crc_data_reset
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	crc_data_reset:
+  25              	.LFB133:
+  26              		.file 1 "bsp/libraries/drivers/src/at32f435_437_crc.c"
+   1:bsp/libraries/drivers/src/at32f435_437_crc.c **** /**
+   2:bsp/libraries/drivers/src/at32f435_437_crc.c ****   **************************************************************************
+   3:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @file     at32f435_437_crc.c
+   4:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @brief    contains all the functions for the crc firmware library
+   5:bsp/libraries/drivers/src/at32f435_437_crc.c ****   **************************************************************************
+   6:bsp/libraries/drivers/src/at32f435_437_crc.c ****   *                       Copyright notice & Disclaimer
+   7:bsp/libraries/drivers/src/at32f435_437_crc.c ****   *
+   8:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * The software Board Support Package (BSP) that is made available to
+   9:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * download from Artery official website is the copyrighted work of Artery.
+  10:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * Artery authorizes customers to use, copy, and distribute the BSP
+  11:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * software and its related documentation for the purpose of design and
+  12:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * development in conjunction with Artery microcontrollers. Use of the
+  13:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * software is governed by this copyright notice and the following disclaimer.
+  14:bsp/libraries/drivers/src/at32f435_437_crc.c ****   *
+  15:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
+  16:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * GUARANTEES OR REPRESENTATIONS OF ANY KIND. ARTERY EXPRESSLY DISCLAIMS,
+  17:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * TO THE FULLEST EXTENT PERMITTED BY LAW, ALL EXPRESS, IMPLIED OR
+  18:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * STATUTORY OR OTHER WARRANTIES, GUARANTEES OR REPRESENTATIONS,
+  19:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * INCLUDING BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+  20:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
+  21:bsp/libraries/drivers/src/at32f435_437_crc.c ****   *
+  22:bsp/libraries/drivers/src/at32f435_437_crc.c ****   **************************************************************************
+  23:bsp/libraries/drivers/src/at32f435_437_crc.c ****   */
+  24:bsp/libraries/drivers/src/at32f435_437_crc.c **** 
+  25:bsp/libraries/drivers/src/at32f435_437_crc.c **** #include "at32f435_437_conf.h"
+  26:bsp/libraries/drivers/src/at32f435_437_crc.c **** 
+  27:bsp/libraries/drivers/src/at32f435_437_crc.c **** /** @addtogroup AT32F435_437_periph_driver
+  28:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @{
+  29:bsp/libraries/drivers/src/at32f435_437_crc.c ****   */
+  30:bsp/libraries/drivers/src/at32f435_437_crc.c **** 
+  31:bsp/libraries/drivers/src/at32f435_437_crc.c **** /** @defgroup CRC
+  32:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @brief CRC driver modules
+ARM GAS  C:\Users\user\AppData\Local\Temp\cclf5BE3.s 			page 2
+
+
+  33:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @{
+  34:bsp/libraries/drivers/src/at32f435_437_crc.c ****   */
+  35:bsp/libraries/drivers/src/at32f435_437_crc.c **** 
+  36:bsp/libraries/drivers/src/at32f435_437_crc.c **** #ifdef CRC_MODULE_ENABLED
+  37:bsp/libraries/drivers/src/at32f435_437_crc.c **** 
+  38:bsp/libraries/drivers/src/at32f435_437_crc.c **** /** @defgroup CRC_private_functions
+  39:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @{
+  40:bsp/libraries/drivers/src/at32f435_437_crc.c ****   */
+  41:bsp/libraries/drivers/src/at32f435_437_crc.c **** 
+  42:bsp/libraries/drivers/src/at32f435_437_crc.c **** /**
+  43:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @brief  reset the crc data register.
+  44:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @param  none
+  45:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @retval none
+  46:bsp/libraries/drivers/src/at32f435_437_crc.c ****   */
+  47:bsp/libraries/drivers/src/at32f435_437_crc.c **** void crc_data_reset(void)
+  48:bsp/libraries/drivers/src/at32f435_437_crc.c **** {
+  27              		.loc 1 48 1 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  49:bsp/libraries/drivers/src/at32f435_437_crc.c ****   /* reset crc generator */
+  50:bsp/libraries/drivers/src/at32f435_437_crc.c ****   CRC->ctrl_bit.rst = 0x1;
+  32              		.loc 1 50 3 view .LVU1
+  33              		.loc 1 50 21 is_stmt 0 view .LVU2
+  34 0000 024A     		ldr	r2, .L2
+  35 0002 9368     		ldr	r3, [r2, #8]
+  36 0004 43F00103 		orr	r3, r3, #1
+  37 0008 9360     		str	r3, [r2, #8]
+  51:bsp/libraries/drivers/src/at32f435_437_crc.c **** }
+  38              		.loc 1 51 1 view .LVU3
+  39 000a 7047     		bx	lr
+  40              	.L3:
+  41              		.align	2
+  42              	.L2:
+  43 000c 00300240 		.word	1073885184
+  44              		.cfi_endproc
+  45              	.LFE133:
+  47              		.section	.text.crc_one_word_calculate,"ax",%progbits
+  48              		.align	1
+  49              		.global	crc_one_word_calculate
+  50              		.syntax unified
+  51              		.thumb
+  52              		.thumb_func
+  54              	crc_one_word_calculate:
+  55              	.LVL0:
+  56              	.LFB134:
+  52:bsp/libraries/drivers/src/at32f435_437_crc.c **** 
+  53:bsp/libraries/drivers/src/at32f435_437_crc.c **** /**
+  54:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @brief  compute the 32-bit crc of a given data word(32-bit).
+  55:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @param  data: data word(32-bit) to compute its crc
+  56:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @retval 32-bit crc
+  57:bsp/libraries/drivers/src/at32f435_437_crc.c ****   */
+  58:bsp/libraries/drivers/src/at32f435_437_crc.c **** uint32_t crc_one_word_calculate(uint32_t data)
+  59:bsp/libraries/drivers/src/at32f435_437_crc.c **** {
+  57              		.loc 1 59 1 is_stmt 1 view -0
+  58              		.cfi_startproc
+ARM GAS  C:\Users\user\AppData\Local\Temp\cclf5BE3.s 			page 3
+
+
+  59              		@ args = 0, pretend = 0, frame = 0
+  60              		@ frame_needed = 0, uses_anonymous_args = 0
+  61              		@ link register save eliminated.
+  60:bsp/libraries/drivers/src/at32f435_437_crc.c ****   CRC->dt = data;
+  62              		.loc 1 60 3 view .LVU5
+  63              		.loc 1 60 11 is_stmt 0 view .LVU6
+  64 0000 014B     		ldr	r3, .L5
+  65 0002 1860     		str	r0, [r3]
+  61:bsp/libraries/drivers/src/at32f435_437_crc.c ****   return (CRC->dt);
+  66              		.loc 1 61 3 is_stmt 1 view .LVU7
+  67              		.loc 1 61 14 is_stmt 0 view .LVU8
+  68 0004 1868     		ldr	r0, [r3]
+  69              	.LVL1:
+  62:bsp/libraries/drivers/src/at32f435_437_crc.c **** }
+  70              		.loc 1 62 1 view .LVU9
+  71 0006 7047     		bx	lr
+  72              	.L6:
+  73              		.align	2
+  74              	.L5:
+  75 0008 00300240 		.word	1073885184
+  76              		.cfi_endproc
+  77              	.LFE134:
+  79              		.section	.text.crc_block_calculate,"ax",%progbits
+  80              		.align	1
+  81              		.global	crc_block_calculate
+  82              		.syntax unified
+  83              		.thumb
+  84              		.thumb_func
+  86              	crc_block_calculate:
+  87              	.LVL2:
+  88              	.LFB135:
+  63:bsp/libraries/drivers/src/at32f435_437_crc.c **** 
+  64:bsp/libraries/drivers/src/at32f435_437_crc.c **** /**
+  65:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @brief  compute the 32-bit crc of a given buffer of data word(32-bit).
+  66:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @param  pbuffer: pointer to the buffer containing the data to be computed
+  67:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @param  length: length of the buffer to be computed
+  68:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @retval 32-bit crc
+  69:bsp/libraries/drivers/src/at32f435_437_crc.c ****   */
+  70:bsp/libraries/drivers/src/at32f435_437_crc.c **** uint32_t crc_block_calculate(uint32_t *pbuffer, uint32_t length)
+  71:bsp/libraries/drivers/src/at32f435_437_crc.c **** {
+  89              		.loc 1 71 1 is_stmt 1 view -0
+  90              		.cfi_startproc
+  91              		@ args = 0, pretend = 0, frame = 0
+  92              		@ frame_needed = 0, uses_anonymous_args = 0
+  93              		@ link register save eliminated.
+  72:bsp/libraries/drivers/src/at32f435_437_crc.c ****   uint32_t index = 0;
+  94              		.loc 1 72 3 view .LVU11
+  73:bsp/libraries/drivers/src/at32f435_437_crc.c **** 
+  74:bsp/libraries/drivers/src/at32f435_437_crc.c ****   for(index = 0; index < length; index++)
+  95              		.loc 1 74 3 view .LVU12
+  96              		.loc 1 74 13 is_stmt 0 view .LVU13
+  97 0000 0023     		movs	r3, #0
+  98              		.loc 1 74 3 view .LVU14
+  99 0002 05E0     		b	.L8
+ 100              	.LVL3:
+ 101              	.L9:
+  75:bsp/libraries/drivers/src/at32f435_437_crc.c ****   {
+ARM GAS  C:\Users\user\AppData\Local\Temp\cclf5BE3.s 			page 4
+
+
+  76:bsp/libraries/drivers/src/at32f435_437_crc.c ****     CRC->dt = pbuffer[index];
+ 102              		.loc 1 76 5 is_stmt 1 discriminator 3 view .LVU15
+ 103              		.loc 1 76 13 is_stmt 0 discriminator 3 view .LVU16
+ 104 0004 054A     		ldr	r2, .L10
+ 105 0006 50F823C0 		ldr	ip, [r0, r3, lsl #2]
+ 106 000a C2F800C0 		str	ip, [r2]
+  74:bsp/libraries/drivers/src/at32f435_437_crc.c ****   {
+ 107              		.loc 1 74 34 is_stmt 1 discriminator 3 view .LVU17
+  74:bsp/libraries/drivers/src/at32f435_437_crc.c ****   {
+ 108              		.loc 1 74 39 is_stmt 0 discriminator 3 view .LVU18
+ 109 000e 0133     		adds	r3, r3, #1
+ 110              	.LVL4:
+ 111              	.L8:
+  74:bsp/libraries/drivers/src/at32f435_437_crc.c ****   {
+ 112              		.loc 1 74 18 is_stmt 1 discriminator 1 view .LVU19
+  74:bsp/libraries/drivers/src/at32f435_437_crc.c ****   {
+ 113              		.loc 1 74 3 is_stmt 0 discriminator 1 view .LVU20
+ 114 0010 8B42     		cmp	r3, r1
+ 115 0012 F7D3     		bcc	.L9
+  77:bsp/libraries/drivers/src/at32f435_437_crc.c ****   }
+  78:bsp/libraries/drivers/src/at32f435_437_crc.c **** 
+  79:bsp/libraries/drivers/src/at32f435_437_crc.c ****   return (CRC->dt);
+ 116              		.loc 1 79 3 is_stmt 1 view .LVU21
+ 117              		.loc 1 79 14 is_stmt 0 view .LVU22
+ 118 0014 014B     		ldr	r3, .L10
+ 119              	.LVL5:
+ 120              		.loc 1 79 14 view .LVU23
+ 121 0016 1868     		ldr	r0, [r3]
+ 122              	.LVL6:
+  80:bsp/libraries/drivers/src/at32f435_437_crc.c **** }
+ 123              		.loc 1 80 1 view .LVU24
+ 124 0018 7047     		bx	lr
+ 125              	.L11:
+ 126 001a 00BF     		.align	2
+ 127              	.L10:
+ 128 001c 00300240 		.word	1073885184
+ 129              		.cfi_endproc
+ 130              	.LFE135:
+ 132              		.section	.text.crc_data_get,"ax",%progbits
+ 133              		.align	1
+ 134              		.global	crc_data_get
+ 135              		.syntax unified
+ 136              		.thumb
+ 137              		.thumb_func
+ 139              	crc_data_get:
+ 140              	.LFB136:
+  81:bsp/libraries/drivers/src/at32f435_437_crc.c **** 
+  82:bsp/libraries/drivers/src/at32f435_437_crc.c **** /**
+  83:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @brief  return the current crc value.
+  84:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @param  none
+  85:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @retval 32-bit crc
+  86:bsp/libraries/drivers/src/at32f435_437_crc.c ****   */
+  87:bsp/libraries/drivers/src/at32f435_437_crc.c **** uint32_t crc_data_get(void)
+  88:bsp/libraries/drivers/src/at32f435_437_crc.c **** {
+ 141              		.loc 1 88 1 is_stmt 1 view -0
+ 142              		.cfi_startproc
+ 143              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\user\AppData\Local\Temp\cclf5BE3.s 			page 5
+
+
+ 144              		@ frame_needed = 0, uses_anonymous_args = 0
+ 145              		@ link register save eliminated.
+  89:bsp/libraries/drivers/src/at32f435_437_crc.c ****   return (CRC->dt);
+ 146              		.loc 1 89 3 view .LVU26
+ 147              		.loc 1 89 14 is_stmt 0 view .LVU27
+ 148 0000 014B     		ldr	r3, .L13
+ 149 0002 1868     		ldr	r0, [r3]
+  90:bsp/libraries/drivers/src/at32f435_437_crc.c **** }
+ 150              		.loc 1 90 1 view .LVU28
+ 151 0004 7047     		bx	lr
+ 152              	.L14:
+ 153 0006 00BF     		.align	2
+ 154              	.L13:
+ 155 0008 00300240 		.word	1073885184
+ 156              		.cfi_endproc
+ 157              	.LFE136:
+ 159              		.section	.text.crc_common_data_set,"ax",%progbits
+ 160              		.align	1
+ 161              		.global	crc_common_data_set
+ 162              		.syntax unified
+ 163              		.thumb
+ 164              		.thumb_func
+ 166              	crc_common_data_set:
+ 167              	.LVL7:
+ 168              	.LFB137:
+  91:bsp/libraries/drivers/src/at32f435_437_crc.c **** 
+  92:bsp/libraries/drivers/src/at32f435_437_crc.c **** /**
+  93:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @brief  store a 8-bit data in the common data register.
+  94:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @param  cdt_value: 8-bit value to be stored in the common data register
+  95:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @retval none
+  96:bsp/libraries/drivers/src/at32f435_437_crc.c ****   */
+  97:bsp/libraries/drivers/src/at32f435_437_crc.c **** void crc_common_data_set(uint8_t cdt_value)
+  98:bsp/libraries/drivers/src/at32f435_437_crc.c **** {
+ 169              		.loc 1 98 1 is_stmt 1 view -0
+ 170              		.cfi_startproc
+ 171              		@ args = 0, pretend = 0, frame = 0
+ 172              		@ frame_needed = 0, uses_anonymous_args = 0
+ 173              		@ link register save eliminated.
+  99:bsp/libraries/drivers/src/at32f435_437_crc.c ****   CRC->cdt_bit.cdt = cdt_value;
+ 174              		.loc 1 99 3 view .LVU30
+ 175              		.loc 1 99 20 is_stmt 0 view .LVU31
+ 176 0000 024B     		ldr	r3, .L16
+ 177 0002 5A68     		ldr	r2, [r3, #4]
+ 178              	.LVL8:
+ 179              		.loc 1 99 20 view .LVU32
+ 180 0004 60F30702 		bfi	r2, r0, #0, #8
+ 181 0008 5A60     		str	r2, [r3, #4]
+ 100:bsp/libraries/drivers/src/at32f435_437_crc.c **** }
+ 182              		.loc 1 100 1 view .LVU33
+ 183 000a 7047     		bx	lr
+ 184              	.L17:
+ 185              		.align	2
+ 186              	.L16:
+ 187 000c 00300240 		.word	1073885184
+ 188              		.cfi_endproc
+ 189              	.LFE137:
+ 191              		.section	.text.crc_common_data_get,"ax",%progbits
+ARM GAS  C:\Users\user\AppData\Local\Temp\cclf5BE3.s 			page 6
+
+
+ 192              		.align	1
+ 193              		.global	crc_common_data_get
+ 194              		.syntax unified
+ 195              		.thumb
+ 196              		.thumb_func
+ 198              	crc_common_data_get:
+ 199              	.LFB138:
+ 101:bsp/libraries/drivers/src/at32f435_437_crc.c **** 
+ 102:bsp/libraries/drivers/src/at32f435_437_crc.c **** /**
+ 103:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @brief  return the 8-bit data stored in the common data register
+ 104:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @param  none
+ 105:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @retval 8-bit value of the common data register
+ 106:bsp/libraries/drivers/src/at32f435_437_crc.c ****   */
+ 107:bsp/libraries/drivers/src/at32f435_437_crc.c **** uint8_t crc_common_data_get(void)
+ 108:bsp/libraries/drivers/src/at32f435_437_crc.c **** {
+ 200              		.loc 1 108 1 is_stmt 1 view -0
+ 201              		.cfi_startproc
+ 202              		@ args = 0, pretend = 0, frame = 0
+ 203              		@ frame_needed = 0, uses_anonymous_args = 0
+ 204              		@ link register save eliminated.
+ 109:bsp/libraries/drivers/src/at32f435_437_crc.c ****   return (CRC->cdt_bit.cdt);
+ 205              		.loc 1 109 3 view .LVU35
+ 206              		.loc 1 109 23 is_stmt 0 view .LVU36
+ 207 0000 014B     		ldr	r3, .L19
+ 208 0002 5868     		ldr	r0, [r3, #4]
+ 110:bsp/libraries/drivers/src/at32f435_437_crc.c **** }
+ 209              		.loc 1 110 1 view .LVU37
+ 210 0004 C0B2     		uxtb	r0, r0
+ 211 0006 7047     		bx	lr
+ 212              	.L20:
+ 213              		.align	2
+ 214              	.L19:
+ 215 0008 00300240 		.word	1073885184
+ 216              		.cfi_endproc
+ 217              	.LFE138:
+ 219              		.section	.text.crc_init_data_set,"ax",%progbits
+ 220              		.align	1
+ 221              		.global	crc_init_data_set
+ 222              		.syntax unified
+ 223              		.thumb
+ 224              		.thumb_func
+ 226              	crc_init_data_set:
+ 227              	.LVL9:
+ 228              	.LFB139:
+ 111:bsp/libraries/drivers/src/at32f435_437_crc.c **** 
+ 112:bsp/libraries/drivers/src/at32f435_437_crc.c **** /**
+ 113:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @brief  set the 32-bit initial data of crc
+ 114:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @param  value: initial data
+ 115:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @retval none
+ 116:bsp/libraries/drivers/src/at32f435_437_crc.c ****   */
+ 117:bsp/libraries/drivers/src/at32f435_437_crc.c **** void crc_init_data_set(uint32_t value)
+ 118:bsp/libraries/drivers/src/at32f435_437_crc.c **** {
+ 229              		.loc 1 118 1 is_stmt 1 view -0
+ 230              		.cfi_startproc
+ 231              		@ args = 0, pretend = 0, frame = 0
+ 232              		@ frame_needed = 0, uses_anonymous_args = 0
+ 233              		@ link register save eliminated.
+ARM GAS  C:\Users\user\AppData\Local\Temp\cclf5BE3.s 			page 7
+
+
+ 119:bsp/libraries/drivers/src/at32f435_437_crc.c ****   CRC->idt = value;
+ 234              		.loc 1 119 3 view .LVU39
+ 235              		.loc 1 119 12 is_stmt 0 view .LVU40
+ 236 0000 014B     		ldr	r3, .L22
+ 237 0002 1861     		str	r0, [r3, #16]
+ 120:bsp/libraries/drivers/src/at32f435_437_crc.c **** }
+ 238              		.loc 1 120 1 view .LVU41
+ 239 0004 7047     		bx	lr
+ 240              	.L23:
+ 241 0006 00BF     		.align	2
+ 242              	.L22:
+ 243 0008 00300240 		.word	1073885184
+ 244              		.cfi_endproc
+ 245              	.LFE139:
+ 247              		.section	.text.crc_reverse_input_data_set,"ax",%progbits
+ 248              		.align	1
+ 249              		.global	crc_reverse_input_data_set
+ 250              		.syntax unified
+ 251              		.thumb
+ 252              		.thumb_func
+ 254              	crc_reverse_input_data_set:
+ 255              	.LVL10:
+ 256              	.LFB140:
+ 121:bsp/libraries/drivers/src/at32f435_437_crc.c **** 
+ 122:bsp/libraries/drivers/src/at32f435_437_crc.c **** /**
+ 123:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @brief  control the reversal of the bit order in the input data
+ 124:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @param  value
+ 125:bsp/libraries/drivers/src/at32f435_437_crc.c ****   *         this parameter can be one of the following values:
+ 126:bsp/libraries/drivers/src/at32f435_437_crc.c ****   *         - CRC_REVERSE_INPUT_NO_AFFECTE
+ 127:bsp/libraries/drivers/src/at32f435_437_crc.c ****   *         - CRC_REVERSE_INPUT_BY_BYTE
+ 128:bsp/libraries/drivers/src/at32f435_437_crc.c ****   *         - CRC_REVERSE_INPUT_BY_HALFWORD
+ 129:bsp/libraries/drivers/src/at32f435_437_crc.c ****   *         - CRC_REVERSE_INPUT_BY_WORD
+ 130:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @retval none.
+ 131:bsp/libraries/drivers/src/at32f435_437_crc.c ****   */
+ 132:bsp/libraries/drivers/src/at32f435_437_crc.c **** void crc_reverse_input_data_set(crc_reverse_input_type value)
+ 133:bsp/libraries/drivers/src/at32f435_437_crc.c **** {
+ 257              		.loc 1 133 1 is_stmt 1 view -0
+ 258              		.cfi_startproc
+ 259              		@ args = 0, pretend = 0, frame = 0
+ 260              		@ frame_needed = 0, uses_anonymous_args = 0
+ 261              		@ link register save eliminated.
+ 134:bsp/libraries/drivers/src/at32f435_437_crc.c ****   CRC->ctrl_bit.revid = value;
+ 262              		.loc 1 134 3 view .LVU43
+ 263              		.loc 1 134 23 is_stmt 0 view .LVU44
+ 264 0000 024B     		ldr	r3, .L25
+ 265 0002 9A68     		ldr	r2, [r3, #8]
+ 266 0004 60F34612 		bfi	r2, r0, #5, #2
+ 267 0008 9A60     		str	r2, [r3, #8]
+ 135:bsp/libraries/drivers/src/at32f435_437_crc.c **** }
+ 268              		.loc 1 135 1 view .LVU45
+ 269 000a 7047     		bx	lr
+ 270              	.L26:
+ 271              		.align	2
+ 272              	.L25:
+ 273 000c 00300240 		.word	1073885184
+ 274              		.cfi_endproc
+ 275              	.LFE140:
+ARM GAS  C:\Users\user\AppData\Local\Temp\cclf5BE3.s 			page 8
+
+
+ 277              		.section	.text.crc_reverse_output_data_set,"ax",%progbits
+ 278              		.align	1
+ 279              		.global	crc_reverse_output_data_set
+ 280              		.syntax unified
+ 281              		.thumb
+ 282              		.thumb_func
+ 284              	crc_reverse_output_data_set:
+ 285              	.LVL11:
+ 286              	.LFB141:
+ 136:bsp/libraries/drivers/src/at32f435_437_crc.c **** 
+ 137:bsp/libraries/drivers/src/at32f435_437_crc.c **** /**
+ 138:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @brief  control the reversal of the bit order in the output data
+ 139:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @param  value
+ 140:bsp/libraries/drivers/src/at32f435_437_crc.c ****   *         this parameter can be one of the following values:
+ 141:bsp/libraries/drivers/src/at32f435_437_crc.c ****   *         - CRC_REVERSE_OUTPUT_NO_AFFECTE
+ 142:bsp/libraries/drivers/src/at32f435_437_crc.c ****   *         - CRC_REVERSE_OUTPUT_DATA
+ 143:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @retval none.
+ 144:bsp/libraries/drivers/src/at32f435_437_crc.c ****   */
+ 145:bsp/libraries/drivers/src/at32f435_437_crc.c **** void crc_reverse_output_data_set(crc_reverse_output_type value)
+ 146:bsp/libraries/drivers/src/at32f435_437_crc.c **** {
+ 287              		.loc 1 146 1 is_stmt 1 view -0
+ 288              		.cfi_startproc
+ 289              		@ args = 0, pretend = 0, frame = 0
+ 290              		@ frame_needed = 0, uses_anonymous_args = 0
+ 291              		@ link register save eliminated.
+ 147:bsp/libraries/drivers/src/at32f435_437_crc.c ****   CRC->ctrl_bit.revod = value;
+ 292              		.loc 1 147 3 view .LVU47
+ 293              		.loc 1 147 23 is_stmt 0 view .LVU48
+ 294 0000 024B     		ldr	r3, .L28
+ 295 0002 9A68     		ldr	r2, [r3, #8]
+ 296 0004 60F3C712 		bfi	r2, r0, #7, #1
+ 297 0008 9A60     		str	r2, [r3, #8]
+ 148:bsp/libraries/drivers/src/at32f435_437_crc.c **** }
+ 298              		.loc 1 148 1 view .LVU49
+ 299 000a 7047     		bx	lr
+ 300              	.L29:
+ 301              		.align	2
+ 302              	.L28:
+ 303 000c 00300240 		.word	1073885184
+ 304              		.cfi_endproc
+ 305              	.LFE141:
+ 307              		.section	.text.crc_poly_value_set,"ax",%progbits
+ 308              		.align	1
+ 309              		.global	crc_poly_value_set
+ 310              		.syntax unified
+ 311              		.thumb
+ 312              		.thumb_func
+ 314              	crc_poly_value_set:
+ 315              	.LVL12:
+ 316              	.LFB142:
+ 149:bsp/libraries/drivers/src/at32f435_437_crc.c **** 
+ 150:bsp/libraries/drivers/src/at32f435_437_crc.c **** /**
+ 151:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @brief  config crc polynomial value
+ 152:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @param  value
+ 153:bsp/libraries/drivers/src/at32f435_437_crc.c ****   *         32-bit new data of crc poly value
+ 154:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @retval none.
+ 155:bsp/libraries/drivers/src/at32f435_437_crc.c ****   */
+ARM GAS  C:\Users\user\AppData\Local\Temp\cclf5BE3.s 			page 9
+
+
+ 156:bsp/libraries/drivers/src/at32f435_437_crc.c **** void crc_poly_value_set(uint32_t value)
+ 157:bsp/libraries/drivers/src/at32f435_437_crc.c **** {
+ 317              		.loc 1 157 1 is_stmt 1 view -0
+ 318              		.cfi_startproc
+ 319              		@ args = 0, pretend = 0, frame = 0
+ 320              		@ frame_needed = 0, uses_anonymous_args = 0
+ 321              		@ link register save eliminated.
+ 158:bsp/libraries/drivers/src/at32f435_437_crc.c ****   CRC->poly = value;
+ 322              		.loc 1 158 3 view .LVU51
+ 323              		.loc 1 158 13 is_stmt 0 view .LVU52
+ 324 0000 014B     		ldr	r3, .L31
+ 325 0002 5861     		str	r0, [r3, #20]
+ 159:bsp/libraries/drivers/src/at32f435_437_crc.c **** }
+ 326              		.loc 1 159 1 view .LVU53
+ 327 0004 7047     		bx	lr
+ 328              	.L32:
+ 329 0006 00BF     		.align	2
+ 330              	.L31:
+ 331 0008 00300240 		.word	1073885184
+ 332              		.cfi_endproc
+ 333              	.LFE142:
+ 335              		.section	.text.crc_poly_value_get,"ax",%progbits
+ 336              		.align	1
+ 337              		.global	crc_poly_value_get
+ 338              		.syntax unified
+ 339              		.thumb
+ 340              		.thumb_func
+ 342              	crc_poly_value_get:
+ 343              	.LFB143:
+ 160:bsp/libraries/drivers/src/at32f435_437_crc.c **** 
+ 161:bsp/libraries/drivers/src/at32f435_437_crc.c **** /**
+ 162:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @brief  return crc polynomial value
+ 163:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @param  none
+ 164:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @retval 32-bit value of the polynomial value.
+ 165:bsp/libraries/drivers/src/at32f435_437_crc.c ****   */
+ 166:bsp/libraries/drivers/src/at32f435_437_crc.c **** uint32_t crc_poly_value_get(void)
+ 167:bsp/libraries/drivers/src/at32f435_437_crc.c **** {
+ 344              		.loc 1 167 1 is_stmt 1 view -0
+ 345              		.cfi_startproc
+ 346              		@ args = 0, pretend = 0, frame = 0
+ 347              		@ frame_needed = 0, uses_anonymous_args = 0
+ 348              		@ link register save eliminated.
+ 168:bsp/libraries/drivers/src/at32f435_437_crc.c ****   return (CRC->poly);
+ 349              		.loc 1 168 3 view .LVU55
+ 350              		.loc 1 168 14 is_stmt 0 view .LVU56
+ 351 0000 014B     		ldr	r3, .L34
+ 352 0002 5869     		ldr	r0, [r3, #20]
+ 169:bsp/libraries/drivers/src/at32f435_437_crc.c **** }
+ 353              		.loc 1 169 1 view .LVU57
+ 354 0004 7047     		bx	lr
+ 355              	.L35:
+ 356 0006 00BF     		.align	2
+ 357              	.L34:
+ 358 0008 00300240 		.word	1073885184
+ 359              		.cfi_endproc
+ 360              	.LFE143:
+ 362              		.section	.text.crc_poly_size_set,"ax",%progbits
+ARM GAS  C:\Users\user\AppData\Local\Temp\cclf5BE3.s 			page 10
+
+
+ 363              		.align	1
+ 364              		.global	crc_poly_size_set
+ 365              		.syntax unified
+ 366              		.thumb
+ 367              		.thumb_func
+ 369              	crc_poly_size_set:
+ 370              	.LVL13:
+ 371              	.LFB144:
+ 170:bsp/libraries/drivers/src/at32f435_437_crc.c **** 
+ 171:bsp/libraries/drivers/src/at32f435_437_crc.c **** /**
+ 172:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @brief  config crc polynomial data size
+ 173:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @param  size
+ 174:bsp/libraries/drivers/src/at32f435_437_crc.c ****   *         this parameter can be one of the following values:
+ 175:bsp/libraries/drivers/src/at32f435_437_crc.c ****   *         - CRC_POLY_SIZE_32B
+ 176:bsp/libraries/drivers/src/at32f435_437_crc.c ****   *         - CRC_POLY_SIZE_16B
+ 177:bsp/libraries/drivers/src/at32f435_437_crc.c ****   *         - CRC_POLY_SIZE_8B
+ 178:bsp/libraries/drivers/src/at32f435_437_crc.c ****   *         - CRC_POLY_SIZE_7B
+ 179:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @retval none.
+ 180:bsp/libraries/drivers/src/at32f435_437_crc.c ****   */
+ 181:bsp/libraries/drivers/src/at32f435_437_crc.c **** void crc_poly_size_set(crc_poly_size_type size)
+ 182:bsp/libraries/drivers/src/at32f435_437_crc.c **** {
+ 372              		.loc 1 182 1 is_stmt 1 view -0
+ 373              		.cfi_startproc
+ 374              		@ args = 0, pretend = 0, frame = 0
+ 375              		@ frame_needed = 0, uses_anonymous_args = 0
+ 376              		@ link register save eliminated.
+ 183:bsp/libraries/drivers/src/at32f435_437_crc.c ****   CRC->ctrl_bit.poly_size = size;
+ 377              		.loc 1 183 3 view .LVU59
+ 378              		.loc 1 183 27 is_stmt 0 view .LVU60
+ 379 0000 024B     		ldr	r3, .L37
+ 380 0002 9A68     		ldr	r2, [r3, #8]
+ 381 0004 60F3C402 		bfi	r2, r0, #3, #2
+ 382 0008 9A60     		str	r2, [r3, #8]
+ 184:bsp/libraries/drivers/src/at32f435_437_crc.c **** }
+ 383              		.loc 1 184 1 view .LVU61
+ 384 000a 7047     		bx	lr
+ 385              	.L38:
+ 386              		.align	2
+ 387              	.L37:
+ 388 000c 00300240 		.word	1073885184
+ 389              		.cfi_endproc
+ 390              	.LFE144:
+ 392              		.section	.text.crc_poly_size_get,"ax",%progbits
+ 393              		.align	1
+ 394              		.global	crc_poly_size_get
+ 395              		.syntax unified
+ 396              		.thumb
+ 397              		.thumb_func
+ 399              	crc_poly_size_get:
+ 400              	.LFB145:
+ 185:bsp/libraries/drivers/src/at32f435_437_crc.c **** 
+ 186:bsp/libraries/drivers/src/at32f435_437_crc.c **** /**
+ 187:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @brief  return crc polynomial data size
+ 188:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @param  none
+ 189:bsp/libraries/drivers/src/at32f435_437_crc.c ****   * @retval polynomial data size.
+ 190:bsp/libraries/drivers/src/at32f435_437_crc.c ****   */
+ 191:bsp/libraries/drivers/src/at32f435_437_crc.c **** crc_poly_size_type crc_poly_size_get(void)
+ARM GAS  C:\Users\user\AppData\Local\Temp\cclf5BE3.s 			page 11
+
+
+ 192:bsp/libraries/drivers/src/at32f435_437_crc.c **** {
+ 401              		.loc 1 192 1 is_stmt 1 view -0
+ 402              		.cfi_startproc
+ 403              		@ args = 0, pretend = 0, frame = 0
+ 404              		@ frame_needed = 0, uses_anonymous_args = 0
+ 405              		@ link register save eliminated.
+ 193:bsp/libraries/drivers/src/at32f435_437_crc.c ****   return (crc_poly_size_type)(CRC->ctrl_bit.poly_size);
+ 406              		.loc 1 193 3 view .LVU63
+ 407              		.loc 1 193 44 is_stmt 0 view .LVU64
+ 408 0000 024B     		ldr	r3, .L40
+ 409 0002 9868     		ldr	r0, [r3, #8]
+ 194:bsp/libraries/drivers/src/at32f435_437_crc.c **** }
+ 410              		.loc 1 194 1 view .LVU65
+ 411 0004 C0F3C100 		ubfx	r0, r0, #3, #2
+ 412 0008 7047     		bx	lr
+ 413              	.L41:
+ 414 000a 00BF     		.align	2
+ 415              	.L40:
+ 416 000c 00300240 		.word	1073885184
+ 417              		.cfi_endproc
+ 418              	.LFE145:
+ 420              		.text
+ 421              	.Letext0:
+ 422              		.file 2 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\mac
+ 423              		.file 3 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\sys
+ 424              		.file 4 "bsp/libraries/drivers/inc/at32f435_437_crc.h"
+ARM GAS  C:\Users\user\AppData\Local\Temp\cclf5BE3.s 			page 12
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 at32f435_437_crc.c
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:18     .text.crc_data_reset:00000000 $t
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:24     .text.crc_data_reset:00000000 crc_data_reset
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:43     .text.crc_data_reset:0000000c $d
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:48     .text.crc_one_word_calculate:00000000 $t
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:54     .text.crc_one_word_calculate:00000000 crc_one_word_calculate
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:75     .text.crc_one_word_calculate:00000008 $d
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:80     .text.crc_block_calculate:00000000 $t
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:86     .text.crc_block_calculate:00000000 crc_block_calculate
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:128    .text.crc_block_calculate:0000001c $d
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:133    .text.crc_data_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:139    .text.crc_data_get:00000000 crc_data_get
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:155    .text.crc_data_get:00000008 $d
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:160    .text.crc_common_data_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:166    .text.crc_common_data_set:00000000 crc_common_data_set
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:187    .text.crc_common_data_set:0000000c $d
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:192    .text.crc_common_data_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:198    .text.crc_common_data_get:00000000 crc_common_data_get
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:215    .text.crc_common_data_get:00000008 $d
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:220    .text.crc_init_data_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:226    .text.crc_init_data_set:00000000 crc_init_data_set
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:243    .text.crc_init_data_set:00000008 $d
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:248    .text.crc_reverse_input_data_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:254    .text.crc_reverse_input_data_set:00000000 crc_reverse_input_data_set
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:273    .text.crc_reverse_input_data_set:0000000c $d
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:278    .text.crc_reverse_output_data_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:284    .text.crc_reverse_output_data_set:00000000 crc_reverse_output_data_set
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:303    .text.crc_reverse_output_data_set:0000000c $d
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:308    .text.crc_poly_value_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:314    .text.crc_poly_value_set:00000000 crc_poly_value_set
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:331    .text.crc_poly_value_set:00000008 $d
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:336    .text.crc_poly_value_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:342    .text.crc_poly_value_get:00000000 crc_poly_value_get
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:358    .text.crc_poly_value_get:00000008 $d
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:363    .text.crc_poly_size_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:369    .text.crc_poly_size_set:00000000 crc_poly_size_set
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:388    .text.crc_poly_size_set:0000000c $d
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:393    .text.crc_poly_size_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:399    .text.crc_poly_size_get:00000000 crc_poly_size_get
+C:\Users\user\AppData\Local\Temp\cclf5BE3.s:416    .text.crc_poly_size_get:0000000c $d
+
+NO UNDEFINED SYMBOLS

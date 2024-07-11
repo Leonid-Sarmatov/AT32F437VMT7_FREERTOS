@@ -1,0 +1,3056 @@
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"at32f435_437_edma.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.edma_reset,"ax",%progbits
+  18              		.align	1
+  19              		.global	edma_reset
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	edma_reset:
+  25              	.LVL0:
+  26              	.LFB133:
+  27              		.file 1 "bsp/libraries/drivers/src/at32f435_437_edma.c"
+   1:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+   2:bsp/libraries/drivers/src/at32f435_437_edma.c ****   **************************************************************************
+   3:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @file     at32f435_437_edma.c
+   4:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief    contains all the functions for the edma firmware library
+   5:bsp/libraries/drivers/src/at32f435_437_edma.c ****   **************************************************************************
+   6:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *                       Copyright notice & Disclaimer
+   7:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *
+   8:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * The software Board Support Package (BSP) that is made available to
+   9:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * download from Artery official website is the copyrighted work of Artery.
+  10:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * Artery authorizes customers to use, copy, and distribute the BSP
+  11:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * software and its related documentation for the purpose of design and
+  12:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * development in conjunction with Artery microcontrollers. Use of the
+  13:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * software is governed by this copyright notice and the following disclaimer.
+  14:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *
+  15:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
+  16:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * GUARANTEES OR REPRESENTATIONS OF ANY KIND. ARTERY EXPRESSLY DISCLAIMS,
+  17:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * TO THE FULLEST EXTENT PERMITTED BY LAW, ALL EXPRESS, IMPLIED OR
+  18:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * STATUTORY OR OTHER WARRANTIES, GUARANTEES OR REPRESENTATIONS,
+  19:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * INCLUDING BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+  20:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
+  21:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *
+  22:bsp/libraries/drivers/src/at32f435_437_edma.c ****   **************************************************************************
+  23:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+  24:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+  25:bsp/libraries/drivers/src/at32f435_437_edma.c **** #include "at32f435_437_conf.h"
+  26:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+  27:bsp/libraries/drivers/src/at32f435_437_edma.c **** /** @addtogroup AT32F435_437_periph_driver
+  28:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @{
+  29:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+  30:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+  31:bsp/libraries/drivers/src/at32f435_437_edma.c **** /** @defgroup EDMA
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 2
+
+
+  32:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief EDMA driver modules
+  33:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @{
+  34:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+  35:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+  36:bsp/libraries/drivers/src/at32f435_437_edma.c **** #ifdef EDMA_MODULE_ENABLED
+  37:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+  38:bsp/libraries/drivers/src/at32f435_437_edma.c **** /** @defgroup EDMA_private_functions
+  39:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @{
+  40:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+  41:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+  42:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+  43:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  reset edma_streamx channely register.
+  44:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edma_streamx:
+  45:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+  46:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM1
+  47:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM2
+  48:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM3
+  49:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM4
+  50:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM5
+  51:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM6
+  52:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM7
+  53:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM8
+  54:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval none.
+  55:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+  56:bsp/libraries/drivers/src/at32f435_437_edma.c **** void edma_reset(edma_stream_type *edma_streamx)
+  57:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+  28              		.loc 1 57 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  58:bsp/libraries/drivers/src/at32f435_437_edma.c ****   /* reset registers for the selected stream */
+  59:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx->ctrl_bit.sen = FALSE;
+  33              		.loc 1 59 3 view .LVU1
+  34              		.loc 1 59 30 is_stmt 0 view .LVU2
+  35 0000 0368     		ldr	r3, [r0]
+  36 0002 6FF30003 		bfc	r3, #0, #1
+  37 0006 0360     		str	r3, [r0]
+  60:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx->ctrl = 0x0;
+  38              		.loc 1 60 3 is_stmt 1 view .LVU3
+  39              		.loc 1 60 22 is_stmt 0 view .LVU4
+  40 0008 0023     		movs	r3, #0
+  41 000a 0360     		str	r3, [r0]
+  61:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx->dtcnt = 0x0;
+  42              		.loc 1 61 3 is_stmt 1 view .LVU5
+  43              		.loc 1 61 23 is_stmt 0 view .LVU6
+  44 000c 4360     		str	r3, [r0, #4]
+  62:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx->paddr = 0x0;
+  45              		.loc 1 62 3 is_stmt 1 view .LVU7
+  46              		.loc 1 62 23 is_stmt 0 view .LVU8
+  47 000e 8360     		str	r3, [r0, #8]
+  63:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx->m0addr = 0x0;
+  48              		.loc 1 63 3 is_stmt 1 view .LVU9
+  49              		.loc 1 63 24 is_stmt 0 view .LVU10
+  50 0010 C360     		str	r3, [r0, #12]
+  64:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx->m1addr = 0x0;
+  51              		.loc 1 64 3 is_stmt 1 view .LVU11
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 3
+
+
+  52              		.loc 1 64 24 is_stmt 0 view .LVU12
+  53 0012 0361     		str	r3, [r0, #16]
+  65:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx->fctrl = (uint32_t)0x00000021;
+  54              		.loc 1 65 3 is_stmt 1 view .LVU13
+  55              		.loc 1 65 23 is_stmt 0 view .LVU14
+  56 0014 2123     		movs	r3, #33
+  57 0016 4361     		str	r3, [r0, #20]
+  66:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+  67:bsp/libraries/drivers/src/at32f435_437_edma.c ****   /* reset interrupt pending bits for the selected stream */
+  68:bsp/libraries/drivers/src/at32f435_437_edma.c ****   switch((uint32_t)edma_streamx)
+  58              		.loc 1 68 3 is_stmt 1 view .LVU15
+  59 0018 214B     		ldr	r3, .L18
+  60 001a 9842     		cmp	r0, r3
+  61 001c 36D0     		beq	.L2
+  62 001e 18D8     		bhi	.L3
+  63 0020 303B     		subs	r3, r3, #48
+  64 0022 9842     		cmp	r0, r3
+  65 0024 2DD0     		beq	.L4
+  66 0026 07D9     		bls	.L13
+  67 0028 1E4B     		ldr	r3, .L18+4
+  68 002a 9842     		cmp	r0, r3
+  69 002c 10D1     		bne	.L14
+  69:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+  70:bsp/libraries/drivers/src/at32f435_437_edma.c ****     case EDMA_STREAM1_BASE:
+  71:bsp/libraries/drivers/src/at32f435_437_edma.c ****       EDMA->clr1 = EDMA_STREAM1_INT_MASK;
+  72:bsp/libraries/drivers/src/at32f435_437_edma.c ****       break;
+  73:bsp/libraries/drivers/src/at32f435_437_edma.c ****     case EDMA_STREAM2_BASE:
+  74:bsp/libraries/drivers/src/at32f435_437_edma.c ****       EDMA->clr1 = EDMA_STREAM2_INT_MASK;
+  75:bsp/libraries/drivers/src/at32f435_437_edma.c ****       break;
+  76:bsp/libraries/drivers/src/at32f435_437_edma.c ****     case EDMA_STREAM3_BASE:
+  77:bsp/libraries/drivers/src/at32f435_437_edma.c ****       EDMA->clr1 = EDMA_STREAM3_INT_MASK;
+  78:bsp/libraries/drivers/src/at32f435_437_edma.c ****       break;
+  79:bsp/libraries/drivers/src/at32f435_437_edma.c ****     case EDMA_STREAM4_BASE:
+  80:bsp/libraries/drivers/src/at32f435_437_edma.c ****       EDMA->clr1 = EDMA_STREAM4_INT_MASK;
+  70              		.loc 1 80 7 view .LVU16
+  71              		.loc 1 80 18 is_stmt 0 view .LVU17
+  72 002e 1E4B     		ldr	r3, .L18+8
+  73 0030 4FF07462 		mov	r2, #255852544
+  74 0034 9A60     		str	r2, [r3, #8]
+  81:bsp/libraries/drivers/src/at32f435_437_edma.c ****       break;
+  75              		.loc 1 81 7 is_stmt 1 view .LVU18
+  76 0036 7047     		bx	lr
+  77              	.L13:
+  68:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+  78              		.loc 1 68 3 is_stmt 0 view .LVU19
+  79 0038 303B     		subs	r3, r3, #48
+  80 003a 9842     		cmp	r0, r3
+  81 003c 1DD0     		beq	.L6
+  82 003e 1833     		adds	r3, r3, #24
+  83 0040 9842     		cmp	r0, r3
+  84 0042 04D1     		bne	.L15
+  74:bsp/libraries/drivers/src/at32f435_437_edma.c ****       break;
+  85              		.loc 1 74 7 is_stmt 1 view .LVU20
+  74:bsp/libraries/drivers/src/at32f435_437_edma.c ****       break;
+  86              		.loc 1 74 18 is_stmt 0 view .LVU21
+  87 0044 184B     		ldr	r3, .L18+8
+  88 0046 4FF47462 		mov	r2, #3904
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 4
+
+
+  89 004a 9A60     		str	r2, [r3, #8]
+  75:bsp/libraries/drivers/src/at32f435_437_edma.c ****     case EDMA_STREAM3_BASE:
+  90              		.loc 1 75 7 is_stmt 1 view .LVU22
+  91 004c 7047     		bx	lr
+  92              	.L15:
+  93 004e 7047     		bx	lr
+  94              	.L14:
+  75:bsp/libraries/drivers/src/at32f435_437_edma.c ****     case EDMA_STREAM3_BASE:
+  95              		.loc 1 75 7 is_stmt 0 view .LVU23
+  96 0050 7047     		bx	lr
+  97              	.L3:
+  68:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+  98              		.loc 1 68 3 view .LVU24
+  99 0052 164B     		ldr	r3, .L18+12
+ 100 0054 9842     		cmp	r0, r3
+ 101 0056 1DD0     		beq	.L10
+ 102 0058 1833     		adds	r3, r3, #24
+ 103 005a 9842     		cmp	r0, r3
+ 104 005c 04D1     		bne	.L16
+  82:bsp/libraries/drivers/src/at32f435_437_edma.c ****     case EDMA_STREAM5_BASE:
+  83:bsp/libraries/drivers/src/at32f435_437_edma.c ****       EDMA->clr2 = EDMA_STREAM5_INT_MASK;
+  84:bsp/libraries/drivers/src/at32f435_437_edma.c ****       break;
+  85:bsp/libraries/drivers/src/at32f435_437_edma.c ****     case EDMA_STREAM6_BASE:
+  86:bsp/libraries/drivers/src/at32f435_437_edma.c ****       EDMA->clr2 = EDMA_STREAM6_INT_MASK;
+  87:bsp/libraries/drivers/src/at32f435_437_edma.c ****       break;
+  88:bsp/libraries/drivers/src/at32f435_437_edma.c ****     case EDMA_STREAM7_BASE:
+  89:bsp/libraries/drivers/src/at32f435_437_edma.c ****       EDMA->clr2 = EDMA_STREAM7_INT_MASK;
+  90:bsp/libraries/drivers/src/at32f435_437_edma.c ****       break;
+  91:bsp/libraries/drivers/src/at32f435_437_edma.c ****     case EDMA_STREAM8_BASE:
+  92:bsp/libraries/drivers/src/at32f435_437_edma.c ****       EDMA->clr2 = EDMA_STREAM8_INT_MASK;
+ 105              		.loc 1 92 7 is_stmt 1 view .LVU25
+ 106              		.loc 1 92 18 is_stmt 0 view .LVU26
+ 107 005e 124B     		ldr	r3, .L18+8
+ 108 0060 4FF07462 		mov	r2, #255852544
+ 109 0064 DA60     		str	r2, [r3, #12]
+  93:bsp/libraries/drivers/src/at32f435_437_edma.c ****       break;
+ 110              		.loc 1 93 7 is_stmt 1 view .LVU27
+  94:bsp/libraries/drivers/src/at32f435_437_edma.c ****     default: break;
+  95:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+  96:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 111              		.loc 1 96 1 is_stmt 0 view .LVU28
+ 112 0066 7047     		bx	lr
+ 113              	.L16:
+  68:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 114              		.loc 1 68 3 view .LVU29
+ 115 0068 303B     		subs	r3, r3, #48
+ 116 006a 9842     		cmp	r0, r3
+ 117 006c 04D1     		bne	.L17
+  86:bsp/libraries/drivers/src/at32f435_437_edma.c ****       break;
+ 118              		.loc 1 86 7 is_stmt 1 view .LVU30
+  86:bsp/libraries/drivers/src/at32f435_437_edma.c ****       break;
+ 119              		.loc 1 86 18 is_stmt 0 view .LVU31
+ 120 006e 0E4B     		ldr	r3, .L18+8
+ 121 0070 4FF47462 		mov	r2, #3904
+ 122 0074 DA60     		str	r2, [r3, #12]
+  87:bsp/libraries/drivers/src/at32f435_437_edma.c ****     case EDMA_STREAM7_BASE:
+ 123              		.loc 1 87 7 is_stmt 1 view .LVU32
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 5
+
+
+ 124 0076 7047     		bx	lr
+ 125              	.L17:
+ 126 0078 7047     		bx	lr
+ 127              	.L6:
+  71:bsp/libraries/drivers/src/at32f435_437_edma.c ****       break;
+ 128              		.loc 1 71 7 view .LVU33
+  71:bsp/libraries/drivers/src/at32f435_437_edma.c ****       break;
+ 129              		.loc 1 71 18 is_stmt 0 view .LVU34
+ 130 007a 0B4B     		ldr	r3, .L18+8
+ 131 007c 3D22     		movs	r2, #61
+ 132 007e 9A60     		str	r2, [r3, #8]
+  72:bsp/libraries/drivers/src/at32f435_437_edma.c ****     case EDMA_STREAM2_BASE:
+ 133              		.loc 1 72 7 is_stmt 1 view .LVU35
+ 134 0080 7047     		bx	lr
+ 135              	.L4:
+  77:bsp/libraries/drivers/src/at32f435_437_edma.c ****       break;
+ 136              		.loc 1 77 7 view .LVU36
+  77:bsp/libraries/drivers/src/at32f435_437_edma.c ****       break;
+ 137              		.loc 1 77 18 is_stmt 0 view .LVU37
+ 138 0082 094B     		ldr	r3, .L18+8
+ 139 0084 4FF47412 		mov	r2, #3997696
+ 140 0088 9A60     		str	r2, [r3, #8]
+  78:bsp/libraries/drivers/src/at32f435_437_edma.c ****     case EDMA_STREAM4_BASE:
+ 141              		.loc 1 78 7 is_stmt 1 view .LVU38
+ 142 008a 7047     		bx	lr
+ 143              	.L2:
+  83:bsp/libraries/drivers/src/at32f435_437_edma.c ****       break;
+ 144              		.loc 1 83 7 view .LVU39
+  83:bsp/libraries/drivers/src/at32f435_437_edma.c ****       break;
+ 145              		.loc 1 83 18 is_stmt 0 view .LVU40
+ 146 008c 064B     		ldr	r3, .L18+8
+ 147 008e 3D22     		movs	r2, #61
+ 148 0090 DA60     		str	r2, [r3, #12]
+  84:bsp/libraries/drivers/src/at32f435_437_edma.c ****     case EDMA_STREAM6_BASE:
+ 149              		.loc 1 84 7 is_stmt 1 view .LVU41
+ 150 0092 7047     		bx	lr
+ 151              	.L10:
+  89:bsp/libraries/drivers/src/at32f435_437_edma.c ****       break;
+ 152              		.loc 1 89 7 view .LVU42
+  89:bsp/libraries/drivers/src/at32f435_437_edma.c ****       break;
+ 153              		.loc 1 89 18 is_stmt 0 view .LVU43
+ 154 0094 044B     		ldr	r3, .L18+8
+ 155 0096 4FF47412 		mov	r2, #3997696
+ 156 009a DA60     		str	r2, [r3, #12]
+  90:bsp/libraries/drivers/src/at32f435_437_edma.c ****     case EDMA_STREAM8_BASE:
+ 157              		.loc 1 90 7 is_stmt 1 view .LVU44
+ 158 009c 7047     		bx	lr
+ 159              	.L19:
+ 160 009e 00BF     		.align	2
+ 161              	.L18:
+ 162 00a0 70600240 		.word	1073897584
+ 163 00a4 58600240 		.word	1073897560
+ 164 00a8 00600240 		.word	1073897472
+ 165 00ac A0600240 		.word	1073897632
+ 166              		.cfi_endproc
+ 167              	.LFE133:
+ 169              		.section	.text.edma_init,"ax",%progbits
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 6
+
+
+ 170              		.align	1
+ 171              		.global	edma_init
+ 172              		.syntax unified
+ 173              		.thumb
+ 174              		.thumb_func
+ 176              	edma_init:
+ 177              	.LVL1:
+ 178              	.LFB134:
+  97:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+  98:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+  99:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  edma init.
+ 100:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edma_streamx:
+ 101:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ 102:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM1
+ 103:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM2
+ 104:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM3
+ 105:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM4
+ 106:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM5
+ 107:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM6
+ 108:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM7
+ 109:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM8
+ 110:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edma_init_struct: pointer to a edma_init_type structure.
+ 111:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval none.
+ 112:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 113:bsp/libraries/drivers/src/at32f435_437_edma.c **** void edma_init(edma_stream_type *edma_streamx, edma_init_type *edma_init_struct)
+ 114:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 179              		.loc 1 114 1 view -0
+ 180              		.cfi_startproc
+ 181              		@ args = 0, pretend = 0, frame = 0
+ 182              		@ frame_needed = 0, uses_anonymous_args = 0
+ 183              		@ link register save eliminated.
+ 115:bsp/libraries/drivers/src/at32f435_437_edma.c ****   /* config dtd bits */
+ 116:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx->ctrl_bit.dtd = edma_init_struct->direction;
+ 184              		.loc 1 116 3 view .LVU46
+ 185              		.loc 1 116 48 is_stmt 0 view .LVU47
+ 186 0000 0A7A     		ldrb	r2, [r1, #8]	@ zero_extendqisi2
+ 187              		.loc 1 116 30 view .LVU48
+ 188 0002 0368     		ldr	r3, [r0]
+ 189 0004 62F38713 		bfi	r3, r2, #6, #2
+ 190 0008 0360     		str	r3, [r0]
+ 117:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 118:bsp/libraries/drivers/src/at32f435_437_edma.c ****   /* config pincm bit */
+ 119:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx->ctrl_bit.pincm = edma_init_struct->peripheral_inc_enable;
+ 191              		.loc 1 119 3 is_stmt 1 view .LVU49
+ 192              		.loc 1 119 50 is_stmt 0 view .LVU50
+ 193 000a 0A7B     		ldrb	r2, [r1, #12]	@ zero_extendqisi2
+ 194              		.loc 1 119 32 view .LVU51
+ 195 000c 0368     		ldr	r3, [r0]
+ 196 000e 62F34923 		bfi	r3, r2, #9, #1
+ 197 0012 0360     		str	r3, [r0]
+ 120:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 121:bsp/libraries/drivers/src/at32f435_437_edma.c ****   /* config mincm bit*/
+ 122:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx->ctrl_bit.mincm = edma_init_struct->memory_inc_enable;
+ 198              		.loc 1 122 3 is_stmt 1 view .LVU52
+ 199              		.loc 1 122 50 is_stmt 0 view .LVU53
+ 200 0014 4A7B     		ldrb	r2, [r1, #13]	@ zero_extendqisi2
+ 201              		.loc 1 122 32 view .LVU54
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 7
+
+
+ 202 0016 0368     		ldr	r3, [r0]
+ 203 0018 62F38A23 		bfi	r3, r2, #10, #1
+ 204 001c 0360     		str	r3, [r0]
+ 123:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 124:bsp/libraries/drivers/src/at32f435_437_edma.c ****   /* config pwidth bits */
+ 125:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx->ctrl_bit.pwidth = edma_init_struct->peripheral_data_width;
+ 205              		.loc 1 125 3 is_stmt 1 view .LVU55
+ 206              		.loc 1 125 51 is_stmt 0 view .LVU56
+ 207 001e 8A7B     		ldrb	r2, [r1, #14]	@ zero_extendqisi2
+ 208              		.loc 1 125 33 view .LVU57
+ 209 0020 0368     		ldr	r3, [r0]
+ 210 0022 62F3CC23 		bfi	r3, r2, #11, #2
+ 211 0026 0360     		str	r3, [r0]
+ 126:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 127:bsp/libraries/drivers/src/at32f435_437_edma.c ****   /* config mwidth bits */
+ 128:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx->ctrl_bit.mwidth = edma_init_struct->memory_data_width;
+ 212              		.loc 1 128 3 is_stmt 1 view .LVU58
+ 213              		.loc 1 128 51 is_stmt 0 view .LVU59
+ 214 0028 CA7B     		ldrb	r2, [r1, #15]	@ zero_extendqisi2
+ 215              		.loc 1 128 33 view .LVU60
+ 216 002a 0368     		ldr	r3, [r0]
+ 217 002c 62F34E33 		bfi	r3, r2, #13, #2
+ 218 0030 0360     		str	r3, [r0]
+ 129:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 130:bsp/libraries/drivers/src/at32f435_437_edma.c ****   /* config lm bit */
+ 131:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx->ctrl_bit.lm = edma_init_struct->loop_mode_enable;
+ 219              		.loc 1 131 3 is_stmt 1 view .LVU61
+ 220              		.loc 1 131 47 is_stmt 0 view .LVU62
+ 221 0032 0A7C     		ldrb	r2, [r1, #16]	@ zero_extendqisi2
+ 222              		.loc 1 131 29 view .LVU63
+ 223 0034 0368     		ldr	r3, [r0]
+ 224 0036 62F30823 		bfi	r3, r2, #8, #1
+ 225 003a 0360     		str	r3, [r0]
+ 132:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 133:bsp/libraries/drivers/src/at32f435_437_edma.c ****   /* config spl bits */
+ 134:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx->ctrl_bit.spl = edma_init_struct->priority;
+ 226              		.loc 1 134 3 is_stmt 1 view .LVU64
+ 227              		.loc 1 134 48 is_stmt 0 view .LVU65
+ 228 003c 4A7C     		ldrb	r2, [r1, #17]	@ zero_extendqisi2
+ 229              		.loc 1 134 30 view .LVU66
+ 230 003e 0368     		ldr	r3, [r0]
+ 231 0040 62F31143 		bfi	r3, r2, #16, #2
+ 232 0044 0360     		str	r3, [r0]
+ 135:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 136:bsp/libraries/drivers/src/at32f435_437_edma.c ****   /* config mct bits */
+ 137:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx->ctrl_bit.mct = edma_init_struct->memory_burst_mode;
+ 233              		.loc 1 137 3 is_stmt 1 view .LVU67
+ 234              		.loc 1 137 48 is_stmt 0 view .LVU68
+ 235 0046 0A7D     		ldrb	r2, [r1, #20]	@ zero_extendqisi2
+ 236              		.loc 1 137 30 view .LVU69
+ 237 0048 0368     		ldr	r3, [r0]
+ 238 004a 62F3D853 		bfi	r3, r2, #23, #2
+ 239 004e 0360     		str	r3, [r0]
+ 138:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 139:bsp/libraries/drivers/src/at32f435_437_edma.c ****   /* config pct bits */
+ 140:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx->ctrl_bit.pct = edma_init_struct->peripheral_burst_mode;
+ 240              		.loc 1 140 3 is_stmt 1 view .LVU70
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 8
+
+
+ 241              		.loc 1 140 48 is_stmt 0 view .LVU71
+ 242 0050 4A7D     		ldrb	r2, [r1, #21]	@ zero_extendqisi2
+ 243              		.loc 1 140 30 view .LVU72
+ 244 0052 0368     		ldr	r3, [r0]
+ 245 0054 62F35653 		bfi	r3, r2, #21, #2
+ 246 0058 0360     		str	r3, [r0]
+ 141:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 142:bsp/libraries/drivers/src/at32f435_437_edma.c ****   /* config fen bits */
+ 143:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx->fctrl_bit.fen = edma_init_struct->fifo_mode_enable;
+ 247              		.loc 1 143 3 is_stmt 1 view .LVU73
+ 248              		.loc 1 143 49 is_stmt 0 view .LVU74
+ 249 005a 8A7C     		ldrb	r2, [r1, #18]	@ zero_extendqisi2
+ 250              		.loc 1 143 31 view .LVU75
+ 251 005c 4369     		ldr	r3, [r0, #20]
+ 252 005e 62F38203 		bfi	r3, r2, #2, #1
+ 253 0062 4361     		str	r3, [r0, #20]
+ 144:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 145:bsp/libraries/drivers/src/at32f435_437_edma.c ****   /* config fthsel bits*/
+ 146:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx->fctrl_bit.fthsel = edma_init_struct->fifo_threshold;
+ 254              		.loc 1 146 3 is_stmt 1 view .LVU76
+ 255              		.loc 1 146 52 is_stmt 0 view .LVU77
+ 256 0064 CA7C     		ldrb	r2, [r1, #19]	@ zero_extendqisi2
+ 257              		.loc 1 146 34 view .LVU78
+ 258 0066 4369     		ldr	r3, [r0, #20]
+ 259 0068 62F30103 		bfi	r3, r2, #0, #2
+ 260 006c 4361     		str	r3, [r0, #20]
+ 147:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 148:bsp/libraries/drivers/src/at32f435_437_edma.c ****   /* config dtcnt */
+ 149:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx->dtcnt = edma_init_struct->buffer_size;
+ 261              		.loc 1 149 3 is_stmt 1 view .LVU79
+ 262              		.loc 1 149 41 is_stmt 0 view .LVU80
+ 263 006e 4B89     		ldrh	r3, [r1, #10]
+ 264              		.loc 1 149 23 view .LVU81
+ 265 0070 4360     		str	r3, [r0, #4]
+ 150:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 151:bsp/libraries/drivers/src/at32f435_437_edma.c ****   /* config paddr */
+ 152:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx->paddr = edma_init_struct->peripheral_base_addr;
+ 266              		.loc 1 152 3 is_stmt 1 view .LVU82
+ 267              		.loc 1 152 41 is_stmt 0 view .LVU83
+ 268 0072 0B68     		ldr	r3, [r1]
+ 269              		.loc 1 152 23 view .LVU84
+ 270 0074 8360     		str	r3, [r0, #8]
+ 153:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 154:bsp/libraries/drivers/src/at32f435_437_edma.c ****   /* config m0addr */
+ 155:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx->m0addr = edma_init_struct->memory0_base_addr;
+ 271              		.loc 1 155 3 is_stmt 1 view .LVU85
+ 272              		.loc 1 155 42 is_stmt 0 view .LVU86
+ 273 0076 4B68     		ldr	r3, [r1, #4]
+ 274              		.loc 1 155 24 view .LVU87
+ 275 0078 C360     		str	r3, [r0, #12]
+ 156:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 276              		.loc 1 156 1 view .LVU88
+ 277 007a 7047     		bx	lr
+ 278              		.cfi_endproc
+ 279              	.LFE134:
+ 281              		.section	.text.edma_default_para_init,"ax",%progbits
+ 282              		.align	1
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 9
+
+
+ 283              		.global	edma_default_para_init
+ 284              		.syntax unified
+ 285              		.thumb
+ 286              		.thumb_func
+ 288              	edma_default_para_init:
+ 289              	.LVL2:
+ 290              	.LFB135:
+ 157:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 158:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 159:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  edma init struct config with its default value.
+ 160:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edma_init_struct: pointer to a edma_init_type structure which will be initialized.
+ 161:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval none.
+ 162:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 163:bsp/libraries/drivers/src/at32f435_437_edma.c **** void edma_default_para_init(edma_init_type *edma_init_struct)
+ 164:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 291              		.loc 1 164 1 is_stmt 1 view -0
+ 292              		.cfi_startproc
+ 293              		@ args = 0, pretend = 0, frame = 0
+ 294              		@ frame_needed = 0, uses_anonymous_args = 0
+ 295              		@ link register save eliminated.
+ 165:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_init_struct->buffer_size = 0;
+ 296              		.loc 1 165 3 view .LVU90
+ 297              		.loc 1 165 33 is_stmt 0 view .LVU91
+ 298 0000 0023     		movs	r3, #0
+ 299 0002 4381     		strh	r3, [r0, #10]	@ movhi
+ 166:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_init_struct->loop_mode_enable = FALSE;
+ 300              		.loc 1 166 3 is_stmt 1 view .LVU92
+ 301              		.loc 1 166 38 is_stmt 0 view .LVU93
+ 302 0004 0374     		strb	r3, [r0, #16]
+ 167:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_init_struct->direction = EDMA_DIR_PERIPHERAL_TO_MEMORY;
+ 303              		.loc 1 167 3 is_stmt 1 view .LVU94
+ 304              		.loc 1 167 31 is_stmt 0 view .LVU95
+ 305 0006 0372     		strb	r3, [r0, #8]
+ 168:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_init_struct->fifo_threshold = EDMA_FIFO_THRESHOLD_1QUARTER;
+ 306              		.loc 1 168 3 is_stmt 1 view .LVU96
+ 307              		.loc 1 168 36 is_stmt 0 view .LVU97
+ 308 0008 C374     		strb	r3, [r0, #19]
+ 169:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_init_struct->fifo_mode_enable = FALSE;
+ 309              		.loc 1 169 3 is_stmt 1 view .LVU98
+ 310              		.loc 1 169 38 is_stmt 0 view .LVU99
+ 311 000a 8374     		strb	r3, [r0, #18]
+ 170:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_init_struct->memory0_base_addr = 0;
+ 312              		.loc 1 170 3 is_stmt 1 view .LVU100
+ 313              		.loc 1 170 39 is_stmt 0 view .LVU101
+ 314 000c 4360     		str	r3, [r0, #4]
+ 171:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_init_struct->memory_burst_mode = EDMA_MEMORY_SINGLE;
+ 315              		.loc 1 171 3 is_stmt 1 view .LVU102
+ 316              		.loc 1 171 39 is_stmt 0 view .LVU103
+ 317 000e 0375     		strb	r3, [r0, #20]
+ 172:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_init_struct->memory_data_width = EDMA_MEMORY_DATA_WIDTH_BYTE;
+ 318              		.loc 1 172 3 is_stmt 1 view .LVU104
+ 319              		.loc 1 172 39 is_stmt 0 view .LVU105
+ 320 0010 C373     		strb	r3, [r0, #15]
+ 173:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_init_struct->memory_inc_enable = FALSE;
+ 321              		.loc 1 173 3 is_stmt 1 view .LVU106
+ 322              		.loc 1 173 39 is_stmt 0 view .LVU107
+ 323 0012 4373     		strb	r3, [r0, #13]
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 10
+
+
+ 174:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_init_struct->peripheral_base_addr = 0;
+ 324              		.loc 1 174 3 is_stmt 1 view .LVU108
+ 325              		.loc 1 174 42 is_stmt 0 view .LVU109
+ 326 0014 0360     		str	r3, [r0]
+ 175:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_init_struct->peripheral_burst_mode = EDMA_PERIPHERAL_SINGLE;
+ 327              		.loc 1 175 3 is_stmt 1 view .LVU110
+ 328              		.loc 1 175 43 is_stmt 0 view .LVU111
+ 329 0016 4375     		strb	r3, [r0, #21]
+ 176:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_init_struct->peripheral_data_width = EDMA_PERIPHERAL_DATA_WIDTH_BYTE;
+ 330              		.loc 1 176 3 is_stmt 1 view .LVU112
+ 331              		.loc 1 176 43 is_stmt 0 view .LVU113
+ 332 0018 8373     		strb	r3, [r0, #14]
+ 177:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_init_struct->peripheral_inc_enable = FALSE;
+ 333              		.loc 1 177 3 is_stmt 1 view .LVU114
+ 334              		.loc 1 177 43 is_stmt 0 view .LVU115
+ 335 001a 0373     		strb	r3, [r0, #12]
+ 178:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_init_struct->priority = EDMA_PRIORITY_LOW;
+ 336              		.loc 1 178 3 is_stmt 1 view .LVU116
+ 337              		.loc 1 178 30 is_stmt 0 view .LVU117
+ 338 001c 4374     		strb	r3, [r0, #17]
+ 179:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 339              		.loc 1 179 1 view .LVU118
+ 340 001e 7047     		bx	lr
+ 341              		.cfi_endproc
+ 342              	.LFE135:
+ 344              		.section	.text.edma_stream_enable,"ax",%progbits
+ 345              		.align	1
+ 346              		.global	edma_stream_enable
+ 347              		.syntax unified
+ 348              		.thumb
+ 349              		.thumb_func
+ 351              	edma_stream_enable:
+ 352              	.LVL3:
+ 353              	.LFB136:
+ 180:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 181:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 182:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  enable or disable the edma streamx.
+ 183:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edma_streamx:
+ 184:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ 185:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM1
+ 186:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM2
+ 187:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM3
+ 188:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM4
+ 189:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM5
+ 190:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM6
+ 191:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM7
+ 192:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM8
+ 193:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  new_state (TRUE or FALSE).
+ 194:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval none.
+ 195:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 196:bsp/libraries/drivers/src/at32f435_437_edma.c **** void edma_stream_enable(edma_stream_type *edma_streamx, confirm_state new_state)
+ 197:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 354              		.loc 1 197 1 is_stmt 1 view -0
+ 355              		.cfi_startproc
+ 356              		@ args = 0, pretend = 0, frame = 0
+ 357              		@ frame_needed = 0, uses_anonymous_args = 0
+ 358              		@ link register save eliminated.
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 11
+
+
+ 198:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx->ctrl_bit.sen = new_state;
+ 359              		.loc 1 198 3 view .LVU120
+ 360              		.loc 1 198 30 is_stmt 0 view .LVU121
+ 361 0000 0368     		ldr	r3, [r0]
+ 362 0002 61F30003 		bfi	r3, r1, #0, #1
+ 363 0006 0360     		str	r3, [r0]
+ 199:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 364              		.loc 1 199 1 view .LVU122
+ 365 0008 7047     		bx	lr
+ 366              		.cfi_endproc
+ 367              	.LFE136:
+ 369              		.section	.text.edma_interrupt_enable,"ax",%progbits
+ 370              		.align	1
+ 371              		.global	edma_interrupt_enable
+ 372              		.syntax unified
+ 373              		.thumb
+ 374              		.thumb_func
+ 376              	edma_interrupt_enable:
+ 377              	.LVL4:
+ 378              	.LFB137:
+ 200:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 201:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 202:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  enable or disable the edma streamx interrupts.
+ 203:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edma_streamx:
+ 204:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ 205:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM1
+ 206:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM2
+ 207:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM3
+ 208:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM4
+ 209:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM5
+ 210:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM6
+ 211:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM7
+ 212:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM8
+ 213:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edma_int:
+ 214:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ 215:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FDT_INT
+ 216:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_HDT_INT
+ 217:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_DTERR_INT
+ 218:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_DMERR_INT
+ 219:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FERR_INT
+ 220:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  new_state (TRUE or FALSE).
+ 221:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval none.
+ 222:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 223:bsp/libraries/drivers/src/at32f435_437_edma.c **** void edma_interrupt_enable(edma_stream_type *edma_streamx, uint32_t edma_int, confirm_state new_sta
+ 224:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 379              		.loc 1 224 1 is_stmt 1 view -0
+ 380              		.cfi_startproc
+ 381              		@ args = 0, pretend = 0, frame = 0
+ 382              		@ frame_needed = 0, uses_anonymous_args = 0
+ 383              		@ link register save eliminated.
+ 225:bsp/libraries/drivers/src/at32f435_437_edma.c ****   if((edma_int & EDMA_FERR_INT) != 0)
+ 384              		.loc 1 225 3 view .LVU124
+ 385              		.loc 1 225 5 is_stmt 0 view .LVU125
+ 386 0000 11F0800F 		tst	r1, #128
+ 387 0004 04D0     		beq	.L24
+ 226:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 227:bsp/libraries/drivers/src/at32f435_437_edma.c ****     if(new_state != FALSE)
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 12
+
+
+ 388              		.loc 1 227 5 is_stmt 1 view .LVU126
+ 389              		.loc 1 227 7 is_stmt 0 view .LVU127
+ 390 0006 52B1     		cbz	r2, .L25
+ 228:bsp/libraries/drivers/src/at32f435_437_edma.c ****     {
+ 229:bsp/libraries/drivers/src/at32f435_437_edma.c ****       edma_streamx->fctrl |= (uint32_t)EDMA_FERR_INT;
+ 391              		.loc 1 229 7 is_stmt 1 view .LVU128
+ 392              		.loc 1 229 27 is_stmt 0 view .LVU129
+ 393 0008 4369     		ldr	r3, [r0, #20]
+ 394 000a 43F08003 		orr	r3, r3, #128
+ 395 000e 4361     		str	r3, [r0, #20]
+ 396              	.L24:
+ 230:bsp/libraries/drivers/src/at32f435_437_edma.c ****     }
+ 231:bsp/libraries/drivers/src/at32f435_437_edma.c ****     else
+ 232:bsp/libraries/drivers/src/at32f435_437_edma.c ****     {
+ 233:bsp/libraries/drivers/src/at32f435_437_edma.c ****       edma_streamx->fctrl &= ~(uint32_t)EDMA_FERR_INT;
+ 234:bsp/libraries/drivers/src/at32f435_437_edma.c ****     }
+ 235:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 236:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 237:bsp/libraries/drivers/src/at32f435_437_edma.c ****   if(edma_int != EDMA_FERR_INT)
+ 397              		.loc 1 237 3 is_stmt 1 view .LVU130
+ 398              		.loc 1 237 5 is_stmt 0 view .LVU131
+ 399 0010 8029     		cmp	r1, #128
+ 400 0012 0DD0     		beq	.L23
+ 238:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 239:bsp/libraries/drivers/src/at32f435_437_edma.c ****     if(new_state != FALSE)
+ 401              		.loc 1 239 5 is_stmt 1 view .LVU132
+ 402              		.loc 1 239 7 is_stmt 0 view .LVU133
+ 403 0014 42B1     		cbz	r2, .L27
+ 240:bsp/libraries/drivers/src/at32f435_437_edma.c ****     {
+ 241:bsp/libraries/drivers/src/at32f435_437_edma.c ****       edma_streamx->ctrl |= (uint32_t)edma_int;
+ 404              		.loc 1 241 7 is_stmt 1 view .LVU134
+ 405              		.loc 1 241 26 is_stmt 0 view .LVU135
+ 406 0016 0368     		ldr	r3, [r0]
+ 407 0018 1943     		orrs	r1, r1, r3
+ 408              	.LVL5:
+ 409              		.loc 1 241 26 view .LVU136
+ 410 001a 0160     		str	r1, [r0]
+ 411 001c 7047     		bx	lr
+ 412              	.LVL6:
+ 413              	.L25:
+ 233:bsp/libraries/drivers/src/at32f435_437_edma.c ****     }
+ 414              		.loc 1 233 7 is_stmt 1 view .LVU137
+ 233:bsp/libraries/drivers/src/at32f435_437_edma.c ****     }
+ 415              		.loc 1 233 27 is_stmt 0 view .LVU138
+ 416 001e 4369     		ldr	r3, [r0, #20]
+ 417 0020 23F08003 		bic	r3, r3, #128
+ 418 0024 4361     		str	r3, [r0, #20]
+ 419 0026 F3E7     		b	.L24
+ 420              	.L27:
+ 242:bsp/libraries/drivers/src/at32f435_437_edma.c ****     }
+ 243:bsp/libraries/drivers/src/at32f435_437_edma.c ****     else
+ 244:bsp/libraries/drivers/src/at32f435_437_edma.c ****     {
+ 245:bsp/libraries/drivers/src/at32f435_437_edma.c ****       edma_streamx->ctrl &= ~(uint32_t)edma_int;
+ 421              		.loc 1 245 7 is_stmt 1 view .LVU139
+ 422              		.loc 1 245 26 is_stmt 0 view .LVU140
+ 423 0028 0368     		ldr	r3, [r0]
+ 424 002a 23EA0101 		bic	r1, r3, r1
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 13
+
+
+ 425              	.LVL7:
+ 426              		.loc 1 245 26 view .LVU141
+ 427 002e 0160     		str	r1, [r0]
+ 428              	.L23:
+ 246:bsp/libraries/drivers/src/at32f435_437_edma.c ****     }
+ 247:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 248:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 429              		.loc 1 248 1 view .LVU142
+ 430 0030 7047     		bx	lr
+ 431              		.cfi_endproc
+ 432              	.LFE137:
+ 434              		.section	.text.edma_peripheral_inc_offset_set,"ax",%progbits
+ 435              		.align	1
+ 436              		.global	edma_peripheral_inc_offset_set
+ 437              		.syntax unified
+ 438              		.thumb
+ 439              		.thumb_func
+ 441              	edma_peripheral_inc_offset_set:
+ 442              	.LVL8:
+ 443              	.LFB138:
+ 249:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 250:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 251:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  config the edma peripheral increment offset size mode.
+ 252:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edma_streamx:
+ 253:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ 254:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM1
+ 255:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM2
+ 256:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM3
+ 257:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM4
+ 258:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM5
+ 259:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM6
+ 260:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM7
+ 261:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM8
+ 262:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  offset: peripheral increment offset size.
+ 263:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ 264:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_PERIPHERAL_INC_PSIZE
+ 265:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_PERIPHERAL_INC_4_BYTE
+ 266:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval none.
+ 267:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 268:bsp/libraries/drivers/src/at32f435_437_edma.c **** void edma_peripheral_inc_offset_set(edma_stream_type *edma_streamx, edma_peripheral_inc_offset_type
+ 269:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 444              		.loc 1 269 1 is_stmt 1 view -0
+ 445              		.cfi_startproc
+ 446              		@ args = 0, pretend = 0, frame = 0
+ 447              		@ frame_needed = 0, uses_anonymous_args = 0
+ 448              		@ link register save eliminated.
+ 270:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx->ctrl_bit.pincos = offset;
+ 449              		.loc 1 270 3 view .LVU144
+ 450              		.loc 1 270 33 is_stmt 0 view .LVU145
+ 451 0000 0368     		ldr	r3, [r0]
+ 452 0002 61F3CF33 		bfi	r3, r1, #15, #1
+ 453 0006 0360     		str	r3, [r0]
+ 271:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 454              		.loc 1 271 1 view .LVU146
+ 455 0008 7047     		bx	lr
+ 456              		.cfi_endproc
+ 457              	.LFE138:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 14
+
+
+ 459              		.section	.text.edma_flow_controller_enable,"ax",%progbits
+ 460              		.align	1
+ 461              		.global	edma_flow_controller_enable
+ 462              		.syntax unified
+ 463              		.thumb
+ 464              		.thumb_func
+ 466              	edma_flow_controller_enable:
+ 467              	.LVL9:
+ 468              	.LFB139:
+ 272:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 273:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 274:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  enable or disable the edma streamx flow controller.
+ 275:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edma_streamx:
+ 276:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ 277:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM1
+ 278:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM2
+ 279:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM3
+ 280:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM4
+ 281:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM5
+ 282:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM6
+ 283:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM7
+ 284:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM8
+ 285:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  new_state (TRUE or FALSE).
+ 286:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval none.
+ 287:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 288:bsp/libraries/drivers/src/at32f435_437_edma.c **** void edma_flow_controller_enable(edma_stream_type *edma_streamx, confirm_state new_state)
+ 289:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 469              		.loc 1 289 1 is_stmt 1 view -0
+ 470              		.cfi_startproc
+ 471              		@ args = 0, pretend = 0, frame = 0
+ 472              		@ frame_needed = 0, uses_anonymous_args = 0
+ 473              		@ link register save eliminated.
+ 290:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx->ctrl_bit.pfctrl = new_state;
+ 474              		.loc 1 290 3 view .LVU148
+ 475              		.loc 1 290 33 is_stmt 0 view .LVU149
+ 476 0000 0368     		ldr	r3, [r0]
+ 477 0002 61F34513 		bfi	r3, r1, #5, #1
+ 478 0006 0360     		str	r3, [r0]
+ 291:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 479              		.loc 1 291 1 view .LVU150
+ 480 0008 7047     		bx	lr
+ 481              		.cfi_endproc
+ 482              	.LFE139:
+ 484              		.section	.text.edma_data_number_set,"ax",%progbits
+ 485              		.align	1
+ 486              		.global	edma_data_number_set
+ 487              		.syntax unified
+ 488              		.thumb
+ 489              		.thumb_func
+ 491              	edma_data_number_set:
+ 492              	.LVL10:
+ 493              	.LFB140:
+ 292:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 293:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 294:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  set the number of data to be transferred.
+ 295:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edma_streamx:
+ 296:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 15
+
+
+ 297:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM1
+ 298:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM2
+ 299:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM3
+ 300:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM4
+ 301:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM5
+ 302:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM6
+ 303:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM7
+ 304:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM8
+ 305:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  data_number: the number of data to be transferred (0x0000~0xFFFF).
+ 306:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval none.
+ 307:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 308:bsp/libraries/drivers/src/at32f435_437_edma.c **** void edma_data_number_set(edma_stream_type *edma_streamx, uint16_t data_number)
+ 309:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 494              		.loc 1 309 1 is_stmt 1 view -0
+ 495              		.cfi_startproc
+ 496              		@ args = 0, pretend = 0, frame = 0
+ 497              		@ frame_needed = 0, uses_anonymous_args = 0
+ 498              		@ link register save eliminated.
+ 310:bsp/libraries/drivers/src/at32f435_437_edma.c ****   /* write the number of data units to be transferred */
+ 311:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx->dtcnt = data_number;
+ 499              		.loc 1 311 3 view .LVU152
+ 500              		.loc 1 311 23 is_stmt 0 view .LVU153
+ 501 0000 4160     		str	r1, [r0, #4]
+ 312:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 502              		.loc 1 312 1 view .LVU154
+ 503 0002 7047     		bx	lr
+ 504              		.cfi_endproc
+ 505              	.LFE140:
+ 507              		.section	.text.edma_data_number_get,"ax",%progbits
+ 508              		.align	1
+ 509              		.global	edma_data_number_get
+ 510              		.syntax unified
+ 511              		.thumb
+ 512              		.thumb_func
+ 514              	edma_data_number_get:
+ 515              	.LVL11:
+ 516              	.LFB141:
+ 313:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 314:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 315:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  get the number of data to be transferred.
+ 316:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edma_streamx:
+ 317:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ 318:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM1
+ 319:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM2
+ 320:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM3
+ 321:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM4
+ 322:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM5
+ 323:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM6
+ 324:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM7
+ 325:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM8
+ 326:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval the number value.
+ 327:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 328:bsp/libraries/drivers/src/at32f435_437_edma.c **** uint16_t edma_data_number_get(edma_stream_type *edma_streamx)
+ 329:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 517              		.loc 1 329 1 is_stmt 1 view -0
+ 518              		.cfi_startproc
+ 519              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 16
+
+
+ 520              		@ frame_needed = 0, uses_anonymous_args = 0
+ 521              		@ link register save eliminated.
+ 330:bsp/libraries/drivers/src/at32f435_437_edma.c ****   return ((uint16_t)(edma_streamx->dtcnt));
+ 522              		.loc 1 330 3 view .LVU156
+ 523              		.loc 1 330 34 is_stmt 0 view .LVU157
+ 524 0000 4068     		ldr	r0, [r0, #4]
+ 525              	.LVL12:
+ 331:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 526              		.loc 1 331 1 view .LVU158
+ 527 0002 80B2     		uxth	r0, r0
+ 528 0004 7047     		bx	lr
+ 529              		.cfi_endproc
+ 530              	.LFE141:
+ 532              		.section	.text.edma_double_buffer_mode_init,"ax",%progbits
+ 533              		.align	1
+ 534              		.global	edma_double_buffer_mode_init
+ 535              		.syntax unified
+ 536              		.thumb
+ 537              		.thumb_func
+ 539              	edma_double_buffer_mode_init:
+ 540              	.LVL13:
+ 541              	.LFB142:
+ 332:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 333:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 334:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  config the the double buffer mode.
+ 335:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edma_streamx:
+ 336:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ 337:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM1
+ 338:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM2
+ 339:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM3
+ 340:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM4
+ 341:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM5
+ 342:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM6
+ 343:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM7
+ 344:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM8
+ 345:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  memory1_addr: the address of the second buffer.
+ 346:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  current_memory: specifies the target area of the first transfer.
+ 347:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ 348:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_MEMORY_0
+ 349:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_MEMORY_1
+ 350:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval none.
+ 351:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 352:bsp/libraries/drivers/src/at32f435_437_edma.c **** void edma_double_buffer_mode_init(edma_stream_type *edma_streamx, uint32_t memory1_addr, edma_memor
+ 353:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 542              		.loc 1 353 1 is_stmt 1 view -0
+ 543              		.cfi_startproc
+ 544              		@ args = 0, pretend = 0, frame = 0
+ 545              		@ frame_needed = 0, uses_anonymous_args = 0
+ 546              		@ link register save eliminated.
+ 354:bsp/libraries/drivers/src/at32f435_437_edma.c ****   if(current_memory != EDMA_MEMORY_0)
+ 547              		.loc 1 354 3 view .LVU160
+ 548              		.loc 1 354 5 is_stmt 0 view .LVU161
+ 549 0000 2AB1     		cbz	r2, .L33
+ 355:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 356:bsp/libraries/drivers/src/at32f435_437_edma.c ****     edma_streamx->ctrl_bit.cm = 1;
+ 550              		.loc 1 356 5 is_stmt 1 view .LVU162
+ 551              		.loc 1 356 31 is_stmt 0 view .LVU163
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 17
+
+
+ 552 0002 0368     		ldr	r3, [r0]
+ 553 0004 43F40023 		orr	r3, r3, #524288
+ 554 0008 0360     		str	r3, [r0]
+ 555              	.L34:
+ 357:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 358:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else
+ 359:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 360:bsp/libraries/drivers/src/at32f435_437_edma.c ****     edma_streamx->ctrl_bit.cm = 0;
+ 361:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 362:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 363:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx->m1addr = memory1_addr;
+ 556              		.loc 1 363 3 is_stmt 1 view .LVU164
+ 557              		.loc 1 363 24 is_stmt 0 view .LVU165
+ 558 000a 0161     		str	r1, [r0, #16]
+ 364:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 559              		.loc 1 364 1 view .LVU166
+ 560 000c 7047     		bx	lr
+ 561              	.L33:
+ 360:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 562              		.loc 1 360 5 is_stmt 1 view .LVU167
+ 360:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 563              		.loc 1 360 31 is_stmt 0 view .LVU168
+ 564 000e 0368     		ldr	r3, [r0]
+ 565 0010 6FF3D343 		bfc	r3, #19, #1
+ 566 0014 0360     		str	r3, [r0]
+ 567 0016 F8E7     		b	.L34
+ 568              		.cfi_endproc
+ 569              	.LFE142:
+ 571              		.section	.text.edma_double_buffer_mode_enable,"ax",%progbits
+ 572              		.align	1
+ 573              		.global	edma_double_buffer_mode_enable
+ 574              		.syntax unified
+ 575              		.thumb
+ 576              		.thumb_func
+ 578              	edma_double_buffer_mode_enable:
+ 579              	.LVL14:
+ 580              	.LFB143:
+ 365:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 366:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 367:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  enable or disable the double memory mode.
+ 368:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edma_streamx:
+ 369:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ 370:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM1
+ 371:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM2
+ 372:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM3
+ 373:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM4
+ 374:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM5
+ 375:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM6
+ 376:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM7
+ 377:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM8
+ 378:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  new_state (TRUE or FALSE).
+ 379:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval none.
+ 380:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 381:bsp/libraries/drivers/src/at32f435_437_edma.c **** void edma_double_buffer_mode_enable(edma_stream_type *edma_streamx, confirm_state new_state)
+ 382:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 581              		.loc 1 382 1 is_stmt 1 view -0
+ 582              		.cfi_startproc
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 18
+
+
+ 583              		@ args = 0, pretend = 0, frame = 0
+ 584              		@ frame_needed = 0, uses_anonymous_args = 0
+ 585              		@ link register save eliminated.
+ 383:bsp/libraries/drivers/src/at32f435_437_edma.c ****   if(new_state != FALSE)
+ 586              		.loc 1 383 3 view .LVU170
+ 587              		.loc 1 383 5 is_stmt 0 view .LVU171
+ 588 0000 21B1     		cbz	r1, .L36
+ 384:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 385:bsp/libraries/drivers/src/at32f435_437_edma.c ****     edma_streamx->ctrl_bit.dmm = 1;
+ 589              		.loc 1 385 5 is_stmt 1 view .LVU172
+ 590              		.loc 1 385 32 is_stmt 0 view .LVU173
+ 591 0002 0368     		ldr	r3, [r0]
+ 592 0004 43F48023 		orr	r3, r3, #262144
+ 593 0008 0360     		str	r3, [r0]
+ 594 000a 7047     		bx	lr
+ 595              	.L36:
+ 386:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 387:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else
+ 388:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 389:bsp/libraries/drivers/src/at32f435_437_edma.c ****     edma_streamx->ctrl_bit.dmm = 0;
+ 596              		.loc 1 389 5 is_stmt 1 view .LVU174
+ 597              		.loc 1 389 32 is_stmt 0 view .LVU175
+ 598 000c 0368     		ldr	r3, [r0]
+ 599 000e 6FF39243 		bfc	r3, #18, #1
+ 600 0012 0360     		str	r3, [r0]
+ 390:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 391:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 601              		.loc 1 391 1 view .LVU176
+ 602 0014 7047     		bx	lr
+ 603              		.cfi_endproc
+ 604              	.LFE143:
+ 606              		.section	.text.edma_memory_addr_set,"ax",%progbits
+ 607              		.align	1
+ 608              		.global	edma_memory_addr_set
+ 609              		.syntax unified
+ 610              		.thumb
+ 611              		.thumb_func
+ 613              	edma_memory_addr_set:
+ 614              	.LVL15:
+ 615              	.LFB144:
+ 392:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 393:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 394:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  config the memory address in double buffer mode.
+ 395:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edma_streamx:
+ 396:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ 397:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM1
+ 398:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM2
+ 399:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM3
+ 400:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM4
+ 401:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM5
+ 402:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM6
+ 403:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM7
+ 404:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM8
+ 405:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  memory_addr: the address of the buffer.
+ 406:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  memory_target: indicates the which memory addr register will be config.
+ 407:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ 408:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_MEMORY_0
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 19
+
+
+ 409:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_MEMORY_1
+ 410:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval none.
+ 411:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 412:bsp/libraries/drivers/src/at32f435_437_edma.c **** void edma_memory_addr_set(edma_stream_type *edma_streamx, uint32_t memory_addr, uint32_t memory_tar
+ 413:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 616              		.loc 1 413 1 is_stmt 1 view -0
+ 617              		.cfi_startproc
+ 618              		@ args = 0, pretend = 0, frame = 0
+ 619              		@ frame_needed = 0, uses_anonymous_args = 0
+ 620              		@ link register save eliminated.
+ 414:bsp/libraries/drivers/src/at32f435_437_edma.c ****   if(memory_target != EDMA_MEMORY_0)
+ 621              		.loc 1 414 3 view .LVU178
+ 622              		.loc 1 414 5 is_stmt 0 view .LVU179
+ 623 0000 0AB1     		cbz	r2, .L39
+ 415:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 416:bsp/libraries/drivers/src/at32f435_437_edma.c ****     edma_streamx->m1addr = memory_addr;
+ 624              		.loc 1 416 5 is_stmt 1 view .LVU180
+ 625              		.loc 1 416 26 is_stmt 0 view .LVU181
+ 626 0002 0161     		str	r1, [r0, #16]
+ 627 0004 7047     		bx	lr
+ 628              	.L39:
+ 417:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 418:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else
+ 419:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 420:bsp/libraries/drivers/src/at32f435_437_edma.c ****     edma_streamx->m0addr = memory_addr;
+ 629              		.loc 1 420 5 is_stmt 1 view .LVU182
+ 630              		.loc 1 420 26 is_stmt 0 view .LVU183
+ 631 0006 C160     		str	r1, [r0, #12]
+ 421:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 422:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 632              		.loc 1 422 1 view .LVU184
+ 633 0008 7047     		bx	lr
+ 634              		.cfi_endproc
+ 635              	.LFE144:
+ 637              		.section	.text.edma_memory_target_get,"ax",%progbits
+ 638              		.align	1
+ 639              		.global	edma_memory_target_get
+ 640              		.syntax unified
+ 641              		.thumb
+ 642              		.thumb_func
+ 644              	edma_memory_target_get:
+ 645              	.LVL16:
+ 646              	.LFB145:
+ 423:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 424:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 425:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  get the current memory target.
+ 426:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edma_streamx:
+ 427:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ 428:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM1
+ 429:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM2
+ 430:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM3
+ 431:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM4
+ 432:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM5
+ 433:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM6
+ 434:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM7
+ 435:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM8
+ 436:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval the memory target
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 20
+
+
+ 437:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_MEMORY_0
+ 438:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_MEMORY_1
+ 439:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 440:bsp/libraries/drivers/src/at32f435_437_edma.c **** edma_memory_type edma_memory_target_get(edma_stream_type *edma_streamx)
+ 441:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 647              		.loc 1 441 1 is_stmt 1 view -0
+ 648              		.cfi_startproc
+ 649              		@ args = 0, pretend = 0, frame = 0
+ 650              		@ frame_needed = 0, uses_anonymous_args = 0
+ 651              		@ link register save eliminated.
+ 442:bsp/libraries/drivers/src/at32f435_437_edma.c ****   return (edma_memory_type)(edma_streamx->ctrl_bit.cm);
+ 652              		.loc 1 442 3 view .LVU186
+ 653              		.loc 1 442 51 is_stmt 0 view .LVU187
+ 654 0000 0068     		ldr	r0, [r0]
+ 655              	.LVL17:
+ 443:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 656              		.loc 1 443 1 view .LVU188
+ 657 0002 C0F3C040 		ubfx	r0, r0, #19, #1
+ 658 0006 7047     		bx	lr
+ 659              		.cfi_endproc
+ 660              	.LFE145:
+ 662              		.section	.text.edma_stream_status_get,"ax",%progbits
+ 663              		.align	1
+ 664              		.global	edma_stream_status_get
+ 665              		.syntax unified
+ 666              		.thumb
+ 667              		.thumb_func
+ 669              	edma_stream_status_get:
+ 670              	.LVL18:
+ 671              	.LFB146:
+ 444:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 445:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 446:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  get the enable status of edma streamx.
+ 447:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edma_streamx:
+ 448:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ 449:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM1
+ 450:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM2
+ 451:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM3
+ 452:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM4
+ 453:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM5
+ 454:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM6
+ 455:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM7
+ 456:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM8
+ 457:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval current state of the edma streamx (SET or RESET).
+ 458:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 459:bsp/libraries/drivers/src/at32f435_437_edma.c **** flag_status edma_stream_status_get(edma_stream_type *edma_streamx)
+ 460:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 672              		.loc 1 460 1 is_stmt 1 view -0
+ 673              		.cfi_startproc
+ 674              		@ args = 0, pretend = 0, frame = 0
+ 675              		@ frame_needed = 0, uses_anonymous_args = 0
+ 676              		@ link register save eliminated.
+ 461:bsp/libraries/drivers/src/at32f435_437_edma.c ****   if((edma_streamx->ctrl_bit.sen) != RESET)
+ 677              		.loc 1 461 3 view .LVU190
+ 678              		.loc 1 461 29 is_stmt 0 view .LVU191
+ 679 0000 0368     		ldr	r3, [r0]
+ 680              		.loc 1 461 5 view .LVU192
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 21
+
+
+ 681 0002 13F0010F 		tst	r3, #1
+ 682 0006 01D0     		beq	.L44
+ 462:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 463:bsp/libraries/drivers/src/at32f435_437_edma.c ****     return SET;
+ 683              		.loc 1 463 12 view .LVU193
+ 684 0008 0120     		movs	r0, #1
+ 685              	.LVL19:
+ 686              		.loc 1 463 12 view .LVU194
+ 687 000a 7047     		bx	lr
+ 688              	.LVL20:
+ 689              	.L44:
+ 464:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 465:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else
+ 466:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 467:bsp/libraries/drivers/src/at32f435_437_edma.c ****     return RESET;
+ 690              		.loc 1 467 12 view .LVU195
+ 691 000c 0020     		movs	r0, #0
+ 692              	.LVL21:
+ 468:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 469:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 693              		.loc 1 469 1 view .LVU196
+ 694 000e 7047     		bx	lr
+ 695              		.cfi_endproc
+ 696              	.LFE146:
+ 698              		.section	.text.edma_fifo_status_get,"ax",%progbits
+ 699              		.align	1
+ 700              		.global	edma_fifo_status_get
+ 701              		.syntax unified
+ 702              		.thumb
+ 703              		.thumb_func
+ 705              	edma_fifo_status_get:
+ 706              	.LVL22:
+ 707              	.LFB147:
+ 470:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 471:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 472:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  get the fifo level status.
+ 473:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edma_streamx:
+ 474:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ 475:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM1
+ 476:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM2
+ 477:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM3
+ 478:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM4
+ 479:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM5
+ 480:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM6
+ 481:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM7
+ 482:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM8
+ 483:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval the fifo filling state.
+ 484:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FIFO_STATUS_LESS_1QUARTER: (0)   <  fifo level < (1/4).
+ 485:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FIFO_STATUS_1QUARTER:      (1/4) <= fifo level < (1/2) .
+ 486:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FIFO_STATUS_HALF:          (1/2) <= fifo level < (3/4).
+ 487:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FIFO_STATUS_3QUARTER:      (3/4) <= fifo level < (1).
+ 488:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FIFO_STATUS_EMPTY: fifo is empty.
+ 489:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FIFO_STATUS_FULL: fifo is full.
+ 490:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 491:bsp/libraries/drivers/src/at32f435_437_edma.c **** uint8_t edma_fifo_status_get(edma_stream_type *edma_streamx)
+ 492:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 708              		.loc 1 492 1 is_stmt 1 view -0
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 22
+
+
+ 709              		.cfi_startproc
+ 710              		@ args = 0, pretend = 0, frame = 0
+ 711              		@ frame_needed = 0, uses_anonymous_args = 0
+ 712              		@ link register save eliminated.
+ 493:bsp/libraries/drivers/src/at32f435_437_edma.c ****   return (uint8_t)(edma_streamx->fctrl_bit.fsts);
+ 713              		.loc 1 493 3 view .LVU198
+ 714              		.loc 1 493 43 is_stmt 0 view .LVU199
+ 715 0000 4069     		ldr	r0, [r0, #20]
+ 716              	.LVL23:
+ 494:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 717              		.loc 1 494 1 view .LVU200
+ 718 0002 C0F3C200 		ubfx	r0, r0, #3, #3
+ 719 0006 7047     		bx	lr
+ 720              		.cfi_endproc
+ 721              	.LFE147:
+ 723              		.section	.text.edma_flag_get,"ax",%progbits
+ 724              		.align	1
+ 725              		.global	edma_flag_get
+ 726              		.syntax unified
+ 727              		.thumb
+ 728              		.thumb_func
+ 730              	edma_flag_get:
+ 731              	.LVL24:
+ 732              	.LFB148:
+ 495:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 496:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 497:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  get the edma flag.
+ 498:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edma_flag:
+ 499:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ 500:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FERR1_FLAG   - EDMA_DMERR1_FLAG  - EDMA_DTERR1_FLAG  - EDMA_HDT1_FLAG   - EDMA_F
+ 501:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FERR2_FLAG   - EDMA_DMERR2_FLAG  - EDMA_DTERR2_FLAG  - EDMA_HDT2_FLAG   - EDMA_F
+ 502:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FERR3_FLAG   - EDMA_DMERR3_FLAG  - EDMA_DTERR3_FLAG  - EDMA_HDT3_FLAG   - EDMA_F
+ 503:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FERR4_FLAG   - EDMA_DMERR4_FLAG  - EDMA_DTERR4_FLAG  - EDMA_HDT4_FLAG   - EDMA_F
+ 504:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FERR5_FLAG   - EDMA_DMERR5_FLAG  - EDMA_DTERR5_FLAG  - EDMA_HDT5_FLAG   - EDMA_F
+ 505:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FERR6_FLAG   - EDMA_DMERR6_FLAG  - EDMA_DTERR6_FLAG  - EDMA_HDT6_FLAG   - EDMA_F
+ 506:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FERR7_FLAG   - EDMA_DMERR7_FLAG  - EDMA_DTERR7_FLAG  - EDMA_HDT7_FLAG   - EDMA_F
+ 507:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FERR8_FLAG   - EDMA_DMERR8_FLAG  - EDMA_DTERR8_FLAG  - EDMA_HDT8_FLAG   - EDMA_F
+ 508:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval the new state of edma flag (SET or RESET).
+ 509:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 510:bsp/libraries/drivers/src/at32f435_437_edma.c **** flag_status edma_flag_get(uint32_t edma_flag)
+ 511:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 733              		.loc 1 511 1 is_stmt 1 view -0
+ 734              		.cfi_startproc
+ 735              		@ args = 0, pretend = 0, frame = 0
+ 736              		@ frame_needed = 0, uses_anonymous_args = 0
+ 737              		@ link register save eliminated.
+ 512:bsp/libraries/drivers/src/at32f435_437_edma.c ****   uint32_t status;
+ 738              		.loc 1 512 3 view .LVU202
+ 513:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 514:bsp/libraries/drivers/src/at32f435_437_edma.c ****   if(edma_flag > ((uint32_t)0x20000000))
+ 739              		.loc 1 514 3 view .LVU203
+ 740              		.loc 1 514 5 is_stmt 0 view .LVU204
+ 741 0000 B0F1005F 		cmp	r0, #536870912
+ 742 0004 05D9     		bls	.L47
+ 515:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 516:bsp/libraries/drivers/src/at32f435_437_edma.c ****     status = EDMA->sts2;
+ 743              		.loc 1 516 5 is_stmt 1 view .LVU205
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 23
+
+
+ 744              		.loc 1 516 12 is_stmt 0 view .LVU206
+ 745 0006 054B     		ldr	r3, .L51
+ 746 0008 5B68     		ldr	r3, [r3, #4]
+ 747              	.LVL25:
+ 748              	.L48:
+ 517:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 518:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else
+ 519:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 520:bsp/libraries/drivers/src/at32f435_437_edma.c ****     status = EDMA->sts1;
+ 521:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 522:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 523:bsp/libraries/drivers/src/at32f435_437_edma.c ****   if((status & edma_flag) != ((uint32_t)RESET))
+ 749              		.loc 1 523 3 is_stmt 1 view .LVU207
+ 750              		.loc 1 523 5 is_stmt 0 view .LVU208
+ 751 000a 0342     		tst	r3, r0
+ 752 000c 04D0     		beq	.L50
+ 524:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 525:bsp/libraries/drivers/src/at32f435_437_edma.c ****     return SET;
+ 753              		.loc 1 525 12 view .LVU209
+ 754 000e 0120     		movs	r0, #1
+ 755              	.LVL26:
+ 756              		.loc 1 525 12 view .LVU210
+ 757 0010 7047     		bx	lr
+ 758              	.LVL27:
+ 759              	.L47:
+ 520:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 760              		.loc 1 520 5 is_stmt 1 view .LVU211
+ 520:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 761              		.loc 1 520 12 is_stmt 0 view .LVU212
+ 762 0012 024B     		ldr	r3, .L51
+ 763 0014 1B68     		ldr	r3, [r3]
+ 764              	.LVL28:
+ 520:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 765              		.loc 1 520 12 view .LVU213
+ 766 0016 F8E7     		b	.L48
+ 767              	.L50:
+ 526:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 527:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else
+ 528:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 529:bsp/libraries/drivers/src/at32f435_437_edma.c ****     return RESET;
+ 768              		.loc 1 529 12 view .LVU214
+ 769 0018 0020     		movs	r0, #0
+ 770              	.LVL29:
+ 530:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 531:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 771              		.loc 1 531 1 view .LVU215
+ 772 001a 7047     		bx	lr
+ 773              	.L52:
+ 774              		.align	2
+ 775              	.L51:
+ 776 001c 00600240 		.word	1073897472
+ 777              		.cfi_endproc
+ 778              	.LFE148:
+ 780              		.section	.text.edma_interrupt_flag_get,"ax",%progbits
+ 781              		.align	1
+ 782              		.global	edma_interrupt_flag_get
+ 783              		.syntax unified
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 24
+
+
+ 784              		.thumb
+ 785              		.thumb_func
+ 787              	edma_interrupt_flag_get:
+ 788              	.LVL30:
+ 789              	.LFB149:
+ 532:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 533:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 534:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  get the edma interrupt flag.
+ 535:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edma_flag:
+ 536:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ 537:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FERR1_FLAG   - EDMA_DMERR1_FLAG  - EDMA_DTERR1_FLAG  - EDMA_HDT1_FLAG   - EDMA_F
+ 538:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FERR2_FLAG   - EDMA_DMERR2_FLAG  - EDMA_DTERR2_FLAG  - EDMA_HDT2_FLAG   - EDMA_F
+ 539:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FERR3_FLAG   - EDMA_DMERR3_FLAG  - EDMA_DTERR3_FLAG  - EDMA_HDT3_FLAG   - EDMA_F
+ 540:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FERR4_FLAG   - EDMA_DMERR4_FLAG  - EDMA_DTERR4_FLAG  - EDMA_HDT4_FLAG   - EDMA_F
+ 541:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FERR5_FLAG   - EDMA_DMERR5_FLAG  - EDMA_DTERR5_FLAG  - EDMA_HDT5_FLAG   - EDMA_F
+ 542:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FERR6_FLAG   - EDMA_DMERR6_FLAG  - EDMA_DTERR6_FLAG  - EDMA_HDT6_FLAG   - EDMA_F
+ 543:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FERR7_FLAG   - EDMA_DMERR7_FLAG  - EDMA_DTERR7_FLAG  - EDMA_HDT7_FLAG   - EDMA_F
+ 544:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FERR8_FLAG   - EDMA_DMERR8_FLAG  - EDMA_DTERR8_FLAG  - EDMA_HDT8_FLAG   - EDMA_F
+ 545:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval the new state of edma flag (SET or RESET).
+ 546:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 547:bsp/libraries/drivers/src/at32f435_437_edma.c **** flag_status edma_interrupt_flag_get(uint32_t edma_flag)
+ 548:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 790              		.loc 1 548 1 is_stmt 1 view -0
+ 791              		.cfi_startproc
+ 792              		@ args = 0, pretend = 0, frame = 0
+ 793              		@ frame_needed = 0, uses_anonymous_args = 0
+ 794              		@ link register save eliminated.
+ 549:bsp/libraries/drivers/src/at32f435_437_edma.c ****   uint32_t status;
+ 795              		.loc 1 549 3 view .LVU217
+ 550:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 551:bsp/libraries/drivers/src/at32f435_437_edma.c ****   if(edma_flag > ((uint32_t)0x20000000))
+ 796              		.loc 1 551 3 view .LVU218
+ 797              		.loc 1 551 5 is_stmt 0 view .LVU219
+ 798 0000 B0F1005F 		cmp	r0, #536870912
+ 799 0004 05D9     		bls	.L54
+ 552:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 553:bsp/libraries/drivers/src/at32f435_437_edma.c ****     status = EDMA->sts2;
+ 800              		.loc 1 553 5 is_stmt 1 view .LVU220
+ 801              		.loc 1 553 12 is_stmt 0 view .LVU221
+ 802 0006 054B     		ldr	r3, .L58
+ 803 0008 5B68     		ldr	r3, [r3, #4]
+ 804              	.LVL31:
+ 805              	.L55:
+ 554:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 555:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else
+ 556:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 557:bsp/libraries/drivers/src/at32f435_437_edma.c ****     status = EDMA->sts1;
+ 558:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 559:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 560:bsp/libraries/drivers/src/at32f435_437_edma.c ****   if((status & edma_flag) != ((uint32_t)RESET))
+ 806              		.loc 1 560 3 is_stmt 1 view .LVU222
+ 807              		.loc 1 560 5 is_stmt 0 view .LVU223
+ 808 000a 0342     		tst	r3, r0
+ 809 000c 04D0     		beq	.L57
+ 561:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 562:bsp/libraries/drivers/src/at32f435_437_edma.c ****     return SET;
+ 810              		.loc 1 562 12 view .LVU224
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 25
+
+
+ 811 000e 0120     		movs	r0, #1
+ 812              	.LVL32:
+ 813              		.loc 1 562 12 view .LVU225
+ 814 0010 7047     		bx	lr
+ 815              	.LVL33:
+ 816              	.L54:
+ 557:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 817              		.loc 1 557 5 is_stmt 1 view .LVU226
+ 557:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 818              		.loc 1 557 12 is_stmt 0 view .LVU227
+ 819 0012 024B     		ldr	r3, .L58
+ 820 0014 1B68     		ldr	r3, [r3]
+ 821              	.LVL34:
+ 557:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 822              		.loc 1 557 12 view .LVU228
+ 823 0016 F8E7     		b	.L55
+ 824              	.L57:
+ 563:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 564:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else
+ 565:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 566:bsp/libraries/drivers/src/at32f435_437_edma.c ****     return RESET;
+ 825              		.loc 1 566 12 view .LVU229
+ 826 0018 0020     		movs	r0, #0
+ 827              	.LVL35:
+ 567:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }  
+ 568:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 828              		.loc 1 568 1 view .LVU230
+ 829 001a 7047     		bx	lr
+ 830              	.L59:
+ 831              		.align	2
+ 832              	.L58:
+ 833 001c 00600240 		.word	1073897472
+ 834              		.cfi_endproc
+ 835              	.LFE149:
+ 837              		.section	.text.edma_flag_clear,"ax",%progbits
+ 838              		.align	1
+ 839              		.global	edma_flag_clear
+ 840              		.syntax unified
+ 841              		.thumb
+ 842              		.thumb_func
+ 844              	edma_flag_clear:
+ 845              	.LVL36:
+ 846              	.LFB150:
+ 569:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 570:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 571:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  clear the edma flag.
+ 572:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edma_flag:
+ 573:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ 574:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FERR1_FLAG   - EDMA_DMERR1_FLAG  - EDMA_DTERR1_FLAG  - EDMA_HDT1_FLAG   - EDMA_F
+ 575:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FERR2_FLAG   - EDMA_DMERR2_FLAG  - EDMA_DTERR2_FLAG  - EDMA_HDT2_FLAG   - EDMA_F
+ 576:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FERR3_FLAG   - EDMA_DMERR3_FLAG  - EDMA_DTERR3_FLAG  - EDMA_HDT3_FLAG   - EDMA_F
+ 577:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FERR4_FLAG   - EDMA_DMERR4_FLAG  - EDMA_DTERR4_FLAG  - EDMA_HDT4_FLAG   - EDMA_F
+ 578:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FERR5_FLAG   - EDMA_DMERR5_FLAG  - EDMA_DTERR5_FLAG  - EDMA_HDT5_FLAG   - EDMA_F
+ 579:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FERR6_FLAG   - EDMA_DMERR6_FLAG  - EDMA_DTERR6_FLAG  - EDMA_HDT6_FLAG   - EDMA_F
+ 580:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FERR7_FLAG   - EDMA_DMERR7_FLAG  - EDMA_DTERR7_FLAG  - EDMA_HDT7_FLAG   - EDMA_F
+ 581:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_FERR8_FLAG   - EDMA_DMERR8_FLAG  - EDMA_DTERR8_FLAG  - EDMA_HDT8_FLAG   - EDMA_F
+ 582:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval none.
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 26
+
+
+ 583:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 584:bsp/libraries/drivers/src/at32f435_437_edma.c **** void edma_flag_clear(uint32_t edma_flag)
+ 585:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 847              		.loc 1 585 1 is_stmt 1 view -0
+ 848              		.cfi_startproc
+ 849              		@ args = 0, pretend = 0, frame = 0
+ 850              		@ frame_needed = 0, uses_anonymous_args = 0
+ 851              		@ link register save eliminated.
+ 586:bsp/libraries/drivers/src/at32f435_437_edma.c ****   if(edma_flag > ((uint32_t)0x20000000))
+ 852              		.loc 1 586 3 view .LVU232
+ 853              		.loc 1 586 5 is_stmt 0 view .LVU233
+ 854 0000 B0F1005F 		cmp	r0, #536870912
+ 855 0004 04D9     		bls	.L61
+ 587:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 588:bsp/libraries/drivers/src/at32f435_437_edma.c ****     EDMA->clr2 = (uint32_t)(edma_flag & 0x0FFFFFFF);
+ 856              		.loc 1 588 5 is_stmt 1 view .LVU234
+ 857              		.loc 1 588 18 is_stmt 0 view .LVU235
+ 858 0006 20F07040 		bic	r0, r0, #-268435456
+ 859              	.LVL37:
+ 860              		.loc 1 588 16 view .LVU236
+ 861 000a 034B     		ldr	r3, .L63
+ 862 000c D860     		str	r0, [r3, #12]
+ 863 000e 7047     		bx	lr
+ 864              	.LVL38:
+ 865              	.L61:
+ 589:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 590:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else
+ 591:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 592:bsp/libraries/drivers/src/at32f435_437_edma.c ****     EDMA->clr1 = edma_flag;
+ 866              		.loc 1 592 5 is_stmt 1 view .LVU237
+ 867              		.loc 1 592 16 is_stmt 0 view .LVU238
+ 868 0010 014B     		ldr	r3, .L63
+ 869 0012 9860     		str	r0, [r3, #8]
+ 593:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 594:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 870              		.loc 1 594 1 view .LVU239
+ 871 0014 7047     		bx	lr
+ 872              	.L64:
+ 873 0016 00BF     		.align	2
+ 874              	.L63:
+ 875 0018 00600240 		.word	1073897472
+ 876              		.cfi_endproc
+ 877              	.LFE150:
+ 879              		.section	.text.edma_2d_init,"ax",%progbits
+ 880              		.align	1
+ 881              		.global	edma_2d_init
+ 882              		.syntax unified
+ 883              		.thumb
+ 884              		.thumb_func
+ 886              	edma_2d_init:
+ 887              	.LVL39:
+ 888              	.LFB151:
+ 595:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 596:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 597:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  initialize the edma 2d mode.
+ 598:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edma_streamx_2d:
+ 599:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 27
+
+
+ 600:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM1_2D
+ 601:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM2_2D
+ 602:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM3_2D
+ 603:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM4_2D
+ 604:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM5_2D
+ 605:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM6_2D
+ 606:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM7_2D
+ 607:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM8_2D
+ 608:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  src_stride: source stride(-32768 ~ 32767).
+ 609:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  dst_stride: destination stride(-32768 ~ 32767).
+ 610:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  xcnt: x dimension transfer count(0x0000~ 0xFFFF).
+ 611:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  ycnt: y dimension transfer count(0x0000~ 0xFFFF).
+ 612:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval none.
+ 613:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 614:bsp/libraries/drivers/src/at32f435_437_edma.c **** void edma_2d_init(edma_stream_2d_type *edma_streamx_2d, int16_t src_stride, int16_t dst_stride, uin
+ 615:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 889              		.loc 1 615 1 is_stmt 1 view -0
+ 890              		.cfi_startproc
+ 891              		@ args = 4, pretend = 0, frame = 0
+ 892              		@ frame_needed = 0, uses_anonymous_args = 0
+ 893              		@ link register save eliminated.
+ 616:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx_2d->s2dcnt = (uint32_t)((ycnt << 16) | (xcnt));
+ 894              		.loc 1 616 3 view .LVU241
+ 895              		.loc 1 616 53 is_stmt 0 view .LVU242
+ 896 0000 BDF800C0 		ldrh	ip, [sp]
+ 897 0004 43EA0C43 		orr	r3, r3, ip, lsl #16
+ 898              	.LVL40:
+ 899              		.loc 1 616 27 view .LVU243
+ 900 0008 0360     		str	r3, [r0]
+ 617:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 618:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx_2d->stride = (uint32_t)((dst_stride << 16) | (src_stride));
+ 901              		.loc 1 618 3 is_stmt 1 view .LVU244
+ 902              		.loc 1 618 59 is_stmt 0 view .LVU245
+ 903 000a 41EA0241 		orr	r1, r1, r2, lsl #16
+ 904              	.LVL41:
+ 905              		.loc 1 618 27 view .LVU246
+ 906 000e 4160     		str	r1, [r0, #4]
+ 619:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 907              		.loc 1 619 1 view .LVU247
+ 908 0010 7047     		bx	lr
+ 909              		.cfi_endproc
+ 910              	.LFE151:
+ 912              		.section	.text.edma_2d_enable,"ax",%progbits
+ 913              		.align	1
+ 914              		.global	edma_2d_enable
+ 915              		.syntax unified
+ 916              		.thumb
+ 917              		.thumb_func
+ 919              	edma_2d_enable:
+ 920              	.LVL42:
+ 921              	.LFB152:
+ 620:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 621:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 622:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  enable or disable the edma 2d mode.
+ 623:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edma_streamx_2d:
+ 624:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ 625:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM1_2D
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 28
+
+
+ 626:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM2_2D
+ 627:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM3_2D
+ 628:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM4_2D
+ 629:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM5_2D
+ 630:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM6_2D
+ 631:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM7_2D
+ 632:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM8_2D
+ 633:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  new_state (TRUE or FALSE).
+ 634:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval none.
+ 635:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 636:bsp/libraries/drivers/src/at32f435_437_edma.c **** void edma_2d_enable(edma_stream_2d_type *edma_streamx_2d, confirm_state new_state)
+ 637:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 922              		.loc 1 637 1 is_stmt 1 view -0
+ 923              		.cfi_startproc
+ 924              		@ args = 0, pretend = 0, frame = 0
+ 925              		@ frame_needed = 0, uses_anonymous_args = 0
+ 926              		@ link register save eliminated.
+ 638:bsp/libraries/drivers/src/at32f435_437_edma.c ****   uint32_t offset;
+ 927              		.loc 1 638 3 view .LVU249
+ 639:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 640:bsp/libraries/drivers/src/at32f435_437_edma.c ****   offset = ((uint32_t)edma_streamx_2d - EDMA_STREAM1_2D_BASE) / 4;
+ 928              		.loc 1 640 3 view .LVU250
+ 929              		.loc 1 640 39 is_stmt 0 view .LVU251
+ 930 0000 0C4B     		ldr	r3, .L69
+ 931 0002 0344     		add	r3, r3, r0
+ 932              		.loc 1 640 10 view .LVU252
+ 933 0004 9B08     		lsrs	r3, r3, #2
+ 934              	.LVL43:
+ 641:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 642:bsp/libraries/drivers/src/at32f435_437_edma.c ****   if(new_state != FALSE)
+ 935              		.loc 1 642 3 is_stmt 1 view .LVU253
+ 936              		.loc 1 642 5 is_stmt 0 view .LVU254
+ 937 0006 49B1     		cbz	r1, .L67
+ 643:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 644:bsp/libraries/drivers/src/at32f435_437_edma.c ****     EDMA->s2dctrl |= (uint16_t)0x0001 << offset;
+ 938              		.loc 1 644 5 is_stmt 1 view .LVU255
+ 939              		.loc 1 644 19 is_stmt 0 view .LVU256
+ 940 0008 0B48     		ldr	r0, .L69+4
+ 941              	.LVL44:
+ 942              		.loc 1 644 19 view .LVU257
+ 943 000a D0F8F420 		ldr	r2, [r0, #244]
+ 944              		.loc 1 644 39 view .LVU258
+ 945 000e 0121     		movs	r1, #1
+ 946              	.LVL45:
+ 947              		.loc 1 644 39 view .LVU259
+ 948 0010 01FA03F3 		lsl	r3, r1, r3
+ 949              	.LVL46:
+ 950              		.loc 1 644 19 view .LVU260
+ 951 0014 1343     		orrs	r3, r3, r2
+ 952 0016 C0F8F430 		str	r3, [r0, #244]
+ 953 001a 7047     		bx	lr
+ 954              	.LVL47:
+ 955              	.L67:
+ 645:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 646:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else
+ 647:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 648:bsp/libraries/drivers/src/at32f435_437_edma.c ****     EDMA->s2dctrl &= ~((uint16_t)0x0001 << offset);
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 29
+
+
+ 956              		.loc 1 648 5 is_stmt 1 view .LVU261
+ 957              		.loc 1 648 19 is_stmt 0 view .LVU262
+ 958 001c 0648     		ldr	r0, .L69+4
+ 959              	.LVL48:
+ 960              		.loc 1 648 19 view .LVU263
+ 961 001e D0F8F420 		ldr	r2, [r0, #244]
+ 962              		.loc 1 648 41 view .LVU264
+ 963 0022 0121     		movs	r1, #1
+ 964              	.LVL49:
+ 965              		.loc 1 648 41 view .LVU265
+ 966 0024 01FA03F3 		lsl	r3, r1, r3
+ 967              	.LVL50:
+ 968              		.loc 1 648 19 view .LVU266
+ 969 0028 22EA0303 		bic	r3, r2, r3
+ 970 002c C0F8F430 		str	r3, [r0, #244]
+ 649:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 650:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 971              		.loc 1 650 1 view .LVU267
+ 972 0030 7047     		bx	lr
+ 973              	.L70:
+ 974 0032 00BF     		.align	2
+ 975              	.L69:
+ 976 0034 089FFDBF 		.word	-1073897720
+ 977 0038 00600240 		.word	1073897472
+ 978              		.cfi_endproc
+ 979              	.LFE152:
+ 981              		.section	.text.edma_link_list_init,"ax",%progbits
+ 982              		.align	1
+ 983              		.global	edma_link_list_init
+ 984              		.syntax unified
+ 985              		.thumb
+ 986              		.thumb_func
+ 988              	edma_link_list_init:
+ 989              	.LVL51:
+ 990              	.LFB153:
+ 651:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 652:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 653:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  initialize the edma link list.
+ 654:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edma_streamx_ll:
+ 655:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ 656:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM1_LL
+ 657:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM2_LL
+ 658:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM3_LL
+ 659:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM4_LL
+ 660:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM5_LL
+ 661:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM6_LL
+ 662:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM7_LL
+ 663:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM8_LL
+ 664:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  pointer: link list pointer.
+ 665:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval none.
+ 666:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 667:bsp/libraries/drivers/src/at32f435_437_edma.c **** void edma_link_list_init(edma_stream_link_list_type *edma_streamx_ll, uint32_t pointer)
+ 668:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 991              		.loc 1 668 1 is_stmt 1 view -0
+ 992              		.cfi_startproc
+ 993              		@ args = 0, pretend = 0, frame = 0
+ 994              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 30
+
+
+ 995              		@ link register save eliminated.
+ 669:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edma_streamx_ll->llp = pointer;
+ 996              		.loc 1 669 3 view .LVU269
+ 997              		.loc 1 669 24 is_stmt 0 view .LVU270
+ 998 0000 0160     		str	r1, [r0]
+ 670:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 999              		.loc 1 670 1 view .LVU271
+ 1000 0002 7047     		bx	lr
+ 1001              		.cfi_endproc
+ 1002              	.LFE153:
+ 1004              		.section	.text.edma_link_list_enable,"ax",%progbits
+ 1005              		.align	1
+ 1006              		.global	edma_link_list_enable
+ 1007              		.syntax unified
+ 1008              		.thumb
+ 1009              		.thumb_func
+ 1011              	edma_link_list_enable:
+ 1012              	.LVL52:
+ 1013              	.LFB154:
+ 671:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 672:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 673:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  enable or disable the edma stream link list mode.
+ 674:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edma_streamx_ll:
+ 675:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be any combination of the following values:
+ 676:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM1_LL
+ 677:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM2_LL
+ 678:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM3_LL
+ 679:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM4_LL
+ 680:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM5_LL
+ 681:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM6_LL
+ 682:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM7_LL
+ 683:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMA_STREAM8_LL
+ 684:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  new_state (TRUE or FALSE).
+ 685:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval none.
+ 686:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 687:bsp/libraries/drivers/src/at32f435_437_edma.c **** void edma_link_list_enable(edma_stream_link_list_type *edma_streamx_ll, confirm_state new_state)
+ 688:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 1014              		.loc 1 688 1 is_stmt 1 view -0
+ 1015              		.cfi_startproc
+ 1016              		@ args = 0, pretend = 0, frame = 0
+ 1017              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1018              		@ link register save eliminated.
+ 689:bsp/libraries/drivers/src/at32f435_437_edma.c ****   uint32_t offset;
+ 1019              		.loc 1 689 3 view .LVU273
+ 690:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 691:bsp/libraries/drivers/src/at32f435_437_edma.c ****   offset = ((uint32_t)edma_streamx_ll - EDMA_STREAM1_LL_BASE) / 4;
+ 1020              		.loc 1 691 3 view .LVU274
+ 1021              		.loc 1 691 39 is_stmt 0 view .LVU275
+ 1022 0000 0C4B     		ldr	r3, .L75
+ 1023 0002 0344     		add	r3, r3, r0
+ 1024              		.loc 1 691 10 view .LVU276
+ 1025 0004 9B08     		lsrs	r3, r3, #2
+ 1026              	.LVL53:
+ 692:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 693:bsp/libraries/drivers/src/at32f435_437_edma.c ****   if(new_state != FALSE)
+ 1027              		.loc 1 693 3 is_stmt 1 view .LVU277
+ 1028              		.loc 1 693 5 is_stmt 0 view .LVU278
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 31
+
+
+ 1029 0006 49B1     		cbz	r1, .L73
+ 694:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 695:bsp/libraries/drivers/src/at32f435_437_edma.c ****     EDMA->llctrl |= (uint16_t)0x0001 << offset;
+ 1030              		.loc 1 695 5 is_stmt 1 view .LVU279
+ 1031              		.loc 1 695 18 is_stmt 0 view .LVU280
+ 1032 0008 0B48     		ldr	r0, .L75+4
+ 1033              	.LVL54:
+ 1034              		.loc 1 695 18 view .LVU281
+ 1035 000a D0F8D020 		ldr	r2, [r0, #208]
+ 1036              		.loc 1 695 38 view .LVU282
+ 1037 000e 0121     		movs	r1, #1
+ 1038              	.LVL55:
+ 1039              		.loc 1 695 38 view .LVU283
+ 1040 0010 01FA03F3 		lsl	r3, r1, r3
+ 1041              	.LVL56:
+ 1042              		.loc 1 695 18 view .LVU284
+ 1043 0014 1343     		orrs	r3, r3, r2
+ 1044 0016 C0F8D030 		str	r3, [r0, #208]
+ 1045 001a 7047     		bx	lr
+ 1046              	.LVL57:
+ 1047              	.L73:
+ 696:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 697:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else
+ 698:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 699:bsp/libraries/drivers/src/at32f435_437_edma.c ****     EDMA->llctrl &= ~((uint16_t)0x0001 << offset);
+ 1048              		.loc 1 699 5 is_stmt 1 view .LVU285
+ 1049              		.loc 1 699 18 is_stmt 0 view .LVU286
+ 1050 001c 0648     		ldr	r0, .L75+4
+ 1051              	.LVL58:
+ 1052              		.loc 1 699 18 view .LVU287
+ 1053 001e D0F8D020 		ldr	r2, [r0, #208]
+ 1054              		.loc 1 699 40 view .LVU288
+ 1055 0022 0121     		movs	r1, #1
+ 1056              	.LVL59:
+ 1057              		.loc 1 699 40 view .LVU289
+ 1058 0024 01FA03F3 		lsl	r3, r1, r3
+ 1059              	.LVL60:
+ 1060              		.loc 1 699 18 view .LVU290
+ 1061 0028 22EA0303 		bic	r3, r2, r3
+ 1062 002c C0F8D030 		str	r3, [r0, #208]
+ 700:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 701:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 1063              		.loc 1 701 1 view .LVU291
+ 1064 0030 7047     		bx	lr
+ 1065              	.L76:
+ 1066 0032 00BF     		.align	2
+ 1067              	.L75:
+ 1068 0034 2C9FFDBF 		.word	-1073897684
+ 1069 0038 00600240 		.word	1073897472
+ 1070              		.cfi_endproc
+ 1071              	.LFE154:
+ 1073              		.section	.text.edmamux_enable,"ax",%progbits
+ 1074              		.align	1
+ 1075              		.global	edmamux_enable
+ 1076              		.syntax unified
+ 1077              		.thumb
+ 1078              		.thumb_func
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 32
+
+
+ 1080              	edmamux_enable:
+ 1081              	.LVL61:
+ 1082              	.LFB155:
+ 702:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 703:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 704:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  enable or disable the edma edmamux.
+ 705:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  new_state (TRUE or FALSE).
+ 706:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval none.
+ 707:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 708:bsp/libraries/drivers/src/at32f435_437_edma.c **** void edmamux_enable(confirm_state new_state)
+ 709:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 1083              		.loc 1 709 1 is_stmt 1 view -0
+ 1084              		.cfi_startproc
+ 1085              		@ args = 0, pretend = 0, frame = 0
+ 1086              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1087              		@ link register save eliminated.
+ 710:bsp/libraries/drivers/src/at32f435_437_edma.c ****   EDMA->muxsel_bit.tblsel = new_state;
+ 1088              		.loc 1 710 3 view .LVU293
+ 1089              		.loc 1 710 27 is_stmt 0 view .LVU294
+ 1090 0000 034B     		ldr	r3, .L78
+ 1091 0002 D3F83C21 		ldr	r2, [r3, #316]
+ 1092 0006 60F30002 		bfi	r2, r0, #0, #1
+ 1093 000a C3F83C21 		str	r2, [r3, #316]
+ 711:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 1094              		.loc 1 711 1 view .LVU295
+ 1095 000e 7047     		bx	lr
+ 1096              	.L79:
+ 1097              		.align	2
+ 1098              	.L78:
+ 1099 0010 00600240 		.word	1073897472
+ 1100              		.cfi_endproc
+ 1101              	.LFE155:
+ 1103              		.section	.text.edmamux_init,"ax",%progbits
+ 1104              		.align	1
+ 1105              		.global	edmamux_init
+ 1106              		.syntax unified
+ 1107              		.thumb
+ 1108              		.thumb_func
+ 1110              	edmamux_init:
+ 1111              	.LVL62:
+ 1112              	.LFB156:
+ 712:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 713:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 714:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  edmamux init.
+ 715:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edmamux_channelx:
+ 716:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ 717:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_CHANNEL1
+ 718:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_CHANNEL2
+ 719:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_CHANNEL3
+ 720:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_CHANNEL4
+ 721:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_CHANNEL5
+ 722:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_CHANNEL6
+ 723:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_CHANNEL7
+ 724:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_CHANNEL8
+ 725:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edmamux_req_id:
+ 726:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ 727:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_DMAREQ_ID_REQ_G1       - EDMAMUX_DMAREQ_ID_REQ_G2       - EDMAMUX_DMAREQ_ID_R
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 33
+
+
+ 728:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_DMAREQ_ID_ADC1         - EDMAMUX_DMAREQ_ID_ADC2         - EDMAMUX_DMAREQ_ID_A
+ 729:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_DMAREQ_ID_DAC2         - EDMAMUX_DMAREQ_ID_TMR6_OVERFLOW- EDMAMUX_DMAREQ_ID_T
+ 730:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_DMAREQ_ID_SPI1_TX      - EDMAMUX_DMAREQ_ID_SPI2_RX      - EDMAMUX_DMAREQ_ID_S
+ 731:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_DMAREQ_ID_SPI3_TX      - EDMAMUX_DMAREQ_ID_SPI4_RX      - EDMAMUX_DMAREQ_ID_S
+ 732:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_DMAREQ_ID_I2S2_EXT_TX  - EDMAMUX_DMAREQ_ID_I2S3_EXT_RX  - EDMAMUX_DMAREQ_ID_I
+ 733:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_DMAREQ_ID_I2C1_TX      - EDMAMUX_DMAREQ_ID_I2C2_RX      - EDMAMUX_DMAREQ_ID_I
+ 734:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_DMAREQ_ID_I2C3_TX      - EDMAMUX_DMAREQ_ID_USART1_RX    - EDMAMUX_DMAREQ_ID_U
+ 735:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_DMAREQ_ID_USART2_TX    - EDMAMUX_DMAREQ_ID_USART3_RX    - EDMAMUX_DMAREQ_ID_U
+ 736:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_DMAREQ_ID_UART4_TX     - EDMAMUX_DMAREQ_ID_UART5_RX     - EDMAMUX_DMAREQ_ID_U
+ 737:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_DMAREQ_ID_USART6_TX    - EDMAMUX_DMAREQ_ID_UART7_RX     - EDMAMUX_DMAREQ_ID_U
+ 738:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_DMAREQ_ID_UART8_TX     - EDMAMUX_DMAREQ_ID_SDIO1        - EDMAMUX_DMAREQ_ID_S
+ 739:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_DMAREQ_ID_QSPI2        - EDMAMUX_DMAREQ_ID_TMR1_CH1     - EDMAMUX_DMAREQ_ID_T
+ 740:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_DMAREQ_ID_TMR1_CH4     - EDMAMUX_DMAREQ_ID_TMR1_OVERFLOW- EDMAMUX_DMAREQ_ID_T
+ 741:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_DMAREQ_ID_TMR8_CH1     - EDMAMUX_DMAREQ_ID_TMR8_CH2     - EDMAMUX_DMAREQ_ID_T
+ 742:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_DMAREQ_ID_TMR8_UP      - EDMAMUX_DMAREQ_ID_TMR8_TRIG    - EDMAMUX_DMAREQ_ID_T
+ 743:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_DMAREQ_ID_TMR2_CH2     - EDMAMUX_DMAREQ_ID_TMR2_CH3     - EDMAMUX_DMAREQ_ID_T
+ 744:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_DMAREQ_ID_TMR2_TRIG    - EDMAMUX_DMAREQ_ID_TMR3_CH1     - EDMAMUX_DMAREQ_ID_T
+ 745:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_DMAREQ_ID_TMR3_CH4     - EDMAMUX_DMAREQ_ID_TMR3_OVERFLOW- EDMAMUX_DMAREQ_ID_T
+ 746:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_DMAREQ_ID_TMR4_CH2     - EDMAMUX_DMAREQ_ID_TMR4_CH3     - EDMAMUX_DMAREQ_ID_T
+ 747:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_DMAREQ_ID_TMR4_TRIG    - EDMAMUX_DMAREQ_ID_TMR5_CH1     - EDMAMUX_DMAREQ_ID_T
+ 748:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_DMAREQ_ID_TMR5_CH4     - EDMAMUX_DMAREQ_ID_TMR5_OVERFLOW- EDMAMUX_DMAREQ_ID_T
+ 749:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_DMAREQ_ID_TMR20_CH2    - EDMAMUX_DMAREQ_ID_TMR20_CH3    - EDMAMUX_DMAREQ_ID_T
+ 750:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_DMAREQ_ID_TMR20_TRIG   - EDMAMUX_DMAREQ_ID_TMR20_HALL   - EDMAMUX_DMAREQ_ID_D
+ 751:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval none.
+ 752:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 753:bsp/libraries/drivers/src/at32f435_437_edma.c **** void edmamux_init(edmamux_channel_type *edmamux_channelx, edmamux_requst_id_sel_type edmamux_req_id
+ 754:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 1113              		.loc 1 754 1 is_stmt 1 view -0
+ 1114              		.cfi_startproc
+ 1115              		@ args = 0, pretend = 0, frame = 0
+ 1116              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1117              		@ link register save eliminated.
+ 755:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edmamux_channelx->muxctrl_bit.reqsel = edmamux_req_id;
+ 1118              		.loc 1 755 3 view .LVU297
+ 1119              		.loc 1 755 40 is_stmt 0 view .LVU298
+ 1120 0000 0368     		ldr	r3, [r0]
+ 1121 0002 61F30603 		bfi	r3, r1, #0, #7
+ 1122 0006 0360     		str	r3, [r0]
+ 756:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 1123              		.loc 1 756 1 view .LVU299
+ 1124 0008 7047     		bx	lr
+ 1125              		.cfi_endproc
+ 1126              	.LFE156:
+ 1128              		.section	.text.edmamux_sync_default_para_init,"ax",%progbits
+ 1129              		.align	1
+ 1130              		.global	edmamux_sync_default_para_init
+ 1131              		.syntax unified
+ 1132              		.thumb
+ 1133              		.thumb_func
+ 1135              	edmamux_sync_default_para_init:
+ 1136              	.LVL63:
+ 1137              	.LFB157:
+ 757:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 758:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 759:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  edmamux sync init struct config with its default value.
+ 760:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edmamux_sync_init_struct: pointer to a edmamux_sync_init_type structure which will be i
+ 761:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval none.
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 34
+
+
+ 762:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 763:bsp/libraries/drivers/src/at32f435_437_edma.c **** void edmamux_sync_default_para_init(edmamux_sync_init_type *edmamux_sync_init_struct)
+ 764:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 1138              		.loc 1 764 1 is_stmt 1 view -0
+ 1139              		.cfi_startproc
+ 1140              		@ args = 0, pretend = 0, frame = 0
+ 1141              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1142              		@ link register save eliminated.
+ 765:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edmamux_sync_init_struct->sync_enable = FALSE;
+ 1143              		.loc 1 765 3 view .LVU301
+ 1144              		.loc 1 765 41 is_stmt 0 view .LVU302
+ 1145 0000 0023     		movs	r3, #0
+ 1146 0002 4372     		strb	r3, [r0, #9]
+ 766:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edmamux_sync_init_struct->sync_event_enable = FALSE;
+ 1147              		.loc 1 766 3 is_stmt 1 view .LVU303
+ 1148              		.loc 1 766 47 is_stmt 0 view .LVU304
+ 1149 0004 0372     		strb	r3, [r0, #8]
+ 767:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edmamux_sync_init_struct->sync_polarity = EDMAMUX_SYNC_POLARITY_DISABLE;
+ 1150              		.loc 1 767 3 is_stmt 1 view .LVU305
+ 1151              		.loc 1 767 43 is_stmt 0 view .LVU306
+ 1152 0006 4370     		strb	r3, [r0, #1]
+ 768:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edmamux_sync_init_struct->sync_request_number = 0x0;
+ 1153              		.loc 1 768 3 is_stmt 1 view .LVU307
+ 1154              		.loc 1 768 49 is_stmt 0 view .LVU308
+ 1155 0008 4360     		str	r3, [r0, #4]
+ 769:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edmamux_sync_init_struct->sync_signal_sel = EDMAMUX_SYNC_ID_EXINT0;
+ 1156              		.loc 1 769 3 is_stmt 1 view .LVU309
+ 1157              		.loc 1 769 45 is_stmt 0 view .LVU310
+ 1158 000a 0370     		strb	r3, [r0]
+ 770:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 1159              		.loc 1 770 1 view .LVU311
+ 1160 000c 7047     		bx	lr
+ 1161              		.cfi_endproc
+ 1162              	.LFE157:
+ 1164              		.section	.text.edmamux_sync_config,"ax",%progbits
+ 1165              		.align	1
+ 1166              		.global	edmamux_sync_config
+ 1167              		.syntax unified
+ 1168              		.thumb
+ 1169              		.thumb_func
+ 1171              	edmamux_sync_config:
+ 1172              	.LVL64:
+ 1173              	.LFB158:
+ 771:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 772:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 773:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  edmamux synchronization config.
+ 774:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edmamux_channelx:
+ 775:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ 776:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_CHANNEL1
+ 777:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_CHANNEL2
+ 778:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_CHANNEL3
+ 779:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_CHANNEL4
+ 780:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_CHANNEL5
+ 781:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_CHANNEL6
+ 782:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_CHANNEL7
+ 783:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_CHANNEL8
+ 784:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edmamux_sync_init_struct: ointer to a edmamux_sync_init_type structure.
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 35
+
+
+ 785:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval none.
+ 786:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 787:bsp/libraries/drivers/src/at32f435_437_edma.c **** void edmamux_sync_config(edmamux_channel_type *edmamux_channelx, edmamux_sync_init_type *edmamux_sy
+ 788:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 1174              		.loc 1 788 1 is_stmt 1 view -0
+ 1175              		.cfi_startproc
+ 1176              		@ args = 0, pretend = 0, frame = 0
+ 1177              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1178              		@ link register save eliminated.
+ 789:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edmamux_channelx->muxctrl_bit.syncsel = edmamux_sync_init_struct->sync_signal_sel;
+ 1179              		.loc 1 789 3 view .LVU313
+ 1180              		.loc 1 789 67 is_stmt 0 view .LVU314
+ 1181 0000 0A78     		ldrb	r2, [r1]	@ zero_extendqisi2
+ 1182              		.loc 1 789 41 view .LVU315
+ 1183 0002 0368     		ldr	r3, [r0]
+ 1184 0004 62F31C63 		bfi	r3, r2, #24, #5
+ 1185 0008 0360     		str	r3, [r0]
+ 790:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edmamux_channelx->muxctrl_bit.syncpol = edmamux_sync_init_struct->sync_polarity;
+ 1186              		.loc 1 790 3 is_stmt 1 view .LVU316
+ 1187              		.loc 1 790 67 is_stmt 0 view .LVU317
+ 1188 000a 4A78     		ldrb	r2, [r1, #1]	@ zero_extendqisi2
+ 1189              		.loc 1 790 41 view .LVU318
+ 1190 000c 0368     		ldr	r3, [r0]
+ 1191 000e 62F35243 		bfi	r3, r2, #17, #2
+ 1192 0012 0360     		str	r3, [r0]
+ 791:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edmamux_channelx->muxctrl_bit.reqcnt  = edmamux_sync_init_struct->sync_request_number - 1;
+ 1193              		.loc 1 791 3 is_stmt 1 view .LVU319
+ 1194              		.loc 1 791 67 is_stmt 0 view .LVU320
+ 1195 0014 4B68     		ldr	r3, [r1, #4]
+ 1196              		.loc 1 791 89 view .LVU321
+ 1197 0016 013B     		subs	r3, r3, #1
+ 1198              		.loc 1 791 41 view .LVU322
+ 1199 0018 0268     		ldr	r2, [r0]
+ 1200 001a 63F3D742 		bfi	r2, r3, #19, #5
+ 1201 001e 0260     		str	r2, [r0]
+ 792:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edmamux_channelx->muxctrl_bit.evtgen  = edmamux_sync_init_struct->sync_event_enable;
+ 1202              		.loc 1 792 3 is_stmt 1 view .LVU323
+ 1203              		.loc 1 792 67 is_stmt 0 view .LVU324
+ 1204 0020 0A7A     		ldrb	r2, [r1, #8]	@ zero_extendqisi2
+ 1205              		.loc 1 792 41 view .LVU325
+ 1206 0022 0368     		ldr	r3, [r0]
+ 1207 0024 62F34923 		bfi	r3, r2, #9, #1
+ 1208 0028 0360     		str	r3, [r0]
+ 793:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edmamux_channelx->muxctrl_bit.syncen  = edmamux_sync_init_struct->sync_enable;
+ 1209              		.loc 1 793 3 is_stmt 1 view .LVU326
+ 1210              		.loc 1 793 67 is_stmt 0 view .LVU327
+ 1211 002a 4A7A     		ldrb	r2, [r1, #9]	@ zero_extendqisi2
+ 1212              		.loc 1 793 41 view .LVU328
+ 1213 002c 0368     		ldr	r3, [r0]
+ 1214 002e 62F31043 		bfi	r3, r2, #16, #1
+ 1215 0032 0360     		str	r3, [r0]
+ 794:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 1216              		.loc 1 794 1 view .LVU329
+ 1217 0034 7047     		bx	lr
+ 1218              		.cfi_endproc
+ 1219              	.LFE158:
+ 1221              		.section	.text.edmamux_generator_default_para_init,"ax",%progbits
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 36
+
+
+ 1222              		.align	1
+ 1223              		.global	edmamux_generator_default_para_init
+ 1224              		.syntax unified
+ 1225              		.thumb
+ 1226              		.thumb_func
+ 1228              	edmamux_generator_default_para_init:
+ 1229              	.LVL65:
+ 1230              	.LFB159:
+ 795:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 796:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 797:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  edmamux request generator init struct config with its default value.
+ 798:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edmamux_gen_init_struct: pointer to a edmamux_gen_init_type structure which will be ini
+ 799:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval none.
+ 800:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 801:bsp/libraries/drivers/src/at32f435_437_edma.c **** void edmamux_generator_default_para_init(edmamux_gen_init_type *edmamux_gen_init_struct)
+ 802:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 1231              		.loc 1 802 1 is_stmt 1 view -0
+ 1232              		.cfi_startproc
+ 1233              		@ args = 0, pretend = 0, frame = 0
+ 1234              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1235              		@ link register save eliminated.
+ 803:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edmamux_gen_init_struct->gen_enable         = FALSE;
+ 1236              		.loc 1 803 3 view .LVU331
+ 1237              		.loc 1 803 47 is_stmt 0 view .LVU332
+ 1238 0000 0023     		movs	r3, #0
+ 1239 0002 0372     		strb	r3, [r0, #8]
+ 804:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edmamux_gen_init_struct->gen_polarity       = EDMAMUX_GEN_POLARITY_DISABLE;
+ 1240              		.loc 1 804 3 is_stmt 1 view .LVU333
+ 1241              		.loc 1 804 47 is_stmt 0 view .LVU334
+ 1242 0004 4370     		strb	r3, [r0, #1]
+ 805:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edmamux_gen_init_struct->gen_request_number = 0x0;
+ 1243              		.loc 1 805 3 is_stmt 1 view .LVU335
+ 1244              		.loc 1 805 47 is_stmt 0 view .LVU336
+ 1245 0006 4360     		str	r3, [r0, #4]
+ 806:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edmamux_gen_init_struct->gen_signal_sel     = EDMAMUX_GEN_ID_EXINT0;
+ 1246              		.loc 1 806 3 is_stmt 1 view .LVU337
+ 1247              		.loc 1 806 47 is_stmt 0 view .LVU338
+ 1248 0008 0370     		strb	r3, [r0]
+ 807:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 1249              		.loc 1 807 1 view .LVU339
+ 1250 000a 7047     		bx	lr
+ 1251              		.cfi_endproc
+ 1252              	.LFE159:
+ 1254              		.section	.text.edmamux_generator_config,"ax",%progbits
+ 1255              		.align	1
+ 1256              		.global	edmamux_generator_config
+ 1257              		.syntax unified
+ 1258              		.thumb
+ 1259              		.thumb_func
+ 1261              	edmamux_generator_config:
+ 1262              	.LVL66:
+ 1263              	.LFB160:
+ 808:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 809:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 810:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  edmamux request generator init.
+ 811:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edmamux_gen_init_struct: pointer to a edmamux_gen_init_type structure which will be ini
+ 812:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval none.
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 37
+
+
+ 813:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 814:bsp/libraries/drivers/src/at32f435_437_edma.c **** void edmamux_generator_config(edmamux_generator_type *edmamux_gen_x, edmamux_gen_init_type *edmamux
+ 815:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 1264              		.loc 1 815 1 is_stmt 1 view -0
+ 1265              		.cfi_startproc
+ 1266              		@ args = 0, pretend = 0, frame = 0
+ 1267              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1268              		@ link register save eliminated.
+ 816:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edmamux_gen_x->gctrl_bit.sigsel  = edmamux_gen_init_struct->gen_signal_sel;
+ 1269              		.loc 1 816 3 view .LVU341
+ 1270              		.loc 1 816 61 is_stmt 0 view .LVU342
+ 1271 0000 0A78     		ldrb	r2, [r1]	@ zero_extendqisi2
+ 1272              		.loc 1 816 36 view .LVU343
+ 1273 0002 0368     		ldr	r3, [r0]
+ 1274 0004 62F30403 		bfi	r3, r2, #0, #5
+ 1275 0008 0360     		str	r3, [r0]
+ 817:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edmamux_gen_x->gctrl_bit.gpol    = edmamux_gen_init_struct->gen_polarity;
+ 1276              		.loc 1 817 3 is_stmt 1 view .LVU344
+ 1277              		.loc 1 817 61 is_stmt 0 view .LVU345
+ 1278 000a 4A78     		ldrb	r2, [r1, #1]	@ zero_extendqisi2
+ 1279              		.loc 1 817 36 view .LVU346
+ 1280 000c 0368     		ldr	r3, [r0]
+ 1281 000e 62F35243 		bfi	r3, r2, #17, #2
+ 1282 0012 0360     		str	r3, [r0]
+ 818:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edmamux_gen_x->gctrl_bit.greqcnt = edmamux_gen_init_struct->gen_request_number - 1;
+ 1283              		.loc 1 818 3 is_stmt 1 view .LVU347
+ 1284              		.loc 1 818 61 is_stmt 0 view .LVU348
+ 1285 0014 4B68     		ldr	r3, [r1, #4]
+ 1286              		.loc 1 818 82 view .LVU349
+ 1287 0016 013B     		subs	r3, r3, #1
+ 1288              		.loc 1 818 36 view .LVU350
+ 1289 0018 0268     		ldr	r2, [r0]
+ 1290 001a 63F3D742 		bfi	r2, r3, #19, #5
+ 1291 001e 0260     		str	r2, [r0]
+ 819:bsp/libraries/drivers/src/at32f435_437_edma.c ****   edmamux_gen_x->gctrl_bit.gen     = edmamux_gen_init_struct->gen_enable;
+ 1292              		.loc 1 819 3 is_stmt 1 view .LVU351
+ 1293              		.loc 1 819 61 is_stmt 0 view .LVU352
+ 1294 0020 0A7A     		ldrb	r2, [r1, #8]	@ zero_extendqisi2
+ 1295              		.loc 1 819 36 view .LVU353
+ 1296 0022 0368     		ldr	r3, [r0]
+ 1297 0024 62F31043 		bfi	r3, r2, #16, #1
+ 1298 0028 0360     		str	r3, [r0]
+ 820:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 1299              		.loc 1 820 1 view .LVU354
+ 1300 002a 7047     		bx	lr
+ 1301              		.cfi_endproc
+ 1302              	.LFE160:
+ 1304              		.section	.text.edmamux_sync_interrupt_enable,"ax",%progbits
+ 1305              		.align	1
+ 1306              		.global	edmamux_sync_interrupt_enable
+ 1307              		.syntax unified
+ 1308              		.thumb
+ 1309              		.thumb_func
+ 1311              	edmamux_sync_interrupt_enable:
+ 1312              	.LVL67:
+ 1313              	.LFB161:
+ 821:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 38
+
+
+ 822:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 823:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  enable or disable the edmamux sync interrupts.
+ 824:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edmamux_channelx:
+ 825:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ 826:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_CHANNEL1
+ 827:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_CHANNEL2
+ 828:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_CHANNEL3
+ 829:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_CHANNEL4
+ 830:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_CHANNEL5
+ 831:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_CHANNEL6
+ 832:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_CHANNEL7
+ 833:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_CHANNEL8
+ 834:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  new_state (TRUE or FALSE).
+ 835:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval none.
+ 836:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 837:bsp/libraries/drivers/src/at32f435_437_edma.c **** void edmamux_sync_interrupt_enable(edmamux_channel_type *edmamux_channelx, confirm_state new_state)
+ 838:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 1314              		.loc 1 838 1 is_stmt 1 view -0
+ 1315              		.cfi_startproc
+ 1316              		@ args = 0, pretend = 0, frame = 0
+ 1317              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1318              		@ link register save eliminated.
+ 839:bsp/libraries/drivers/src/at32f435_437_edma.c ****   if(new_state != FALSE)
+ 1319              		.loc 1 839 3 view .LVU356
+ 1320              		.loc 1 839 5 is_stmt 0 view .LVU357
+ 1321 0000 21B1     		cbz	r1, .L86
+ 840:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 841:bsp/libraries/drivers/src/at32f435_437_edma.c ****     edmamux_channelx->muxctrl_bit.syncovien = TRUE;
+ 1322              		.loc 1 841 5 is_stmt 1 view .LVU358
+ 1323              		.loc 1 841 45 is_stmt 0 view .LVU359
+ 1324 0002 0368     		ldr	r3, [r0]
+ 1325 0004 43F48073 		orr	r3, r3, #256
+ 1326 0008 0360     		str	r3, [r0]
+ 1327 000a 7047     		bx	lr
+ 1328              	.L86:
+ 842:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 843:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else
+ 844:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 845:bsp/libraries/drivers/src/at32f435_437_edma.c ****     edmamux_channelx->muxctrl_bit.syncovien = FALSE;
+ 1329              		.loc 1 845 5 is_stmt 1 view .LVU360
+ 1330              		.loc 1 845 45 is_stmt 0 view .LVU361
+ 1331 000c 0368     		ldr	r3, [r0]
+ 1332 000e 6FF30823 		bfc	r3, #8, #1
+ 1333 0012 0360     		str	r3, [r0]
+ 846:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 847:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 1334              		.loc 1 847 1 view .LVU362
+ 1335 0014 7047     		bx	lr
+ 1336              		.cfi_endproc
+ 1337              	.LFE161:
+ 1339              		.section	.text.edmamux_generator_interrupt_enable,"ax",%progbits
+ 1340              		.align	1
+ 1341              		.global	edmamux_generator_interrupt_enable
+ 1342              		.syntax unified
+ 1343              		.thumb
+ 1344              		.thumb_func
+ 1346              	edmamux_generator_interrupt_enable:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 39
+
+
+ 1347              	.LVL68:
+ 1348              	.LFB162:
+ 848:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 849:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 850:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  enable or disable the edmamux request generator interrupts.
+ 851:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  edmamux_gen_x: pointer to a edmamux_generator_type structure.
+ 852:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be one of the following values:
+ 853:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_GENERATOR1
+ 854:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_GENERATOR2
+ 855:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_GENERATOR3
+ 856:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_GENERATOR4
+ 857:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  new_state (TRUE or FALSE).
+ 858:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval none.
+ 859:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 860:bsp/libraries/drivers/src/at32f435_437_edma.c **** void edmamux_generator_interrupt_enable(edmamux_generator_type *edmamux_gen_x, confirm_state new_st
+ 861:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 1349              		.loc 1 861 1 is_stmt 1 view -0
+ 1350              		.cfi_startproc
+ 1351              		@ args = 0, pretend = 0, frame = 0
+ 1352              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1353              		@ link register save eliminated.
+ 862:bsp/libraries/drivers/src/at32f435_437_edma.c ****   if(new_state != FALSE)
+ 1354              		.loc 1 862 3 view .LVU364
+ 1355              		.loc 1 862 5 is_stmt 0 view .LVU365
+ 1356 0000 21B1     		cbz	r1, .L89
+ 863:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 864:bsp/libraries/drivers/src/at32f435_437_edma.c ****     edmamux_gen_x->gctrl_bit.trgovien = TRUE;
+ 1357              		.loc 1 864 5 is_stmt 1 view .LVU366
+ 1358              		.loc 1 864 39 is_stmt 0 view .LVU367
+ 1359 0002 0368     		ldr	r3, [r0]
+ 1360 0004 43F48073 		orr	r3, r3, #256
+ 1361 0008 0360     		str	r3, [r0]
+ 1362 000a 7047     		bx	lr
+ 1363              	.L89:
+ 865:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 866:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else
+ 867:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 868:bsp/libraries/drivers/src/at32f435_437_edma.c ****     edmamux_gen_x->gctrl_bit.trgovien = FALSE;
+ 1364              		.loc 1 868 5 is_stmt 1 view .LVU368
+ 1365              		.loc 1 868 39 is_stmt 0 view .LVU369
+ 1366 000c 0368     		ldr	r3, [r0]
+ 1367 000e 6FF30823 		bfc	r3, #8, #1
+ 1368 0012 0360     		str	r3, [r0]
+ 869:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 870:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 1369              		.loc 1 870 1 view .LVU370
+ 1370 0014 7047     		bx	lr
+ 1371              		.cfi_endproc
+ 1372              	.LFE162:
+ 1374              		.section	.text.edmamux_sync_flag_get,"ax",%progbits
+ 1375              		.align	1
+ 1376              		.global	edmamux_sync_flag_get
+ 1377              		.syntax unified
+ 1378              		.thumb
+ 1379              		.thumb_func
+ 1381              	edmamux_sync_flag_get:
+ 1382              	.LVL69:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 40
+
+
+ 1383              	.LFB163:
+ 871:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 872:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 873:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  edmamux sync flag get.
+ 874:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  flag
+ 875:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be any combination of the following values:
+ 876:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_SYNC_OV1_FLAG
+ 877:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_SYNC_OV2_FLAG
+ 878:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_SYNC_OV3_FLAG
+ 879:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_SYNC_OV4_FLAG
+ 880:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_SYNC_OV5_FLAG
+ 881:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_SYNC_OV6_FLAG
+ 882:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_SYNC_OV7_FLAG
+ 883:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_SYNC_OV8_FLAG
+ 884:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval state of edmamux sync flag.
+ 885:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 886:bsp/libraries/drivers/src/at32f435_437_edma.c **** flag_status edmamux_sync_flag_get(uint32_t flag)
+ 887:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 1384              		.loc 1 887 1 is_stmt 1 view -0
+ 1385              		.cfi_startproc
+ 1386              		@ args = 0, pretend = 0, frame = 0
+ 1387              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1388              		@ link register save eliminated.
+ 888:bsp/libraries/drivers/src/at32f435_437_edma.c ****   if((EDMA->muxsyncsts & flag) != RESET)
+ 1389              		.loc 1 888 3 view .LVU372
+ 1390              		.loc 1 888 11 is_stmt 0 view .LVU373
+ 1391 0000 044B     		ldr	r3, .L94
+ 1392 0002 D3F87031 		ldr	r3, [r3, #368]
+ 1393              		.loc 1 888 5 view .LVU374
+ 1394 0006 0342     		tst	r3, r0
+ 1395 0008 01D0     		beq	.L93
+ 889:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 890:bsp/libraries/drivers/src/at32f435_437_edma.c ****     return SET;
+ 1396              		.loc 1 890 12 view .LVU375
+ 1397 000a 0120     		movs	r0, #1
+ 1398              	.LVL70:
+ 1399              		.loc 1 890 12 view .LVU376
+ 1400 000c 7047     		bx	lr
+ 1401              	.LVL71:
+ 1402              	.L93:
+ 891:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 892:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else
+ 893:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 894:bsp/libraries/drivers/src/at32f435_437_edma.c ****     return RESET;
+ 1403              		.loc 1 894 12 view .LVU377
+ 1404 000e 0020     		movs	r0, #0
+ 1405              	.LVL72:
+ 895:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 896:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 1406              		.loc 1 896 1 view .LVU378
+ 1407 0010 7047     		bx	lr
+ 1408              	.L95:
+ 1409 0012 00BF     		.align	2
+ 1410              	.L94:
+ 1411 0014 00600240 		.word	1073897472
+ 1412              		.cfi_endproc
+ 1413              	.LFE163:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 41
+
+
+ 1415              		.section	.text.edmamux_sync_interrupt_flag_get,"ax",%progbits
+ 1416              		.align	1
+ 1417              		.global	edmamux_sync_interrupt_flag_get
+ 1418              		.syntax unified
+ 1419              		.thumb
+ 1420              		.thumb_func
+ 1422              	edmamux_sync_interrupt_flag_get:
+ 1423              	.LVL73:
+ 1424              	.LFB164:
+ 897:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 898:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 899:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  edmamux sync interrupt flag get.
+ 900:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  flag
+ 901:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be any combination of the following values:
+ 902:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_SYNC_OV1_FLAG
+ 903:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_SYNC_OV2_FLAG
+ 904:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_SYNC_OV3_FLAG
+ 905:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_SYNC_OV4_FLAG
+ 906:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_SYNC_OV5_FLAG
+ 907:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_SYNC_OV6_FLAG
+ 908:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_SYNC_OV7_FLAG
+ 909:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_SYNC_OV8_FLAG
+ 910:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval state of edmamux sync flag.
+ 911:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 912:bsp/libraries/drivers/src/at32f435_437_edma.c **** flag_status edmamux_sync_interrupt_flag_get(uint32_t flag)
+ 913:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 1425              		.loc 1 913 1 is_stmt 1 view -0
+ 1426              		.cfi_startproc
+ 1427              		@ args = 0, pretend = 0, frame = 0
+ 1428              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1429              		@ link register save eliminated.
+ 914:bsp/libraries/drivers/src/at32f435_437_edma.c ****   uint32_t int_stat = 0;
+ 1430              		.loc 1 914 3 view .LVU380
+ 915:bsp/libraries/drivers/src/at32f435_437_edma.c ****   
+ 916:bsp/libraries/drivers/src/at32f435_437_edma.c ****   if(flag == EDMAMUX_SYNC_OV1_FLAG)
+ 1431              		.loc 1 916 3 view .LVU381
+ 1432              		.loc 1 916 5 is_stmt 0 view .LVU382
+ 1433 0000 0128     		cmp	r0, #1
+ 1434 0002 11D0     		beq	.L108
+ 917:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 918:bsp/libraries/drivers/src/at32f435_437_edma.c ****     int_stat = (uint32_t)EDMAMUX_CHANNEL1->muxctrl_bit.syncovien;
+ 919:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 920:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else if(flag == EDMAMUX_SYNC_OV2_FLAG)
+ 1435              		.loc 1 920 8 is_stmt 1 view .LVU383
+ 1436              		.loc 1 920 10 is_stmt 0 view .LVU384
+ 1437 0004 0228     		cmp	r0, #2
+ 1438 0006 1CD0     		beq	.L109
+ 921:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 922:bsp/libraries/drivers/src/at32f435_437_edma.c ****     int_stat = (uint32_t)EDMAMUX_CHANNEL2->muxctrl_bit.syncovien;
+ 923:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 924:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else if(flag == EDMAMUX_SYNC_OV3_FLAG)
+ 1439              		.loc 1 924 8 is_stmt 1 view .LVU385
+ 1440              		.loc 1 924 10 is_stmt 0 view .LVU386
+ 1441 0008 0428     		cmp	r0, #4
+ 1442 000a 20D0     		beq	.L110
+ 925:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 926:bsp/libraries/drivers/src/at32f435_437_edma.c ****     int_stat = (uint32_t)EDMAMUX_CHANNEL3->muxctrl_bit.syncovien;
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 42
+
+
+ 927:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 928:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else if(flag == EDMAMUX_SYNC_OV4_FLAG)
+ 1443              		.loc 1 928 8 is_stmt 1 view .LVU387
+ 1444              		.loc 1 928 10 is_stmt 0 view .LVU388
+ 1445 000c 0828     		cmp	r0, #8
+ 1446 000e 24D0     		beq	.L111
+ 929:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 930:bsp/libraries/drivers/src/at32f435_437_edma.c ****     int_stat = (uint32_t)EDMAMUX_CHANNEL4->muxctrl_bit.syncovien;
+ 931:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 932:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else if(flag == EDMAMUX_SYNC_OV5_FLAG)
+ 1447              		.loc 1 932 8 is_stmt 1 view .LVU389
+ 1448              		.loc 1 932 10 is_stmt 0 view .LVU390
+ 1449 0010 1028     		cmp	r0, #16
+ 1450 0012 28D0     		beq	.L112
+ 933:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 934:bsp/libraries/drivers/src/at32f435_437_edma.c ****     int_stat = (uint32_t)EDMAMUX_CHANNEL5->muxctrl_bit.syncovien;
+ 935:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 936:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else if(flag == EDMAMUX_SYNC_OV6_FLAG)
+ 1451              		.loc 1 936 8 is_stmt 1 view .LVU391
+ 1452              		.loc 1 936 10 is_stmt 0 view .LVU392
+ 1453 0014 2028     		cmp	r0, #32
+ 1454 0016 2CD0     		beq	.L113
+ 937:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 938:bsp/libraries/drivers/src/at32f435_437_edma.c ****     int_stat = (uint32_t)EDMAMUX_CHANNEL6->muxctrl_bit.syncovien;
+ 939:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 940:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else if(flag == EDMAMUX_SYNC_OV7_FLAG)
+ 1455              		.loc 1 940 8 is_stmt 1 view .LVU393
+ 1456              		.loc 1 940 10 is_stmt 0 view .LVU394
+ 1457 0018 4028     		cmp	r0, #64
+ 1458 001a 30D0     		beq	.L114
+ 941:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 942:bsp/libraries/drivers/src/at32f435_437_edma.c ****     int_stat = (uint32_t)EDMAMUX_CHANNEL7->muxctrl_bit.syncovien;
+ 943:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 944:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else
+ 945:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 946:bsp/libraries/drivers/src/at32f435_437_edma.c ****     int_stat = (uint32_t)EDMAMUX_CHANNEL8->muxctrl_bit.syncovien;
+ 1459              		.loc 1 946 5 is_stmt 1 view .LVU395
+ 1460              		.loc 1 946 55 is_stmt 0 view .LVU396
+ 1461 001c 1D4B     		ldr	r3, .L115
+ 1462 001e D3F85C31 		ldr	r3, [r3, #348]
+ 1463 0022 C3F30023 		ubfx	r3, r3, #8, #1
+ 1464              	.LVL74:
+ 1465              		.loc 1 946 55 view .LVU397
+ 1466 0026 04E0     		b	.L98
+ 1467              	.LVL75:
+ 1468              	.L108:
+ 918:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 1469              		.loc 1 918 5 is_stmt 1 view .LVU398
+ 918:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 1470              		.loc 1 918 55 is_stmt 0 view .LVU399
+ 1471 0028 1A4B     		ldr	r3, .L115
+ 1472 002a D3F84031 		ldr	r3, [r3, #320]
+ 1473 002e C3F30023 		ubfx	r3, r3, #8, #1
+ 1474              	.LVL76:
+ 1475              	.L98:
+ 947:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 948:bsp/libraries/drivers/src/at32f435_437_edma.c ****   
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 43
+
+
+ 949:bsp/libraries/drivers/src/at32f435_437_edma.c ****   if((int_stat != RESET) && ((EDMA->muxsyncsts & flag) != RESET))
+ 1476              		.loc 1 949 3 is_stmt 1 view .LVU400
+ 1477              		.loc 1 949 5 is_stmt 0 view .LVU401
+ 1478 0032 53B3     		cbz	r3, .L106
+ 1479              		.loc 1 949 35 discriminator 1 view .LVU402
+ 1480 0034 174B     		ldr	r3, .L115
+ 1481              	.LVL77:
+ 1482              		.loc 1 949 35 discriminator 1 view .LVU403
+ 1483 0036 D3F87031 		ldr	r3, [r3, #368]
+ 1484              		.loc 1 949 26 discriminator 1 view .LVU404
+ 1485 003a 0342     		tst	r3, r0
+ 1486 003c 27D1     		bne	.L107
+ 950:bsp/libraries/drivers/src/at32f435_437_edma.c ****     return SET;
+ 951:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else
+ 952:bsp/libraries/drivers/src/at32f435_437_edma.c ****     return RESET;
+ 1487              		.loc 1 952 12 view .LVU405
+ 1488 003e 0020     		movs	r0, #0
+ 1489              	.LVL78:
+ 1490              		.loc 1 952 12 view .LVU406
+ 1491 0040 7047     		bx	lr
+ 1492              	.LVL79:
+ 1493              	.L109:
+ 922:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 1494              		.loc 1 922 5 is_stmt 1 view .LVU407
+ 922:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 1495              		.loc 1 922 55 is_stmt 0 view .LVU408
+ 1496 0042 144B     		ldr	r3, .L115
+ 1497 0044 D3F84431 		ldr	r3, [r3, #324]
+ 1498 0048 C3F30023 		ubfx	r3, r3, #8, #1
+ 1499              	.LVL80:
+ 922:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 1500              		.loc 1 922 55 view .LVU409
+ 1501 004c F1E7     		b	.L98
+ 1502              	.LVL81:
+ 1503              	.L110:
+ 926:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 1504              		.loc 1 926 5 is_stmt 1 view .LVU410
+ 926:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 1505              		.loc 1 926 55 is_stmt 0 view .LVU411
+ 1506 004e 114B     		ldr	r3, .L115
+ 1507 0050 D3F84831 		ldr	r3, [r3, #328]
+ 1508 0054 C3F30023 		ubfx	r3, r3, #8, #1
+ 1509              	.LVL82:
+ 926:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 1510              		.loc 1 926 55 view .LVU412
+ 1511 0058 EBE7     		b	.L98
+ 1512              	.LVL83:
+ 1513              	.L111:
+ 930:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 1514              		.loc 1 930 5 is_stmt 1 view .LVU413
+ 930:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 1515              		.loc 1 930 55 is_stmt 0 view .LVU414
+ 1516 005a 0E4B     		ldr	r3, .L115
+ 1517 005c D3F84C31 		ldr	r3, [r3, #332]
+ 1518 0060 C3F30023 		ubfx	r3, r3, #8, #1
+ 1519              	.LVL84:
+ 930:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 44
+
+
+ 1520              		.loc 1 930 55 view .LVU415
+ 1521 0064 E5E7     		b	.L98
+ 1522              	.LVL85:
+ 1523              	.L112:
+ 934:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 1524              		.loc 1 934 5 is_stmt 1 view .LVU416
+ 934:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 1525              		.loc 1 934 55 is_stmt 0 view .LVU417
+ 1526 0066 0B4B     		ldr	r3, .L115
+ 1527 0068 D3F85031 		ldr	r3, [r3, #336]
+ 1528 006c C3F30023 		ubfx	r3, r3, #8, #1
+ 1529              	.LVL86:
+ 934:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 1530              		.loc 1 934 55 view .LVU418
+ 1531 0070 DFE7     		b	.L98
+ 1532              	.LVL87:
+ 1533              	.L113:
+ 938:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 1534              		.loc 1 938 5 is_stmt 1 view .LVU419
+ 938:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 1535              		.loc 1 938 55 is_stmt 0 view .LVU420
+ 1536 0072 084B     		ldr	r3, .L115
+ 1537 0074 D3F85431 		ldr	r3, [r3, #340]
+ 1538 0078 C3F30023 		ubfx	r3, r3, #8, #1
+ 1539              	.LVL88:
+ 938:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 1540              		.loc 1 938 55 view .LVU421
+ 1541 007c D9E7     		b	.L98
+ 1542              	.LVL89:
+ 1543              	.L114:
+ 942:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 1544              		.loc 1 942 5 is_stmt 1 view .LVU422
+ 942:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 1545              		.loc 1 942 55 is_stmt 0 view .LVU423
+ 1546 007e 054B     		ldr	r3, .L115
+ 1547 0080 D3F85831 		ldr	r3, [r3, #344]
+ 1548 0084 C3F30023 		ubfx	r3, r3, #8, #1
+ 1549              	.LVL90:
+ 942:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 1550              		.loc 1 942 55 view .LVU424
+ 1551 0088 D3E7     		b	.L98
+ 1552              	.L106:
+ 1553              		.loc 1 952 12 view .LVU425
+ 1554 008a 0020     		movs	r0, #0
+ 1555              	.LVL91:
+ 1556              		.loc 1 952 12 view .LVU426
+ 1557 008c 7047     		bx	lr
+ 1558              	.LVL92:
+ 1559              	.L107:
+ 950:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else
+ 1560              		.loc 1 950 12 view .LVU427
+ 1561 008e 0120     		movs	r0, #1
+ 1562              	.LVL93:
+ 953:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 1563              		.loc 1 953 1 view .LVU428
+ 1564 0090 7047     		bx	lr
+ 1565              	.L116:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 45
+
+
+ 1566 0092 00BF     		.align	2
+ 1567              	.L115:
+ 1568 0094 00600240 		.word	1073897472
+ 1569              		.cfi_endproc
+ 1570              	.LFE164:
+ 1572              		.section	.text.edmamux_sync_flag_clear,"ax",%progbits
+ 1573              		.align	1
+ 1574              		.global	edmamux_sync_flag_clear
+ 1575              		.syntax unified
+ 1576              		.thumb
+ 1577              		.thumb_func
+ 1579              	edmamux_sync_flag_clear:
+ 1580              	.LVL94:
+ 1581              	.LFB165:
+ 954:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 955:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 956:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  edmamux sync flag clear.
+ 957:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  flag
+ 958:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be any combination of the following values:
+ 959:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_SYNC_OV1_FLAG
+ 960:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_SYNC_OV2_FLAG
+ 961:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_SYNC_OV3_FLAG
+ 962:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_SYNC_OV4_FLAG
+ 963:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_SYNC_OV5_FLAG
+ 964:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_SYNC_OV6_FLAG
+ 965:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_SYNC_OV7_FLAG
+ 966:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_SYNC_OV8_FLAG
+ 967:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval none.
+ 968:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 969:bsp/libraries/drivers/src/at32f435_437_edma.c **** void edmamux_sync_flag_clear(uint32_t flag)
+ 970:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 1582              		.loc 1 970 1 is_stmt 1 view -0
+ 1583              		.cfi_startproc
+ 1584              		@ args = 0, pretend = 0, frame = 0
+ 1585              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1586              		@ link register save eliminated.
+ 971:bsp/libraries/drivers/src/at32f435_437_edma.c ****   EDMA->muxsyncclr = flag;
+ 1587              		.loc 1 971 3 view .LVU430
+ 1588              		.loc 1 971 20 is_stmt 0 view .LVU431
+ 1589 0000 014B     		ldr	r3, .L118
+ 1590 0002 C3F87401 		str	r0, [r3, #372]
+ 972:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 1591              		.loc 1 972 1 view .LVU432
+ 1592 0006 7047     		bx	lr
+ 1593              	.L119:
+ 1594              		.align	2
+ 1595              	.L118:
+ 1596 0008 00600240 		.word	1073897472
+ 1597              		.cfi_endproc
+ 1598              	.LFE165:
+ 1600              		.section	.text.edmamux_generator_flag_get,"ax",%progbits
+ 1601              		.align	1
+ 1602              		.global	edmamux_generator_flag_get
+ 1603              		.syntax unified
+ 1604              		.thumb
+ 1605              		.thumb_func
+ 1607              	edmamux_generator_flag_get:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 46
+
+
+ 1608              	.LVL95:
+ 1609              	.LFB166:
+ 973:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 974:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 975:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  edmamux request generator flag get.
+ 976:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  flag
+ 977:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be any combination of the following values:
+ 978:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_GEN_TRIG_OV1_FLAG
+ 979:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_GEN_TRIG_OV2_FLAG
+ 980:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_GEN_TRIG_OV3_FLAG
+ 981:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_GEN_TRIG_OV4_FLAG
+ 982:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval state of edmamux sync flag.
+ 983:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+ 984:bsp/libraries/drivers/src/at32f435_437_edma.c **** flag_status edmamux_generator_flag_get(uint32_t flag)
+ 985:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 1610              		.loc 1 985 1 is_stmt 1 view -0
+ 1611              		.cfi_startproc
+ 1612              		@ args = 0, pretend = 0, frame = 0
+ 1613              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1614              		@ link register save eliminated.
+ 986:bsp/libraries/drivers/src/at32f435_437_edma.c ****   if((EDMA->muxgsts & flag) != RESET)
+ 1615              		.loc 1 986 3 view .LVU434
+ 1616              		.loc 1 986 11 is_stmt 0 view .LVU435
+ 1617 0000 044B     		ldr	r3, .L123
+ 1618 0002 D3F87831 		ldr	r3, [r3, #376]
+ 1619              		.loc 1 986 5 view .LVU436
+ 1620 0006 0342     		tst	r3, r0
+ 1621 0008 01D0     		beq	.L122
+ 987:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 988:bsp/libraries/drivers/src/at32f435_437_edma.c ****     return SET;
+ 1622              		.loc 1 988 12 view .LVU437
+ 1623 000a 0120     		movs	r0, #1
+ 1624              	.LVL96:
+ 1625              		.loc 1 988 12 view .LVU438
+ 1626 000c 7047     		bx	lr
+ 1627              	.LVL97:
+ 1628              	.L122:
+ 989:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 990:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else
+ 991:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+ 992:bsp/libraries/drivers/src/at32f435_437_edma.c ****     return RESET;
+ 1629              		.loc 1 992 12 view .LVU439
+ 1630 000e 0020     		movs	r0, #0
+ 1631              	.LVL98:
+ 993:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 994:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 1632              		.loc 1 994 1 view .LVU440
+ 1633 0010 7047     		bx	lr
+ 1634              	.L124:
+ 1635 0012 00BF     		.align	2
+ 1636              	.L123:
+ 1637 0014 00600240 		.word	1073897472
+ 1638              		.cfi_endproc
+ 1639              	.LFE166:
+ 1641              		.section	.text.edmamux_generator_interrupt_flag_get,"ax",%progbits
+ 1642              		.align	1
+ 1643              		.global	edmamux_generator_interrupt_flag_get
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 47
+
+
+ 1644              		.syntax unified
+ 1645              		.thumb
+ 1646              		.thumb_func
+ 1648              	edmamux_generator_interrupt_flag_get:
+ 1649              	.LVL99:
+ 1650              	.LFB167:
+ 995:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+ 996:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+ 997:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  edmamux request generator interrupt flag get.
+ 998:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  flag
+ 999:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be any combination of the following values:
+1000:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_GEN_TRIG_OV1_FLAG
+1001:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_GEN_TRIG_OV2_FLAG
+1002:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_GEN_TRIG_OV3_FLAG
+1003:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_GEN_TRIG_OV4_FLAG
+1004:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval state of edmamux sync flag.
+1005:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+1006:bsp/libraries/drivers/src/at32f435_437_edma.c **** flag_status edmamux_generator_interrupt_flag_get(uint32_t flag)
+1007:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 1651              		.loc 1 1007 1 is_stmt 1 view -0
+ 1652              		.cfi_startproc
+ 1653              		@ args = 0, pretend = 0, frame = 0
+ 1654              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1655              		@ link register save eliminated.
+1008:bsp/libraries/drivers/src/at32f435_437_edma.c ****   uint32_t int_stat = 0;
+ 1656              		.loc 1 1008 3 view .LVU442
+1009:bsp/libraries/drivers/src/at32f435_437_edma.c ****   
+1010:bsp/libraries/drivers/src/at32f435_437_edma.c ****   if(flag == EDMAMUX_GEN_TRIG_OV1_FLAG)
+ 1657              		.loc 1 1010 3 view .LVU443
+ 1658              		.loc 1 1010 5 is_stmt 0 view .LVU444
+ 1659 0000 0128     		cmp	r0, #1
+ 1660 0002 09D0     		beq	.L133
+1011:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+1012:bsp/libraries/drivers/src/at32f435_437_edma.c ****     int_stat = EDMAMUX_GENERATOR1->gctrl_bit.trgovien;
+1013:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+1014:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else if(flag == EDMAMUX_GEN_TRIG_OV2_FLAG)
+ 1661              		.loc 1 1014 8 is_stmt 1 view .LVU445
+ 1662              		.loc 1 1014 10 is_stmt 0 view .LVU446
+ 1663 0004 0228     		cmp	r0, #2
+ 1664 0006 14D0     		beq	.L134
+1015:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+1016:bsp/libraries/drivers/src/at32f435_437_edma.c ****     int_stat = EDMAMUX_GENERATOR2->gctrl_bit.trgovien;
+1017:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+1018:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else if(flag == EDMAMUX_GEN_TRIG_OV3_FLAG)
+ 1665              		.loc 1 1018 8 is_stmt 1 view .LVU447
+ 1666              		.loc 1 1018 10 is_stmt 0 view .LVU448
+ 1667 0008 0428     		cmp	r0, #4
+ 1668 000a 18D0     		beq	.L135
+1019:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+1020:bsp/libraries/drivers/src/at32f435_437_edma.c ****     int_stat = EDMAMUX_GENERATOR3->gctrl_bit.trgovien;
+1021:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+1022:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else
+1023:bsp/libraries/drivers/src/at32f435_437_edma.c ****   {
+1024:bsp/libraries/drivers/src/at32f435_437_edma.c ****     int_stat = EDMAMUX_GENERATOR4->gctrl_bit.trgovien;
+ 1669              		.loc 1 1024 5 is_stmt 1 view .LVU449
+ 1670              		.loc 1 1024 45 is_stmt 0 view .LVU450
+ 1671 000c 114B     		ldr	r3, .L136
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 48
+
+
+ 1672 000e D3F86C31 		ldr	r3, [r3, #364]
+ 1673 0012 C3F30023 		ubfx	r3, r3, #8, #1
+ 1674              	.LVL100:
+ 1675              		.loc 1 1024 45 view .LVU451
+ 1676 0016 04E0     		b	.L127
+ 1677              	.LVL101:
+ 1678              	.L133:
+1012:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 1679              		.loc 1 1012 5 is_stmt 1 view .LVU452
+1012:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 1680              		.loc 1 1012 45 is_stmt 0 view .LVU453
+ 1681 0018 0E4B     		ldr	r3, .L136
+ 1682 001a D3F86031 		ldr	r3, [r3, #352]
+ 1683 001e C3F30023 		ubfx	r3, r3, #8, #1
+ 1684              	.LVL102:
+ 1685              	.L127:
+1025:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+1026:bsp/libraries/drivers/src/at32f435_437_edma.c ****   
+1027:bsp/libraries/drivers/src/at32f435_437_edma.c ****   if((int_stat != RESET) && ((EDMA->muxgsts & flag) != RESET))
+ 1686              		.loc 1 1027 3 is_stmt 1 view .LVU454
+ 1687              		.loc 1 1027 5 is_stmt 0 view .LVU455
+ 1688 0022 93B1     		cbz	r3, .L131
+ 1689              		.loc 1 1027 35 discriminator 1 view .LVU456
+ 1690 0024 0B4B     		ldr	r3, .L136
+ 1691              	.LVL103:
+ 1692              		.loc 1 1027 35 discriminator 1 view .LVU457
+ 1693 0026 D3F87831 		ldr	r3, [r3, #376]
+ 1694              		.loc 1 1027 26 discriminator 1 view .LVU458
+ 1695 002a 0342     		tst	r3, r0
+ 1696 002c 0FD1     		bne	.L132
+1028:bsp/libraries/drivers/src/at32f435_437_edma.c ****     return SET;
+1029:bsp/libraries/drivers/src/at32f435_437_edma.c ****   else
+1030:bsp/libraries/drivers/src/at32f435_437_edma.c ****     return RESET;
+ 1697              		.loc 1 1030 12 view .LVU459
+ 1698 002e 0020     		movs	r0, #0
+ 1699              	.LVL104:
+ 1700              		.loc 1 1030 12 view .LVU460
+ 1701 0030 7047     		bx	lr
+ 1702              	.LVL105:
+ 1703              	.L134:
+1016:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 1704              		.loc 1 1016 5 is_stmt 1 view .LVU461
+1016:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 1705              		.loc 1 1016 45 is_stmt 0 view .LVU462
+ 1706 0032 084B     		ldr	r3, .L136
+ 1707 0034 D3F86431 		ldr	r3, [r3, #356]
+ 1708 0038 C3F30023 		ubfx	r3, r3, #8, #1
+ 1709              	.LVL106:
+1016:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 1710              		.loc 1 1016 45 view .LVU463
+ 1711 003c F1E7     		b	.L127
+ 1712              	.LVL107:
+ 1713              	.L135:
+1020:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 1714              		.loc 1 1020 5 is_stmt 1 view .LVU464
+1020:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 1715              		.loc 1 1020 45 is_stmt 0 view .LVU465
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 49
+
+
+ 1716 003e 054B     		ldr	r3, .L136
+ 1717 0040 D3F86831 		ldr	r3, [r3, #360]
+ 1718 0044 C3F30023 		ubfx	r3, r3, #8, #1
+ 1719              	.LVL108:
+1020:bsp/libraries/drivers/src/at32f435_437_edma.c ****   }
+ 1720              		.loc 1 1020 45 view .LVU466
+ 1721 0048 EBE7     		b	.L127
+ 1722              	.L131:
+ 1723              		.loc 1 1030 12 view .LVU467
+ 1724 004a 0020     		movs	r0, #0
+ 1725              	.LVL109:
+ 1726              		.loc 1 1030 12 view .LVU468
+ 1727 004c 7047     		bx	lr
+ 1728              	.LVL110:
+ 1729              	.L132:
+1028:bsp/libraries/drivers/src/at32f435_437_edma.c ****     return SET;
+ 1730              		.loc 1 1028 12 view .LVU469
+ 1731 004e 0120     		movs	r0, #1
+ 1732              	.LVL111:
+1031:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 1733              		.loc 1 1031 1 view .LVU470
+ 1734 0050 7047     		bx	lr
+ 1735              	.L137:
+ 1736 0052 00BF     		.align	2
+ 1737              	.L136:
+ 1738 0054 00600240 		.word	1073897472
+ 1739              		.cfi_endproc
+ 1740              	.LFE167:
+ 1742              		.section	.text.edmamux_generator_flag_clear,"ax",%progbits
+ 1743              		.align	1
+ 1744              		.global	edmamux_generator_flag_clear
+ 1745              		.syntax unified
+ 1746              		.thumb
+ 1747              		.thumb_func
+ 1749              	edmamux_generator_flag_clear:
+ 1750              	.LVL112:
+ 1751              	.LFB168:
+1032:bsp/libraries/drivers/src/at32f435_437_edma.c **** 
+1033:bsp/libraries/drivers/src/at32f435_437_edma.c **** /**
+1034:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @brief  edmamux request generator flag clear.
+1035:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @param  flag
+1036:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         this parameter can be any combination of the following values:
+1037:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_GEN_TRIG_OV1_FLAG
+1038:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_GEN_TRIG_OV2_FLAG
+1039:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_GEN_TRIG_OV3_FLAG
+1040:bsp/libraries/drivers/src/at32f435_437_edma.c ****   *         - EDMAMUX_GEN_TRIG_OV4_FLAG
+1041:bsp/libraries/drivers/src/at32f435_437_edma.c ****   * @retval none.
+1042:bsp/libraries/drivers/src/at32f435_437_edma.c ****   */
+1043:bsp/libraries/drivers/src/at32f435_437_edma.c **** void edmamux_generator_flag_clear(uint32_t flag)
+1044:bsp/libraries/drivers/src/at32f435_437_edma.c **** {
+ 1752              		.loc 1 1044 1 is_stmt 1 view -0
+ 1753              		.cfi_startproc
+ 1754              		@ args = 0, pretend = 0, frame = 0
+ 1755              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1756              		@ link register save eliminated.
+1045:bsp/libraries/drivers/src/at32f435_437_edma.c ****   EDMA->muxgclr = flag;
+ 1757              		.loc 1 1045 3 view .LVU472
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 50
+
+
+ 1758              		.loc 1 1045 17 is_stmt 0 view .LVU473
+ 1759 0000 014B     		ldr	r3, .L139
+ 1760 0002 C3F87C01 		str	r0, [r3, #380]
+1046:bsp/libraries/drivers/src/at32f435_437_edma.c **** }
+ 1761              		.loc 1 1046 1 view .LVU474
+ 1762 0006 7047     		bx	lr
+ 1763              	.L140:
+ 1764              		.align	2
+ 1765              	.L139:
+ 1766 0008 00600240 		.word	1073897472
+ 1767              		.cfi_endproc
+ 1768              	.LFE168:
+ 1770              		.text
+ 1771              	.Letext0:
+ 1772              		.file 2 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\mac
+ 1773              		.file 3 "c:\\at32ide\\platform\\tools\\gcc-arm-none-eabi-10.3-2021.10\\arm-none-eabi\\include\\sys
+ 1774              		.file 4 "bsp/libraries/cmsis/cm4/device_support/at32f435_437.h"
+ 1775              		.file 5 "bsp/libraries/drivers/inc/at32f435_437_edma.h"
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 51
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 at32f435_437_edma.c
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:18     .text.edma_reset:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:24     .text.edma_reset:00000000 edma_reset
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:162    .text.edma_reset:000000a0 $d
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:170    .text.edma_init:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:176    .text.edma_init:00000000 edma_init
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:282    .text.edma_default_para_init:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:288    .text.edma_default_para_init:00000000 edma_default_para_init
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:345    .text.edma_stream_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:351    .text.edma_stream_enable:00000000 edma_stream_enable
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:370    .text.edma_interrupt_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:376    .text.edma_interrupt_enable:00000000 edma_interrupt_enable
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:435    .text.edma_peripheral_inc_offset_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:441    .text.edma_peripheral_inc_offset_set:00000000 edma_peripheral_inc_offset_set
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:460    .text.edma_flow_controller_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:466    .text.edma_flow_controller_enable:00000000 edma_flow_controller_enable
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:485    .text.edma_data_number_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:491    .text.edma_data_number_set:00000000 edma_data_number_set
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:508    .text.edma_data_number_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:514    .text.edma_data_number_get:00000000 edma_data_number_get
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:533    .text.edma_double_buffer_mode_init:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:539    .text.edma_double_buffer_mode_init:00000000 edma_double_buffer_mode_init
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:572    .text.edma_double_buffer_mode_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:578    .text.edma_double_buffer_mode_enable:00000000 edma_double_buffer_mode_enable
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:607    .text.edma_memory_addr_set:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:613    .text.edma_memory_addr_set:00000000 edma_memory_addr_set
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:638    .text.edma_memory_target_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:644    .text.edma_memory_target_get:00000000 edma_memory_target_get
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:663    .text.edma_stream_status_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:669    .text.edma_stream_status_get:00000000 edma_stream_status_get
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:699    .text.edma_fifo_status_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:705    .text.edma_fifo_status_get:00000000 edma_fifo_status_get
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:724    .text.edma_flag_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:730    .text.edma_flag_get:00000000 edma_flag_get
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:776    .text.edma_flag_get:0000001c $d
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:781    .text.edma_interrupt_flag_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:787    .text.edma_interrupt_flag_get:00000000 edma_interrupt_flag_get
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:833    .text.edma_interrupt_flag_get:0000001c $d
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:838    .text.edma_flag_clear:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:844    .text.edma_flag_clear:00000000 edma_flag_clear
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:875    .text.edma_flag_clear:00000018 $d
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:880    .text.edma_2d_init:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:886    .text.edma_2d_init:00000000 edma_2d_init
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:913    .text.edma_2d_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:919    .text.edma_2d_enable:00000000 edma_2d_enable
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:976    .text.edma_2d_enable:00000034 $d
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:982    .text.edma_link_list_init:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:988    .text.edma_link_list_init:00000000 edma_link_list_init
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1005   .text.edma_link_list_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1011   .text.edma_link_list_enable:00000000 edma_link_list_enable
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1068   .text.edma_link_list_enable:00000034 $d
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1074   .text.edmamux_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1080   .text.edmamux_enable:00000000 edmamux_enable
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1099   .text.edmamux_enable:00000010 $d
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1104   .text.edmamux_init:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1110   .text.edmamux_init:00000000 edmamux_init
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccSh2RCg.s 			page 52
+
+
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1129   .text.edmamux_sync_default_para_init:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1135   .text.edmamux_sync_default_para_init:00000000 edmamux_sync_default_para_init
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1165   .text.edmamux_sync_config:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1171   .text.edmamux_sync_config:00000000 edmamux_sync_config
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1222   .text.edmamux_generator_default_para_init:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1228   .text.edmamux_generator_default_para_init:00000000 edmamux_generator_default_para_init
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1255   .text.edmamux_generator_config:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1261   .text.edmamux_generator_config:00000000 edmamux_generator_config
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1305   .text.edmamux_sync_interrupt_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1311   .text.edmamux_sync_interrupt_enable:00000000 edmamux_sync_interrupt_enable
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1340   .text.edmamux_generator_interrupt_enable:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1346   .text.edmamux_generator_interrupt_enable:00000000 edmamux_generator_interrupt_enable
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1375   .text.edmamux_sync_flag_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1381   .text.edmamux_sync_flag_get:00000000 edmamux_sync_flag_get
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1411   .text.edmamux_sync_flag_get:00000014 $d
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1416   .text.edmamux_sync_interrupt_flag_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1422   .text.edmamux_sync_interrupt_flag_get:00000000 edmamux_sync_interrupt_flag_get
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1568   .text.edmamux_sync_interrupt_flag_get:00000094 $d
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1573   .text.edmamux_sync_flag_clear:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1579   .text.edmamux_sync_flag_clear:00000000 edmamux_sync_flag_clear
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1596   .text.edmamux_sync_flag_clear:00000008 $d
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1601   .text.edmamux_generator_flag_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1607   .text.edmamux_generator_flag_get:00000000 edmamux_generator_flag_get
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1637   .text.edmamux_generator_flag_get:00000014 $d
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1642   .text.edmamux_generator_interrupt_flag_get:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1648   .text.edmamux_generator_interrupt_flag_get:00000000 edmamux_generator_interrupt_flag_get
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1738   .text.edmamux_generator_interrupt_flag_get:00000054 $d
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1743   .text.edmamux_generator_flag_clear:00000000 $t
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1749   .text.edmamux_generator_flag_clear:00000000 edmamux_generator_flag_clear
+C:\Users\user\AppData\Local\Temp\ccSh2RCg.s:1766   .text.edmamux_generator_flag_clear:00000008 $d
+
+NO UNDEFINED SYMBOLS
